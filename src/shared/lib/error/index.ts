@@ -40,16 +40,21 @@ export const displayError = (
   parseError = ""
 ) => {
   if (isAxiosError(error)) {
-    return toast({ title: error.response?.data || genericErrorMessage });
+    return toast({ title: error.response?.data || genericErrorMessage, variant: "destructive" });
   } else if (error instanceof ZodError) {
     if (Array.isArray(error.issues) && error.issues.length > 0)
-      return toast({ title: parseError || error.issues[0].message });
-
-    return toast({ title: genericErrorMessage });
+      return toast({ title: parseError || error.issues[0].message , variant: "destructive"});
+    return toast({ title: genericErrorMessage, variant: "destructive" } );
+  } else if (
+    // @ts-ignore
+    error?.errors && Array.isArray(error.errors) && error.errors.length > 0
+  ) {
+    // @ts-ignore
+    return toast({ title: error.errors[0].message, variant: "destructive" });
   } else if (error instanceof Error) {
-    return toast({ title: error.message });
+    return toast({ title: error.message, variant: "destructive" });
   } else if (typeof error === "string") {
-    return toast({ title: error });
+    return toast({ title: error, variant: "destructive" });
   }
 
   return toast({ title: genericErrorMessage });

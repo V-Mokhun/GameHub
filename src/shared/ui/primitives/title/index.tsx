@@ -28,10 +28,10 @@ export const Title = ({
   else if (size === "large")
     content = (
       <h2
-        className={
-          (cn("scroll-m-20 mb-3 text-3xl font-semibold tracking-tight"),
-          className)
-        }
+        className={cn(
+          "scroll-m-20 mb-3 text-3xl font-semibold tracking-tight",
+          className
+        )}
         {...props}
       >
         {children}

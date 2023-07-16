@@ -1,3 +1,9 @@
+import { SignUpForm } from "@widgets/forms";
+
 export default function SignUpPage() {
-  return <div>SignUpPage</div>;
+  return (
+    <div>
+      <SignUpForm />
+    </div>
+  );
 }
