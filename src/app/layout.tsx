@@ -1,3 +1,4 @@
+import { Toaster } from "@shared/ui";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
@@ -16,7 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={font.className}>{children}</body>
+      <body className={font.className}>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }

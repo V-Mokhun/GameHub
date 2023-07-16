@@ -7,3 +7,78 @@ html,
 body {
   height: 100%;
 }
+
+@layer base {
+  :root {
+    --background: 0, 0%, 96%;
+    --foreground: 0, 0%, 20%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --popover: 0 0% 96%;
+    --popover-foreground: 0, 0%, 20%;
+
+    --card: 0 0% 96%;
+    --card-foreground: 0, 0%, 20%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+
+    --primary: 204, 70%, 53%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 46, 100%, 50%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --accent: 9, 100%, 64%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 240 5% 64.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0, 0%, 13%;
+    --foreground: 0, 0%, 96%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --popover: 0, 0%, 13%;
+    --popover-foreground: 0, 0%, 96%;
+
+    --card: 0, 0%, 13%;
+    --card-foreground: 0, 0%, 96%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+
+    --primary: 204, 89%, 38%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 34, 100%, 50%;
+    --secondary-foreground: 0 0% 98%;
+
+    --accent: 120, 61%, 50%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+
+    --ring: 240 3.7% 15.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
