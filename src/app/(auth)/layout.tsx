@@ -1,4 +1,4 @@
-import { Logo, Title } from "@shared/ui";
+import { Logo, Subtitle, Title } from "@shared/ui";
 
 export default function AuthLayout({
   children,
@@ -18,7 +18,9 @@ export default function AuthLayout({
           </p>
         </div>
       </div>
-      <div className="w-full md:w-1/2 p-10 text-center max-w-md mx-auto">{children}</div>
+      <div className="w-full md:w-1/2 p-4 lg:p-10 text-center max-w-md mx-auto">
+        {children}
+      </div>
     </div>
   );
 }

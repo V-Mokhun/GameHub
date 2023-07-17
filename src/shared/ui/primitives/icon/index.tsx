@@ -1,16 +1,23 @@
-import dynamic from "next/dynamic";
-import { dynamicIconImports, LucideProps } from "lucide-react";
+import { icons, LucideProps } from "lucide-react";
 import { forwardRef } from "react";
+import { cn } from "@shared/lib";
 
 interface IconProps extends LucideProps {
-  name: keyof typeof dynamicIconImports;
+  name: keyof typeof icons;
 }
 
 export const Icon = forwardRef<SVGSVGElement | null, IconProps>(
-  ({ name, ref, ...props }, iconRef) => {
-    const LucideIcon = dynamic(dynamicIconImports[name]);
+  ({ name, ref, className, ...props }, iconRef) => {
+    const LucideIcon = icons[name];
 
-    return <LucideIcon ref={iconRef} {...props} />;
+    return (
+      <LucideIcon
+        size={20}
+        ref={iconRef}
+        className={cn("text-secondary", className)}
+        {...props}
+      />
+    );
   }
 );
 

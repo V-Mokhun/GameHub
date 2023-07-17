@@ -26,9 +26,11 @@ body {
     --input: 240 5.9% 90%;
 
     --primary: 204, 70%, 53%;
+    --primary-hover: 204, 89%, 38%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 46, 100%, 50%;
+    --secondary-hover: 34, 100%, 50%;
     --secondary-foreground: 240 5.9% 10%;
 
     --accent: 9, 100%, 64%;
@@ -59,9 +61,11 @@ body {
     --input: 240 3.7% 15.9%;
 
     --primary: 204, 89%, 38%;
-    --primary-foreground: 240 5.9% 10%;
+    --primary-hover: 204, 70%, 53%;
+    --primary-foreground: 0, 0%, 96%;
 
     --secondary: 34, 100%, 50%;
+    --secondary-hover: 46, 100%, 50%;
     --secondary-foreground: 0 0% 98%;
 
     --accent: 120, 61%, 50%;
