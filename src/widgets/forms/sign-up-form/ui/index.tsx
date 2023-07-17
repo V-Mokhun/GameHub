@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SignUpFormRegister } from "./sign-up-form-register";
 import { SignUpFormVerify } from "./sign-up-form-verify";
 import { useAuth, useUser } from "@clerk/nextjs";
@@ -10,13 +10,15 @@ import { HOME_ROUTE } from "@shared/consts";
 interface SignUpFormProps {}
 
 export const SignUpForm = ({}: SignUpFormProps) => {
-  const [isPendingVerification, setIsPendingVerification] = useState(true);
+  const [isPendingVerification, setIsPendingVerification] = useState(false);
   const { userId } = useAuth();
   const router = useRouter();
 
-  if (userId) router.push(HOME_ROUTE);
+  useEffect(() => {
+    if (userId) router.push(HOME_ROUTE);
+  }, [userId, router]);
 
-  return (
+  return userId ? null : (
     <>
       {isPendingVerification ? (
         <SignUpFormVerify onGoBack={() => setIsPendingVerification(false)} />

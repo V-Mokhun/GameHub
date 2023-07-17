@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import * as React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
@@ -95,7 +95,11 @@ const FormLabel = React.forwardRef<
   return (
     <Label
       ref={ref}
-      className={cn("", error && "text-destructive", className)}
+      className={cn(
+        "text-sm lg:text-base",
+        error && "text-destructive",
+        className
+      )}
       htmlFor={formItemId}
       {...props}
     />

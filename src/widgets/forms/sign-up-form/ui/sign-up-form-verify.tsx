@@ -49,18 +49,17 @@ export const SignUpFormVerify = ({ onGoBack }: SignUpFormVerifyProps) => {
       const completeSignUp = await signUp.attemptEmailAddressVerification({
         code: data.code,
       });
-      if (completeSignUp.status !== "complete") {
+      if (completeSignUp.status === "complete") {
+        toast({ title: "Signed in successfully", variant: "success" });
+        await setActive({ session: completeSignUp.createdSessionId });
+        router.push("/");
+      } else {
         toast({
           title: "Something went wrong",
           description: "Please try again",
           variant: "destructive",
         });
-      }
-      if (completeSignUp.status === "complete") {
-        console.log(completeSignUp);
-
-        await setActive({ session: completeSignUp.createdSessionId });
-        router.push("/");
+        form.reset();
       }
     } catch (err) {
       toast({
@@ -95,7 +94,11 @@ export const SignUpFormVerify = ({ onGoBack }: SignUpFormVerifyProps) => {
               </FormItem>
             )}
           />
-          <Button className="w-full font-bold" type="submit">
+          <Button
+            disabled={!isLoaded || form.formState.isSubmitting}
+            className="w-full font-bold"
+            type="submit"
+          >
             Verify
           </Button>
         </form>

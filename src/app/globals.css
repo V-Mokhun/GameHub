@@ -39,6 +39,9 @@ body {
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
+    --success: 145, 100%, 39%;
+    --success-foreground: 0, 0%, 96%;
+
     --ring: 240 5% 64.9%;
 
     --radius: 0.5rem;
@@ -71,8 +74,11 @@ body {
     --accent: 120, 61%, 50%;
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0, 65%, 39%;
     --destructive-foreground: 0 85.7% 97.3%;
+
+    --success: 123, 43%, 39%;
+    --success-foreground: 0, 0%, 96%;
 
     --ring: 240 3.7% 15.9%;
   }

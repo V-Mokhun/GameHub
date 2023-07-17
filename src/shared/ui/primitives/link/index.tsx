@@ -14,7 +14,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
   ({ className, href, prefetch = false, replace = false, children }, ref) => {
     return (
       <NextLink
-        className={cn("text-secondary hover:text-secondary-hover", className)}
+        className={cn("text-primary hover:text-primary-hover", className)}
         href={href}
         prefetch={prefetch}
         replace={replace}

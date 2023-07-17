@@ -3,7 +3,7 @@ export const BROWSE_ROUTE = "/browse";
 export const LIBRARY_ROUTE = "/library";
 
 export const SIGN_IN_ROUTE = "/sign-in";
-export const SIGN_OUT_ROUTE = "/sign-out";
+export const SIGN_UP_ROUTE = "/sign-up";
 export const FORGOT_PASSWORD_ROUTE = "/forgot-password";
 
 export const GAMES_ROUTE = "/games";

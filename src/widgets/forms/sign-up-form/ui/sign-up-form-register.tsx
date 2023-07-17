@@ -110,7 +110,11 @@ export const SignUpFormRegister = ({
               </FormItem>
             )}
           />
-          <Button className="w-full font-bold" type="submit">
+          <Button
+            disabled={!isLoaded || form.formState.isSubmitting}
+            className="w-full font-bold"
+            type="submit"
+          >
             Sign up
           </Button>
         </form>

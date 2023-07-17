@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${font.className} dark`}>
+        <body className={`${font.className} dar`}>
           {children}
           <Toaster />
         </body>
