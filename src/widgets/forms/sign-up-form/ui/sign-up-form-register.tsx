@@ -70,7 +70,7 @@ export const SignUpFormRegister = ({
       </Title>
       <Subtitle size="large">Get started today</Subtitle>
       <SocialLogin text="Continue with" />
-      <TextSeparator className="my-4" />
+      <TextSeparator />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

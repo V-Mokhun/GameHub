@@ -76,7 +76,7 @@ export const SignInForm = ({}: SignInFormProps) => {
         Enter your credentials to access your account
       </Subtitle>
       <SocialLogin text="Sign in with" />
-      <TextSeparator className="my-4" />
+      <TextSeparator />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

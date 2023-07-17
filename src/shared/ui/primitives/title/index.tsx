@@ -2,7 +2,7 @@ import { cn } from "@shared/lib";
 
 interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   children?: React.ReactNode;
-  size?: "huge" | "large" | "medium" | "small";
+  size?: "huge" | "large" | "medium" | "small" | "xs";
 }
 
 export const Title = ({
@@ -29,7 +29,7 @@ export const Title = ({
     content = (
       <h2
         className={cn(
-          "scroll-m-20 mb-3 text-3xl font-bold tracking-tight",
+          "scroll-m-20 mb-3 text-3xl font-bold tracking-tight lg:text-4xl",
           className
         )}
         {...props}
@@ -41,7 +41,7 @@ export const Title = ({
     content = (
       <h3
         className={cn(
-          "scroll-m-20 mb-3 text-2xl font-bold tracking-tight",
+          "scroll-m-20 mb-3 text-2xl font-bold tracking-tight lg:text-3xl",
           className
         )}
         {...props}
@@ -49,11 +49,11 @@ export const Title = ({
         {children}
       </h3>
     );
-  } else
+  } else if (size === "small")
     content = (
       <h4
         className={cn(
-          "scroll-m-20 mb-3 text-xl font-bold tracking-tight",
+          "scroll-m-20 mb-3 text-xl font-bold tracking-tight lg:text-2xl",
           className
         )}
         {...props}
@@ -61,6 +61,17 @@ export const Title = ({
         {children}
       </h4>
     );
+  else {
+    <h5
+      className={cn(
+        "scroll-m-20 mb-3 text-lg font-bold tracking-tight lg:text-xl",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </h5>;
+  }
 
   return content;
 };
