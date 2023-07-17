@@ -23,7 +23,7 @@ body {
     --card-foreground: 0, 0%, 20%;
 
     --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
+    --input: 240 5% 85%;
 
     --primary: 204, 70%, 53%;
     --primary-hover: 204, 89%, 38%;
@@ -61,7 +61,7 @@ body {
     --card-foreground: 0, 0%, 96%;
 
     --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
+    --input: 240, 5%, 20%;
 
     --primary: 204, 89%, 38%;
     --primary-hover: 204, 70%, 53%;

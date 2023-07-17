@@ -19,12 +19,14 @@ import {
   Input,
   Link,
   Subtitle,
+  TextSeparator,
   Title,
   useToast,
 } from "@shared/ui";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SignInFormSchema, signInFormSchema } from "../model";
+import { SocialLogin } from "@features/social-login";
 
 interface SignInFormProps {}
 
@@ -73,6 +75,8 @@ export const SignInForm = ({}: SignInFormProps) => {
       <Subtitle size="large">
         Enter your credentials to access your account
       </Subtitle>
+      <SocialLogin text="Sign in with" />
+      <TextSeparator className="my-4" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

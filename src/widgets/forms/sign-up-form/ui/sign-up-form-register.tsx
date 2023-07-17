@@ -15,12 +15,15 @@ import {
   FormMessage,
   Input,
   Link,
+  Separator,
   Subtitle,
+  TextSeparator,
   Title,
   useToast,
 } from "@shared/ui";
 import { SIGN_IN_ROUTE } from "@shared/consts";
 import { displayError } from "@shared/lib";
+import { SocialLogin } from "@features/social-login";
 
 interface SignUpFormRegisterProps {
   onFormSubmit: () => void;
@@ -66,10 +69,12 @@ export const SignUpFormRegister = ({
         Sign Up
       </Title>
       <Subtitle size="large">Get started today</Subtitle>
+      <SocialLogin text="Continue with" />
+      <TextSeparator className="my-4" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 text-left"
+          className="space-y-2 text-left"
         >
           <FormField
             control={form.control}
@@ -119,7 +124,7 @@ export const SignUpFormRegister = ({
           </Button>
         </form>
       </Form>
-      <p className="mt-4">
+      <p className="mt-4 text-sm md:text-base">
         Already have an account? <Link href={SIGN_IN_ROUTE}>Sign in</Link>
       </p>
     </>
