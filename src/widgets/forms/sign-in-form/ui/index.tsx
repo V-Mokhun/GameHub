@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth, useSignIn } from "@clerk/nextjs";
+import { useSignIn } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FORGOT_PASSWORD_ROUTE,
@@ -25,18 +25,11 @@ import {
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SignInFormSchema, signInFormSchema } from "../model";
-import { useEffect } from "react";
 
 interface SignInFormProps {}
 
 export const SignInForm = ({}: SignInFormProps) => {
-  const { userId } = useAuth();
   const router = useRouter();
-
-  useEffect(() => {
-    if (userId) router.push(HOME_ROUTE);
-  }, [userId, router]);
-
   const { toast } = useToast();
   const { isLoaded, signIn, setActive } = useSignIn();
   const form = useForm<SignInFormSchema>({
@@ -72,12 +65,14 @@ export const SignInForm = ({}: SignInFormProps) => {
     }
   };
 
-  return userId ? null : (
+  return (
     <>
       <Title className="mb-2" size="large">
         Sign In
       </Title>
-      <Subtitle>Enter your credentials to access your account</Subtitle>
+      <Subtitle size="large">
+        Enter your credentials to access your account
+      </Subtitle>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

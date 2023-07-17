@@ -5,6 +5,7 @@ export { Label } from "./label";
 export { Button, buttonVariants } from "./button";
 export { Input } from "./input";
 export { Link } from './link';
+export { Separator } from './separator';
 
 export * from "./toast";
 export * from "./form";

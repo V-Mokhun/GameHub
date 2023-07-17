@@ -5,6 +5,7 @@ export const LIBRARY_ROUTE = "/library";
 export const SIGN_IN_ROUTE = "/sign-in";
 export const SIGN_UP_ROUTE = "/sign-up";
 export const FORGOT_PASSWORD_ROUTE = "/forgot-password";
+export const SSO_CALLBACK_ROUTE = "/sso-callback";
 
 export const GAMES_ROUTE = "/games";
 
@@ -18,4 +19,5 @@ export const PUBLIC_ROUTES = [
   BROWSE_ROUTE,
   `${GAMES_ROUTE}/:path*`,
   `${USERS_ROUTE}/:path*`,
+  FORGOT_PASSWORD_ROUTE,
 ];

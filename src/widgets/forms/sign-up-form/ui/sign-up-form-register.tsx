@@ -65,7 +65,7 @@ export const SignUpFormRegister = ({
       <Title className="mb-2" size="large">
         Sign Up
       </Title>
-      <Subtitle>Get started today</Subtitle>
+      <Subtitle size="large">Get started today</Subtitle>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
