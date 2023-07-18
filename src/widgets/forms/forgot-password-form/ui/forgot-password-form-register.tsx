@@ -2,7 +2,7 @@
 
 import { useSignIn } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SIGN_UP_ROUTE } from "@shared/consts";
+import { SIGN_IN_ROUTE, SIGN_UP_ROUTE } from "@shared/consts";
 import { displayError } from "@shared/lib";
 import {
   Button,
@@ -12,6 +12,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  Icon,
   Input,
   Link,
   Subtitle,
@@ -20,6 +21,7 @@ import {
 } from "@shared/ui";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 interface ForgotPasswordFormRegisterProps {
   onFormSubmit: () => void;
@@ -34,6 +36,7 @@ type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>;
 export const ForgotPasswordFormRegister = ({
   onFormSubmit,
 }: ForgotPasswordFormRegisterProps) => {
+  const router = useRouter();
   const { isLoaded, signIn } = useSignIn();
   const { toast } = useToast();
 
@@ -72,7 +75,7 @@ export const ForgotPasswordFormRegister = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 text-left"
+          className="space-y-4 mb-2 text-left"
         >
           <FormField
             control={form.control}
@@ -96,6 +99,14 @@ export const ForgotPasswordFormRegister = ({
           </Button>
         </form>
       </Form>
+      <Button
+        variant="secondary"
+        type="button"
+        className="w-full font-bold"
+        onClick={() => router.push(SIGN_IN_ROUTE)}
+      >
+        <Icon name="ArrowLeft" className="mr-1 text-current" /> Go back
+      </Button>
       <p className="mt-4">
         Don&apos;t have an account? <Link href={SIGN_UP_ROUTE}>Sign up</Link>
       </p>

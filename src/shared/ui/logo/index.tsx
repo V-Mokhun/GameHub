@@ -45,7 +45,7 @@ export const Logo = ({ svgProps, className }: LogoProps) => {
             </svg>
           </g>
         </svg>
-        <span className="text-2xl font-bold">GameHub</span>
+        <h2 className="text-2xl font-bold">GameHub</h2>
       </div>
     </Link>
   );

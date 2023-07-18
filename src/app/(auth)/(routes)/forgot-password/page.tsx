@@ -7,5 +7,5 @@ export default async function ForgotPasswordPage() {
   const { userId } = auth();
   if (userId) redirect(HOME_ROUTE);
 
-  return <ForgotPasswordForm />;
+  return userId ? null : <ForgotPasswordForm />;
 }

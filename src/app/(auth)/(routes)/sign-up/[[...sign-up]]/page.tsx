@@ -7,5 +7,5 @@ export default function SignUpPage() {
   const { userId } = auth();
   if (userId) redirect(HOME_ROUTE);
 
-  return <SignUpForm />;
+  return userId ? null : <SignUpForm />;
 }

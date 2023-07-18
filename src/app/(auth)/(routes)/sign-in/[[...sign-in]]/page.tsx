@@ -7,5 +7,5 @@ export default function SignInPage() {
   const { userId } = auth();
   if (userId) redirect(HOME_ROUTE);
 
-  return <SignInForm />;
+  return userId ? null : <SignInForm />;
 }

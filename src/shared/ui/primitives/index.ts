@@ -6,6 +6,12 @@ export { Button, buttonVariants } from "./button";
 export { Input } from "./input";
 export { Link } from "./link";
 export { Separator, TextSeparator } from "./separator";
+export { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+export { Switch } from "./switch";
+export { Skeleton } from "./skeleton";
 
 export * from "./toast";
 export * from "./form";
+export * from "./dropdown";
+export * from "./command";
+export * from "./dialog";
