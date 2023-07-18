@@ -1,6 +1,5 @@
 export const HOME_ROUTE = "/";
 export const BROWSE_ROUTE = "/browse";
-export const LIBRARY_ROUTE = "/library";
 
 export const SIGN_IN_ROUTE = "/sign-in";
 export const SIGN_UP_ROUTE = "/sign-up";
@@ -13,7 +12,9 @@ export const SETTINGS_ROUTE = "/settings";
 
 export const USERS_ROUTE = "/users";
 
-export const PROFILE_ROUTE = (id: string) => `${USERS_ROUTE}/${id}/profile}`;
+export const PROFILE_ROUTE = (id: string) => `${USERS_ROUTE}/${id}}`;
+export const LIBRARY_ROUTE = (id: string) => `${USERS_ROUTE}/${id}/library}`;
+export const FRIENDS_ROUTE = (id: string) => `${USERS_ROUTE}/${id}/friends}`;
 
 export const PUBLIC_ROUTES = [
   HOME_ROUTE,

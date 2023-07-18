@@ -17,7 +17,7 @@ export const Logo = ({ svgProps, className }: LogoProps) => {
           viewBox="0 0 100 50"
           height="25"
           width="50"
-          className={cn("text-secondary", svgProps?.className)}
+          className={cn("text-secondary w-10 h-5 md:w-12 md:h-6", svgProps?.className)}
           {...svgProps}
         >
           <g>
@@ -45,7 +45,7 @@ export const Logo = ({ svgProps, className }: LogoProps) => {
             </svg>
           </g>
         </svg>
-        <h2 className="text-2xl font-bold">GameHub</h2>
+        <h2 className="text-xl md:text-2xl font-bold">GameHub</h2>
       </div>
     </Link>
   );

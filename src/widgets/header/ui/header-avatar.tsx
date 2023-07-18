@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
   Icon,
   Skeleton,
+  useToast,
 } from "@shared/ui";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,8 +23,9 @@ interface HeaderAvatarProps {}
 
 export const HeaderAvatar = ({}: HeaderAvatarProps) => {
   const { user } = useUser();
+  const { toast } = useToast();
 
-  if (!user) return <Skeleton className="w-10 h-10 rounded-full" />;
+  if (!user) return <Skeleton className="w-10 h-10 shrink-0 rounded-full" />;
 
   return (
     <DropdownMenu>
@@ -79,7 +81,11 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer">
-          <SignOutButton>
+          <SignOutButton
+            signOutCallback={() => {
+              toast({ title: "Signed out succesfully", variant: "success" });
+            }}
+          >
             <div className="flex items-center w-full">
               <Icon className="mr-2" name="LogOut" />
               <span>Sign out</span>

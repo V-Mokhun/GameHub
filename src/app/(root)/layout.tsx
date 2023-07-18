@@ -1,4 +1,5 @@
 import { Header } from "@widgets/header";
+import { Sidebar } from "@widgets/sidebar";
 
 export default function SiteLayout({
   children,
@@ -8,6 +9,7 @@ export default function SiteLayout({
   return (
     <>
       <Header />
+      <Sidebar />
       {children}
     </>
   );

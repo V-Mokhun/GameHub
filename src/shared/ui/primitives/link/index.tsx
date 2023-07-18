@@ -1,3 +1,4 @@
+
 import { HTMLAttributes, forwardRef } from "react";
 import NextLink from "next/link";
 import { cn } from "@shared/lib";
@@ -14,7 +15,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
   ({ className, href, prefetch = false, replace = false, children }, ref) => {
     return (
       <NextLink
-        className={cn("text-primary hover:text-primary-hover", className)}
+        className={cn("text-primary transition-colors hover:text-primary-hover", className)}
         href={href}
         prefetch={prefetch}
         replace={replace}
