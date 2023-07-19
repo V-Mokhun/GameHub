@@ -78,12 +78,17 @@ export const SignUpFormRegister = ({
         >
           <FormField
             control={form.control}
-            name="email"
+            name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>
+                  Username*{" "}
+                  <span className="text-sm text-muted-foreground">
+                    (optional)
+                  </span>
+                </FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input placeholder="Username" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -91,12 +96,12 @@ export const SignUpFormRegister = ({
           />
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Username" {...field} />
+                  <Input placeholder="Email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

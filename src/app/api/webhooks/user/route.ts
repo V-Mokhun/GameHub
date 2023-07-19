@@ -1,4 +1,5 @@
 import { User } from "@clerk/nextjs/server";
+import { db } from "@shared/lib/db";
 import { IncomingHttpHeaders } from "http";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -37,7 +38,7 @@ async function handler(req: Request) {
   }
 
   const eventType: EventType = evt.type;
-  if (eventType === "user.created" || eventType === "user.updated") {
+  if (eventType === "user.created") {
     const { id, ...attr } = evt.data;
     console.log(id, attr);
   }
