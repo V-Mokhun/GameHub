@@ -1,12 +1,14 @@
-import { auth } from "@clerk/nextjs";
+"use client";
+
 import { SIGN_IN_ROUTE } from "@shared/consts";
 import { Link, Logo, buttonVariants } from "@shared/ui";
 import { HeaderAvatar } from "./header-avatar";
 import { HeaderSearch } from "./header-search";
 import { HeaderButton } from "./header-button";
+import { useAuth } from "@clerk/nextjs";
 
-export const Header = async ({}) => {
-  const { userId } = auth();
+export const Header = () => {
+  const { userId } = useAuth();
 
   return (
     <header className="fixed w-full md:relative z-10 md:z-40 bg-primary py-2 md:py-3">
@@ -23,7 +25,8 @@ export const Header = async ({}) => {
               className={buttonVariants({
                 size: "default",
                 variant: "secondary",
-                className: "hover:text-secondary-foreground shrink-0 font-bold text-sm md:text-base",
+                className:
+                  "hover:text-secondary-foreground shrink-0 font-bold text-sm md:text-base",
               })}
             >
               Sign In

@@ -1,29 +1,27 @@
 "use client";
 
-import { SubmitHandler, useForm } from "react-hook-form";
-import { SignUpFormSchema, signUpFormSchema } from "../model";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignUp } from "@clerk/nextjs";
+import { SocialLogin } from "@features/social-login";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SIGN_IN_ROUTE } from "@shared/consts";
+import { displayError } from "@shared/lib";
 import {
   Button,
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
   Input,
   Link,
-  Separator,
   Subtitle,
   TextSeparator,
   Title,
   useToast,
 } from "@shared/ui";
-import { SIGN_IN_ROUTE } from "@shared/consts";
-import { displayError } from "@shared/lib";
-import { SocialLogin } from "@features/social-login";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { SignUpFormSchema, signUpFormSchema } from "../model";
 
 interface SignUpFormRegisterProps {
   onFormSubmit: () => void;
@@ -78,17 +76,12 @@ export const SignUpFormRegister = ({
         >
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Username*{" "}
-                  <span className="text-sm text-muted-foreground">
-                    (optional)
-                  </span>
-                </FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Username" {...field} />
+                  <Input placeholder="Email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -96,12 +89,12 @@ export const SignUpFormRegister = ({
           />
           <FormField
             control={form.control}
-            name="email"
+            name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input placeholder="Username" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

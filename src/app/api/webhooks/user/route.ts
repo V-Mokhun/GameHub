@@ -1,14 +1,23 @@
-import { User } from "@clerk/nextjs/server";
+import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { IncomingHttpHeaders } from "http";
+import { nanoid } from "nanoid";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Webhook, WebhookRequiredHeaders } from "svix";
 
+type AuthUser = {
+  id: string;
+  username: string | null;
+  email_addresses: { id: string; email_address: string }[];
+  profile_image_url: string;
+  public_metadata: { isPrivateLibrary: boolean };
+};
+
 type EventType = "user.created" | "user.updated" | "user.deleted" | "*";
 
 type Event = {
-  data: User;
+  data: AuthUser;
   object: "event";
   type: EventType;
 };
@@ -39,8 +48,50 @@ async function handler(req: Request) {
 
   const eventType: EventType = evt.type;
   if (eventType === "user.created") {
-    const { id, ...attr } = evt.data;
-    console.log(id, attr);
+    try {
+      const { id, email_addresses, username, profile_image_url } = evt.data;
+
+      await db.user.create({
+        data: {
+          id,
+          email: email_addresses[0].email_address,
+          username,
+          imageUrl: profile_image_url,
+        },
+      });
+    } catch (error) {
+      catchError(error, "Could not create your profile");
+    }
+  } else if (eventType === "user.updated") {
+    try {
+      const {
+        id,
+        email_addresses,
+        username,
+        profile_image_url,
+        public_metadata: { isPrivateLibrary },
+      } = evt.data;
+
+      await db.user.update({
+        where: { id },
+        data: {
+          email: email_addresses[0].email_address,
+          username: username!,
+          imageUrl: profile_image_url,
+          isPrivateLibrary,
+        },
+      });
+      console.log("updated user");
+    } catch (error) {
+      catchError(error, "Could not update your profile");
+    }
+  } else if (eventType === "user.deleted") {
+    try {
+      const { id } = evt.data;
+      await db.user.delete({ where: { id } });
+    } catch (error) {
+      catchError(error, "Could not delete your profile");
+    }
   }
 
   return NextResponse.json({}, { status: 200 });

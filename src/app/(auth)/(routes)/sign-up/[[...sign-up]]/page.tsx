@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs";
 import { HOME_ROUTE } from "@shared/consts";
 import { redirect } from "next/navigation";
 
-export default async function SignUpPage(data: any) {
+export default async function SignUpPage() {
   const { userId } = auth();
   if (userId) redirect(HOME_ROUTE);
 

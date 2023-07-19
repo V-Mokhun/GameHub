@@ -9,16 +9,33 @@ datasource db {
 }
 
 model User {
-  id       String @id
-  email    String @unique
-  username String @unique
-  imageUrl String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  isPrivateLibrary Boolean @default(false)
+  id               String   @id
+  email            String   @unique
+  username         String?   @unique
+  imageUrl         String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  isPrivateLibrary Boolean  @default(false)
   library          Game[]
+}
+
+model Game {
+  name        String
+  slug        String     @unique
+  totalRating Float
+  coverUrl    String
+  status      GameStatus @default(NONE)
+  userRating  Int?
+  hoursPlayed Int?       @default(0)
+  finishedAt  DateTime?
+  notes       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  userId      String
+  User        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, slug])
+  @@index([userId])
 }
 
 enum GameStatus {
@@ -28,26 +45,4 @@ enum GameStatus {
   PLAYING
   WANT_TO_REPLAY
   ABANDONED
-}
-
-model Game {
-  name        String
-  slug        String @unique
-  totalRating Float
-  coverUrl    String
-
-  status      GameStatus @default(NONE)
-  userRating  Int?
-  hoursPlayed Int?       @default(0)
-  finishedAt  DateTime?
-  notes       String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userId String
-  User   User   @relation(fields: [userId], references: [id])
-
-  @@id([userId, slug])
-  @@index([userId])
 }
