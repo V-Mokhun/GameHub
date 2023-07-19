@@ -17,7 +17,7 @@ export const Logo = ({ svgProps, className }: LogoProps) => {
           viewBox="0 0 100 50"
           height="25"
           width="50"
-          className={cn("text-secondary w-10 h-5 md:w-12 md:h-6", svgProps?.className)}
+          className={cn("text-secondary w-10 h-5 md:w-12 md:h-6 shrink-0", svgProps?.className)}
           {...svgProps}
         >
           <g>

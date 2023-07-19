@@ -12,7 +12,7 @@ export const SidebarItem = ({
     <li>
       <Link
         className={cn(
-          "flex items-center text-foreground gap-2 text-lg font-medium",
+          "flex items-center text-foreground gap-2 text-base font-medium",
           isActive && "font-semibold text-primary hover:text-primary"
         )}
         href={href}

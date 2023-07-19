@@ -81,67 +81,73 @@ const GENERAL_PRIVATE_ITEMS = (pathname: string): SidebarItemT[] => [
 ];
 
 interface SidebarMenuProps {
-  userId: string | null;
+  userId?: string | null;
 }
 
 export const SidebarMenu = ({ userId }: SidebarMenuProps) => {
   const pathname = usePathname();
 
   return (
-    <>
-      <Subtitle className="uppercase font-semibold" size="large">
-        Menu
-      </Subtitle>
-      <ul className="space-y-4 mb-6">
-        {MENU_ITEMS(pathname).map((item) => (
-          <SidebarItem key={item.href} {...item} />
-        ))}
-        {userId &&
-          MENU_PRIVATE_ITEMS(pathname, userId).map((item) => (
+    <div className="space-y-6">
+      <div>
+        <Subtitle className="uppercase font-semibold" size="large">
+          Menu
+        </Subtitle>
+        <ul className="space-y-6 md:space-y-4">
+          {MENU_ITEMS(pathname).map((item) => (
             <SidebarItem key={item.href} {...item} />
           ))}
-      </ul>
+          {userId &&
+            MENU_PRIVATE_ITEMS(pathname, userId).map((item) => (
+              <SidebarItem key={item.href} {...item} />
+            ))}
+        </ul>
+      </div>
 
-      <Subtitle className="uppercase font-semibold" size="large">
-        Social
-      </Subtitle>
-      <ul className="space-y-4 mb-6">
-        {SOCIAL_ITEMS(pathname).map((item) => (
-          <SidebarItem key={item.href} {...item} />
-        ))}
-        {userId &&
-          SOCIAL_PRIVATE_ITEMS(pathname, userId).map((item) => (
+      <div>
+        <Subtitle className="uppercase font-semibold" size="large">
+          Social
+        </Subtitle>
+        <ul className="space-y-6 md:space-y-4">
+          {SOCIAL_ITEMS(pathname).map((item) => (
             <SidebarItem key={item.href} {...item} />
           ))}
-      </ul>
+          {userId &&
+            SOCIAL_PRIVATE_ITEMS(pathname, userId).map((item) => (
+              <SidebarItem key={item.href} {...item} />
+            ))}
+        </ul>
+      </div>
 
-      <Subtitle className="uppercase font-semibold" size="large">
-        General
-      </Subtitle>
-      <ul className="space-y-4">
-        <li>
-          <ThemeToggler />
-        </li>
-        {userId &&
-          GENERAL_PRIVATE_ITEMS(pathname).map((item) => (
-            <SidebarItem key={item.href} {...item} />
-          ))}
-        {userId && (
+      <div>
+        <Subtitle className="uppercase font-semibold" size="large">
+          General
+        </Subtitle>
+        <ul className="space-y-6 md:space-y-4">
           <li>
-            <SignOutButton>
-              <button
-                type="button"
-                className={cn(
-                  "flex items-center gap-2 text-lg font-medium transition-colors hover:text-primary"
-                )}
-              >
-                <Icon name="LogOut" />
-                <span>Sign Out</span>
-              </button>
-            </SignOutButton>
+            <ThemeToggler id="sidebar-theme" />
           </li>
-        )}
-      </ul>
-    </>
+          {userId &&
+            GENERAL_PRIVATE_ITEMS(pathname).map((item) => (
+              <SidebarItem key={item.href} {...item} />
+            ))}
+          {userId && (
+            <li>
+              <SignOutButton>
+                <button
+                  type="button"
+                  className={cn(
+                    "flex items-center gap-2 font-medium transition-colors hover:text-primary"
+                  )}
+                >
+                  <Icon name="LogOut" />
+                  <span>Sign Out</span>
+                </button>
+              </SignOutButton>
+            </li>
+          )}
+        </ul>
+      </div>
+    </div>
   );
 };

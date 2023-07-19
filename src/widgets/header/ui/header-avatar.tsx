@@ -1,6 +1,6 @@
 "use client";
 
-import { SignOutButton, useClerk, useUser } from "@clerk/nextjs";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 import { ThemeToggler } from "@features/theme-toggler";
 import { BROWSE_ROUTE, PROFILE_ROUTE, SETTINGS_ROUTE } from "@shared/consts";
 import {
@@ -31,7 +31,7 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarImage src="" />
+          <AvatarImage src={user.profileImageUrl} />
           <AvatarFallback>
             <Image
               alt="Avatar"
@@ -42,7 +42,7 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="space-y-2 md:space-y-0">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
             {user.username && (
