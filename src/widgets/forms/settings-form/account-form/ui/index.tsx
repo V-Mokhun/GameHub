@@ -24,6 +24,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AccountSettingsFormSchema, accountSettingsFormSchema } from "../model";
 import { AccountFormAvatar } from "./account-form-avatar";
 import { AlertModal } from "@shared/ui/modal";
+import { AccountFormSkeleton } from "./skeleton";
 
 export const AccountForm = () => {
   const router = useRouter();
@@ -50,6 +51,8 @@ export const AccountForm = () => {
       setImagePreview(user.profileImageUrl);
     }
   }, [isLoaded, user, form]);
+
+  if (!isLoaded) return <AccountFormSkeleton />;
 
   const onDeleteImage = async () => {
     if (!isLoaded || !user) return;

@@ -16,7 +16,7 @@ export const ThemeToggler = ({ id }: { id?: string }) => {
     return (
       <div className="flex items-center gap-2">
         <Skeleton className="h-5 w-5 rounded-md" />
-        <Skeleton className="h-[24px] w-[44px] rounded-full" />
+        <Skeleton className="h-6 w-11 rounded-full" />
       </div>
     );
 
