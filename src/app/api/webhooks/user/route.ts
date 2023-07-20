@@ -81,7 +81,6 @@ async function handler(req: Request) {
           isPrivateLibrary,
         },
       });
-      console.log("updated user");
     } catch (error) {
       catchError(error, "Could not update your profile");
     }

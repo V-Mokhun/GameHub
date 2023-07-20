@@ -35,7 +35,7 @@ export default function SiteLayout({
     <>
       <Header />
       <Sidebar />
-      <main className="h-full p-4 pl-[230px]">{children}</main>
+      <main className="h-full p-5 pt-20 pl-[240px]">{children}</main>
     </>
   );
 }
