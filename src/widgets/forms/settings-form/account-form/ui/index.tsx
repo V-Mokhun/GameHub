@@ -187,7 +187,7 @@ export const AccountForm = () => {
                 )}
               />
             </div>
-            <div className="flex flex-col gap-4 max-w-xs flex-auto">
+            <div className="flex flex-col gap-4 max-w-sm flex-auto">
               <div className="space-y-2">
                 <Label className="text-base">Email</Label>
                 <p className="text-muted-foreground font-semibold">
@@ -227,7 +227,7 @@ export const AccountForm = () => {
               />
             </div>
           </div>
-          <div className="max-w-xs flex-1 pb-6">
+          <div className="max-w-sm flex-1 pb-6">
             <Button
               disabled={!isLoaded || isLoading || !form.formState.isDirty}
               className="font-bold w-full"
@@ -237,7 +237,7 @@ export const AccountForm = () => {
             </Button>
           </div>
           <Button
-            className="max-w-xs mt-8"
+            className="max-w-sm mt-8"
             disabled={!isLoaded || isLoading}
             type="button"
             variant="destructive"

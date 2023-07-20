@@ -11,7 +11,7 @@ export const AccountFormSkeleton = () => {
             <Skeleton className="h-36 w-36 rounded-full" />
             <Skeleton className="w-36 h-10" />
           </div>
-          <div className="flex flex-col gap-4 max-w-xs flex-auto">
+          <div className="flex flex-col gap-4 max-w-sm flex-auto">
             <div className="space-y-2">
               <Skeleton className="h-5 w-24" />
               <Skeleton className="h-6 w-full" />
@@ -26,10 +26,10 @@ export const AccountFormSkeleton = () => {
             </div>
           </div>
         </div>
-        <div className="max-w-xs flex-1 pb-6">
+        <div className="max-w-sm flex-1 pb-6">
           <Skeleton className="h-10 w-full" />
         </div>
-        <Skeleton className="h-10 max-w-xs w-full" />
+        <Skeleton className="h-10 max-w-sm w-full" />
       </div>
     </>
   );

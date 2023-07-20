@@ -1,2 +1,2 @@
 export * from './account-form';
-// export * from './password-form';
+export * from './password-form';

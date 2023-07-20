@@ -9,6 +9,7 @@ export { Separator, TextSeparator } from "./separator";
 export { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 export { Switch } from "./switch";
 export { Skeleton } from "./skeleton";
+export { Container } from './container';
 
 export * from "./toast";
 export * from "./form";
