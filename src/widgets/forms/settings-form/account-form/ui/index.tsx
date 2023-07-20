@@ -2,11 +2,9 @@
 
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { HOME_ROUTE } from "@shared/consts";
 import { displayError, isDefaultAvatar } from "@shared/lib";
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
   Button,
   Form,
   FormControl,
@@ -14,7 +12,6 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Icon,
   Input,
   Label,
   Switch,
@@ -25,16 +22,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AccountSettingsFormSchema, accountSettingsFormSchema } from "../model";
-import { HOME_ROUTE } from "@shared/consts";
+import { AccountFormAvatar } from "./account-form-avatar";
+import { AlertModal } from "@shared/ui/modal";
 
-interface AccountFormProps {}
-
-export const AccountForm = ({}: AccountFormProps) => {
+export const AccountForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   const { user, isLoaded } = useUser();
   const [imagePreview, setImagePreview] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
   const imageRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<AccountSettingsFormSchema>({
@@ -85,7 +82,6 @@ export const AccountForm = ({}: AccountFormProps) => {
 
     try {
       await user.delete();
-      router.refresh();
       toast({
         title: "Account deleted successfully",
         variant: "success",
@@ -127,6 +123,12 @@ export const AccountForm = ({}: AccountFormProps) => {
 
   return (
     <>
+      <AlertModal
+        isLoading={isLoading}
+        isOpen={alertModalOpen}
+        onClose={() => setAlertModalOpen(false)}
+        onConfirm={onDeleteUser}
+      />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -134,27 +136,12 @@ export const AccountForm = ({}: AccountFormProps) => {
         >
           <div className="flex flex-col gap-4 md:flex-row md:gap-8 mb-4 md:mb-6">
             <div className="flex flex-col gap-2">
-              <div className="relative w-fit">
-                <Avatar
-                  onClick={() => {
-                    if (imageRef.current) imageRef.current.click();
-                  }}
-                  className="w-36 h-36"
-                >
-                  <AvatarImage src={imagePreview} />
-                  <AvatarFallback />
-                </Avatar>
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  type="button"
-                  className="absolute z-[2] right-0 top-0 "
-                  disabled={isDefaultAvatar(imagePreview) || !isLoaded}
-                  onClick={onDeleteImage}
-                >
-                  <Icon className="text-white font-bold" size={24} name="X" />
-                </Button>
-              </div>
+              <AccountFormAvatar
+                imagePreview={imagePreview}
+                imageRef={imageRef}
+                isLoaded={isLoaded}
+                onDeleteImage={onDeleteImage}
+              />
               <FormField
                 control={form.control}
                 name="image"
@@ -251,7 +238,7 @@ export const AccountForm = ({}: AccountFormProps) => {
             disabled={!isLoaded || isLoading}
             type="button"
             variant="destructive"
-            onClick={onDeleteUser}
+            onClick={() => setAlertModalOpen(true)}
           >
             Delete my Account
           </Button>

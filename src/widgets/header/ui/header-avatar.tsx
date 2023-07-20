@@ -22,24 +22,20 @@ import Link from "next/link";
 interface HeaderAvatarProps {}
 
 export const HeaderAvatar = ({}: HeaderAvatarProps) => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const { toast } = useToast();
 
-  if (!user) return <Skeleton className="w-10 h-10 shrink-0 rounded-full" />;
+  if (!isLoaded)
+    return <Skeleton className="w-10 h-10 shrink-0 rounded-full" />;
+
+  if (isLoaded && !user) return null;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
           <AvatarImage src={user.profileImageUrl} />
-          <AvatarFallback>
-            <Image
-              alt="Avatar"
-              src="/images/user1.png"
-              width={40}
-              height={40}
-            />
-          </AvatarFallback>
+          <AvatarFallback />
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="space-y-2 md:space-y-0">

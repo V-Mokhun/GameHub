@@ -1,9 +1,8 @@
-
-import { HTMLAttributes, forwardRef } from "react";
-import NextLink from "next/link";
 import { cn } from "@shared/lib";
+import NextLink from "next/link";
+import { forwardRef } from "react";
 
-interface LinkProps {
+interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   className?: string;
   children?: React.ReactNode;
   href: string;
@@ -12,14 +11,21 @@ interface LinkProps {
 }
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ className, href, prefetch = false, replace = false, children }, ref) => {
+  (
+    { className, href, prefetch = false, replace = false, children, ...props },
+    ref
+  ) => {
     return (
       <NextLink
-        className={cn("text-primary transition-colors hover:text-primary-hover", className)}
+        className={cn(
+          "text-primary transition-colors hover:text-primary-hover",
+          className
+        )}
         href={href}
         prefetch={prefetch}
         replace={replace}
         ref={ref}
+        {...props}
       >
         {children}
       </NextLink>
