@@ -29,7 +29,7 @@ export const Title = ({
     content = (
       <h2
         className={cn(
-          "scroll-m-20 mb-3 text-3xl font-bold tracking-tight lg:text-4xl",
+          "scroll-m-20 mb-2 text-3xl font-bold tracking-tight lg:mb-3 lg:text-4xl",
           className
         )}
         {...props}
@@ -41,7 +41,7 @@ export const Title = ({
     content = (
       <h3
         className={cn(
-          "scroll-m-20 mb-3 text-2xl font-bold tracking-tight lg:text-3xl",
+          "scroll-m-20 mb-2 text-2xl font-bold tracking-tight lg:mb-3 lg:text-3xl",
           className
         )}
         {...props}
@@ -53,7 +53,7 @@ export const Title = ({
     content = (
       <h4
         className={cn(
-          "scroll-m-20 mb-3 text-xl font-bold tracking-tight lg:text-2xl",
+          "scroll-m-20 mb-2 text-xl font-bold tracking-tight lg:mb-3 lg:text-2xl",
           className
         )}
         {...props}
@@ -64,7 +64,7 @@ export const Title = ({
   else {
     <h5
       className={cn(
-        "scroll-m-20 mb-3 text-lg font-bold tracking-tight lg:text-xl",
+        "scroll-m-20 mb-2 text-lg font-bold tracking-tight lg:mb-3 lg:text-xl",
         className
       )}
       {...props}

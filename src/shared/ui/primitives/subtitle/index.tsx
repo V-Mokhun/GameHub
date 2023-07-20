@@ -13,7 +13,7 @@ export const Subtitle = ({
   return (
     <p
       className={cn(
-        "mb-4 text-muted-foreground",
+        "mb-3 text-muted-foreground md:mb-4",
         size === "medium" && "text-sm lg:text-base",
         size === "large" && "text-base lg:text-lg",
         className

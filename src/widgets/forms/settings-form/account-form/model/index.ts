@@ -1,7 +1,25 @@
 import { z } from "zod";
 
+const MAX_FILE_SIZE = 500000;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
 export const accountSettingsFormSchema = z.object({
-  imageUrl: z.string(),
+  image: z
+    .any()
+    .refine(
+      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`
+    )
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      ".jpg, .jpeg, .png and .webp files are accepted."
+    )
+    .nullable(),
   username: z
     .string()
     .min(3, "Username must be at least 3 characters long")
@@ -9,4 +27,6 @@ export const accountSettingsFormSchema = z.object({
   isPrivateLibrary: z.boolean(),
 });
 
-export type AccountSettingsFormSchema = z.infer<typeof accountSettingsFormSchema>;
+export type AccountSettingsFormSchema = z.infer<
+  typeof accountSettingsFormSchema
+>;

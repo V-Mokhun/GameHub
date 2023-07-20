@@ -1,7 +1,6 @@
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { IncomingHttpHeaders } from "http";
-import { nanoid } from "nanoid";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Webhook, WebhookRequiredHeaders } from "svix";
@@ -11,7 +10,7 @@ type AuthUser = {
   username: string | null;
   email_addresses: { id: string; email_address: string }[];
   profile_image_url: string;
-  public_metadata: { isPrivateLibrary: boolean };
+  unsafe_metadata: { isPrivateLibrary: boolean };
 };
 
 type EventType = "user.created" | "user.updated" | "user.deleted" | "*";
@@ -69,7 +68,7 @@ async function handler(req: Request) {
         email_addresses,
         username,
         profile_image_url,
-        public_metadata: { isPrivateLibrary },
+        unsafe_metadata: { isPrivateLibrary },
       } = evt.data;
 
       await db.user.update({
