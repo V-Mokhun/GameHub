@@ -1,7 +1,7 @@
 import { cn } from "@shared/lib";
 import { Button, Icon } from "@shared/ui";
 
-interface ChangeGamesViewProps {
+interface ChangeGamesViewProps extends React.HTMLAttributes<HTMLDivElement> {
   onGridClick: () => void;
   onListClick: () => void;
   activeView: "grid" | "list";
@@ -11,9 +11,11 @@ export const ChangeGamesView = ({
   onGridClick,
   onListClick,
   activeView,
+  className,
+  ...props
 }: ChangeGamesViewProps) => {
   return (
-    <div className="flex items-center gap-2">
+    <div {...props} className={cn("flex items-center gap-2", className)}>
       <Button
         onClick={onGridClick}
         size="icon"

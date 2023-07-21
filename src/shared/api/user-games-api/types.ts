@@ -1,8 +1,4 @@
-export interface Token {
-  access_token: string,
-  expires_in: number,
-  token_type: string
-}
+import { SortFields } from "../games-api";
 
 export enum GameStatus {
   "NONE" = "None",
@@ -12,3 +8,9 @@ export enum GameStatus {
   "WANT_TO_REPLAY" = "Want to Replay",
   "ABANDONED" = "Abandoned",
 }
+
+export type UserSortFields = SortFields & {
+  USER_RATING: "userRating";
+  PLAY_TIME: "playTime";
+  FINISHED_DATE: "finishedAt";
+};
