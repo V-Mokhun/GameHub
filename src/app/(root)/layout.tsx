@@ -49,7 +49,7 @@ export default function SiteLayout({
     <>
       <Header />
       <Sidebar />
-      <main className="h-full px-2 pt-16 sm:px-4 sm:pb-4 md:px-5 md:pb-5 md:pt-20 md:pl-[240px]">
+      <main className="h-full px-2 sm:px-4 sm:pb-4 md:px-5 md:pb-5 pt-20 md:pl-[240px]">
         {children}
       </main>
     </>

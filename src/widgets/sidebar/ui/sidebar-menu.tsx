@@ -82,9 +82,10 @@ const GENERAL_PRIVATE_ITEMS = (pathname: string): SidebarItemT[] => [
 
 interface SidebarMenuProps {
   userId?: string | null;
+  onClose: () => void;
 }
 
-export const SidebarMenu = ({ userId }: SidebarMenuProps) => {
+export const SidebarMenu = ({ onClose, userId }: SidebarMenuProps) => {
   const pathname = usePathname();
 
   return (
@@ -95,11 +96,11 @@ export const SidebarMenu = ({ userId }: SidebarMenuProps) => {
         </Subtitle>
         <ul className="space-y-6 md:space-y-4">
           {MENU_ITEMS(pathname).map((item) => (
-            <SidebarItem key={item.href} {...item} />
+            <SidebarItem onClick={onClose} key={item.href} {...item} />
           ))}
           {userId &&
             MENU_PRIVATE_ITEMS(pathname, userId).map((item) => (
-              <SidebarItem key={item.href} {...item} />
+              <SidebarItem onClick={onClose} key={item.href} {...item} />
             ))}
         </ul>
       </div>
@@ -110,11 +111,11 @@ export const SidebarMenu = ({ userId }: SidebarMenuProps) => {
         </Subtitle>
         <ul className="space-y-6 md:space-y-4">
           {SOCIAL_ITEMS(pathname).map((item) => (
-            <SidebarItem key={item.href} {...item} />
+            <SidebarItem onClick={onClose} key={item.href} {...item} />
           ))}
           {userId &&
             SOCIAL_PRIVATE_ITEMS(pathname, userId).map((item) => (
-              <SidebarItem key={item.href} {...item} />
+              <SidebarItem onClick={onClose} key={item.href} {...item} />
             ))}
         </ul>
       </div>
@@ -129,13 +130,14 @@ export const SidebarMenu = ({ userId }: SidebarMenuProps) => {
           </li>
           {userId &&
             GENERAL_PRIVATE_ITEMS(pathname).map((item) => (
-              <SidebarItem key={item.href} {...item} />
+              <SidebarItem onClick={onClose} key={item.href} {...item} />
             ))}
           {userId && (
             <li>
               <SignOutButton>
                 <button
                   type="button"
+                  onClick={() => onClose()}
                   className={cn(
                     "flex items-center gap-2 font-medium transition-colors hover:text-primary"
                   )}

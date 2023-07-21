@@ -37,6 +37,7 @@ body {
     --accent-foreground: 240 5.9% 10%;
 
     --destructive: 0 84.2% 60.2%;
+    --destructive-hover: 0, 84%, 55%;
     --destructive-foreground: 0 0% 98%;
 
     --success: 145, 100%, 39%;
@@ -75,6 +76,7 @@ body {
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0, 65%, 39%;
+    --destructive-hover: 0, 60%, 49%;
     --destructive-foreground: 0 85.7% 97.3%;
 
     --success: 123, 43%, 39%;

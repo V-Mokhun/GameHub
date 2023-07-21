@@ -7,9 +7,10 @@ export const SidebarItem = ({
   iconName,
   isActive,
   text,
-}: SidebarItemT) => {
+  onClick,
+}: SidebarItemT & { onClick: () => void }) => {
   return (
-    <li>
+    <li onClick={onClick}>
       <Link
         className={cn(
           "flex items-center text-foreground gap-2 text-base font-medium",

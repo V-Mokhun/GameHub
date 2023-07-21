@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { displayError } from "@shared/lib";
 import { useRouter } from "next/navigation";
 import { SETTINGS_ROUTE } from "@shared/consts";
+import { PasswordFormSkeleton } from "./skeleton";
 
 export const PasswordForm = ({}) => {
   const { isLoaded, user } = useUser();
@@ -45,6 +46,7 @@ export const PasswordForm = ({}) => {
     }
   }, [user, router, toast]);
 
+  if (!isLoaded) return <PasswordFormSkeleton />;
   if (!user?.passwordEnabled) return null;
 
   const onSubmit: SubmitHandler<PasswordSettingsFormSchema> = async (data) => {

@@ -44,7 +44,7 @@ export const Sidebar = () => {
     setMounted(true);
   }, []);
 
-  if (mounted) content = <SidebarMenu userId={userId} />;
+  if (mounted) content = <SidebarMenu onClose={onClose} userId={userId} />;
 
   return (
     <nav
