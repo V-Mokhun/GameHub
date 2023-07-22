@@ -1,18 +1,48 @@
-import { GameCategories } from "./types";
+import { GAMES_LIMIT, MAX_RATING, MIN_RATING } from ".";
+import {
+  GameFilters,
+  GamePaginate,
+  GameSorts,
+  ImageTypes,
+  SortFields,
+  SortFieldsOrder,
+} from "./types";
 
-export const MIN_RATING = 0;
-export const MAX_RATING = 100;
+export const getGameImageUrl = (
+  imageId: string,
+  imageType: ImageTypes = ImageTypes.BIG_COVER
+) => {
+  return `${process.env.NEXT_PUBLIC_GAMES_IMAGES_URL}/t_${imageType}/${imageId}.jpg`;
+};
 
-export const GAME_CATEGORIES: { name: string; id: GameCategories }[] = [
-  { name: "Main Game", id: GameCategories.MAIN_GAME },
-  { name: "DLC / Addon", id: GameCategories.DLC_ADDON },
-  { name: "Remake", id: GameCategories.REMAKE },
-  { name: "Remaster", id: GameCategories.REMASTER },
-  { name: "Expansion", id: GameCategories.EXPANSION },
-  { name: "Mod", id: GameCategories.MOD },
-  { name: "Bundle", id: GameCategories.BUNDLE },
-  { name: "Standalone Expansion", id: GameCategories.STANDALONE_EXPANSION },
-  { name: "Episode", id: GameCategories.EPISODE },
-  { name: "Season", id: GameCategories.SEASON },
-  { name: "Expanded Game", id: GameCategories.EXPANDED_GAME },
-];
+export const stringifyParams = (
+  filters: GameFilters = {
+    name: "",
+    categories: [],
+    genres: [],
+    themes: [],
+    ratingMin: MIN_RATING,
+    ratingMax: MAX_RATING,
+  },
+  sort: GameSorts = {
+    field: SortFields.RATING,
+    order: SortFieldsOrder.DESC,
+  },
+  paginate: GamePaginate = {
+    limit: GAMES_LIMIT,
+    offset: 0,
+  }
+) => {
+  const fields = `fields *;`;
+  const filterQuery = `where (name ~ *"${
+    filters.name
+  }"* & category = (${filters.categories?.join(", ")}) 
+  & genre = (${filters.genres?.join(",")}) 
+  & theme = (${filters.themes?.join(",")}) 
+  & rating >= ${filters.ratingMin} & rating <= ${filters.ratingMax})
+  );`;
+  const sortQuery = `sort ${sort.field} ${sort.order};`;
+  const paginateQuery = `limit ${paginate.limit}; offset ${paginate.offset};`;
+
+  const body = `${fields} ${filterQuery} ${sortQuery} ${paginateQuery}`;
+};

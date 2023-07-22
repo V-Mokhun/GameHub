@@ -15,6 +15,7 @@ interface BrowseFiltersProps {}
 
 export const BrowseFilters = ({}: BrowseFiltersProps) => {
   const onOpenFilter = useBrowseFilterStore((state) => state.onOpen);
+
   const onSortFieldChange = () => {};
 
   return (

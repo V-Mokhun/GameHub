@@ -1,10 +1,12 @@
 import { axiosInstance } from "@shared/config";
 import { useQuery } from "@tanstack/react-query";
-import { MAX_RATING, MIN_RATING } from "./lib";
+import { GAMES_LIMIT, MAX_RATING, MIN_RATING } from "./consts";
 import {
   GameFilters,
   GameGenre,
   GameMode,
+  GamePaginate,
+  GameSorts,
   GameTheme,
   SortFields,
   SortFieldsOrder,
@@ -14,27 +16,40 @@ import { useToast } from "@shared/ui";
 
 export const useGames = (
   filters: GameFilters = {
-    category: [],
-    genre: [],
-    theme: [],
     name: "",
+    categories: [],
+    genres: [],
+    themes: [],
     ratingMin: MIN_RATING,
     ratingMax: MAX_RATING,
   },
-  sort: { field: SortFields; order: SortFieldsOrder } = {
+  sort: GameSorts = {
     field: SortFields.RATING,
     order: SortFieldsOrder.DESC,
+  },
+  paginate: GamePaginate = {
+    limit: GAMES_LIMIT,
+    offset: 0,
   }
-) =>
-  useQuery(["browse_games", { filters, sort }], {
-    queryFn: async () => {
+) => {
+  const { toast } = useToast();
+
+  useQuery(
+    ["browse_games", { filters, sort, paginate }],
+    async () => {
       // const { data } = await axiosInstance.post("/games", ``, {
       //   headers: {
       //     Authorization: `Bearer ${token}`,
       //   },
       // });
     },
-  });
+    {
+      onError: (error) => {
+        return displayError(toast, error);
+      },
+    }
+  );
+};
 
 export const useGenres = () => {
   const { toast } = useToast();
