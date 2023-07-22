@@ -5,6 +5,7 @@ export interface Token {
 }
 
 export type GameTheme = {
+  id: number;
   name: string;
   slug: string;
 };

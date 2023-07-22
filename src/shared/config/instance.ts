@@ -1,12 +1,21 @@
+import { COOKIE_TOKEN_NAME } from "@shared/consts";
+import { getCookie } from "@shared/lib";
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_GAMES_API_URL!,
+  baseURL: "/api/games",
   headers: {
     "Client-ID": process.env.NEXT_PUBLIC_API_CLIENT_ID!,
+    Authorization: `Bearer ${getCookie(COOKIE_TOKEN_NAME)}`,
     Accept: "application/json",
   },
   withCredentials: true,
+});
+
+axiosInstance.interceptors.request.use(async (config) => {
+  const token = getCookie(COOKIE_TOKEN_NAME);
+  config.headers["Authorization"] = `Bearer ${token}`;
+  return config;
 });
 
 axiosInstance.interceptors.response.use(
@@ -18,12 +27,8 @@ axiosInstance.interceptors.response.use(
       const { data: token } = await axios.post(`/api/token`).catch((err) => {
         return Promise.reject(err);
       });
-      axiosInstance.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${token}`;
-
-      console.log(error.config);
-      return axios(error.config);
+      error.config.headers["Authorization"] = `Bearer ${token}`;
+      return axiosInstance(error.config);
     } else {
       return Promise.reject(error);
     }

@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     response.cookies.set({
       name: COOKIE_TOKEN_NAME,
       value: token.access_token,
-      httpOnly: true,
+      httpOnly: false,
       maxAge: token.expires_in,
     });
 

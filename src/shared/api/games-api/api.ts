@@ -35,13 +35,11 @@ export const useGenres = () =>
       try {
         const { data } = await axiosInstance.post<GameGenre[]>(
           "/genres",
-          `fields *`,
+          `fields *;`,
         );
 				console.log("DATA: ", data);
-				
 
-        // return data;
-        return {};
+        return data;
       } catch (error) {
         return throwError(error);
       }

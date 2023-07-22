@@ -3,7 +3,7 @@ import { PUBLIC_ROUTES } from "@shared/consts";
 
 export default authMiddleware({
   publicRoutes: PUBLIC_ROUTES,
-  ignoredRoutes: ["/api/webhooks/:path*", "/api/token"],
+  ignoredRoutes: ["/api/webhooks/:path*", "/api/token", "/api/games/:path*"],
 });
 
 export const config = {
