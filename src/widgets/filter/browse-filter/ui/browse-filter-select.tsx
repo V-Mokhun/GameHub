@@ -81,9 +81,15 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>(
                   key={item.id}
                   value={item.name}
                   onSelect={(currentValue) => {
-                    if (selectedData.find((itm) => itm.name === currentValue)) {
+                    if (
+                      selectedData.find(
+                        (itm) => itm.name.toLowerCase() === currentValue
+                      )
+                    ) {
                       setSelectedData((curr) =>
-                        curr.filter((itm) => itm.name !== currentValue)
+                        curr.filter(
+                          (itm) => itm.name.toLowerCase() !== currentValue
+                        )
                       );
                     } else {
                       setSelectedData((curr) => [...curr, item]);

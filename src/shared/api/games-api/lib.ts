@@ -34,15 +34,22 @@ export const stringifyParams = (
   }
 ) => {
   const fields = `fields *;`;
-  const filterQuery = `where (name ~ *"${
-    filters.name
-  }"* & category = (${filters.categories?.join(", ")}) 
-  & genre = (${filters.genres?.join(",")}) 
-  & theme = (${filters.themes?.join(",")}) 
-  & rating >= ${filters.ratingMin} & rating <= ${filters.ratingMax})
-  );`;
+  const filterQuery = `where name ~ *"${filters.name}"* 
+  ${
+    filters.categories.length > 0
+      ? `& category = (${filters.categories?.join(", ")}`
+      : ""
+  } 
+  ${
+    filters.genres.length > 0 ? `& genre = (${filters.genres?.join(", ")}` : ""
+  }
+  ${
+    filters.themes.length > 0 ? `& theme = (${filters.themes?.join(", ")}` : ""
+  } 
+  & rating >= ${filters.ratingMin} & rating <= ${filters.ratingMax};`;
   const sortQuery = `sort ${sort.field} ${sort.order};`;
   const paginateQuery = `limit ${paginate.limit}; offset ${paginate.offset};`;
 
   const body = `${fields} ${filterQuery} ${sortQuery} ${paginateQuery}`;
+  return body;
 };

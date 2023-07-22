@@ -62,9 +62,14 @@ export type GamePaginate = {
 
 export interface GameFilters {
   name?: string;
-  ratingMin?: number;
-  ratingMax?: number;
-  categories?: GameCategories[];
-  themes?: GameTheme[];
-  genres?: GameGenre[];
+  ratingMin: number;
+  ratingMax: number;
+  categories: GameCategories[];
+  themes: GameTheme[];
+  genres: GameGenre[];
+}
+
+export interface Game {
+  aggregated_rating: number;
+  artworks: number[];
 }

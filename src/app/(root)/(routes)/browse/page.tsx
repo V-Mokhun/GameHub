@@ -1,6 +1,7 @@
 import { Container, Separator, Title } from "@shared/ui";
 import { BrowseFilter } from "@widgets/filter";
 import { BrowseChangeView, BrowseFilters } from "./ui";
+import { BrowseGames } from "./ui/browse-games";
 
 export default async function BrowsePage() {
   return (
@@ -16,6 +17,7 @@ export default async function BrowsePage() {
           </div>
           <BrowseFilters />
           <Separator />
+          <BrowseGames />
         </Container>
       </section>
     </>

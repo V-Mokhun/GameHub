@@ -2,6 +2,7 @@ import { axiosInstance } from "@shared/config";
 import { useQuery } from "@tanstack/react-query";
 import { GAMES_LIMIT, MAX_RATING, MIN_RATING } from "./consts";
 import {
+  Game,
   GameFilters,
   GameGenre,
   GameMode,
@@ -13,6 +14,7 @@ import {
 } from "./types";
 import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
+import { stringifyParams } from "./lib";
 
 export const useGames = (
   filters: GameFilters = {
@@ -34,14 +36,12 @@ export const useGames = (
 ) => {
   const { toast } = useToast();
 
-  useQuery(
+  return useQuery(
     ["browse_games", { filters, sort, paginate }],
     async () => {
-      // const { data } = await axiosInstance.post("/games", ``, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
+      const body = stringifyParams(filters, sort, paginate);
+      const { data } = await axiosInstance.post<Game[]>("/games", body);
+      return data;
     },
     {
       onError: (error) => {
