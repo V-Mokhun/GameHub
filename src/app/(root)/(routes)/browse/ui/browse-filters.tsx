@@ -1,3 +1,5 @@
+"use client";
+
 import { FiltersButton } from "@features/filters-button";
 import { SortFields, SortFieldsOrder } from "@shared/api";
 import {
@@ -7,10 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@shared/ui";
+import { useBrowseFilterStore } from "@widgets/filter";
 
 interface BrowseFiltersProps {}
 
 export const BrowseFilters = ({}: BrowseFiltersProps) => {
+  const onOpenFilter = useBrowseFilterStore((state) => state.onOpen);
+  const onSortFieldChange = () => {};
+
   return (
     <div className="flex items-center justify-between gap-4 mb-2">
       <div className="flex items-center gap-2 flex-auto">
@@ -36,7 +42,7 @@ export const BrowseFilters = ({}: BrowseFiltersProps) => {
           </SelectContent>
         </Select>
       </div>
-      <FiltersButton onClick={() => {}} />
+      <FiltersButton onClick={onOpenFilter} />
     </div>
   );
 };

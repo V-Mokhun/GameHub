@@ -1,5 +1,8 @@
 import { GameCategories } from "./types";
 
+export const MIN_RATING = 0;
+export const MAX_RATING = 100;
+
 export const GAME_CATEGORIES: { name: string; value: GameCategories }[] = [
   { name: "Main Game", value: GameCategories.MAIN_GAME },
   { name: "DLC / Addon", value: GameCategories.DLC_ADDON },

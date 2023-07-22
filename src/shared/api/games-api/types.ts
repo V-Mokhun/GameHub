@@ -4,12 +4,12 @@ export interface Token {
   token_type: string;
 }
 
-type GameTheme = {
+export type GameTheme = {
   name: string;
   slug: string;
 };
 
-type GameGenre = GameTheme;
+export type GameGenre = GameTheme;
 
 export enum SortFields {
   RATING = "total_rating",

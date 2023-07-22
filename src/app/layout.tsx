@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ThemeProvider } from "./providers";
+import { QueryProvider, ThemeProvider } from "./providers";
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -24,8 +24,10 @@ export default function RootLayout({
           className={`${font.className} selection:text-primary-foreground selection:bg-primary`}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
-            <Toaster />
+            <QueryProvider>
+              {children}
+              <Toaster />
+            </QueryProvider>
           </ThemeProvider>
         </body>
       </html>
