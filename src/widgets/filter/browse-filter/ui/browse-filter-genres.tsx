@@ -3,28 +3,28 @@
 import { gamesApi } from "@shared/api";
 import { displayError } from "@shared/lib";
 import {
-	Label,
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-	useToast,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Skeleton,
+  useToast,
 } from "@shared/ui";
 
 interface BrowseFilterGenresProps {}
 
 export const BrowseFilterGenres = ({}: BrowseFilterGenresProps) => {
-  const { toast } = useToast();
-  const { data, isError, error, isLoading } = gamesApi.getGenres();
+  const { data, isLoading } = gamesApi.getGenres();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) {
-    displayError(toast, error);
-    return null;
-  }
-
-  console.log(data);
+  if (isLoading)
+    return (
+      <>
+        <Skeleton className="w-36 h-5" />
+        <Skeleton className="w-full h-10" />
+      </>
+    );
 
   return (
     <div className="flex flex-col gap-2">

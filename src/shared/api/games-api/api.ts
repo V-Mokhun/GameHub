@@ -1,8 +1,9 @@
 import { axiosInstance } from "@shared/config";
-import { throwError } from "@shared/lib";
 import { useQuery } from "@tanstack/react-query";
 import { MAX_RATING, MIN_RATING } from "./lib";
 import { GameFilters, GameGenre, SortFields, SortFieldsOrder } from "./types";
+import { displayError } from "@shared/lib";
+import { useToast } from "@shared/ui";
 
 export const useGames = (
   filters: GameFilters = {
@@ -28,23 +29,19 @@ export const useGames = (
     },
   });
 
-export const useGenres = () =>
-  useQuery({
-    queryKey: ["genres"],
-    queryFn: async () => {
-      try {
-        const { data } = await axiosInstance.post<GameGenre[]>(
-          "/genres",
-          `fields *;`,
-        );
-				console.log("DATA: ", data);
+export const useGenres = () => {
+  const { toast } = useToast();
 
-        return data;
-      } catch (error) {
-        return throwError(error);
-      }
-    },
-  });
+  return useQuery(
+    ["genres"],
+    () => axiosInstance.post<GameGenre[]>("/genres", `fields id, name, slug;`),
+    {
+      onError: (error) => {
+        return displayError(toast, error);
+      },
+    }
+  );
+};
 
 export const gamesApi = {
   getGames: useGames,
