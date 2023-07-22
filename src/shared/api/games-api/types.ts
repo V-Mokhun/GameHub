@@ -7,10 +7,11 @@ export interface Token {
 export type GameTheme = {
   id: number;
   name: string;
-  slug: string;
+  slug?: string;
 };
 
 export type GameGenre = GameTheme;
+export type GameMode = GameTheme;
 
 export enum SortFields {
   RATING = "total_rating",

@@ -1,7 +1,14 @@
 import { axiosInstance } from "@shared/config";
 import { useQuery } from "@tanstack/react-query";
 import { MAX_RATING, MIN_RATING } from "./lib";
-import { GameFilters, GameGenre, SortFields, SortFieldsOrder } from "./types";
+import {
+  GameFilters,
+  GameGenre,
+  GameMode,
+  GameTheme,
+  SortFields,
+  SortFieldsOrder,
+} from "./types";
 import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 
@@ -37,7 +44,47 @@ export const useGenres = () => {
     async () => {
       const { data } = await axiosInstance.post<GameGenre[]>(
         "/genres",
-        `fields id, name, slug;`
+        `fields id, name, slug; limit 50;`
+      );
+      return data;
+    },
+    {
+      onError: (error) => {
+        return displayError(toast, error);
+      },
+    }
+  );
+};
+
+export const useThemes = () => {
+  const { toast } = useToast();
+
+  return useQuery(
+    ["themes"],
+    async () => {
+      const { data } = await axiosInstance.post<GameTheme[]>(
+        "/themes",
+        `fields id, name, slug; limit 50;`
+      );
+      return data;
+    },
+    {
+      onError: (error) => {
+        return displayError(toast, error);
+      },
+    }
+  );
+};
+
+export const useModes = () => {
+  const { toast } = useToast();
+
+  return useQuery(
+    ["modes"],
+    async () => {
+      const { data } = await axiosInstance.post<GameMode[]>(
+        "/game_modes",
+        `fields id, name, slug; limit 50;`
       );
       return data;
     },
@@ -52,4 +99,6 @@ export const useGenres = () => {
 export const gamesApi = {
   getGames: useGames,
   getGenres: useGenres,
+  getThemes: useThemes,
+  getModes: useModes,
 };

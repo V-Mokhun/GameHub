@@ -5,7 +5,8 @@ import { Title } from "@shared/ui";
 import { useBrowseFilterStore } from "../model";
 import { BrowseFilterName } from "./browse-filter-name";
 import { BrowseFilterRating } from "./browse-filter-rating";
-import { BrowseFilterGenres } from "./browse-filter-genres";
+import { BrowseFilterSelect } from "./browse-filter-select";
+import { GAME_CATEGORIES, gamesApi } from "@shared/api";
 
 interface BrowseFilterProps {}
 
@@ -27,7 +28,10 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
         <div className="flex flex-col gap-4">
           <BrowseFilterName />
           <BrowseFilterRating />
-          <BrowseFilterGenres />
+          <BrowseFilterSelect title="Genre" fetchData={gamesApi.getGenres} />
+          <BrowseFilterSelect title="Themes" fetchData={gamesApi.getThemes} />
+          <BrowseFilterSelect title="Categories" data={GAME_CATEGORIES} />
+          <BrowseFilterSelect title="Modes" fetchData={gamesApi.getModes} />
         </div>
       </div>
     </aside>

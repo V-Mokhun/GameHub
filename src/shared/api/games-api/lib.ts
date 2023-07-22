@@ -3,16 +3,16 @@ import { GameCategories } from "./types";
 export const MIN_RATING = 0;
 export const MAX_RATING = 100;
 
-export const GAME_CATEGORIES: { name: string; value: GameCategories }[] = [
-  { name: "Main Game", value: GameCategories.MAIN_GAME },
-  { name: "DLC / Addon", value: GameCategories.DLC_ADDON },
-  { name: "Remake", value: GameCategories.REMAKE },
-  { name: "Remaster", value: GameCategories.REMASTER },
-  { name: "Expansion", value: GameCategories.EXPANSION },
-  { name: "Mod", value: GameCategories.MOD },
-  { name: "Bundle", value: GameCategories.BUNDLE },
-  { name: "Standalone Expansion", value: GameCategories.STANDALONE_EXPANSION },
-  { name: "Episode", value: GameCategories.EPISODE },
-  { name: "Season", value: GameCategories.SEASON },
-  { name: "Expanded Game", value: GameCategories.EXPANDED_GAME },
+export const GAME_CATEGORIES: { name: string; id: GameCategories }[] = [
+  { name: "Main Game", id: GameCategories.MAIN_GAME },
+  { name: "DLC / Addon", id: GameCategories.DLC_ADDON },
+  { name: "Remake", id: GameCategories.REMAKE },
+  { name: "Remaster", id: GameCategories.REMASTER },
+  { name: "Expansion", id: GameCategories.EXPANSION },
+  { name: "Mod", id: GameCategories.MOD },
+  { name: "Bundle", id: GameCategories.BUNDLE },
+  { name: "Standalone Expansion", id: GameCategories.STANDALONE_EXPANSION },
+  { name: "Episode", id: GameCategories.EPISODE },
+  { name: "Season", id: GameCategories.SEASON },
+  { name: "Expanded Game", id: GameCategories.EXPANDED_GAME },
 ];
