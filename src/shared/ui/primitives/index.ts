@@ -17,3 +17,4 @@ export * from "./dropdown";
 export * from "./command";
 export * from "./dialog";
 export * from './select';
+export * from './popover';

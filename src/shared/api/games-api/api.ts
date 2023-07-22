@@ -34,7 +34,13 @@ export const useGenres = () => {
 
   return useQuery(
     ["genres"],
-    () => axiosInstance.post<GameGenre[]>("/genres", `fields id, name, slug;`),
+    async () => {
+      const { data } = await axiosInstance.post<GameGenre[]>(
+        "/genres",
+        `fields id, name, slug;`
+      );
+      return data;
+    },
     {
       onError: (error) => {
         return displayError(toast, error);
