@@ -1,18 +1,16 @@
 "use client";
 
-import { GameGenre, gamesApi } from "@shared/api";
-import { axiosInstance } from "@shared/config";
-import { displayError, getToken, throwError } from "@shared/lib";
+import { gamesApi } from "@shared/api";
+import { displayError } from "@shared/lib";
 import {
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  useToast,
+	Label,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+	useToast,
 } from "@shared/ui";
-import { useQuery } from "@tanstack/react-query";
 
 interface BrowseFilterGenresProps {}
 
