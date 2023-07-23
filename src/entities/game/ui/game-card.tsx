@@ -1,28 +1,32 @@
 "use client";
 
 import { GameStatus, Game as LibraryGame } from "@prisma/client";
-import { Game } from "@shared/api";
+import { Game, NormalizedLibraryGame } from "@shared/api";
 import { GAMES_ROUTE, SIGN_IN_ROUTE } from "@shared/consts";
 import { Badge, Button, Icon, buttonVariants, useToast } from "@shared/ui";
 import { AlertModal } from "@shared/ui/modal";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { AddGameModal } from "./add-game-modal";
+
+export type LibraryGameData = Pick<
+  NormalizedLibraryGame,
+  "finishedAt" | "notes" | "playTime" | "status" | "userRating"
+>;
 
 interface GameCardProps {
   game: Game;
-  gameStatus?: GameStatus;
-  userRating?: number;
+  libraryGameData?: LibraryGameData;
   isInLibrary?: boolean;
   userId: string | null;
 }
 
 export const GameCard = ({
   game,
-  gameStatus,
   isInLibrary,
   userId,
-  userRating,
+  libraryGameData,
 }: GameCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -53,7 +57,20 @@ export const GameCard = ({
 
   return (
     <>
-      <div className="group overflow-hidden text-white relative shadow-md rounded-md flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(25%-12px)]">
+      <AddGameModal
+        gameData={{
+          cover: game.cover,
+          id: game.id,
+          name: game.name,
+          rating: game.rating,
+          releaseDate: game.releaseDate,
+        }}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        libraryGameData={libraryGameData}
+        userId={userId!}
+      />
+      <div className="group overflow-hidden text-white relative shadow-md rounded-md flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(33.3%-12px)] lg:flex-[0_1_calc(25%-12px)]">
         {/* name + rating */}
         <div className="absolute z-[2] top-2 left-0 right-0 flex justify-between items-start gap-2 px-2">
           <p className="text-xs">
@@ -66,7 +83,7 @@ export const GameCard = ({
         </div>
         <Link
           href={`${GAMES_ROUTE}/${game.id}`}
-          className="block h-80 group-hover:blur-sm"
+          className="block h-72 sm:h-96 md:h-72 lg:h-80 group-hover:blur-sm"
         >
           <Image
             className="object-cover"
@@ -77,14 +94,16 @@ export const GameCard = ({
         </Link>
         {/* Add to library + user rating + status */}
         <div className="absolute z-[2] bottom-2 left-0 right-0 flex flex-col gap-2 px-2">
-          {userRating && (
+          {libraryGameData?.userRating && (
             <span className="flex self-end items-center justify-center w-6 h-6 bg-secondary rounded-sm">
-              {userRating}
+              {libraryGameData?.userRating}
             </span>
           )}
           <div className="flex justify-end items-center gap-2">
             <div className="flex-1">
-              {gameStatus && <Badge>{gameStatus}</Badge>}
+              {libraryGameData?.status && (
+                <Badge>{libraryGameData?.status}</Badge>
+              )}
             </div>
             <Button onClick={onLibraryButtonClick} size="icon">
               <Icon

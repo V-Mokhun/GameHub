@@ -11,6 +11,7 @@ export { Switch } from "./switch";
 export { Skeleton } from "./skeleton";
 export { Container } from "./container";
 export { Badge, badgeVariants } from "./badge";
+export { Textarea } from './textarea';
 
 export * from "./toast";
 export * from "./form";

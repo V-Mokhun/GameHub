@@ -17,7 +17,7 @@ export const FiltersButton = ({
       onClick={onClick}
       size="icon"
       variant="secondary"
-      className={cn("w-10 h-10", className)}
+      className={cn("w-10 h-10 shrink-0", className)}
       {...props}
     >
       <Icon className="text-white" name="Filter" />

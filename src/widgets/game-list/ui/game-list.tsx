@@ -26,18 +26,21 @@ export const GameList = ({ games, userId }: GameListProps) => {
         {games.map((game) => {
           const libraryGame = libraryGames.find((g) => g.id === game.id);
           if (!libraryGame)
-            return (
-              <GameCard userId={userId || null} key={game.id} game={game} />
-            );
+            return <GameCard userId={userId} key={game.id} game={game} />;
 
           return (
             <GameCard
               key={game.id}
               game={game}
-              gameStatus={libraryGame.status}
               isInLibrary={true}
-              userRating={libraryGame.userRating ?? undefined}
-              userId={userId || null}
+              userId={userId}
+              libraryGameData={{
+                finishedAt: libraryGame.finishedAt,
+                notes: libraryGame.notes,
+                playTime: libraryGame.playTime,
+                status: libraryGame.status,
+                userRating: libraryGame.userRating,
+              }}
             />
           );
         })}

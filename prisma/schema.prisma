@@ -35,7 +35,7 @@ model Game {
 
   status     GameStatus @default(WANT_TO_PLAY)
   userRating Int?
-  playTime   Int?       @default(0)
+  playTime   Int?       
   finishedAt DateTime?
   notes      String?
 

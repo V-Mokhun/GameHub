@@ -22,7 +22,7 @@ export const BrowseFilters = ({}: BrowseFiltersProps) => {
     <div className="flex items-center justify-between gap-4 mb-2">
       <div className="flex items-center gap-2 flex-auto">
         <Select defaultValue={SortFields.RATING}>
-          <SelectTrigger className="max-w-xs">
+          <SelectTrigger className="md:max-w-xs">
             <SelectValue placeholder="Sort by..." />
           </SelectTrigger>
           <SelectContent>
