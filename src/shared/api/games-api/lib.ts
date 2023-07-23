@@ -1,4 +1,5 @@
-import { GAMES_LIMIT, MAX_RATING, MIN_RATING } from ".";
+import { MAX_RATING, MIN_RATING } from ".";
+import { GAMES_LIMIT } from "../consts";
 import { UseGamesApiResponse } from "./api";
 import {
   Game,

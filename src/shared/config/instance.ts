@@ -3,7 +3,7 @@ import { getCookie } from "@shared/lib";
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "/api/games",
+  baseURL: "/api/igdb",
   headers: {
     "Client-ID": process.env.NEXT_PUBLIC_API_CLIENT_ID!,
     Authorization: `Bearer ${getCookie(COOKIE_TOKEN_NAME)}`,

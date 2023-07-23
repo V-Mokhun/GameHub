@@ -6,7 +6,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/games/:path*",
+        source: "/api/igdb/:path*",
         destination: process.env.NEXT_PUBLIC_GAMES_API_URL + "/:path*",
       },
     ];

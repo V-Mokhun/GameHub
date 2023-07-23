@@ -20,26 +20,33 @@ model User {
 }
 
 model Game {
+  id          Int      @unique
   name        String
-  slug        String     @unique
-  totalRating Float
+  totalRating Int
   coverUrl    String
-  status      GameStatus @default(NONE)
-  userRating  Int?
-  playTime    Int?       @default(0)
-  finishedAt  DateTime?
-  notes       String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  userId      String
-  User        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  releaseDate DateTime
+  category    Int
+  themes      String //? [23, 64] => "23,64" Since MySql doesn't support arrays
+  genres      String
+  gameModes   String
 
-  @@id([userId, slug])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status     GameStatus @default(WANT_TO_PLAY)
+  userRating Int?
+  playTime   Int?       @default(0)
+  finishedAt DateTime?
+  notes      String?
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, id])
   @@index([userId])
 }
 
 enum GameStatus {
-  NONE
   WANT_TO_PLAY
   COMPLETED
   PLAYING

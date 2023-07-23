@@ -1,8 +1,11 @@
 import { axiosInstance } from "@shared/config";
+import { displayError } from "@shared/lib";
+import { useToast } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
-import { GAMES_LIMIT, MAX_RATING, MIN_RATING } from "./consts";
+import { GAMES_LIMIT } from "../consts";
+import { MAX_RATING, MIN_RATING } from "./consts";
+import { normalizeGameProperties, stringifyGetGamesParams } from "./lib";
 import {
-  Game,
   GameFilters,
   GameGenre,
   GameMode,
@@ -10,11 +13,8 @@ import {
   GameSorts,
   GameTheme,
   SortFields,
-  SortFieldsOrder,
+  SortFieldsOrder
 } from "./types";
-import { displayError } from "@shared/lib";
-import { useToast } from "@shared/ui";
-import { normalizeGameProperties, stringifyGetGamesParams } from "./lib";
 
 export type UseGamesApiResponse = {
   id: number;
@@ -22,7 +22,7 @@ export type UseGamesApiResponse = {
     id: number;
     image_id: string;
     width: number;
-    height: number
+    height: number;
   };
   first_release_date: number;
   name: string;

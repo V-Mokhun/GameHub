@@ -1,6 +1,7 @@
 "use client";
 
-import { Game } from "@shared/api";
+import { Game as LibraryGame } from "@prisma/client";
+import { Game, GameStatus } from "@shared/api";
 import { GAMES_ROUTE } from "@shared/consts";
 import { Icon } from "@shared/ui";
 import Image from "next/image";
@@ -8,6 +9,11 @@ import Link from "next/link";
 
 interface GameCardProps {
   game: Game;
+  gameStatus?: GameStatus;
+  userRating?: number;
+  isInLibrary?: boolean;
+  onAddToLibrary?: (game: LibraryGame) => void;
+  onRemoveFromLibrary?: (id: number) => void;
 }
 
 export const GameCard = ({ game }: GameCardProps) => {
