@@ -27,4 +27,5 @@ export const PUBLIC_ROUTES = [
   "/api/webhooks/:path*",
   "/api/token",
   "/api/igdb/:path*",
+  "/api/user/:path*",
 ];

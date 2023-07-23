@@ -40,7 +40,7 @@ export const displayError = (
   parseError = ""
 ) => {
   if (isAxiosError(error)) {
-    if (error.response?.data[0].title)
+    if (Array.isArray(error.response?.data) && error.response?.data[0]?.title)
       return toast({
         title: error.response?.data[0].title,
         variant: "destructive",

@@ -3,7 +3,7 @@
 import { GameStatus, Game as LibraryGame } from "@prisma/client";
 import { Game } from "@shared/api";
 import { GAMES_ROUTE, SIGN_IN_ROUTE } from "@shared/consts";
-import { Icon, buttonVariants, useToast } from "@shared/ui";
+import { Badge, Button, Icon, buttonVariants, useToast } from "@shared/ui";
 import { AlertModal } from "@shared/ui/modal";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,21 +46,13 @@ export const GameCard = ({
             Sign in
           </Link>
         ),
-        variant: "success",
+        variant: "destructive",
       });
     }
   };
 
   return (
     <>
-      {/* <AlertModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        isLoading={isLoading}
-        onConfirm={() =>
-          removeGame(game.id, { onSuccess: () => setIsOpen(false) })
-        }
-      /> */}
       <div className="group overflow-hidden text-white relative shadow-md rounded-md flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(25%-12px)]">
         {/* name + rating */}
         <div className="absolute z-[2] top-2 left-0 right-0 flex justify-between items-start gap-2 px-2">
@@ -84,8 +76,23 @@ export const GameCard = ({
           />
         </Link>
         {/* Add to library + user rating + status */}
-        <div className="absolute z-[2] bottom-2 left-0 right-0 flex justify-between items-start gap-2 px-2">
-          {/* {gameStatus && } */}
+        <div className="absolute z-[2] bottom-2 left-0 right-0 flex flex-col gap-2 px-2">
+          {userRating && (
+            <span className="flex self-end items-center justify-center w-6 h-6 bg-secondary rounded-sm">
+              {userRating}
+            </span>
+          )}
+          <div className="flex justify-end items-center gap-2">
+            <div className="flex-1">
+              {gameStatus && <Badge>{gameStatus}</Badge>}
+            </div>
+            <Button onClick={onLibraryButtonClick} size="icon">
+              <Icon
+                name={!isInLibrary ? "Plus" : "Edit"}
+                className="text-primary-foreground"
+              />
+            </Button>
+          </div>
         </div>
         <div className="pointer-events-none group-hover:opacity-70 transition-opacity">
           <div className="absolute bottom-0 z-[1] h-1/2 w-full overflow-hidden rounded-md bg-gradient-to-t from-black/70"></div>

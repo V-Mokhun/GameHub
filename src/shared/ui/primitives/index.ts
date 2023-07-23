@@ -9,12 +9,13 @@ export { Separator, TextSeparator } from "./separator";
 export { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 export { Switch } from "./switch";
 export { Skeleton } from "./skeleton";
-export { Container } from './container';
+export { Container } from "./container";
+export { Badge, badgeVariants } from "./badge";
 
 export * from "./toast";
 export * from "./form";
 export * from "./dropdown";
 export * from "./command";
 export * from "./dialog";
-export * from './select';
-export * from './popover';
+export * from "./select";
+export * from "./popover";
