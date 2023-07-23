@@ -71,11 +71,7 @@ export interface GameFilters {
 
 export interface Game {
   id: number;
-  cover: {
-    url: string;
-    width: number;
-    height: number;
-  };
+  cover: string;
   releaseDate: Date;
   name: string;
   rating: number;

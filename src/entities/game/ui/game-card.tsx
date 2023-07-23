@@ -12,29 +12,28 @@ interface GameCardProps {
 
 export const GameCard = ({ game }: GameCardProps) => {
   return (
-    <div className="text-card-foreground rounded-md flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(25%-12px)]">
-      <Link href={`${GAMES_ROUTE}/${game.id}`} className="relative">
-        <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-md">
-          <Icon name="Star" />
-          <span className="text-sm">{game.rating}</span>
+    <div className="group overflow-hidden text-white relative shadow-md rounded-md flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(25%-12px)]">
+      {/* name + rating */}
+      <div className="absolute z-[2] top-2 left-0 right-0 flex justify-between items-start gap-2 px-2">
+        <p className="text-xs">
+          {game.name} ({game.releaseDate.getFullYear()})
+        </p>
+        <div className="flex items-center gap-1">
+          <Icon size={12} name="Star" />
+          <span className="text-sm">{Math.ceil(game.rating)}</span>
         </div>
-        <Image
-          className="max-w-full h-full object-cover"
-          src={game.cover.url}
-          width={game.cover.width}
-          height={game.cover.height}
-          alt={game.name}
-        />
+      </div>
+      <Link
+        href={`${GAMES_ROUTE}/${game.id}`}
+        className="block h-80 group-hover:blur-sm"
+      >
+        <Image className="object-cover" fill src={game.cover} alt={game.name} />
       </Link>
-      <div className="p-2 bg-card">
-        <div className="flex gap-2">
-          <p>
-            {game.name}{" "}
-            <span className="text-muted-foreground">
-              ({game.releaseDate.getFullYear()})
-            </span>
-          </p>
-        </div>
+      {/* Add to library + user rating + status */}
+      <div className="absolute z-[2] p-2 bg-card"></div>
+      <div className="pointer-events-none group-hover:opacity-70 transition-opacity">
+        <div className="absolute bottom-0 z-[1] h-1/2 w-full overflow-hidden rounded-md bg-gradient-to-t from-black/70"></div>
+        <div className="absolute top-0 z-[1] h-1/2 w-full overflow-hidden rounded-md bg-gradient-to-b from-black/70"></div>
       </div>
     </div>
   );

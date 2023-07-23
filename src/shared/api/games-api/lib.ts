@@ -26,11 +26,7 @@ export const normalizeGameProperties = (game: UseGamesApiResponse): Game => {
     themes: game.themes,
     gameModes: game.game_modes,
     genres: game.genres,
-    cover: {
-      url: getGameImageUrl(game.cover.image_id),
-      width: game.cover.width,
-      height: game.cover.height,
-    },
+    cover: getGameImageUrl(game.cover.image_id),
     releaseDate: new Date(game.first_release_date * 1000),
   };
 };
@@ -53,7 +49,7 @@ export const stringifyGetGamesParams = (
     offset: 0,
   }
 ) => {
-  const fields = `fields name, cover.image_id, cover.height, cover.width, first_release_date, total_rating, category, themes, game_modes, genres;`;
+  const fields = `fields name, cover.image_id, first_release_date, total_rating, category, themes, game_modes, genres;`;
   const filterQuery = `where name ~ *"${filters.name}"*
   ${
     filters.categories.length > 0
