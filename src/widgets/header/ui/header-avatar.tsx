@@ -16,19 +16,16 @@ import {
   Skeleton,
   useToast,
 } from "@shared/ui";
-import Image from "next/image";
 import Link from "next/link";
 
 interface HeaderAvatarProps {}
 
 export const HeaderAvatar = ({}: HeaderAvatarProps) => {
-  const { user, isLoaded } = useUser();
   const { toast } = useToast();
+  const { user, isLoaded } = useUser();
 
-  if (!isLoaded)
+  if ((isLoaded && !user) || !isLoaded)
     return <Skeleton className="w-10 h-10 shrink-0 rounded-full" />;
-
-  if (isLoaded && !user) return null;
 
   return (
     <DropdownMenu>
@@ -38,7 +35,7 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
           <AvatarFallback />
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="space-y-2 md:space-y-0">
+      <DropdownMenuContent className="space-y-2 md:space-y-0 min-w-[200px]">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
             {user.username && (

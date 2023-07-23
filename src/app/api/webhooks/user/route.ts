@@ -71,11 +71,19 @@ async function handler(req: Request) {
         unsafe_metadata: { isPrivateLibrary },
       } = evt.data;
 
+      if (!username) return NextResponse.json({}, { status: 200 });
+
+      const user = await db.user.findUnique({
+        where: { id },
+      });
+
+      if (!user) return NextResponse.json({}, { status: 200 });
+
       await db.user.update({
         where: { id },
         data: {
           email: email_addresses[0].email_address,
-          username: username!,
+          username,
           imageUrl: profile_image_url,
           isPrivateLibrary,
         },

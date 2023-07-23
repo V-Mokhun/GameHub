@@ -1,3 +1,5 @@
+import { Game as LibraryGame } from "@prisma/client";
+
 export enum GameStatus {
   "WANT_TO_PLAY" = "Want to Play",
   "COMPLETED" = "Completed",
@@ -13,3 +15,9 @@ export enum LibrarySortFields {
   PLAY_TIME = "playTime",
   FINISHED_DATE = "finishedAt",
 }
+
+export type NormalizedLibraryGame = LibraryGame & {
+  themes: number[];
+  gameModes: number[];
+  genres: number[];
+};

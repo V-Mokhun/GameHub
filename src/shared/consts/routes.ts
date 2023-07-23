@@ -24,4 +24,7 @@ export const PUBLIC_ROUTES = [
   `${USERS_ROUTE}/:path*`,
   FORGOT_PASSWORD_ROUTE,
   SSO_CALLBACK_ROUTE,
+  "/api/webhooks/:path*",
+  "/api/token",
+  "/api/igdb/:path*",
 ];

@@ -18,7 +18,7 @@ const SidebarSectionSkeleton = () => (
   <>
     <Skeleton className="w-20 h-6 mb-4" />
     <div className="space-y-4">
-      {[...new Array(3)].map((_, i) => (
+      {[...Array(3)].map((_, i) => (
         <SidebarItemSkeleton key={i} />
       ))}
     </div>
@@ -26,25 +26,25 @@ const SidebarSectionSkeleton = () => (
 );
 
 export const Sidebar = () => {
-  const { userId } = useAuth();
+  const { userId} = useAuth();
   const isOpen = useSidebarStore((state) => state.isOpen);
   const onClose = useSidebarStore((state) => state.onClose);
   const ref = useClickOutside(onClose);
-  const [mounted, setMounted] = useState(false);
+  // const [mounted, setMounted] = useState(false);
 
-  let content: React.ReactNode = (
-    <div className="space-y-6">
-      {[...new Array(3)].map((_, i) => (
-        <SidebarSectionSkeleton key={i} />
-      ))}
-    </div>
-  );
+  // let content: React.ReactNode = (
+  //   <div className="space-y-6">
+  //     {[...Array(3)].map((_, i) => (
+  //       <SidebarSectionSkeleton key={i} />
+  //     ))}
+  //   </div>
+  // );
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // useEffect(() => {
+  //   setMounted(true);
+  // }, []);
 
-  if (mounted) content = <SidebarMenu onClose={onClose} userId={userId} />;
+  // if (mounted) content = <SidebarMenu onClose={onClose} userId={userId} />;
 
   return (
     <nav
@@ -56,7 +56,8 @@ export const Sidebar = () => {
     >
       <div className="bg-background p-4 flex-auto overflow-y-auto h-full">
         <Logo className="block md:hidden mb-6" />
-        {content}
+        {/* {content} */}
+        <SidebarMenu onClose={onClose} userId={userId} />
       </div>
     </nav>
   );
