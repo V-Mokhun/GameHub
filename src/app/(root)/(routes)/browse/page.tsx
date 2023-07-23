@@ -1,5 +1,5 @@
 import { Container, Separator, Title } from "@shared/ui";
-import { BrowseFilter } from "@widgets/filter";
+import { BrowseFilter } from "@widgets/filters";
 import { BrowseChangeView, BrowseFilters } from "./ui";
 import { BrowseGames } from "./ui/browse-games";
 

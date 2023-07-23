@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@shared/ui";
-import { useBrowseFilterStore } from "@widgets/filter";
+import { useBrowseFilterStore } from "@widgets/filters";
 
 interface BrowseFiltersProps {}
 
