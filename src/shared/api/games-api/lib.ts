@@ -1,5 +1,7 @@
 import { GAMES_LIMIT, MAX_RATING, MIN_RATING } from ".";
+import { UseGamesApiResponse } from "./api";
 import {
+  Game,
   GameFilters,
   GamePaginate,
   GameSorts,
@@ -15,7 +17,25 @@ export const getGameImageUrl = (
   return `${process.env.NEXT_PUBLIC_GAMES_IMAGES_URL}/t_${imageType}/${imageId}.jpg`;
 };
 
-export const stringifyParams = (
+export const normalizeGameProperties = (game: UseGamesApiResponse): Game => {
+  return {
+    id: game.id,
+    name: game.name,
+    rating: game.total_rating,
+    category: game.category,
+    themes: game.themes,
+    gameModes: game.game_modes,
+    genres: game.genres,
+    cover: {
+      url: getGameImageUrl(game.cover.image_id),
+      width: game.cover.width,
+      height: game.cover.height,
+    },
+    releaseDate: new Date(game.first_release_date * 1000),
+  };
+};
+
+export const stringifyGetGamesParams = (
   filters: GameFilters = {
     name: "",
     categories: [],
@@ -33,16 +53,14 @@ export const stringifyParams = (
     offset: 0,
   }
 ) => {
-  const fields = `fields *;`;
-  const filterQuery = `where name ~ *"${filters.name}"* 
+  const fields = `fields name, cover.image_id, cover.height, cover.width, first_release_date, total_rating, category, themes, game_modes, genres;`;
+  const filterQuery = `where name ~ *"${filters.name}"*
   ${
     filters.categories.length > 0
       ? `& category = (${filters.categories?.join(", ")}`
       : ""
   } 
-  ${
-    filters.genres.length > 0 ? `& genre = (${filters.genres?.join(", ")}` : ""
-  }
+  ${filters.genres.length > 0 ? `& genre = (${filters.genres?.join(", ")}` : ""}
   ${
     filters.themes.length > 0 ? `& theme = (${filters.themes?.join(", ")}` : ""
   } 
@@ -51,5 +69,13 @@ export const stringifyParams = (
   const paginateQuery = `limit ${paginate.limit}; offset ${paginate.offset};`;
 
   const body = `${fields} ${filterQuery} ${sortQuery} ${paginateQuery}`;
+  return body;
+};
+
+export const stringifyGetGameByIdParams = (id: number) => {
+  const fields = `fields name, cover.image_id, first_release_date, total_rating, category, themes, game_modes, genres;`;
+  const filterQuery = `where id = ${id};`;
+
+  const body = `${fields} ${filterQuery}`;
   return body;
 };

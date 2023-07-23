@@ -14,7 +14,24 @@ import {
 } from "./types";
 import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
-import { stringifyParams } from "./lib";
+import { normalizeGameProperties, stringifyGetGamesParams } from "./lib";
+
+export type UseGamesApiResponse = {
+  id: number;
+  cover: {
+    id: number;
+    image_id: string;
+    width: number;
+    height: number
+  };
+  first_release_date: number;
+  name: string;
+  total_rating: number;
+  category: number;
+  themes: number[];
+  game_modes: number[];
+  genres: number[];
+};
 
 export const useGames = (
   filters: GameFilters = {
@@ -39,9 +56,12 @@ export const useGames = (
   return useQuery(
     ["browse_games", { filters, sort, paginate }],
     async () => {
-      const body = stringifyParams(filters, sort, paginate);
-      const { data } = await axiosInstance.post<Game[]>("/games", body);
-      return data;
+      const body = stringifyGetGamesParams(filters, sort, paginate);
+      const { data } = await axiosInstance.post<UseGamesApiResponse[]>(
+        "/games",
+        body
+      );
+      return data.map(normalizeGameProperties);
     },
     {
       onError: (error) => {

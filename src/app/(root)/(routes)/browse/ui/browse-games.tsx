@@ -1,6 +1,7 @@
 "use client";
 
 import { gamesApi } from "@shared/api";
+import { GameList } from "@widgets/game-list";
 
 interface BrowseGamesProps {}
 
@@ -9,5 +10,5 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
 
   console.log(data);
 
-  return <div></div>;
+  return <GameList games={data || []} />;
 };

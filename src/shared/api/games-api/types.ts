@@ -70,6 +70,33 @@ export interface GameFilters {
 }
 
 export interface Game {
-  aggregated_rating: number;
+  id: number;
+  cover: {
+    url: string;
+    width: number;
+    height: number;
+  };
+  releaseDate: Date;
+  name: string;
+  rating: number;
+  category: number;
+  themes: number[];
+  gameModes: number[];
+  genres: number[];
+}
+
+export interface FullGame extends Game {
   artworks: number[];
+  category: number;
+  game_modes: number[];
+  genres: number[];
+  themes: number[];
+  involved_companies: number[];
+  platforms: number[];
+  screenshots: number[];
+  similar_games: number[];
+  slug: string;
+  storyline: string;
+  summary: string;
+  videos: number[];
 }
