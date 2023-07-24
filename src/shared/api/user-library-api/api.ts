@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { HOME_ROUTE } from "@shared/consts";
 import { NormalizedLibraryGame } from "./types";
 
-const useLibrary = (userId: string) => {
+const useLibrary = (userId?: string) => {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -28,32 +28,36 @@ const useLibrary = (userId: string) => {
         displayError(toast, error);
         router.push(HOME_ROUTE);
       },
+      enabled: !!userId,
     }
   );
 };
 
-const useAddGameToLibrary = (game: LibraryGame, userId: string) => {
+const useAddGameToLibrary = (userId: string, onSuccess?: () => void) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return useMutation(
-    ["library", userId],
-    async () => {
+    async (game: LibraryGame) => {
       const { data } = await axios.post<LibraryGame>(
         `/api/user/library/${game.id}`,
-        { game }
+        game
       );
 
       return normalizeLibraryGameProperties(data);
     },
     {
-      onMutate: async (newGame: NormalizedLibraryGame) => {
+      onMutate: async (newGame) => {
         await queryClient.cancelQueries({ queryKey: ["library", userId] });
         const previousLibrary = queryClient.getQueryData(["library", userId]);
         queryClient.setQueryData(
           ["library", userId],
-          (oldLibrary: NormalizedLibraryGame[] = []) => [...oldLibrary, newGame]
+          (oldLibrary: NormalizedLibraryGame[] = []) => [
+            ...oldLibrary,
+            normalizeLibraryGameProperties(newGame),
+          ]
         );
+        
         return { previousLibrary };
       },
       onError: (err, newGame, context) => {
@@ -63,17 +67,20 @@ const useAddGameToLibrary = (game: LibraryGame, userId: string) => {
       onSettled: () => {
         queryClient.invalidateQueries({ queryKey: ["library", userId] });
       },
+      onSuccess: () => {
+        toast({ title: "Game added to library", variant: "success" });
+        if (onSuccess) onSuccess();
+      },
     }
   );
 };
 
-const useRemoveGameFromLibrary = (gameId: string, userId: string) => {
+const useRemoveGameFromLibrary = (userId: string) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return useMutation(
-    ["library", userId],
-    async () => {
+    async (gameId) => {
       const { data } = await axios.delete<LibraryGame>(
         `/api/user/library/${gameId}`
       );

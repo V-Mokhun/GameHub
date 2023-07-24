@@ -8,7 +8,10 @@ export enum LibrarySortFields {
   FINISHED_DATE = "finishedAt",
 }
 
-export type NormalizedLibraryGame = LibraryGame & {
+export type NormalizedLibraryGame = Omit<
+  LibraryGame,
+  "themes" | "gameModes" | "genres"
+> & {
   themes: number[];
   gameModes: number[];
   genres: number[];

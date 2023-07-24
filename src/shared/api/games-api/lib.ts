@@ -22,7 +22,7 @@ export const normalizeGameProperties = (game: UseGamesApiResponse): Game => {
   return {
     id: game.id,
     name: game.name,
-    rating: game.total_rating,
+    rating: Math.ceil(game.total_rating),
     category: game.category,
     themes: game.themes,
     gameModes: game.game_modes,

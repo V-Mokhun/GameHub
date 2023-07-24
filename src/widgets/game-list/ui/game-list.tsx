@@ -9,16 +9,9 @@ interface GameListProps {
 }
 
 export const GameList = ({ games, userId }: GameListProps) => {
-  if (!userId) {
-    return (
-      <div className="flex flex-wrap gap-2 md:gap-x-4 md:gap-y-6">
-        {games.map((game) => (
-          <GameCard userId={userId || null} key={game.id} game={game} />
-        ))}
-      </div>
-    );
-  }
-  const { data: libraryGames = [] } = userLibraryApi.getLibrary(userId);
+  const { data: libraryGames = [] } = userLibraryApi.getLibrary(userId || "");
+
+  console.log("LIBRARY GAMES", libraryGames)
 
   return (
     <>
@@ -26,14 +19,16 @@ export const GameList = ({ games, userId }: GameListProps) => {
         {games.map((game) => {
           const libraryGame = libraryGames.find((g) => g.id === game.id);
           if (!libraryGame)
-            return <GameCard userId={userId} key={game.id} game={game} />;
+            return (
+              <GameCard userId={userId} key={game.id} game={game} />
+            );
 
           return (
             <GameCard
               key={game.id}
               game={game}
               isInLibrary={true}
-              userId={userId}
+              userId={userId!}
               libraryGameData={{
                 finishedAt: libraryGame.finishedAt,
                 notes: libraryGame.notes,

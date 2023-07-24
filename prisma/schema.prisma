@@ -26,18 +26,18 @@ model Game {
   coverUrl    String
   releaseDate DateTime
   category    Int
-  themes      String //? [23, 64] => "23,64" Since MySql doesn't support arrays
-  genres      String
-  gameModes   String
+  themes      String   @default("") //? [23, 64] => "23,64" Since MySql doesn't support arrays
+  genres      String   @default("")
+  gameModes   String   @default("")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   status     GameStatus @default(WANT_TO_PLAY)
   userRating Int?
-  playTime   Int?       
+  playTime   Int?       @default(0)
   finishedAt DateTime?
-  notes      String?
+  notes      String?    @default("")
 
   userId String
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

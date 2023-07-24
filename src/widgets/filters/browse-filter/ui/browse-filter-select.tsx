@@ -19,19 +19,10 @@ import { UseQueryResult } from "@tanstack/react-query";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 
-interface PropsWithFetch<T extends Omit<GameTheme, "slug">> {
-  fetchData: () => UseQueryResult<T[], unknown>;
+type BrowseFilterSelectProps<T extends Omit<GameTheme, "slug">> = {
+  fetchData: () => Pick<UseQueryResult<T[], unknown>, "data" | "isLoading">;
   title: string;
-}
-
-interface PropsWithStatic<T extends Omit<GameTheme, "slug">> {
-  data: T[];
-  title: string;
-}
-
-type BrowseFilterSelectProps<T extends Omit<GameTheme, "slug">> =
-  | PropsWithFetch<T>
-  | PropsWithStatic<T>;
+};
 
 export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>(
   props: BrowseFilterSelectProps<T>
@@ -39,25 +30,17 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>(
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState<GameTheme[]>([]);
   const { title } = props;
-  let data: T[];
+  const { data, isLoading } = props.fetchData();
 
-  if ("fetchData" in props) {
-    const { data: resp, isLoading } = props.fetchData();
+  if (isLoading)
+    return (
+      <>
+        <Skeleton className="w-36 h-5" />
+        <Skeleton className="w-full h-10" />
+      </>
+    );
 
-    if (isLoading)
-      return (
-        <>
-          <Skeleton className="w-36 h-5" />
-          <Skeleton className="w-full h-10" />
-        </>
-      );
-
-    if (!resp) return null;
-
-    data = resp;
-  } else {
-    data = props.data;
-  }
+  if (!data) return null;
 
   return (
     <div className="flex flex-col gap-2">

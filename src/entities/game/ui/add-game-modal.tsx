@@ -1,13 +1,13 @@
 "use client";
 
-import { Game } from "@shared/api";
-import { LibraryGameData } from "./game-card";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { GameStatus } from "@prisma/client";
+import { Game, userLibraryApi } from "@shared/api";
 import {
   Button,
+  Calendar,
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
   DialogTitle,
   Form,
   FormControl,
@@ -18,7 +18,9 @@ import {
   FormMessage,
   Input,
   Label,
-  Link,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Select,
   SelectContent,
   SelectItem,
@@ -27,16 +29,17 @@ import {
   StarRating,
   Textarea,
 } from "@shared/ui";
-import { title } from "process";
 import Image from "next/image";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AddGameScheme, addGameScheme } from "../model";
-import { GameStatus } from "@prisma/client";
+import { LibraryGameData } from "./game-card";
+import { cn } from "@shared/lib";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
 interface AddGameModalProps {
-  gameData: Pick<Game, "id" | "name" | "releaseDate" | "rating" | "cover">;
+  gameData: Game;
   isOpen: boolean;
   onClose: () => void;
   libraryGameData?: LibraryGameData;
@@ -54,18 +57,42 @@ export const AddGameModal = ({
   const onChange = (open: boolean) => {
     if (!open) onClose();
   };
+  const { mutate: addGame, isLoading } = userLibraryApi.addGame(
+    userId,
+    onClose
+  );
 
   const form = useForm<AddGameScheme>({
     defaultValues: {
-      finishedDate: libraryGameData?.finishedAt,
+      finishedAt: libraryGameData?.finishedAt || null,
       notes: libraryGameData?.notes || "",
-      playTime: libraryGameData?.playTime ?? undefined,
+      playTime: libraryGameData?.playTime || 0,
       status: libraryGameData?.status || GameStatus.WANT_TO_PLAY,
     },
     resolver: zodResolver(addGameScheme),
   });
 
-  const onSubmit: SubmitHandler<AddGameScheme> = async (data) => {};
+  const watchStatus = form.watch("status");
+
+  const onSubmit: SubmitHandler<AddGameScheme> = async (data) => {
+    await addGame({
+      category: gameData.category,
+      name: gameData.name,
+      id: gameData.id,
+      releaseDate: gameData.releaseDate,
+      gameModes: gameData.gameModes?.join(",") || "",
+      genres: gameData.genres?.join(",") || "",
+      themes: gameData.themes?.join(",") || "",
+      totalRating: gameData.rating,
+      coverUrl: gameData.cover,
+      userId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userRating: rating,
+      ...data,
+      playTime: Number(data.playTime),
+    });
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onChange}>
@@ -110,9 +137,15 @@ export const AddGameModal = ({
                   <FormItem className="w-full">
                     <FormLabel className="text-base">Status</FormLabel>
                     <Select
-                      onValueChange={(value: GameStatus) =>
-                        field.onChange(value)
-                      }
+                      onValueChange={(value: GameStatus) => {
+                        field.onChange(value);
+                        if (value === GameStatus.PLAYING) {
+                          form.setValue("finishedAt", null);
+                        } else if (value === GameStatus.WANT_TO_PLAY) {
+                          form.setValue("finishedAt", null);
+                          form.setValue("playTime", 0);
+                        }
+                      }}
                       defaultValue={field.value}
                     >
                       <FormControl>
@@ -141,13 +174,19 @@ export const AddGameModal = ({
               <FormField
                 control={form.control}
                 name="playTime"
-                render={({ field: { value, ...field } }) => (
-                  <FormItem className="w-full">
+                render={({ field }) => (
+                  <FormItem
+                    className={cn(
+                      "w-full",
+                      watchStatus === GameStatus.WANT_TO_PLAY &&
+                        "pointer-events-none"
+                    )}
+                  >
                     <FormLabel>Play time</FormLabel>
                     <FormControl>
                       <Input
+                        disabled={watchStatus === GameStatus.WANT_TO_PLAY}
                         min={0}
-                        value={value ?? undefined}
                         type="number"
                         placeholder="Hours played"
                         {...field}
@@ -158,6 +197,59 @@ export const AddGameModal = ({
                 )}
               />
             </div>
+            <FormField
+              control={form.control}
+              name="finishedAt"
+              render={({ field }) => (
+                <FormItem
+                  className={cn(
+                    "flex flex-col",
+                    (watchStatus === GameStatus.PLAYING ||
+                      watchStatus === GameStatus.WANT_TO_PLAY) &&
+                      "pointer-events-none"
+                  )}
+                >
+                  <FormLabel>Finished Date</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          disabled={
+                            watchStatus === GameStatus.PLAYING ||
+                            watchStatus === GameStatus.WANT_TO_PLAY
+                          }
+                          variant={"outline"}
+                          className={cn(
+                            "pl-3 text-left font-normal space-x-2 text-sm md:text-base",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          <span className="block w-full">
+                            {field.value
+                              ? format(field.value, "PPP")
+                              : "Pick a date of finishing the game"}
+                          </span>
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        captionLayout="dropdown-buttons"
+                        selected={field.value ?? undefined}
+                        onSelect={(e) => field.onChange(e || null)}
+                        disabled={(date) =>
+                          date > new Date() || date < gameData.releaseDate
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="notes"
@@ -176,10 +268,20 @@ export const AddGameModal = ({
               )}
             />
             <div className="flex items-center justify-between gap-2">
-              <Button onClick={onClose} type="button" variant="destructive">
+              <Button
+                disabled={isLoading || form.formState.isSubmitting}
+                onClick={onClose}
+                type="button"
+                variant="destructive"
+              >
                 Cancel
               </Button>
-              <Button type="submit">Save</Button>
+              <Button
+                disabled={isLoading || form.formState.isSubmitting}
+                type="submit"
+              >
+                Save
+              </Button>
             </div>
           </form>
         </Form>

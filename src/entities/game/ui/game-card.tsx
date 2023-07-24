@@ -19,7 +19,7 @@ interface GameCardProps {
   game: Game;
   libraryGameData?: LibraryGameData;
   isInLibrary?: boolean;
-  userId: string | null;
+  userId?: string | null;
 }
 
 export const GameCard = ({
@@ -30,7 +30,7 @@ export const GameCard = ({
 }: GameCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
-
+  
   const onLibraryButtonClick = () => {
     if (userId) {
       setIsOpen(true);
@@ -58,13 +58,7 @@ export const GameCard = ({
   return (
     <>
       <AddGameModal
-        gameData={{
-          cover: game.cover,
-          id: game.id,
-          name: game.name,
-          rating: game.rating,
-          releaseDate: game.releaseDate,
-        }}
+        gameData={game}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         libraryGameData={libraryGameData}
@@ -78,7 +72,7 @@ export const GameCard = ({
           </p>
           <div className="flex items-center gap-1">
             <Icon size={12} name="Star" />
-            <span className="text-sm">{Math.ceil(game.rating)}</span>
+            <span className="text-sm">{game.rating}</span>
           </div>
         </div>
         <Link

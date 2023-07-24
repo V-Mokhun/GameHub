@@ -24,7 +24,12 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
       )}
     >
       <div className="relative bg-background p-4 flex-auto overflow-y-auto h-full">
-        <Button onClick={onClose} className="absolute top-2 right-2" size="icon" variant="destructive">
+        <Button
+          onClick={onClose}
+          className="absolute top-2 right-2"
+          size="icon"
+          variant="destructive"
+        >
           <Icon name="X" className="text-white" />
         </Button>
         <Title className="mb-4 lg:mb-6">Filter Games</Title>
@@ -33,7 +38,10 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
           <BrowseFilterRating />
           <BrowseFilterSelect title="Genre" fetchData={gamesApi.getGenres} />
           <BrowseFilterSelect title="Themes" fetchData={gamesApi.getThemes} />
-          <BrowseFilterSelect title="Categories" data={GAME_CATEGORIES} />
+          <BrowseFilterSelect
+            title="Categories"
+            fetchData={() => ({ data: GAME_CATEGORIES, isLoading: false })}
+          />
           <BrowseFilterSelect title="Modes" fetchData={gamesApi.getModes} />
         </div>
       </div>

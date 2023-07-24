@@ -76,9 +76,9 @@ export interface Game {
   name: string;
   rating: number;
   category: number;
-  themes: number[];
-  gameModes: number[];
-  genres: number[];
+  themes?: number[];
+  gameModes?: number[];
+  genres?: number[];
 }
 
 export interface FullGame extends Game {
