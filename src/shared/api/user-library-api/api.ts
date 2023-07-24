@@ -35,7 +35,6 @@ const useLibrary = (userId?: string) => {
 
 const useAddGameToLibrary = (
   userId: string,
-  successTitle = "Game added successfully",
   onSuccess?: () => void
 ) => {
   const queryClient = useQueryClient();
@@ -72,7 +71,7 @@ const useAddGameToLibrary = (
         queryClient.invalidateQueries({ queryKey: ["library", userId] });
       },
       onSuccess: () => {
-        toast({ title: successTitle, variant: "success" });
+        toast({ title: "Game was saved to your library", variant: "success" });
         if (onSuccess) onSuccess();
       },
     }

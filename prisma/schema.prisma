@@ -20,7 +20,7 @@ model User {
 }
 
 model Game {
-  id          Int      @unique
+  id          Int
   name        String
   totalRating Int
   coverUrl    String

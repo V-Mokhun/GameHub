@@ -51,9 +51,9 @@ export const GameLibraryModal = ({
   const onChange = (open: boolean) => {
     if (!open) onClose();
   };
+
   const { mutate: addGame, isLoading: isAdding } = userLibraryApi.addGame(
     userId,
-    isInLibrary ? "Game edited successfully" : "Game added successfully",
     onClose
   );
   const { mutate: deleteGame, isLoading: isDeleting } =
@@ -90,7 +90,7 @@ export const GameLibraryModal = ({
       userId,
       createdAt: new Date(),
       updatedAt: new Date(),
-      userRating: rating,
+      userRating: rating === 0 ? null : rating,
       ...data,
       playTime: Number(data.playTime),
     });

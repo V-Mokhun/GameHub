@@ -23,7 +23,10 @@ export async function POST(
 
     await db.game.upsert({
       where: {
-        id: +gameId,
+        userId_id: {
+          userId,
+          id: +gameId,
+        },
       },
       create: game,
       update: game,
@@ -31,6 +34,34 @@ export async function POST(
 
     return NextResponse.json(game, { status: 200 });
   } catch (error) {
+    console.log("ERROR: ", error);
     return catchError(error, "Failed to add game to library");
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { gameId: string } }
+) {
+  try {
+    const { userId } = auth();
+    const { gameId } = params;
+
+    if (!gameId)
+      return new NextResponse("Game ID is required", { status: 400 });
+
+    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+
+    const deletedGame = await db.game.delete({
+      where: {
+        userId_id: {
+          userId,
+          id: +gameId,
+        },
+      },
+    });
+    return NextResponse.json(deletedGame, { status: 200 });
+  } catch (error) {
+    return catchError(error, "Failed to remove game from library");
   }
 }
