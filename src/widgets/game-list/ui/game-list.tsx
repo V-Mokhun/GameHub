@@ -11,8 +11,6 @@ interface GameListProps {
 export const GameList = ({ games, userId }: GameListProps) => {
   const { data: libraryGames = [] } = userLibraryApi.getLibrary(userId || "");
 
-  console.log("LIBRARY GAMES", libraryGames)
-
   return (
     <>
       <div className="flex flex-wrap gap-2 md:gap-x-4 md:gap-y-6">

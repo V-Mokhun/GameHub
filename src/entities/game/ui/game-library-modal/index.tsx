@@ -27,6 +27,7 @@ import { AddGameScheme, addGameScheme } from "../../model";
 import { LibraryGameData } from "../game-card";
 import { GameLibraryCalendar } from "./game-library-calendar";
 import { GameLibraryStatus } from "./game-library-status";
+import { AlertModal } from "@shared/ui/modal";
 
 interface GameLibraryModalProps {
   gameData: Game;
@@ -34,6 +35,7 @@ interface GameLibraryModalProps {
   onClose: () => void;
   libraryGameData?: LibraryGameData;
   userId: string;
+  isInLibrary?: boolean;
 }
 
 export const GameLibraryModal = ({
@@ -42,19 +44,28 @@ export const GameLibraryModal = ({
   libraryGameData,
   onClose,
   userId,
+  isInLibrary,
 }: GameLibraryModalProps) => {
   const [rating, setRating] = useState(libraryGameData?.userRating || 0);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const onChange = (open: boolean) => {
     if (!open) onClose();
   };
-  const { mutate: addGame, isLoading } = userLibraryApi.addGame(
+  const { mutate: addGame, isLoading: isAdding } = userLibraryApi.addGame(
     userId,
+    isInLibrary ? "Game edited successfully" : "Game added successfully",
     onClose
   );
+  const { mutate: deleteGame, isLoading: isDeleting } =
+    userLibraryApi.removeGame(userId, onClose);
+
+  const isLoading = isAdding || isDeleting;
 
   const form = useForm<AddGameScheme>({
     defaultValues: {
-      finishedAt: libraryGameData?.finishedAt || null,
+      finishedAt: libraryGameData?.finishedAt
+        ? new Date(libraryGameData.finishedAt)
+        : null,
       notes: libraryGameData?.notes || "",
       playTime: libraryGameData?.playTime || 0,
       status: libraryGameData?.status || GameStatus.WANT_TO_PLAY,
@@ -65,6 +76,7 @@ export const GameLibraryModal = ({
   const watchStatus = form.watch("status");
 
   const onSubmit: SubmitHandler<AddGameScheme> = async (data) => {
+    console.log(rating);
     await addGame({
       category: gameData.category,
       name: gameData.name,
@@ -85,63 +97,93 @@ export const GameLibraryModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onChange}>
-      <DialogContent>
-        <div className="flex gap-2">
-          <div className="relative rounded-md overflow-hidden w-28 h-40 md:w-32 md:h-44 shrink-0">
-            <Image
-              className="object-cover"
-              src={gameData.cover}
-              fill
-              alt={gameData.name}
-            />
-          </div>
-          <div className="flex flex-col">
-            <DialogTitle className="text-base md:text-lg mb-1">
-              {gameData.name}
-            </DialogTitle>
-            <span className="text-muted-foreground mb-2">
-              ({gameData.releaseDate.getFullYear()})
-            </span>
-          </div>
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <Label className="text-base mb-1">
-                Rating{" "}
-                {rating > 0 && (
-                  <span className="text-muted-foreground ml-1">{rating}</span>
-                )}
-              </Label>
-              <StarRating
-                rating={rating}
-                onSetRating={(val) => setRating(val)}
+    <>
+      <AlertModal
+        isLoading={isDeleting}
+        isOpen={isAlertOpen}
+        onClose={() => setIsAlertOpen(false)}
+        onConfirm={async () => await deleteGame(gameData.id)}
+      />
+      <Dialog open={isOpen} onOpenChange={onChange}>
+        <DialogContent>
+          <div className="flex gap-2">
+            <div className="relative rounded-md overflow-hidden w-28 h-40 md:w-32 md:h-44 shrink-0">
+              <Image
+                className="object-cover"
+                src={gameData.cover}
+                fill
+                alt={gameData.name}
               />
             </div>
-            <div className="flex justify-between gap-2">
-              <GameLibraryStatus
+            <div className="flex flex-col">
+              <DialogTitle className="text-base md:text-lg mb-1">
+                {gameData.name}
+              </DialogTitle>
+              <span className="text-muted-foreground mb-2">
+                ({gameData.releaseDate.getFullYear()})
+              </span>
+            </div>
+          </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <div>
+                <Label className="text-base mb-1">
+                  Rating{" "}
+                  {rating > 0 && (
+                    <span className="text-muted-foreground ml-1">{rating}</span>
+                  )}
+                </Label>
+                <StarRating
+                  rating={rating}
+                  onSetRating={(val) => setRating(val)}
+                />
+              </div>
+              <div className="flex justify-between gap-2">
+                <GameLibraryStatus
+                  control={form.control}
+                  setValue={form.setValue}
+                />
+                <FormField
+                  control={form.control}
+                  name="playTime"
+                  render={({ field }) => (
+                    <FormItem
+                      className={cn(
+                        "w-full",
+                        watchStatus === GameStatus.WANT_TO_PLAY &&
+                          "pointer-events-none"
+                      )}
+                    >
+                      <FormLabel>Play time</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={watchStatus === GameStatus.WANT_TO_PLAY}
+                          min={0}
+                          type="number"
+                          placeholder="Hours played"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <GameLibraryCalendar
                 control={form.control}
-                setValue={form.setValue}
+                releaseDate={gameData.releaseDate}
+                watchStatus={watchStatus}
               />
               <FormField
                 control={form.control}
-                name="playTime"
+                name="notes"
                 render={({ field }) => (
-                  <FormItem
-                    className={cn(
-                      "w-full",
-                      watchStatus === GameStatus.WANT_TO_PLAY &&
-                        "pointer-events-none"
-                    )}
-                  >
-                    <FormLabel>Play time</FormLabel>
+                  <FormItem>
+                    <FormLabel>Your notes</FormLabel>
                     <FormControl>
-                      <Input
-                        disabled={watchStatus === GameStatus.WANT_TO_PLAY}
-                        min={0}
-                        type="number"
-                        placeholder="Hours played"
+                      <Textarea
+                        placeholder="Write your notes here"
+                        className="resize-none"
                         {...field}
                       />
                     </FormControl>
@@ -149,48 +191,26 @@ export const GameLibraryModal = ({
                   </FormItem>
                 )}
               />
-            </div>
-            <GameLibraryCalendar
-              control={form.control}
-              releaseDate={gameData.releaseDate}
-              watchStatus={watchStatus}
-            />
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Your notes</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Write your notes here"
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center justify-between gap-2">
-              <Button
-                disabled={isLoading || form.formState.isSubmitting}
-                onClick={onClose}
-                type="button"
-                variant="destructive"
-              >
-                Cancel
-              </Button>
-              <Button
-                disabled={isLoading || form.formState.isSubmitting}
-                type="submit"
-              >
-                Save
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+              <div className="flex items-center justify-between gap-2">
+                <Button
+                  disabled={isLoading || form.formState.isSubmitting}
+                  onClick={isInLibrary ? () => setIsAlertOpen(true) : onClose}
+                  type="button"
+                  variant="destructive"
+                >
+                  {isInLibrary ? "Delete" : "Cancel"}
+                </Button>
+                <Button
+                  disabled={isLoading || form.formState.isSubmitting}
+                  type="submit"
+                >
+                  {isInLibrary ? "Edit" : "Add"}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };

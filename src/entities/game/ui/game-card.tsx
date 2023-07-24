@@ -61,6 +61,7 @@ export const GameCard = ({
         onClose={() => setIsOpen(false)}
         libraryGameData={libraryGameData}
         userId={userId!}
+        isInLibrary={isInLibrary}
       />
       <div className="group overflow-hidden text-white relative shadow-md rounded-md flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(33.3%-12px)] lg:flex-[0_1_calc(25%-12px)]">
         {/* name + rating */}

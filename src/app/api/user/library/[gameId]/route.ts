@@ -21,8 +21,12 @@ export async function POST(
     if (!userId || userId !== game.userId)
       return new NextResponse("Unauthorized", { status: 401 });
 
-    await db.game.create({
-      data: game,
+    await db.game.upsert({
+      where: {
+        id: +gameId,
+      },
+      create: game,
+      update: game,
     });
 
     return NextResponse.json(game, { status: 200 });

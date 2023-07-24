@@ -33,7 +33,11 @@ const useLibrary = (userId?: string) => {
   );
 };
 
-const useAddGameToLibrary = (userId: string, onSuccess?: () => void) => {
+const useAddGameToLibrary = (
+  userId: string,
+  successTitle = "Game added successfully",
+  onSuccess?: () => void
+) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -57,7 +61,7 @@ const useAddGameToLibrary = (userId: string, onSuccess?: () => void) => {
             normalizeLibraryGameProperties(newGame),
           ]
         );
-        
+
         return { previousLibrary };
       },
       onError: (err, newGame, context) => {
@@ -68,14 +72,14 @@ const useAddGameToLibrary = (userId: string, onSuccess?: () => void) => {
         queryClient.invalidateQueries({ queryKey: ["library", userId] });
       },
       onSuccess: () => {
-        toast({ title: "Game added to library", variant: "success" });
+        toast({ title: successTitle, variant: "success" });
         if (onSuccess) onSuccess();
       },
     }
   );
 };
 
-const useRemoveGameFromLibrary = (userId: string) => {
+const useRemoveGameFromLibrary = (userId: string, onSuccess?: () => void) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -104,6 +108,13 @@ const useRemoveGameFromLibrary = (userId: string) => {
       },
       onSettled: () => {
         queryClient.invalidateQueries({ queryKey: ["library", userId] });
+      },
+      onSuccess: () => {
+        toast({
+          title: "Game was removed from your library",
+          variant: "success",
+        });
+        if (onSuccess) onSuccess();
       },
     }
   );

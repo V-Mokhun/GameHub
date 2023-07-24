@@ -35,7 +35,7 @@ export const AlertModal = ({
       onClose={onClose}
     >
       <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-        <Button disabled={isLoading} variant="secondary" onClick={onClose}>
+        <Button disabled={isLoading} onClick={onClose}>
           Cancel
         </Button>
         <Button disabled={isLoading} variant="destructive" onClick={onConfirm}>

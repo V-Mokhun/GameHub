@@ -15,7 +15,7 @@ import {
 } from "@shared/ui";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { Control, UseFormSetValue } from "react-hook-form";
+import { Control } from "react-hook-form";
 
 interface GameLibraryCalendarProps {
   control: Control<AddGameScheme>;
@@ -58,7 +58,7 @@ export const GameLibraryCalendar = ({
                 >
                   <span className="block w-full">
                     {field.value
-                      ? format(field.value, "PPP")
+                      ? format(new Date(field.value), "PPP")
                       : "Pick a date of finishing the game"}
                   </span>
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />

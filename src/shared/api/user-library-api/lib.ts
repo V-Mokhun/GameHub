@@ -10,6 +10,7 @@ export const libraryGameSchema = z.object({
   category: z.number(),
   themes: z.string(),
   genres: z.string(),
+  userRating: z.number().int().min(1).max(10).nullable(),
   gameModes: z.string(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
