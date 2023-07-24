@@ -3,42 +3,32 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GameStatus } from "@prisma/client";
 import { Game, userLibraryApi } from "@shared/api";
+import { cn } from "@shared/lib";
 import {
   Button,
-  Calendar,
   Dialog,
   DialogContent,
   DialogTitle,
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
   Input,
   Label,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   StarRating,
   Textarea,
 } from "@shared/ui";
 import Image from "next/image";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AddGameScheme, addGameScheme } from "../model";
-import { LibraryGameData } from "./game-card";
-import { cn } from "@shared/lib";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { AddGameScheme, addGameScheme } from "../../model";
+import { LibraryGameData } from "../game-card";
+import { GameLibraryCalendar } from "./game-library-calendar";
+import { GameLibraryStatus } from "./game-library-status";
 
-interface AddGameModalProps {
+interface GameLibraryModalProps {
   gameData: Game;
   isOpen: boolean;
   onClose: () => void;
@@ -46,13 +36,13 @@ interface AddGameModalProps {
   userId: string;
 }
 
-export const AddGameModal = ({
+export const GameLibraryModal = ({
   gameData,
   isOpen,
   libraryGameData,
   onClose,
   userId,
-}: AddGameModalProps) => {
+}: GameLibraryModalProps) => {
   const [rating, setRating] = useState(libraryGameData?.userRating || 0);
   const onChange = (open: boolean) => {
     if (!open) onClose();
@@ -130,46 +120,9 @@ export const AddGameModal = ({
               />
             </div>
             <div className="flex justify-between gap-2">
-              <FormField
+              <GameLibraryStatus
                 control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel className="text-base">Status</FormLabel>
-                    <Select
-                      onValueChange={(value: GameStatus) => {
-                        field.onChange(value);
-                        if (value === GameStatus.PLAYING) {
-                          form.setValue("finishedAt", null);
-                        } else if (value === GameStatus.WANT_TO_PLAY) {
-                          form.setValue("finishedAt", null);
-                          form.setValue("playTime", 0);
-                        }
-                      }}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Game Status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {Object.values(GameStatus).map((status) => (
-                          <SelectItem key={status} value={status}>
-                            {status
-                              .toLowerCase()
-                              .split("_")
-                              .map(
-                                (word) => word[0].toUpperCase() + word.slice(1)
-                              )
-                              .join(" ")}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                setValue={form.setValue}
               />
               <FormField
                 control={form.control}
@@ -197,58 +150,10 @@ export const AddGameModal = ({
                 )}
               />
             </div>
-            <FormField
+            <GameLibraryCalendar
               control={form.control}
-              name="finishedAt"
-              render={({ field }) => (
-                <FormItem
-                  className={cn(
-                    "flex flex-col",
-                    (watchStatus === GameStatus.PLAYING ||
-                      watchStatus === GameStatus.WANT_TO_PLAY) &&
-                      "pointer-events-none"
-                  )}
-                >
-                  <FormLabel>Finished Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          disabled={
-                            watchStatus === GameStatus.PLAYING ||
-                            watchStatus === GameStatus.WANT_TO_PLAY
-                          }
-                          variant={"outline"}
-                          className={cn(
-                            "pl-3 text-left font-normal space-x-2 text-sm md:text-base",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          <span className="block w-full">
-                            {field.value
-                              ? format(field.value, "PPP")
-                              : "Pick a date of finishing the game"}
-                          </span>
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        captionLayout="dropdown-buttons"
-                        selected={field.value ?? undefined}
-                        onSelect={(e) => field.onChange(e || null)}
-                        disabled={(date) =>
-                          date > new Date() || date < gameData.releaseDate
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
+              releaseDate={gameData.releaseDate}
+              watchStatus={watchStatus}
             />
             <FormField
               control={form.control}

@@ -1,14 +1,12 @@
 "use client";
 
-import { GameStatus, Game as LibraryGame } from "@prisma/client";
 import { Game, NormalizedLibraryGame } from "@shared/api";
 import { GAMES_ROUTE, SIGN_IN_ROUTE } from "@shared/consts";
 import { Badge, Button, Icon, buttonVariants, useToast } from "@shared/ui";
-import { AlertModal } from "@shared/ui/modal";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { AddGameModal } from "./add-game-modal";
+import { GameLibraryModal } from "./game-library-modal";
 
 export type LibraryGameData = Pick<
   NormalizedLibraryGame,
@@ -30,7 +28,7 @@ export const GameCard = ({
 }: GameCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
-  
+
   const onLibraryButtonClick = () => {
     if (userId) {
       setIsOpen(true);
@@ -57,7 +55,7 @@ export const GameCard = ({
 
   return (
     <>
-      <AddGameModal
+      <GameLibraryModal
         gameData={game}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -96,7 +94,13 @@ export const GameCard = ({
           <div className="flex justify-end items-center gap-2">
             <div className="flex-1">
               {libraryGameData?.status && (
-                <Badge>{libraryGameData?.status}</Badge>
+                <Badge>
+                  {libraryGameData?.status
+                    .toLowerCase()
+                    .split("_")
+                    .map((word) => word[0].toUpperCase() + word.slice(1))
+                    .join(" ")}
+                </Badge>
               )}
             </div>
             <Button onClick={onLibraryButtonClick} size="icon">
