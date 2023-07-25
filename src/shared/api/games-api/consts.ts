@@ -1,5 +1,12 @@
-
-import { GameCategories } from "./types";
+import { GAMES_LIMIT } from "../consts";
+import {
+  GameCategories,
+  GameFilters,
+  GamePaginate,
+  GameSorts,
+  SortFields,
+  SortFieldsOrder,
+} from "./types";
 
 export const MIN_RATING = 0;
 export const MAX_RATING = 100;
@@ -17,3 +24,22 @@ export const GAME_CATEGORIES: { name: string; id: GameCategories }[] = [
   { name: "Season", id: GameCategories.SEASON },
   { name: "Expanded Game", id: GameCategories.EXPANDED_GAME },
 ];
+
+export const DEFAULT_FILTERS: GameFilters = {
+  name: "",
+  categories: [],
+  genres: [],
+  themes: [],
+  ratingMin: MIN_RATING,
+  ratingMax: MAX_RATING,
+};
+
+export const DEFAULT_SORT: GameSorts = {
+  field: SortFields.RATING,
+  order: SortFieldsOrder.DESC,
+};
+
+export const DEFAULT_PAGINATE: GamePaginate = {
+  limit: GAMES_LIMIT,
+  offset: 0,
+};

@@ -1,5 +1,5 @@
-import { MAX_RATING, MIN_RATING } from ".";
-import { GAMES_LIMIT } from "../consts";
+import { ReadonlyURLSearchParams } from "next/navigation";
+import { DEFAULT_FILTERS, DEFAULT_PAGINATE, DEFAULT_SORT } from ".";
 import { UseGamesApiResponse } from "./api";
 import {
   Game,
@@ -32,36 +32,83 @@ export const normalizeGameProperties = (game: UseGamesApiResponse): Game => {
   };
 };
 
+export const retrieveFiltersFromSearchParams = (
+  params: ReadonlyURLSearchParams
+): GameFilters => {
+  const filters = { ...DEFAULT_FILTERS };
+  for (const key of Object.keys(filters) as Array<keyof typeof filters>) {
+    if (params.has(key)) {
+      const value = params.get(key);
+      if (key === "categories" || key === "genres" || key === "themes") {
+        filters[key] = value?.split(",").map(Number) ?? [];
+      } else if (key === "ratingMin" || key === "ratingMax") {
+        filters[key] = Number(value);
+      } else {
+        filters[key] = value || "";
+      }
+    }
+  }
+
+  return filters;
+};
+
+export const retrieveSortFromSearchParams = (
+  params: ReadonlyURLSearchParams
+): GameSorts => {
+  const sort = { ...DEFAULT_SORT };
+  for (const key of Object.keys(sort) as Array<keyof typeof sort>) {
+    if (params.has(key)) {
+      const value = params.get(key);
+      if (key === "order") {
+        sort[key] = value as SortFieldsOrder;
+      } else {
+        sort[key] = value as SortFields;
+      }
+    }
+  }
+
+  return sort;
+};
+
+export const retrievePaginateFromSearchParams = (
+  params: ReadonlyURLSearchParams
+): GamePaginate => {
+  const paginate = { ...DEFAULT_PAGINATE };
+  for (const key of Object.keys(paginate) as Array<keyof typeof paginate>) {
+    if (params.has(key)) {
+      const value = params.get(key);
+      paginate[key] = Number(value);
+    }
+  }
+
+  return paginate;
+};
+
 export const stringifyGetGamesParams = (
-  filters: GameFilters = {
-    name: "",
-    categories: [],
-    genres: [],
-    themes: [],
-    ratingMin: MIN_RATING,
-    ratingMax: MAX_RATING,
-  },
-  sort: GameSorts = {
-    field: SortFields.RATING,
-    order: SortFieldsOrder.DESC,
-  },
-  paginate: GamePaginate = {
-    limit: GAMES_LIMIT,
-    offset: 0,
+  params: {
+    filters: GameFilters;
+    sort: GameSorts;
+    paginate: GamePaginate;
+  } = {
+    filters: DEFAULT_FILTERS,
+    sort: DEFAULT_SORT,
+    paginate: DEFAULT_PAGINATE,
   }
 ) => {
+  const { filters, paginate, sort } = params;
+
   const fields = `fields name, cover.image_id, first_release_date, total_rating, category, themes, game_modes, genres;`;
   const filterQuery = `where name ~ *"${filters.name}"*
   ${
     filters.categories.length > 0
-      ? `& category = (${filters.categories?.join(", ")}`
+      ? `& category = (${filters.categories?.join(", ")})`
       : ""
   } 
-  ${filters.genres.length > 0 ? `& genre = (${filters.genres?.join(", ")}` : ""}
+  ${filters.genres.length > 0 ? `& genres = (${filters.genres?.join(", ")})` : ""}
   ${
-    filters.themes.length > 0 ? `& theme = (${filters.themes?.join(", ")}` : ""
+    filters.themes.length > 0 ? `& themes = (${filters.themes?.join(", ")})` : ""
   } 
-  & rating >= ${filters.ratingMin} & rating <= ${filters.ratingMax};`;
+  & total_rating >= ${filters.ratingMin} & total_rating <= ${filters.ratingMax};`;
   const sortQuery = `sort ${sort.field} ${sort.order};`;
   const paginateQuery = `limit ${paginate.limit}; offset ${paginate.offset};`;
 

@@ -2,8 +2,7 @@ import { axiosInstance } from "@shared/config";
 import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
-import { GAMES_LIMIT } from "../consts";
-import { MAX_RATING, MIN_RATING } from "./consts";
+import { DEFAULT_FILTERS, DEFAULT_PAGINATE, DEFAULT_SORT } from "./consts";
 import { normalizeGameProperties, stringifyGetGamesParams } from "./lib";
 import {
   GameFilters,
@@ -11,9 +10,7 @@ import {
   GameMode,
   GamePaginate,
   GameSorts,
-  GameTheme,
-  SortFields,
-  SortFieldsOrder
+  GameTheme
 } from "./types";
 
 export type UseGamesApiResponse = {
@@ -34,29 +31,22 @@ export type UseGamesApiResponse = {
 };
 
 export const useGames = (
-  filters: GameFilters = {
-    name: "",
-    categories: [],
-    genres: [],
-    themes: [],
-    ratingMin: MIN_RATING,
-    ratingMax: MAX_RATING,
-  },
-  sort: GameSorts = {
-    field: SortFields.RATING,
-    order: SortFieldsOrder.DESC,
-  },
-  paginate: GamePaginate = {
-    limit: GAMES_LIMIT,
-    offset: 0,
+  params: {
+    filters: GameFilters;
+    sort: GameSorts;
+    paginate: GamePaginate;
+  } = {
+    filters: DEFAULT_FILTERS,
+    sort: DEFAULT_SORT,
+    paginate: DEFAULT_PAGINATE,
   }
 ) => {
   const { toast } = useToast();
 
   return useQuery(
-    ["browse_games", { filters, sort, paginate }],
+    ["browse_games", params],
     async () => {
-      const body = stringifyGetGamesParams(filters, sort, paginate);
+      const body = stringifyGetGamesParams(params);
       const { data } = await axiosInstance.post<UseGamesApiResponse[]>(
         "/games",
         body

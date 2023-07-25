@@ -76,13 +76,14 @@ export const GameCard = ({
         </div>
         <Link
           href={`${GAMES_ROUTE}/${game.id}`}
-          className="block h-72 sm:h-96 md:h-72 lg:h-80 group-hover:blur-sm"
+          className="relative block h-72 sm:h-96 md:h-72 lg:h-80 xl:h-96 group-hover:blur-sm"
         >
           <Image
             className="object-cover"
             fill
             src={game.cover}
             alt={game.name}
+            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
           />
         </Link>
         {/* Add to library + user rating + status */}

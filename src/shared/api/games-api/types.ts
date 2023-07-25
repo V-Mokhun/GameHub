@@ -64,9 +64,9 @@ export interface GameFilters {
   name?: string;
   ratingMin: number;
   ratingMax: number;
-  categories: GameCategories[];
-  themes: GameTheme[];
-  genres: GameGenre[];
+  categories: number[];
+  themes: number[];
+  genres: number[];
 }
 
 export interface Game {
