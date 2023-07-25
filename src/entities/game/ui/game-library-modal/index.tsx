@@ -76,12 +76,11 @@ export const GameLibraryModal = ({
   const watchStatus = form.watch("status");
 
   const onSubmit: SubmitHandler<AddGameScheme> = async (data) => {
-    console.log(rating);
     await addGame({
       category: gameData.category,
       name: gameData.name,
       id: gameData.id,
-      releaseDate: gameData.releaseDate,
+      releaseDate: gameData.releaseDate || null,
       gameModes: gameData.gameModes?.join(",") || "",
       genres: gameData.genres?.join(",") || "",
       themes: gameData.themes?.join(",") || "",
@@ -119,9 +118,11 @@ export const GameLibraryModal = ({
               <DialogTitle className="text-base md:text-lg mb-1">
                 {gameData.name}
               </DialogTitle>
-              <span className="text-muted-foreground mb-2">
-                ({gameData.releaseDate.getFullYear()})
-              </span>
+              {gameData.releaseDate && (
+                <span className="text-muted-foreground mb-2">
+                  gameData.releaseDate.getFullYear()
+                </span>
+              )}
             </div>
           </div>
           <Form {...form}>

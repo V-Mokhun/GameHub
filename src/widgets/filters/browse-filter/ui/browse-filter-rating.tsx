@@ -1,14 +1,33 @@
 "use client";
 
 import { MAX_RATING, MIN_RATING } from "@shared/api";
+import { useDebouncedValue } from "@shared/lib";
 import { Input, Label } from "@shared/ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-interface BrowseFilterRatingProps {}
+interface BrowseFilterRatingProps {
+  onChange: (key: string, value: string) => void;
+}
 
-export const BrowseFilterRating = ({}: BrowseFilterRatingProps) => {
+export const BrowseFilterRating = ({ onChange }: BrowseFilterRatingProps) => {
   const [minRating, setMinRating] = useState(MIN_RATING);
   const [maxRating, setMaxRating] = useState(MAX_RATING);
+  const [debouncedMinRating] = useDebouncedValue(minRating);
+  const [debouncedMaxRating] = useDebouncedValue(maxRating);
+
+  useEffect(() => {
+    onChange("ratingMin", debouncedMinRating.toString());
+  }, [onChange, debouncedMinRating]);
+
+  useEffect(() => {
+    if (debouncedMaxRating < debouncedMinRating)
+      setMaxRating(debouncedMinRating);
+
+    onChange(
+      "ratingMax",
+      Math.max(debouncedMaxRating, debouncedMinRating).toString()
+    );
+  }, [onChange, debouncedMaxRating, debouncedMinRating]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -30,8 +49,7 @@ export const BrowseFilterRating = ({}: BrowseFilterRatingProps) => {
         <Input
           value={maxRating}
           onChange={(e) => {
-            if (+e.target.value < minRating || +e.target.value > MAX_RATING)
-              return;
+            if (+e.target.value > MAX_RATING) return;
 
             setMaxRating(+e.target.value);
           }}

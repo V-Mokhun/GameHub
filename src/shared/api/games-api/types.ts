@@ -67,12 +67,13 @@ export interface GameFilters {
   categories: number[];
   themes: number[];
   genres: number[];
+  gameModes: number[];
 }
 
 export interface Game {
   id: number;
   cover: string;
-  releaseDate: Date;
+  releaseDate?: Date;
   name: string;
   rating: number;
   category: number;

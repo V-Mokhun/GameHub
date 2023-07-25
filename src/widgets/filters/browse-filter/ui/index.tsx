@@ -1,19 +1,30 @@
 "use client";
 
-import { cn, useClickOutside } from "@shared/lib";
+import { cn, updateSearchParams, useClickOutside } from "@shared/lib";
 import { Button, Icon, Title } from "@shared/ui";
 import { useBrowseFilterStore } from "../model";
 import { BrowseFilterName } from "./browse-filter-name";
 import { BrowseFilterRating } from "./browse-filter-rating";
 import { BrowseFilterSelect } from "./browse-filter-select";
 import { GAME_CATEGORIES, gamesApi } from "@shared/api";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface BrowseFilterProps {}
 
 export const BrowseFilter = ({}: BrowseFilterProps) => {
   const isOpen = useBrowseFilterStore((state) => state.isOpen);
   const onClose = useBrowseFilterStore((state) => state.onClose);
+  const onOpen = useBrowseFilterStore((state) => state.onOpen);
   const ref = useClickOutside(onClose);
+  const params = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const onUpdateParams = (key: string, value: string) => {
+    const query = updateSearchParams(params, key, value);
+    router.push(`${pathname}${query}`);
+    onOpen();
+  };
 
   return (
     <aside
@@ -35,14 +46,27 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
         <Title className="mb-4 lg:mb-6">Filter Games</Title>
         <div className="flex flex-col gap-4">
           <BrowseFilterName />
-          <BrowseFilterRating />
-          <BrowseFilterSelect title="Genre" fetchData={gamesApi.getGenres} />
-          <BrowseFilterSelect title="Themes" fetchData={gamesApi.getThemes} />
+          <BrowseFilterRating onChange={onUpdateParams} />
           <BrowseFilterSelect
+            onSelect={(val) => onUpdateParams("genres", val)}
+            title="Genre"
+            fetchData={gamesApi.getGenres}
+          />
+          <BrowseFilterSelect
+            onSelect={(val) => onUpdateParams("themes", val)}
+            title="Themes"
+            fetchData={gamesApi.getThemes}
+          />
+          <BrowseFilterSelect
+            onSelect={(val) => onUpdateParams("category", val)}
             title="Categories"
             fetchData={() => ({ data: GAME_CATEGORIES, isLoading: false })}
           />
-          <BrowseFilterSelect title="Modes" fetchData={gamesApi.getModes} />
+          <BrowseFilterSelect
+            onSelect={(val) => onUpdateParams("gameModes", val)}
+            title="Modes"
+            fetchData={gamesApi.getModes}
+          />
         </div>
       </div>
     </aside>

@@ -24,7 +24,7 @@ model Game {
   name        String
   totalRating Int
   coverUrl    String
-  releaseDate DateTime
+  releaseDate DateTime?
   category    Int
   themes      String   @default("") //? [23, 64] => "23,64" Since MySql doesn't support arrays
   genres      String   @default("")

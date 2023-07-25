@@ -22,15 +22,17 @@ import { useState } from "react";
 type BrowseFilterSelectProps<T extends Omit<GameTheme, "slug">> = {
   fetchData: () => Pick<UseQueryResult<T[], unknown>, "data" | "isLoading">;
   title: string;
+  onSelect: (value: string) => void;
 };
 
-export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>(
-  props: BrowseFilterSelectProps<T>
-) => {
+export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
+  fetchData,
+  onSelect,
+  title,
+}: BrowseFilterSelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState<GameTheme[]>([]);
-  const { title } = props;
-  const { data, isLoading } = props.fetchData();
+  const { data, isLoading } = fetchData();
 
   if (isLoading)
     return (
@@ -69,13 +71,19 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>(
                         (itm) => itm.name.toLowerCase() === currentValue
                       )
                     ) {
-                      setSelectedData((curr) =>
-                        curr.filter(
+                      setSelectedData((curr) => {
+                        const data = curr.filter(
                           (itm) => itm.name.toLowerCase() !== currentValue
-                        )
-                      );
+                        );
+                        onSelect(data.map((itm) => itm.id).join(","));
+                        return data;
+                      });
                     } else {
-                      setSelectedData((curr) => [...curr, item]);
+                      setSelectedData((curr) => {
+                        const data = [...curr, item];
+                        onSelect(data.map((itm) => itm.id).join(","));
+                        return data;
+                      });
                     }
                   }}
                 >

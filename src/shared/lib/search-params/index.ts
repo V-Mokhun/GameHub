@@ -1,6 +1,18 @@
-export const updateSearchParams = (type: string, value: string) => {
-  const searchParams = new URLSearchParams(window.location.search);
-  searchParams.set(type, value);
-  const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
-  return newPathname;
+import { ReadonlyURLSearchParams } from "next/navigation";
+
+export const updateSearchParams = (
+  searchParams: ReadonlyURLSearchParams,
+  key: string,
+  value: string
+) => {
+  const current = new URLSearchParams(Array.from(searchParams.entries()));
+  if (!value) {
+    current.delete(key);
+  } else {
+    current.set(key, value);
+  }
+  const search = current.toString();
+  const query = search ? `?${search}` : "";
+
+  return query;
 };

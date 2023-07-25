@@ -20,7 +20,7 @@ import { Control } from "react-hook-form";
 interface GameLibraryCalendarProps {
   control: Control<AddGameScheme>;
   watchStatus: GameStatus;
-  releaseDate: Date;
+  releaseDate?: Date;
 }
 
 export const GameLibraryCalendar = ({
@@ -71,7 +71,12 @@ export const GameLibraryCalendar = ({
                 captionLayout="dropdown-buttons"
                 selected={field.value ?? undefined}
                 onSelect={(e) => field.onChange(e || null)}
-                disabled={(date) => date > new Date() || date < releaseDate}
+                disabled={(date) =>
+                  date > new Date() ||
+                  (releaseDate
+                    ? date < releaseDate
+                    : date < new Date(Date.UTC(1900, 0, 1)))
+                }
                 initialFocus
               />
             </PopoverContent>

@@ -4,7 +4,8 @@ import { useDebouncedValue } from "@shared/lib";
 import { Input, Label } from "@shared/ui";
 import { useState } from "react";
 
-interface BrowseFilterNameProps {}
+interface BrowseFilterNameProps {
+}
 
 export const BrowseFilterName = ({}: BrowseFilterNameProps) => {
   const [searchValue, setSearchValue] = useState("");

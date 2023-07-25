@@ -30,6 +30,7 @@ export const DEFAULT_FILTERS: GameFilters = {
   categories: [],
   genres: [],
   themes: [],
+  gameModes: [],
   ratingMin: MIN_RATING,
   ratingMax: MAX_RATING,
 };

@@ -27,8 +27,10 @@ export const normalizeGameProperties = (game: UseGamesApiResponse): Game => {
     themes: game.themes,
     gameModes: game.game_modes,
     genres: game.genres,
-    cover: getGameImageUrl(game.cover.image_id),
-    releaseDate: new Date(game.first_release_date * 1000),
+    cover: getGameImageUrl(game?.cover?.image_id || ""),
+    releaseDate: game.first_release_date
+      ? new Date(game.first_release_date * 1000)
+      : undefined,
   };
 };
 
@@ -36,10 +38,15 @@ export const retrieveFiltersFromSearchParams = (
   params: ReadonlyURLSearchParams
 ): GameFilters => {
   const filters = { ...DEFAULT_FILTERS };
-  for (const key of Object.keys(filters) as Array<keyof typeof filters>) {
+  for (let key of Object.keys(filters) as Array<keyof typeof filters>) {
     if (params.has(key)) {
       const value = params.get(key);
-      if (key === "categories" || key === "genres" || key === "themes") {
+      if (
+        key === "categories" ||
+        key === "genres" ||
+        key === "themes" ||
+        key === "gameModes"
+      ) {
         filters[key] = value?.split(",").map(Number) ?? [];
       } else if (key === "ratingMin" || key === "ratingMax") {
         filters[key] = Number(value);
@@ -104,11 +111,24 @@ export const stringifyGetGamesParams = (
       ? `& category = (${filters.categories?.join(", ")})`
       : ""
   } 
-  ${filters.genres.length > 0 ? `& genres = (${filters.genres?.join(", ")})` : ""}
   ${
-    filters.themes.length > 0 ? `& themes = (${filters.themes?.join(", ")})` : ""
+    filters.genres.length > 0
+      ? `& genres = (${filters.genres?.join(", ")})`
+      : ""
+  }
+  ${
+    filters.themes.length > 0
+      ? `& themes = (${filters.themes?.join(", ")})`
+      : ""
   } 
-  & total_rating >= ${filters.ratingMin} & total_rating <= ${filters.ratingMax};`;
+  ${
+    filters.gameModes.length > 0
+      ? `& game_modes = (${filters.gameModes?.join(", ")})`
+      : ""
+  } 
+  & total_rating >= ${filters.ratingMin} & total_rating <= ${
+    filters.ratingMax
+  };`;
   const sortQuery = `sort ${sort.field} ${sort.order};`;
   const paginateQuery = `limit ${paginate.limit}; offset ${paginate.offset};`;
 

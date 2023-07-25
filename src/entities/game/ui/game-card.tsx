@@ -67,7 +67,8 @@ export const GameCard = ({
         {/* name + rating */}
         <div className="absolute z-[2] top-2 left-0 right-0 flex justify-between items-start gap-2 px-2">
           <p className="text-xs">
-            {game.name} ({game.releaseDate.getFullYear()})
+            {game.name}{" "}
+            {game.releaseDate ? `${game.releaseDate.getFullYear()}` : ""}
           </p>
           <div className="flex items-center gap-1">
             <Icon size={12} name="Star" />

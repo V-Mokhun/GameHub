@@ -15,13 +15,13 @@ import {
 
 export type UseGamesApiResponse = {
   id: number;
-  cover: {
+  cover?: {
     id: number;
     image_id: string;
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
   };
-  first_release_date: number;
+  first_release_date?: number;
   name: string;
   total_rating: number;
   category: number;
@@ -51,6 +51,8 @@ export const useGames = (
         "/games",
         body
       );
+      console.log(data);
+      
       return data.map(normalizeGameProperties);
     },
     {
