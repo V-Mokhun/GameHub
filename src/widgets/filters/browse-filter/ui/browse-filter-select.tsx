@@ -1,6 +1,6 @@
 "use client";
 
-import { GameTheme, gamesApi } from "@shared/api";
+import { GameTheme } from "@shared/api";
 import { cn } from "@shared/lib";
 import {
   Button,

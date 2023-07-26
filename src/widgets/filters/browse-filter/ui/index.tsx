@@ -1,19 +1,14 @@
 "use client";
 
-import {
-  cn,
-  updateSearchParams,
-  useClickOutside,
-  useDebouncedValue,
-} from "@shared/lib";
-import { Button, Icon, Input, Label, Title } from "@shared/ui";
+import { GAME_CATEGORIES, gamesApi } from "@shared/api";
+import { cn, updateSearchParams, useClickOutside } from "@shared/lib";
+import { Button, Icon, Overlay, Title } from "@shared/ui";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 import { useBrowseFilterStore } from "../model";
 import { BrowseFilterName } from "./browse-filter-name";
 import { BrowseFilterRating } from "./browse-filter-rating";
 import { BrowseFilterSelect } from "./browse-filter-select";
-import { GAME_CATEGORIES, MAX_RATING, MIN_RATING, gamesApi } from "@shared/api";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
 
 interface BrowseFilterProps {}
 
@@ -36,12 +31,7 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
 
   return (
     <>
-      <div
-        className={cn(
-          "fixed inset-0 z-40 bg-background/80 backdrop-blur-sm transition-all md:hidden",
-          isOpen ? "animate-in fade-in-0" : "animate-out fade-out-0 invisible opacity-0"
-        )}
-      ></div>
+      <Overlay isOpen={isOpen} />
       <aside
         ref={ref}
         className={cn(

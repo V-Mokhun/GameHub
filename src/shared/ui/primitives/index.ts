@@ -13,6 +13,7 @@ export { Container } from "./container";
 export { Badge, badgeVariants } from "./badge";
 export { Textarea } from './textarea';
 export { Calendar } from './calendar';
+export { Overlay } from './overlay';
 
 export * from "./toast";
 export * from "./form";

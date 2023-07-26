@@ -10,7 +10,7 @@ import {
   GameMode,
   GamePaginate,
   GameSorts,
-  GameTheme
+  GameTheme,
 } from "./types";
 
 export type UseGamesApiResponse = {
@@ -42,23 +42,24 @@ export const useGames = (
   }
 ) => {
   const { toast } = useToast();
+  const page = Math.floor(params.paginate.offset / params.paginate.limit) + 1;
 
   return useQuery(
-    ["browse_games", params],
+    ["browse_games", page],
     async () => {
       const body = stringifyGetGamesParams(params);
       const { data } = await axiosInstance.post<UseGamesApiResponse[]>(
         "/games",
         body
       );
-      console.log(data);
-      
+
       return data.map(normalizeGameProperties);
     },
     {
       onError: (error) => {
         return displayError(toast, error);
       },
+      keepPreviousData: true,
     }
   );
 };
