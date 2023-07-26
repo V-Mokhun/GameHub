@@ -30,11 +30,7 @@ export const PaginationNavigaton = ({
         size="icon"
         variant="secondary"
       >
-        {isFetching ? (
-          <Icon className="text-white animate-spin" name="Loader" />
-        ) : (
-          <Icon className="text-white" name="ChevronsLeft" />
-        )}
+        <Icon className="text-white" name="ChevronsLeft" />
       </Button>
       <Button
         onClick={() =>
@@ -44,11 +40,7 @@ export const PaginationNavigaton = ({
         size="icon"
         variant="secondary"
       >
-        {isFetching ? (
-          <Icon className="text-white animate-spin" name="Loader" />
-        ) : (
-          <Icon className="text-white" name="ChevronLeft" />
-        )}
+        <Icon className="text-white" name="ChevronLeft" />
       </Button>
       <Button
         onClick={() => {
@@ -60,11 +52,7 @@ export const PaginationNavigaton = ({
         size="icon"
         variant="secondary"
       >
-        {isFetching ? (
-          <Icon className="text-white animate-spin" name="Loader" />
-        ) : (
-          <Icon className="text-white" name="ChevronRight" />
-        )}
+        <Icon className="text-white" name="ChevronRight" />
       </Button>
       <Button
         onClick={() => {
@@ -74,11 +62,7 @@ export const PaginationNavigaton = ({
         size="icon"
         variant="secondary"
       >
-        {isFetching ? (
-          <Icon className="text-white animate-spin" name="Loader" />
-        ) : (
-          <Icon className="text-white" name="ChevronsRight" />
-        )}
+        <Icon className="text-white" name="ChevronsRight" />
       </Button>
     </div>
   );

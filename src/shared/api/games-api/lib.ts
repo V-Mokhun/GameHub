@@ -36,8 +36,9 @@ export const normalizeGameProperties = (game: UseGamesApiResponse): Game => {
 
 export const retrieveFiltersFromSearchParams = (
   params: ReadonlyURLSearchParams
-): GameFilters => {
+): { filters: GameFilters; isDefault: boolean } => {
   const filters = { ...DEFAULT_FILTERS };
+  let isDefault = true;
   for (let key of Object.keys(filters) as Array<keyof typeof filters>) {
     if (params.has(key)) {
       const value = params.get(key);
@@ -48,15 +49,22 @@ export const retrieveFiltersFromSearchParams = (
         key === "gameModes"
       ) {
         filters[key] = value?.split(",").map(Number) ?? [];
+        isDefault = false;
       } else if (key === "ratingMin" || key === "ratingMax") {
         filters[key] = Number(value);
+        if (filters[key] !== DEFAULT_FILTERS[key]) {
+          isDefault = false;
+        }
       } else {
         filters[key] = value || "";
+        if (value !== "") {
+          isDefault = false;
+        }
       }
     }
   }
 
-  return filters;
+  return { filters, isDefault };
 };
 
 export const retrieveSortFromSearchParams = (

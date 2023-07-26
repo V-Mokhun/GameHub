@@ -60,6 +60,7 @@ export const useGames = (
         return displayError(toast, error);
       },
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -93,6 +94,7 @@ export const useGamesCount = (
         return displayError(toast, error);
       },
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
     }
   );
 };

@@ -40,7 +40,7 @@ export const Pagination = ({
   }, [onPaginateChange, limit, offset]);
 
   return (
-    <div className="flex items-center justify-end gap-4">
+    <div className="flex flex-col justify-center items-center md:flex-row md:justify-end gap-4">
       <PaginationLimit
         limit={limit}
         onLimitChange={setLimit}
@@ -48,7 +48,7 @@ export const Pagination = ({
         isFetching={isFetching}
       />
       <div>
-        <span>
+        <span className="text-sm lg:text-base">
           Page {page} of {totalPages}
         </span>
       </div>

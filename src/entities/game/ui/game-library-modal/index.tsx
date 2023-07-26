@@ -120,7 +120,7 @@ export const GameLibraryModal = ({
               </DialogTitle>
               {gameData.releaseDate && (
                 <span className="text-muted-foreground mb-2">
-                  gameData.releaseDate.getFullYear()
+                  {gameData.releaseDate.getFullYear()}
                 </span>
               )}
             </div>

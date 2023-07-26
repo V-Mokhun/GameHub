@@ -20,7 +20,7 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-
+  
   const onUpdateParams = useCallback(
     (key: string, value: string) => {
       const query = updateSearchParams(params, key, value);

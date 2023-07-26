@@ -25,7 +25,7 @@ export const PaginationLimit = ({
 }: PaginationLimitProps) => {
   return (
     <div className="flex items-center gap-2">
-      <span>Games per page: </span>
+      <span className="text-sm lg:text-base">Games per page: </span>
       <Select
         defaultValue={String(limit)}
         onValueChange={(lim) => onLimitChange(Number(lim))}

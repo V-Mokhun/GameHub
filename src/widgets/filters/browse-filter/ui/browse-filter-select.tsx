@@ -64,6 +64,8 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
     )
       return;
 
+    console.log(selectKey, selectedData);
+
     onSelect(selectedData.map((item) => item.id).join(","));
   }, [data, isLoading, onSelect, selectedData]);
 
