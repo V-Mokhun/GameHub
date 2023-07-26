@@ -27,6 +27,7 @@ type BrowseFilterSelectProps<T extends Omit<GameTheme, "slug">> = {
   onFilterOpen: () => void;
   selectKey: string;
   params: ReadonlyURLSearchParams;
+  filterValue: number[];
 };
 
 export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
@@ -36,6 +37,7 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
   onFilterOpen,
   selectKey,
   params,
+  filterValue,
 }: BrowseFilterSelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState<GameTheme[]>([]);
@@ -49,13 +51,16 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
 
     const selected = data.filter((item) => ids.includes(item.id.toString()));
     setSelectedData(selected);
+    onSelect(selected.map((item) => item.id));
   }, [data, isLoading]);
 
   useEffect(() => {
     if (!data || isLoading) return;
 
-    onSelect(selectedData.map((item) => item.id));
-  }, [selectedData, isLoading, data]);
+    const selected = data.filter((item) => filterValue.includes(item.id));
+
+    setSelectedData(selected);
+  }, [filterValue, isLoading, data]);
 
   if (isLoading)
     return (
@@ -98,11 +103,13 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
                         const data = curr.filter(
                           (itm) => itm.name.toLowerCase() !== currentValue
                         );
+                        onSelect(data.map((item) => item.id));
                         return data;
                       });
                     } else {
                       setSelectedData((curr) => {
                         const data = [...curr, item];
+                        onSelect(data.map((item) => item.id));
                         return data;
                       });
                     }

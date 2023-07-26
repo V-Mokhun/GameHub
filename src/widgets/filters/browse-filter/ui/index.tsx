@@ -74,10 +74,14 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
           <Title className="mb-4 lg:mb-6">Filter Games</Title>
           <div className="flex flex-col gap-4">
             <BrowseFilterName
-              params={params}
+              search={filters.name || ""}
               onChange={(value) => updateFilters("name", value)}
             />
-            <BrowseFilterRating onChange={updateFilters} params={params} />
+            <BrowseFilterRating
+              onChange={updateFilters}
+              minRatingValue={filters.ratingMin}
+              maxRatingValue={filters.ratingMax}
+            />
             <BrowseFilterSelect
               onSelect={(val) => {
                 updateFilters("genres", val);
@@ -87,6 +91,7 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
               onFilterOpen={onOpen}
               params={params}
               selectKey="genres"
+              filterValue={filters.genres}
             />
             <BrowseFilterSelect
               onSelect={(val) => {
@@ -97,6 +102,7 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
               onFilterOpen={onOpen}
               params={params}
               selectKey="themes"
+              filterValue={filters.themes}
             />
             <BrowseFilterSelect
               onSelect={(val) => {
@@ -107,6 +113,7 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
               onFilterOpen={onOpen}
               params={params}
               selectKey="categories"
+              filterValue={filters.categories}
             />
             <BrowseFilterSelect
               onSelect={(val) => {
@@ -117,6 +124,7 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
               onFilterOpen={onOpen}
               params={params}
               selectKey="gameModes"
+              filterValue={filters.gameModes}
             />
           </div>
         </div>

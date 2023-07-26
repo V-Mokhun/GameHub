@@ -2,28 +2,27 @@
 
 import { useDebouncedValue } from "@shared/lib";
 import { Input, Label } from "@shared/ui";
-import { ReadonlyURLSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface BrowseFilterNameProps {
   onChange: (value: string) => void;
-  params: ReadonlyURLSearchParams;
+  search: string;
 }
 
 export const BrowseFilterName = ({
   onChange,
-  params,
+  search,
 }: BrowseFilterNameProps) => {
-  const [searchValue, setSearchValue] = useState(
-    () => params.get("name") || ""
-  );
+  const [searchValue, setSearchValue] = useState(search);
   const [debouncedSearchValue] = useDebouncedValue(searchValue);
 
   useEffect(() => {
-    if (params.get("name") === debouncedSearchValue) return;
-
     onChange(debouncedSearchValue);
   }, [debouncedSearchValue]);
+
+  useEffect(() => {
+    setSearchValue(search);
+  }, [search]);
 
   return (
     <div className="flex flex-col gap-2">

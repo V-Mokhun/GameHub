@@ -3,7 +3,6 @@
 import { GameFilters, MAX_RATING, MIN_RATING } from "@shared/api";
 import { useDebouncedValue } from "@shared/lib";
 import { Input, Label } from "@shared/ui";
-import { ReadonlyURLSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface BrowseFilterRatingProps {
@@ -11,19 +10,17 @@ interface BrowseFilterRatingProps {
     key: keyof GameFilters,
     value: GameFilters[keyof GameFilters]
   ) => void;
-  params: ReadonlyURLSearchParams;
+  minRatingValue: number;
+  maxRatingValue: number;
 }
 
 export const BrowseFilterRating = ({
   onChange,
-  params,
+  maxRatingValue,
+  minRatingValue,
 }: BrowseFilterRatingProps) => {
-  const [minRating, setMinRating] = useState(
-    Number(params.get("ratingMin")) || MIN_RATING
-  );
-  const [maxRating, setMaxRating] = useState(
-    Number(params.get("ratingMax")) || MAX_RATING
-  );
+  const [minRating, setMinRating] = useState(minRatingValue);
+  const [maxRating, setMaxRating] = useState(maxRatingValue);
   const [debouncedMinRating] = useDebouncedValue(minRating, 1000);
   const [debouncedMaxRating] = useDebouncedValue(maxRating, 1000);
 
@@ -37,6 +34,14 @@ export const BrowseFilterRating = ({
   useEffect(() => {
     onChange("ratingMin", Math.max(0, debouncedMinRating));
   }, [debouncedMinRating]);
+
+  useEffect(() => {
+    setMaxRating(maxRatingValue);
+  }, [maxRatingValue]);
+
+  useEffect(() => {
+    setMinRating(minRatingValue);
+  }, [minRatingValue]);
 
   return (
     <div className="flex flex-col gap-2">

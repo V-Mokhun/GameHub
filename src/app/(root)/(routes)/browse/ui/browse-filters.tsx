@@ -23,6 +23,7 @@ interface BrowseFiltersProps {}
 
 export const BrowseFilters = ({}: BrowseFiltersProps) => {
   const onOpenFilter = useBrowseFilterStore((state) => state.onOpen);
+  const resetFilters = useBrowseFilterStore((state) => state.resetFilters);
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -68,7 +69,11 @@ export const BrowseFilters = ({}: BrowseFiltersProps) => {
         {!isDefault && (
           <Button
             className="hidden xl:block"
-            onClick={() => {}}
+            onClick={() => {
+              resetFilters();
+              router.push(BROWSE_ROUTE);
+              router.refresh();
+            }}
             variant="destructive"
           >
             Clear Filters
@@ -78,7 +83,14 @@ export const BrowseFilters = ({}: BrowseFiltersProps) => {
       </div>
       {!isDefault && (
         <div className="xl:hidden flex justify-end">
-          <Button onClick={() => {}} variant="destructive">
+          <Button
+            onClick={() => {
+              resetFilters();
+              router.push(BROWSE_ROUTE);
+              router.refresh();
+            }}
+            variant="destructive"
+          >
             Clear Filters
           </Button>
         </div>
