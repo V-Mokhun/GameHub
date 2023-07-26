@@ -34,6 +34,32 @@ export const normalizeGameProperties = (game: UseGamesApiResponse): Game => {
   };
 };
 
+export const stringifyFilters = (
+  params: ReadonlyURLSearchParams,
+  filters: GameFilters
+) => {
+  const current = new URLSearchParams(Array.from(params.entries()));
+
+  for (let key of Object.keys(filters) as Array<keyof typeof filters>) {
+    if (
+      key === "categories" ||
+      key === "genres" ||
+      key === "themes" ||
+      key === "gameModes"
+    ) {
+      if (filters[key].length > 0) current.set(key, filters[key].join(","));
+      else current.delete(key);
+    } else {
+      current.set(key, String(filters[key]));
+    }
+  }
+
+  const search = current.toString();
+  const query = search ? `?${search}` : "";
+
+  return query;
+};
+
 export const retrieveFiltersFromSearchParams = (
   params: ReadonlyURLSearchParams
 ): { filters: GameFilters; isDefault: boolean } => {

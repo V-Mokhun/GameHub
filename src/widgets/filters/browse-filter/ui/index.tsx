@@ -1,10 +1,16 @@
 "use client";
 
-import { GAME_CATEGORIES, gamesApi } from "@shared/api";
-import { cn, updateSearchParams, useClickOutside } from "@shared/lib";
+import {
+  GAME_CATEGORIES,
+  MAX_RATING,
+  MIN_RATING,
+  gamesApi,
+  stringifyFilters,
+} from "@shared/api";
+import { cn, useClickOutside } from "@shared/lib";
 import { Button, Icon, Overlay, Title } from "@shared/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useEffect } from "react";
 import { useBrowseFilterStore } from "../model";
 import { BrowseFilterName } from "./browse-filter-name";
 import { BrowseFilterRating } from "./browse-filter-rating";
@@ -13,21 +19,38 @@ import { BrowseFilterSelect } from "./browse-filter-select";
 interface BrowseFilterProps {}
 
 export const BrowseFilter = ({}: BrowseFilterProps) => {
-  const isOpen = useBrowseFilterStore((state) => state.isOpen);
-  const onClose = useBrowseFilterStore((state) => state.onClose);
-  const onOpen = useBrowseFilterStore((state) => state.onOpen);
+  const { filters, isOpen, onClose, onOpen, updateFilters, setFilters } =
+    useBrowseFilterStore();
+
   const ref = useClickOutside(onClose);
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  
-  const onUpdateParams = useCallback(
-    (key: string, value: string) => {
-      const query = updateSearchParams(params, key, value);
-      router.push(`${pathname}${query}`);
-    },
-    [params, pathname, router]
-  );
+
+  useEffect(() => {
+    const categories = params.get("categories")?.split(",").map(Number) || [];
+    const genres = params.get("genres")?.split(",").map(Number) || [];
+    const themes = params.get("themes")?.split(",").map(Number) || [];
+    const gameModes = params.get("gameModes")?.split(",").map(Number) || [];
+    const name = params.get("name") || "";
+    const ratingMin = params.get("ratingMin") || MIN_RATING;
+    const ratingMax = params.get("ratingMax") || MAX_RATING;
+
+    setFilters({
+      categories,
+      gameModes,
+      genres,
+      name,
+      ratingMax: +ratingMax,
+      ratingMin: +ratingMin,
+      themes,
+    });
+  }, []);
+
+  useEffect(() => {
+    const query = stringifyFilters(params, filters);
+    router.push(`${pathname}${query}`);
+  }, [filters, params, pathname, router]);
 
   return (
     <>
@@ -52,12 +75,12 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
           <div className="flex flex-col gap-4">
             <BrowseFilterName
               params={params}
-              onChange={(value) => onUpdateParams("name", value)}
+              onChange={(value) => updateFilters("name", value)}
             />
-            <BrowseFilterRating onChange={onUpdateParams} params={params} />
+            <BrowseFilterRating onChange={updateFilters} params={params} />
             <BrowseFilterSelect
               onSelect={(val) => {
-                onUpdateParams("genres", val);
+                updateFilters("genres", val);
               }}
               title="Genre"
               fetchData={gamesApi.getGenres}
@@ -67,7 +90,7 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
             />
             <BrowseFilterSelect
               onSelect={(val) => {
-                onUpdateParams("themes", val);
+                updateFilters("themes", val);
               }}
               title="Themes"
               fetchData={gamesApi.getThemes}
@@ -77,7 +100,7 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
             />
             <BrowseFilterSelect
               onSelect={(val) => {
-                onUpdateParams("categories", val);
+                updateFilters("categories", val);
               }}
               title="Categories"
               fetchData={() => ({ data: GAME_CATEGORIES, isLoading: false })}
@@ -87,7 +110,7 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
             />
             <BrowseFilterSelect
               onSelect={(val) => {
-                onUpdateParams("gameModes", val);
+                updateFilters("gameModes", val);
               }}
               title="Modes"
               fetchData={gamesApi.getModes}

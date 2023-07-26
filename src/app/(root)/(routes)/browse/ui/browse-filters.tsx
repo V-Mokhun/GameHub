@@ -7,7 +7,7 @@ import {
   retrieveFiltersFromSearchParams,
 } from "@shared/api";
 import { BROWSE_ROUTE } from "@shared/consts";
-import { resetSearchParams, updateSearchParams } from "@shared/lib";
+import { updateSearchParams } from "@shared/lib";
 import {
   Button,
   Select,
@@ -68,10 +68,7 @@ export const BrowseFilters = ({}: BrowseFiltersProps) => {
         {!isDefault && (
           <Button
             className="hidden xl:block"
-            onClick={() => {
-              resetSearchParams(params);
-              router.refresh();
-            }}
+            onClick={() => {}}
             variant="destructive"
           >
             Clear Filters
@@ -81,13 +78,7 @@ export const BrowseFilters = ({}: BrowseFiltersProps) => {
       </div>
       {!isDefault && (
         <div className="xl:hidden flex justify-end">
-          <Button
-            onClick={() => {
-              const query = resetSearchParams(params);
-              router.push(`${pathname}${query}`);
-            }}
-            variant="destructive"
-          >
+          <Button onClick={() => {}} variant="destructive">
             Clear Filters
           </Button>
         </div>

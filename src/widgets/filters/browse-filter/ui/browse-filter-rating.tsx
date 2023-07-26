@@ -1,13 +1,16 @@
 "use client";
 
-import { MAX_RATING, MIN_RATING } from "@shared/api";
+import { GameFilters, MAX_RATING, MIN_RATING } from "@shared/api";
 import { useDebouncedValue } from "@shared/lib";
 import { Input, Label } from "@shared/ui";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface BrowseFilterRatingProps {
-  onChange: (key: string, value: string) => void;
+  onChange: (
+    key: keyof GameFilters,
+    value: GameFilters[keyof GameFilters]
+  ) => void;
   params: ReadonlyURLSearchParams;
 }
 
@@ -16,32 +19,24 @@ export const BrowseFilterRating = ({
   params,
 }: BrowseFilterRatingProps) => {
   const [minRating, setMinRating] = useState(
-    () => Number(params.get("ratingMin")) || MIN_RATING
+    Number(params.get("ratingMin")) || MIN_RATING
   );
   const [maxRating, setMaxRating] = useState(
-    () => Number(params.get("ratingMax")) || MAX_RATING
+    Number(params.get("ratingMax")) || MAX_RATING
   );
   const [debouncedMinRating] = useDebouncedValue(minRating, 1000);
   const [debouncedMaxRating] = useDebouncedValue(maxRating, 1000);
 
   useEffect(() => {
-    if (
-      params.get("ratingMax") === debouncedMaxRating.toString() &&
-      params.get("ratingMin") === debouncedMinRating.toString()
-    )
-      return;
-
     if (debouncedMaxRating < debouncedMinRating)
       return setMaxRating(debouncedMinRating);
 
-    onChange("ratingMax", Math.min(debouncedMaxRating, 100).toString());
-  }, [debouncedMaxRating, debouncedMinRating, params, onChange]);
+    onChange("ratingMax", Math.min(debouncedMaxRating, 100));
+  }, [debouncedMaxRating, debouncedMinRating]);
 
   useEffect(() => {
-    if (params.get("ratingMin") === debouncedMinRating.toString()) return;
-
-    onChange("ratingMin", Math.max(0, debouncedMinRating).toString());
-  }, [debouncedMinRating, params, onChange]);
+    onChange("ratingMin", Math.max(0, debouncedMinRating));
+  }, [debouncedMinRating]);
 
   return (
     <div className="flex flex-col gap-2">

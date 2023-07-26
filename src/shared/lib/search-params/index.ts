@@ -20,22 +20,3 @@ export const updateSearchParams = (
 
   return query;
 };
-
-export const resetSearchParams = (searchParams: ReadonlyURLSearchParams) => {
-  const current = new URLSearchParams(Array.from(searchParams.entries()));
-
-  current.set("offset", "0");
-  current.set("limit", GAMES_LIMIT.toString());
-  current.set("ratingMin", MIN_RATING.toString());
-  current.set("ratingMax", MAX_RATING.toString());
-  current.set("name", "");
-  current.delete("genres");
-  current.delete("themes");
-  current.delete("gameModes");
-  current.delete("categories");
-
-  const search = current.toString();
-  const query = search ? `?${search}` : "";
-
-  return query;
-};

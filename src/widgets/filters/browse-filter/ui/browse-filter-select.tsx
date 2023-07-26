@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 type BrowseFilterSelectProps<T extends Omit<GameTheme, "slug">> = {
   fetchData: () => Pick<UseQueryResult<T[], unknown>, "data" | "isLoading">;
   title: string;
-  onSelect: (value: string) => void;
+  onSelect: (value: number[]) => void;
   onFilterOpen: () => void;
   selectKey: string;
   params: ReadonlyURLSearchParams;
@@ -49,25 +49,13 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
 
     const selected = data.filter((item) => ids.includes(item.id.toString()));
     setSelectedData(selected);
-  }, [data, selectKey, params, isLoading]);
+  }, [data, isLoading]);
 
   useEffect(() => {
     if (!data || isLoading) return;
 
-    const ids = params.get(selectKey)?.split(",");
-
-    if (!ids && selectedData.length === 0) return;
-    if (
-      ids &&
-      selectedData.length === ids.length &&
-      ids.every((id, index) => id === selectedData[index].id.toString())
-    )
-      return;
-
-    console.log(selectKey, selectedData);
-
-    onSelect(selectedData.map((item) => item.id).join(","));
-  }, [data, isLoading, onSelect, selectedData]);
+    onSelect(selectedData.map((item) => item.id));
+  }, [selectedData, isLoading, data]);
 
   if (isLoading)
     return (
