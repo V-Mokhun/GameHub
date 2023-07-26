@@ -27,7 +27,7 @@ export const normalizeGameProperties = (game: UseGamesApiResponse): Game => {
     themes: game.themes,
     gameModes: game.game_modes,
     genres: game.genres,
-    cover: getGameImageUrl(game?.cover?.image_id || ""),
+    cover: game.cover?.image_id ? getGameImageUrl(game?.cover?.image_id) : "",
     releaseDate: game.first_release_date
       ? new Date(game.first_release_date * 1000)
       : undefined,
