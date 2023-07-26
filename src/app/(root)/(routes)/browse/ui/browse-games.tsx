@@ -19,8 +19,6 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
   const sort = retrieveSortFromSearchParams(params);
   const paginate = retrievePaginateFromSearchParams(params);
 
-  console.log(filters);
-  
   const { data, isLoading } = gamesApi.getGames({ filters, paginate, sort });
 
   return <GameList userId={userId} games={data || []} />;

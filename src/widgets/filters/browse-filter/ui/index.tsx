@@ -35,71 +35,79 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
   );
 
   return (
-    <aside
-      ref={ref}
-      className={cn(
-        "fixed right-0 top-0 z-40 shadow-xl w-[300px] h-screen overflow-hidden flex flex-col transition-transform",
-        isOpen ? "translate-x-0" : "translate-x-full"
-      )}
-    >
-      <div className="relative bg-background p-4 flex-auto overflow-y-auto h-full">
-        <Button
-          onClick={onClose}
-          className="absolute top-2 right-2"
-          size="icon"
-          variant="destructive"
-        >
-          <Icon name="X" className="text-white" />
-        </Button>
-        <Title className="mb-4 lg:mb-6">Filter Games</Title>
-        <div className="flex flex-col gap-4">
-          <BrowseFilterName
-            params={params}
-            onChange={(value) => onUpdateParams("name", value)}
-          />
-          <BrowseFilterRating onChange={onUpdateParams} params={params} />
-          <BrowseFilterSelect
-            onSelect={(val) => {
-              onUpdateParams("genres", val);
-            }}
-            title="Genre"
-            fetchData={gamesApi.getGenres}
-            onFilterOpen={onOpen}
-            params={params}
-            selectKey="genres"
-          />
-          <BrowseFilterSelect
-            onSelect={(val) => {
-              onUpdateParams("themes", val);
-            }}
-            title="Themes"
-            fetchData={gamesApi.getThemes}
-            onFilterOpen={onOpen}
-            params={params}
-            selectKey="themes"
-          />
-          <BrowseFilterSelect
-            onSelect={(val) => {
-              onUpdateParams("categories", val);
-            }}
-            title="Categories"
-            fetchData={() => ({ data: GAME_CATEGORIES, isLoading: false })}
-            onFilterOpen={onOpen}
-            params={params}
-            selectKey="categories"
-          />
-          <BrowseFilterSelect
-            onSelect={(val) => {
-              onUpdateParams("gameModes", val);
-            }}
-            title="Modes"
-            fetchData={gamesApi.getModes}
-            onFilterOpen={onOpen}
-            params={params}
-            selectKey="gameModes"
-          />
+    <>
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-background/80 backdrop-blur-sm transition-all md:hidden",
+          isOpen ? "animate-in fade-in-0" : "animate-out fade-out-0 invisible opacity-0"
+        )}
+      ></div>
+      <aside
+        ref={ref}
+        className={cn(
+          "fixed right-0 top-0 z-40 shadow-xl w-[300px] h-screen overflow-hidden flex flex-col transition-transform",
+          isOpen ? "translate-x-0" : "translate-x-full"
+        )}
+      >
+        <div className="relative bg-background p-4 flex-auto overflow-y-auto h-full">
+          <Button
+            onClick={onClose}
+            className="absolute top-2 right-2"
+            size="icon"
+            variant="destructive"
+          >
+            <Icon name="X" className="text-white" />
+          </Button>
+          <Title className="mb-4 lg:mb-6">Filter Games</Title>
+          <div className="flex flex-col gap-4">
+            <BrowseFilterName
+              params={params}
+              onChange={(value) => onUpdateParams("name", value)}
+            />
+            <BrowseFilterRating onChange={onUpdateParams} params={params} />
+            <BrowseFilterSelect
+              onSelect={(val) => {
+                onUpdateParams("genres", val);
+              }}
+              title="Genre"
+              fetchData={gamesApi.getGenres}
+              onFilterOpen={onOpen}
+              params={params}
+              selectKey="genres"
+            />
+            <BrowseFilterSelect
+              onSelect={(val) => {
+                onUpdateParams("themes", val);
+              }}
+              title="Themes"
+              fetchData={gamesApi.getThemes}
+              onFilterOpen={onOpen}
+              params={params}
+              selectKey="themes"
+            />
+            <BrowseFilterSelect
+              onSelect={(val) => {
+                onUpdateParams("categories", val);
+              }}
+              title="Categories"
+              fetchData={() => ({ data: GAME_CATEGORIES, isLoading: false })}
+              onFilterOpen={onOpen}
+              params={params}
+              selectKey="categories"
+            />
+            <BrowseFilterSelect
+              onSelect={(val) => {
+                onUpdateParams("gameModes", val);
+              }}
+              title="Modes"
+              fetchData={gamesApi.getModes}
+              onFilterOpen={onOpen}
+              params={params}
+              selectKey="gameModes"
+            />
+          </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 };
