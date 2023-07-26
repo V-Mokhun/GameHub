@@ -3,31 +3,45 @@
 import { MAX_RATING, MIN_RATING } from "@shared/api";
 import { useDebouncedValue } from "@shared/lib";
 import { Input, Label } from "@shared/ui";
+import { ReadonlyURLSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface BrowseFilterRatingProps {
   onChange: (key: string, value: string) => void;
+  params: ReadonlyURLSearchParams;
 }
 
-export const BrowseFilterRating = ({ onChange }: BrowseFilterRatingProps) => {
-  const [minRating, setMinRating] = useState(MIN_RATING);
-  const [maxRating, setMaxRating] = useState(MAX_RATING);
-  const [debouncedMinRating] = useDebouncedValue(minRating);
-  const [debouncedMaxRating] = useDebouncedValue(maxRating);
+export const BrowseFilterRating = ({
+  onChange,
+  params,
+}: BrowseFilterRatingProps) => {
+  const [minRating, setMinRating] = useState(
+    () => Number(params.get("ratingMin")) || MIN_RATING
+  );
+  const [maxRating, setMaxRating] = useState(
+    () => Number(params.get("ratingMax")) || MAX_RATING
+  );
+  const [debouncedMinRating] = useDebouncedValue(minRating, 1000);
+  const [debouncedMaxRating] = useDebouncedValue(maxRating, 1000);
 
   useEffect(() => {
-    onChange("ratingMin", debouncedMinRating.toString());
-  }, [onChange, debouncedMinRating]);
+    if (
+      params.get("ratingMax") === debouncedMaxRating.toString() &&
+      params.get("ratingMin") === debouncedMinRating.toString()
+    )
+      return;
 
-  useEffect(() => {
     if (debouncedMaxRating < debouncedMinRating)
-      setMaxRating(debouncedMinRating);
+      return setMaxRating(debouncedMinRating);
 
-    onChange(
-      "ratingMax",
-      Math.max(debouncedMaxRating, debouncedMinRating).toString()
-    );
-  }, [onChange, debouncedMaxRating, debouncedMinRating]);
+    onChange("ratingMax", Math.min(debouncedMaxRating, 100).toString());
+  }, [debouncedMaxRating, debouncedMinRating, params, onChange]);
+
+  useEffect(() => {
+    if (params.get("ratingMin") === debouncedMinRating.toString()) return;
+
+    onChange("ratingMin", Math.max(0, debouncedMinRating).toString());
+  }, [debouncedMinRating, params, onChange]);
 
   return (
     <div className="flex flex-col gap-2">

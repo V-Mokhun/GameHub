@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect, useRef } from "react";
 
@@ -6,8 +6,8 @@ const DEFAULT_EVENTS = ["mousedown", "touchstart"];
 
 export function useClickOutside<T extends HTMLElement = any>(
   handler: () => void,
-  events?: string[] | null,
-  nodes?: (HTMLElement | null)[]
+  nodes?: (HTMLElement | null)[],
+  events?: string[] | null
 ) {
   const ref = useRef<T>();
 

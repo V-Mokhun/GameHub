@@ -17,22 +17,55 @@ import {
 } from "@shared/ui";
 import { UseQueryResult } from "@tanstack/react-query";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
+import { ReadonlyURLSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type BrowseFilterSelectProps<T extends Omit<GameTheme, "slug">> = {
   fetchData: () => Pick<UseQueryResult<T[], unknown>, "data" | "isLoading">;
   title: string;
   onSelect: (value: string) => void;
+  onFilterOpen: () => void;
+  selectKey: string;
+  params: ReadonlyURLSearchParams;
 };
 
 export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
   fetchData,
   onSelect,
   title,
+  onFilterOpen,
+  selectKey,
+  params,
 }: BrowseFilterSelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState<GameTheme[]>([]);
   const { data, isLoading } = fetchData();
+
+  useEffect(() => {
+    if (!data || isLoading) return;
+
+    const ids = params.get(selectKey)?.split(",");
+    if (!ids) return;
+
+    const selected = data.filter((item) => ids.includes(item.id.toString()));
+    setSelectedData(selected);
+  }, [data, selectKey, params, isLoading]);
+
+  useEffect(() => {
+    if (!data || isLoading) return;
+
+    const ids = params.get(selectKey)?.split(",");
+
+    if (!ids && selectedData.length === 0) return;
+    if (
+      ids &&
+      selectedData.length === ids.length &&
+      ids.every((id, index) => id === selectedData[index].id.toString())
+    )
+      return;
+
+    onSelect(selectedData.map((item) => item.id).join(","));
+  }, [data, isLoading, onSelect, selectedData]);
 
   if (isLoading)
     return (
@@ -56,8 +89,8 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="p-0">
-          <Command className="">
+        <PopoverContent onClick={onFilterOpen} className="p-0">
+          <Command>
             <CommandInput placeholder={`Search ${title.toLowerCase()}...`} />
             <CommandList>
               <CommandEmpty>No {title.toLowerCase()} found.</CommandEmpty>
@@ -75,13 +108,11 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
                         const data = curr.filter(
                           (itm) => itm.name.toLowerCase() !== currentValue
                         );
-                        onSelect(data.map((itm) => itm.id).join(","));
                         return data;
                       });
                     } else {
                       setSelectedData((curr) => {
                         const data = [...curr, item];
-                        onSelect(data.map((itm) => itm.id).join(","));
                         return data;
                       });
                     }

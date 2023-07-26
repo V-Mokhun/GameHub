@@ -6,7 +6,7 @@ export const updateSearchParams = (
   value: string
 ) => {
   const current = new URLSearchParams(Array.from(searchParams.entries()));
-  if (!value) {
+  if (!value && key !== "name") {
     current.delete(key);
   } else {
     current.set(key, value);
