@@ -50,7 +50,11 @@ export const GameCard = ({
         title: "Sign in to add games to your library",
         action: (
           <Link
-            onClick={() => dismiss()}
+            onClick={() => {
+              setTimeout(() => {
+                dismiss();
+              }, 1000);
+            }}
             className={buttonVariants({
               variant: "default",
               size: "sm",
@@ -154,7 +158,7 @@ export const GameCard = ({
             {libraryGameData?.userRating && (
               <span
                 className={cn(
-                  "inline-flex items-center justify-center w-5 h-5 rounded-sm",
+                  "inline-flex items-center justify-center w-5 h-5 rounded-sm text-white",
                   libraryGameData.userRating >= 8
                     ? "bg-success"
                     : libraryGameData.userRating >= 5
