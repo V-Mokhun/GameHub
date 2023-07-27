@@ -5,6 +5,7 @@ import {
   MAX_RATING,
   MIN_RATING,
   gamesApi,
+  retrieveFiltersFromSearchParams,
   stringifyFilters,
 } from "@shared/api";
 import { cn, useClickOutside } from "@shared/lib";
@@ -28,23 +29,9 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const categories = params.get("categories")?.split(",").map(Number) || [];
-    const genres = params.get("genres")?.split(",").map(Number) || [];
-    const themes = params.get("themes")?.split(",").map(Number) || [];
-    const gameModes = params.get("gameModes")?.split(",").map(Number) || [];
-    const name = params.get("name") || "";
-    const ratingMin = params.get("ratingMin") || MIN_RATING;
-    const ratingMax = params.get("ratingMax") || MAX_RATING;
+    const { filters: defaultFilters } = retrieveFiltersFromSearchParams(params);
 
-    setFilters({
-      categories,
-      gameModes,
-      genres,
-      name,
-      ratingMax: +ratingMax,
-      ratingMin: +ratingMin,
-      themes,
-    });
+    setFilters(defaultFilters);
   }, []);
 
   useEffect(() => {
