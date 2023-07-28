@@ -8,6 +8,7 @@ import {
   Button,
   Link as CustomLink,
   Icon,
+  Skeleton,
   TableCell,
   TableRow,
   buttonVariants,
@@ -33,6 +34,10 @@ interface GameCardProps {
   view?: "grid" | "list";
   disableLibraryButton?: boolean;
 }
+
+export const GameCardSkeleton = () => (
+  <Skeleton className="h-72 sm:h-96 md:h-72 lg:h-80 xl:h-96 flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(33.3%-12px)] lg:flex-[0_1_calc(25%-12px)]" />
+);
 
 export const GameCard = ({
   game,

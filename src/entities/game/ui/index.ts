@@ -1,1 +1,1 @@
-export { GameCard } from './game-card';
+export { GameCard, GameCardSkeleton } from './game-card';

@@ -1,2 +1,2 @@
-export { GameCard } from './ui';
+export { GameCard, GameCardSkeleton } from './ui';
 export * from './model';

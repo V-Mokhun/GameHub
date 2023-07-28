@@ -5,6 +5,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  Skeleton,
   Subtitle,
   Title,
   buttonVariants,
@@ -21,8 +22,20 @@ interface UserViewProps {
   };
 }
 
+export const UserViewSkeleton = () => (
+  <div className="flex gap-4 items-start">
+    <Skeleton className="shrink-0 rounded-full w-28 h-28 md:w-36 md:h-36"></Skeleton>
+    <div className="space-y-4 w-full">
+      <Skeleton className="w-32 h-9" />
+      <Skeleton className="w-full xs:w-72 h-6" />
+      <Skeleton className="w-32 h-10" />
+    </div>
+  </div>
+);
+
 export const UserView = ({ data }: UserViewProps) => {
-  if (!data) return null;
+  if (!data) return <UserViewSkeleton />;
+
   const { imageUrl, username, createDate, isOwnProfile } = data;
 
   return (

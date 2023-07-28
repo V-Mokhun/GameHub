@@ -1,6 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
+import { GameCardSkeleton } from "@entities/game";
 import {
   GAMES_LIMIT_VALUES,
   gamesApi,
@@ -57,10 +58,7 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
       <div className="space-y-4">
         <div className="flex flex-wrap gap-2 md:gap-x-4 md:gap-y-6">
           {[...Array(10)].map((_, i) => (
-            <Skeleton
-              key={i}
-              className="h-72 sm:h-96 md:h-72 lg:h-80 xl:h-96 flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(33.3%-12px)] lg:flex-[0_1_calc(25%-12px)]"
-            />
+            <GameCardSkeleton key={i} />
           ))}
         </div>
         <Pagination

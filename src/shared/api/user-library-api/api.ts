@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { HOME_ROUTE } from "@shared/consts";
 import { NormalizedLibraryGame } from "./types";
 
-const useLibrary = (username?: string) => {
+const useLibrary = (username?: string, enabled = true) => {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -28,7 +28,7 @@ const useLibrary = (username?: string) => {
         displayError(toast, error);
         router.push(HOME_ROUTE);
       },
-      enabled: !!username,
+      enabled: !!username && enabled,
     }
   );
 };
