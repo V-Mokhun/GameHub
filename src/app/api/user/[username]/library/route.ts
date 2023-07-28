@@ -5,27 +5,27 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: { username: string } }
 ) {
   try {
-    const { userId: signedInUserId } = auth();
-    const { userId } = params;
+    const { user } = auth();
+    const { username } = params;
 
-    const user = await db.user.findUnique({
+    const dbUser = await db.user.findUnique({
       where: {
-        id: userId,
+        username,
       },
       include: {
         library: true,
       },
     });
 
-    if (!user) return new NextResponse("User not found", { status: 404 });
+    if (!dbUser) return new NextResponse("User not found", { status: 404 });
 
-    if (signedInUserId !== userId && user.isPrivateLibrary)
+    if (user?.username !== username && dbUser.isPrivateLibrary)
       return new NextResponse("User library is private", { status: 403 });
 
-    return NextResponse.json(user.library, { status: 200 });
+    return NextResponse.json(dbUser.library, { status: 200 });
   } catch (error) {
     return catchError(error, "Failed to get user library");
   }

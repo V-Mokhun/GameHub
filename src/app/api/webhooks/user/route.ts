@@ -41,7 +41,6 @@ async function handler(req: Request) {
       heads as IncomingHttpHeaders & WebhookRequiredHeaders
     ) as Event;
   } catch (err) {
-    console.error((err as Error).message);
     return NextResponse.json({}, { status: 400 });
   }
 

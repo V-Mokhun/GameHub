@@ -8,15 +8,15 @@ import { useRouter } from "next/navigation";
 import { HOME_ROUTE } from "@shared/consts";
 import { NormalizedLibraryGame } from "./types";
 
-const useLibrary = (userId?: string) => {
+const useLibrary = (username?: string) => {
   const router = useRouter();
   const { toast } = useToast();
 
   return useQuery(
-    [`library`, userId],
+    [`library`, username],
     async () => {
       const { data } = await axios.get<LibraryGame[]>(
-        `/api/user/${userId}/library`
+        `/api/user/${username}/library`
       );
 
       return data.map(
@@ -28,13 +28,13 @@ const useLibrary = (userId?: string) => {
         displayError(toast, error);
         router.push(HOME_ROUTE);
       },
-      enabled: !!userId,
+      enabled: !!username,
     }
   );
 };
 
 const useAddGameToLibrary = (
-  userId: string,
+  username: string,
   onSuccess?: () => void
 ) => {
   const queryClient = useQueryClient();
@@ -51,10 +51,10 @@ const useAddGameToLibrary = (
     },
     {
       onMutate: async (newGame) => {
-        await queryClient.cancelQueries({ queryKey: ["library", userId] });
-        const previousLibrary = queryClient.getQueryData(["library", userId]);
+        await queryClient.cancelQueries({ queryKey: ["library", username] });
+        const previousLibrary = queryClient.getQueryData(["library", username]);
         queryClient.setQueryData(
-          ["library", userId],
+          ["library", username],
           (oldLibrary: NormalizedLibraryGame[] = []) => [
             ...oldLibrary,
             normalizeLibraryGameProperties(newGame),
@@ -64,11 +64,11 @@ const useAddGameToLibrary = (
         return { previousLibrary };
       },
       onError: (err, newGame, context) => {
-        queryClient.setQueryData(["library", userId], context?.previousLibrary);
+        queryClient.setQueryData(["library", username], context?.previousLibrary);
         displayError(toast, err, "Failed to add game from library");
       },
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ["library", userId] });
+        queryClient.invalidateQueries({ queryKey: ["library", username] });
       },
       onSuccess: () => {
         toast({ title: "Game was saved to your library", variant: "success" });
@@ -78,7 +78,7 @@ const useAddGameToLibrary = (
   );
 };
 
-const useRemoveGameFromLibrary = (userId: string, onSuccess?: () => void) => {
+const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -92,21 +92,21 @@ const useRemoveGameFromLibrary = (userId: string, onSuccess?: () => void) => {
     },
     {
       onMutate: async (deletedGameId: number) => {
-        await queryClient.cancelQueries({ queryKey: ["library", userId] });
-        const previousLibrary = queryClient.getQueryData(["library", userId]);
+        await queryClient.cancelQueries({ queryKey: ["library", username] });
+        const previousLibrary = queryClient.getQueryData(["library", username]);
         queryClient.setQueryData(
-          ["library", userId],
+          ["library", username],
           (oldLibrary: NormalizedLibraryGame[] = []) =>
             oldLibrary.filter((game) => game.id !== deletedGameId)
         );
         return { previousLibrary };
       },
       onError: (err, deletedGameId, context) => {
-        queryClient.setQueryData(["library", userId], context?.previousLibrary);
+        queryClient.setQueryData(["library", username], context?.previousLibrary);
         displayError(toast, err, "Failed to remove game from library");
       },
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ["library", userId] });
+        queryClient.invalidateQueries({ queryKey: ["library", username] });
       },
       onSuccess: () => {
         toast({

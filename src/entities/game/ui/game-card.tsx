@@ -10,6 +10,7 @@ import {
   TableRow,
   buttonVariants,
   useToast,
+  Link as CustomLink,
 } from "@shared/ui";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,6 +29,7 @@ interface GameCardProps {
   libraryGameData?: LibraryGameData;
   isInLibrary?: boolean;
   userId?: string | null;
+  username?: string;
   rank: number;
 }
 
@@ -36,6 +38,7 @@ export const GameCard = ({
   isInLibrary,
   userId,
   libraryGameData,
+  username,
   rank,
 }: GameCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,6 +81,7 @@ export const GameCard = ({
         onClose={() => setIsOpen(false)}
         libraryGameData={libraryGameData}
         userId={userId!}
+        username={username!}
         isInLibrary={isInLibrary}
       />
       {view === "grid" ? (
@@ -154,11 +158,21 @@ export const GameCard = ({
         <TableRow>
           <TableCell className="font-medium text-center">{rank}</TableCell>
           <TableCell>
-            <span className="mr-2">{game.name}</span>
+            <CustomLink
+              className="text-foreground"
+              href={`${GAMES_ROUTE}/${game.id}`}
+            >
+              {game.name}
+            </CustomLink>
+            {game.releaseDate && (
+              <span className="text-muted-foreground ml-1 text-sm">
+                ({game.releaseDate.getFullYear()})
+              </span>
+            )}
             {libraryGameData?.userRating && (
               <span
                 className={cn(
-                  "inline-flex items-center justify-center w-5 h-5 rounded-sm text-white",
+                  "inline-flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-sm text-white ml-2",
                   libraryGameData.userRating >= 8
                     ? "bg-success"
                     : libraryGameData.userRating >= 5

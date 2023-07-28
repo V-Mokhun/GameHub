@@ -76,7 +76,6 @@ export const ForgotPasswordFormVerify = ({
         form.reset();
       }
     } catch (err) {
-      console.log(err);
       toast({
         title: "Code is incorrect",
         description: "Please try again",

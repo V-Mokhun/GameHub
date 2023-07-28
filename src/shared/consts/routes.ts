@@ -13,9 +13,9 @@ export const SETTINGS_PASSWORD_ROUTE = "/settings/password";
 
 export const USERS_ROUTE = "/users";
 
-export const PROFILE_ROUTE = (id: string) => `${USERS_ROUTE}/${id}}`;
-export const LIBRARY_ROUTE = (id: string) => `${USERS_ROUTE}/${id}/library}`;
-export const FRIENDS_ROUTE = (id: string) => `${USERS_ROUTE}/${id}/friends}`;
+export const PROFILE_ROUTE = (username: string) => `${USERS_ROUTE}/${username}`;
+export const LIBRARY_ROUTE = (username: string) => `${USERS_ROUTE}/${username}/library`;
+export const FRIENDS_ROUTE = (username: string) => `${USERS_ROUTE}/${username}/friends`;
 
 export const PUBLIC_ROUTES = [
   HOME_ROUTE,

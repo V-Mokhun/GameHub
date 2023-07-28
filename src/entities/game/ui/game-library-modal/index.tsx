@@ -35,6 +35,7 @@ interface GameLibraryModalProps {
   onClose: () => void;
   libraryGameData?: LibraryGameData;
   userId: string;
+  username: string;
   isInLibrary?: boolean;
 }
 
@@ -44,6 +45,7 @@ export const GameLibraryModal = ({
   libraryGameData,
   onClose,
   userId,
+  username,
   isInLibrary,
 }: GameLibraryModalProps) => {
   const [rating, setRating] = useState(libraryGameData?.userRating || 0);
@@ -53,11 +55,11 @@ export const GameLibraryModal = ({
   };
 
   const { mutate: addGame, isLoading: isAdding } = userLibraryApi.addGame(
-    userId,
+    username,
     onClose
   );
   const { mutate: deleteGame, isLoading: isDeleting } =
-    userLibraryApi.removeGame(userId, onClose);
+    userLibraryApi.removeGame(username, onClose);
 
   const isLoading = isAdding || isDeleting;
 

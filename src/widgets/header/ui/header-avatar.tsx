@@ -50,7 +50,7 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link className="cursor-pointer" href={PROFILE_ROUTE(user.id)}>
+          <Link className="cursor-pointer" href={PROFILE_ROUTE(user.username!)}>
             <Icon name="User" className="mr-2" />
             <span>Profile</span>
           </Link>

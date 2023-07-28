@@ -34,7 +34,6 @@ export async function POST(
 
     return NextResponse.json(game, { status: 200 });
   } catch (error) {
-    console.log("ERROR: ", error);
     return catchError(error, "Failed to add game to library");
   }
 }

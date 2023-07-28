@@ -1,16 +1,50 @@
 "use client";
 
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { cn, useClickOutside } from "@shared/lib";
-import { Logo, Overlay } from "@shared/ui";
+import { Logo, Overlay, Skeleton } from "@shared/ui";
 import { useSidebarStore } from "../model";
 import { SidebarMenu } from "./sidebar-menu";
 
+const SidebarItemSkeleton = () => (
+  <div className="flex items-center gap-2">
+    <Skeleton className="h-5 w-5 rounded-md" />
+    <Skeleton className="w-28 h-6" />
+  </div>
+);
+
+const SidebarSectionSkeleton = () => (
+  <>
+    <Skeleton className="w-20 h-6 mb-4" />
+    <div className="space-y-4">
+      {[...Array(3)].map((_, i) => (
+        <SidebarItemSkeleton key={i} />
+      ))}
+    </div>
+  </>
+);
+
 export const Sidebar = () => {
-  const { userId } = useAuth();
+  const { user, isLoaded } = useUser();
   const isOpen = useSidebarStore((state) => state.isOpen);
   const onClose = useSidebarStore((state) => state.onClose);
   const ref = useClickOutside(onClose);
+
+  let content = (
+    <div className="space-y-6">
+      {[...Array(3)].map((_, i) => (
+        <SidebarSectionSkeleton key={i} />
+      ))}
+    </div>
+  );
+
+  if (isLoaded)
+    content = (
+      <SidebarMenu
+        onClose={onClose}
+        username={user?.username}
+      />
+    );
 
   return (
     <>
@@ -24,8 +58,7 @@ export const Sidebar = () => {
       >
         <div className="bg-background p-4 flex-auto overflow-y-auto h-full">
           <Logo className="block md:hidden mb-6" />
-          {/* {content} */}
-          <SidebarMenu onClose={onClose} userId={userId} />
+          {content}
         </div>
       </nav>
     </>

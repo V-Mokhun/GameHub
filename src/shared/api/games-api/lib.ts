@@ -162,7 +162,7 @@ export const stringifyGetGamesParams = (
   } 
   & total_rating >= ${filters.ratingMin} & total_rating <= ${
     filters.ratingMax
-  };`;
+  } & total_rating_count >= 10;`;
   const sortQuery = `sort ${sort.field} ${sort.order};`;
   const paginateQuery = `limit ${paginate.limit}; offset ${paginate.offset};`;
 

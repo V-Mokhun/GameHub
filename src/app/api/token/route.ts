@@ -23,13 +23,8 @@ export async function POST(req: Request) {
       maxAge: token.expires_in,
     });
 
-    console.log(token);
-    
-
     return response;
   } catch (error) {
-    console.log(error);
-    
     return catchError(error, "Failed to get token");
   }
 }

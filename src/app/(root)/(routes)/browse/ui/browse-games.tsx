@@ -1,12 +1,13 @@
 "use client";
 
-import { useAuth } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import {
   GAMES_LIMIT_VALUES,
   gamesApi,
   retrieveFiltersFromSearchParams,
   retrievePaginateFromSearchParams,
   retrieveSortFromSearchParams,
+  userLibraryApi,
 } from "@shared/api";
 import { Skeleton, Title } from "@shared/ui";
 import { GameList } from "@widgets/game-list";
@@ -16,7 +17,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 interface BrowseGamesProps {}
 
 export const BrowseGames = ({}: BrowseGamesProps) => {
-  const { userId } = useAuth();
+  const { user } = useUser();
   const params = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -40,6 +41,10 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
     paginate,
     sort,
   });
+
+  const { data: libraryGames = [] } = userLibraryApi.getLibrary(
+    user?.username || ""
+  );
 
   const { data: gamesCount } = gamesApi.getGamesCount({
     filters,
@@ -74,7 +79,12 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
 
   return data && data.length > 0 ? (
     <div className="space-y-4">
-      <GameList userId={userId} games={data || []} />
+      <GameList
+        userId={user?.id}
+        username={user?.username || ""}
+        libraryGames={libraryGames}
+        games={data || []}
+      />
       <Pagination
         isFetching={isFetching}
         onPaginateChange={onPaginateChange}

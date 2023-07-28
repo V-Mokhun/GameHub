@@ -1,5 +1,7 @@
 "use client";
 
+import { SignOutButton } from "@clerk/nextjs";
+import { ThemeToggler } from "@features/theme-toggler";
 import {
   BROWSE_ROUTE,
   FRIENDS_ROUTE,
@@ -9,12 +11,10 @@ import {
   USERS_ROUTE,
 } from "@shared/consts";
 import { cn } from "@shared/lib";
-import { Icon, Link, Subtitle } from "@shared/ui";
+import { Icon, Subtitle } from "@shared/ui";
 import { icons } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { SidebarItem } from "./sidebar-item";
-import { ThemeToggler } from "@features/theme-toggler";
-import { SignOutButton } from "@clerk/nextjs";
 
 export type SidebarItemT = {
   text: string;
@@ -40,13 +40,13 @@ const MENU_ITEMS = (pathname: string): SidebarItemT[] => [
 
 const MENU_PRIVATE_ITEMS = (
   pathname: string,
-  userId: string
+  username: string
 ): SidebarItemT[] => [
   {
     text: "Library",
-    href: LIBRARY_ROUTE(userId),
+    href: LIBRARY_ROUTE(username),
     iconName: "Library",
-    isActive: pathname === LIBRARY_ROUTE(userId),
+    isActive: pathname === LIBRARY_ROUTE(username),
   },
 ];
 
@@ -61,13 +61,13 @@ const SOCIAL_ITEMS = (pathname: string): SidebarItemT[] => [
 
 const SOCIAL_PRIVATE_ITEMS = (
   pathname: string,
-  userId: string
+  username: string
 ): SidebarItemT[] => [
   {
     text: "Friends",
-    href: FRIENDS_ROUTE(userId),
+    href: FRIENDS_ROUTE(username),
     iconName: "Users",
-    isActive: pathname === FRIENDS_ROUTE(userId),
+    isActive: pathname === FRIENDS_ROUTE(username),
   },
 ];
 
@@ -81,11 +81,14 @@ const GENERAL_PRIVATE_ITEMS = (pathname: string): SidebarItemT[] => [
 ];
 
 interface SidebarMenuProps {
-  userId?: string | null;
+  username?: string | null;
   onClose: () => void;
 }
 
-export const SidebarMenu = ({ onClose, userId }: SidebarMenuProps) => {
+export const SidebarMenu = ({
+  onClose,
+  username,
+}: SidebarMenuProps) => {
   const pathname = usePathname();
 
   return (
@@ -98,8 +101,8 @@ export const SidebarMenu = ({ onClose, userId }: SidebarMenuProps) => {
           {MENU_ITEMS(pathname).map((item) => (
             <SidebarItem onClick={onClose} key={item.href} {...item} />
           ))}
-          {userId &&
-            MENU_PRIVATE_ITEMS(pathname, userId).map((item) => (
+          {username &&
+            MENU_PRIVATE_ITEMS(pathname, username!).map((item) => (
               <SidebarItem onClick={onClose} key={item.href} {...item} />
             ))}
         </ul>
@@ -113,8 +116,8 @@ export const SidebarMenu = ({ onClose, userId }: SidebarMenuProps) => {
           {SOCIAL_ITEMS(pathname).map((item) => (
             <SidebarItem onClick={onClose} key={item.href} {...item} />
           ))}
-          {userId &&
-            SOCIAL_PRIVATE_ITEMS(pathname, userId).map((item) => (
+          {username &&
+            SOCIAL_PRIVATE_ITEMS(pathname, username).map((item) => (
               <SidebarItem onClick={onClose} key={item.href} {...item} />
             ))}
         </ul>
@@ -128,11 +131,11 @@ export const SidebarMenu = ({ onClose, userId }: SidebarMenuProps) => {
           <li>
             <ThemeToggler id="sidebar-theme" />
           </li>
-          {userId &&
+          {username &&
             GENERAL_PRIVATE_ITEMS(pathname).map((item) => (
               <SidebarItem onClick={onClose} key={item.href} {...item} />
             ))}
-          {userId && (
+          {username && (
             <li>
               <SignOutButton>
                 <button

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useToast } from "@shared/ui";
 import { isAxiosError } from "axios";
 import { NextResponse } from "next/server";
@@ -40,6 +42,9 @@ export const displayError = (
   parseError = ""
 ) => {
   if (isAxiosError(error)) {
+    if (error.response?.status === 404)
+      return toast({ title: "Not found", variant: "destructive" });
+
     if (Array.isArray(error.response?.data) && error.response?.data[0]?.title)
       return toast({
         title: error.response?.data[0].title,
@@ -58,14 +63,12 @@ export const displayError = (
       });
     return toast({ title: genericErrorMessage, variant: "destructive" });
   } else if (
-    // @ts-ignore
     error?.errors &&
-    // @ts-ignore
     Array.isArray(error.errors) &&
-    // @ts-ignore
     error.errors.length > 0
   ) {
-    // @ts-ignore
+    if (error.errors[0].code === "strategy_for_user_invalid")
+      return toast({ title: "Account already exists", variant: "destructive" });
     return toast({ title: error.errors[0].message, variant: "destructive" });
   } else if (error instanceof Error) {
     return toast({ title: error.message, variant: "destructive" });
