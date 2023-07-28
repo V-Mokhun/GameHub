@@ -14,6 +14,7 @@ export { Badge, badgeVariants } from "./badge";
 export { Textarea } from './textarea';
 export { Calendar } from './calendar';
 export { Overlay } from './overlay';
+export { MenuItem } from './menu-item';
 
 export * from "./toast";
 export * from "./form";

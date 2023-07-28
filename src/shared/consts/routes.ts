@@ -15,6 +15,7 @@ export const USERS_ROUTE = "/users";
 
 export const PROFILE_ROUTE = (username: string) => `${USERS_ROUTE}/${username}`;
 export const LIBRARY_ROUTE = (username: string) => `${USERS_ROUTE}/${username}/library`;
+export const RATINGS_ROUTE = (username: string) => `${USERS_ROUTE}/${username}/ratings`;
 export const FRIENDS_ROUTE = (username: string) => `${USERS_ROUTE}/${username}/friends`;
 
 export const PUBLIC_ROUTES = [

@@ -1,8 +1,20 @@
-import { User } from "@prisma/client";
+import { Game, User } from "@prisma/client";
 import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+
+type UseUserApiResponse =
+  | {
+      user: User & { _count: { library: number } };
+      isOwnProfile: boolean;
+      libraryIncluded: false;
+    }
+  | {
+      user: User & { _count: { library: number }; library: Game[] };
+      isOwnProfile: boolean;
+      libraryIncluded: true;
+    };
 
 const useUser = (username: string) => {
   const { toast } = useToast();
@@ -10,7 +22,9 @@ const useUser = (username: string) => {
   return useQuery(
     [`user`, username],
     async () => {
-      const { data } = await axios.get<User>(`/api/user/${username}`);
+      const { data } = await axios.get<UseUserApiResponse>(
+        `/api/user/${username}`
+      );
 
       return data;
     },

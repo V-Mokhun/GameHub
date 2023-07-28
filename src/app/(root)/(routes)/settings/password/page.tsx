@@ -3,6 +3,7 @@ import { HOME_ROUTE } from "@shared/consts";
 import { Container, Separator, Title } from "@shared/ui";
 import { PasswordForm } from "@widgets/forms";
 import { redirect } from "next/navigation";
+import { SettingsMenu } from "../ui";
 
 export default async function SettingsPasswordPage() {
   const { userId } = auth();
@@ -11,7 +12,8 @@ export default async function SettingsPasswordPage() {
   return (
     <section>
       <Container>
-        <Title size="large">Change your password</Title>
+        <Title className="lg:mb-4" size="large">Change your password</Title>
+        <SettingsMenu />
         <Separator />
         <PasswordForm />
       </Container>

@@ -1,14 +1,18 @@
 "use client";
 
 import { userApi } from "@shared/api";
+import { UserMenu } from "./user-menu";
 
 interface UserProfileProps {
-  isOwnProfile: boolean;
   username: string;
 }
 
-export const UserProfile = ({ isOwnProfile, username }: UserProfileProps) => {
-  const { data: user, isLoading } = userApi.getUser(username);
+export const UserProfile = ({ username }: UserProfileProps) => {
+  const { data, isLoading } = userApi.getUser(username);
 
-  return <>{user?.username}</>;
+  return (
+    <>
+      <UserMenu isLoading={isLoading} username={username} />
+    </>
+  );
 };

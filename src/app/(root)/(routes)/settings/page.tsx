@@ -3,6 +3,7 @@ import { HOME_ROUTE } from "@shared/consts";
 import { Container, Separator, Subtitle, Title } from "@shared/ui";
 import { AccountForm } from "@widgets/forms";
 import { redirect } from "next/navigation";
+import { SettingsMenu } from "./ui";
 
 export default async function SettingsPage() {
   const { userId } = auth();
@@ -13,6 +14,7 @@ export default async function SettingsPage() {
       <Container>
         <Title size="large">Settings</Title>
         <Subtitle size="large">Set your account settings down below</Subtitle>
+        <SettingsMenu />
         <Separator />
         <AccountForm />
       </Container>
