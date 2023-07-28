@@ -9,10 +9,15 @@ interface GameListProps {
   userId?: string | null;
   username?: string;
   games: Game[];
-  libraryGames: NormalizedLibraryGame[]
+  libraryGames: NormalizedLibraryGame[];
 }
 
-export const GameList = ({ games, username, userId, libraryGames }: GameListProps) => {
+export const GameList = ({
+  games,
+  username,
+  userId,
+  libraryGames,
+}: GameListProps) => {
   const view = useGameListStore((state) => state.view);
 
   const content = games.map((game, i) => {
@@ -25,6 +30,7 @@ export const GameList = ({ games, username, userId, libraryGames }: GameListProp
           username={username}
           key={game.id}
           game={game}
+          view={view}
         />
       );
 
@@ -36,6 +42,7 @@ export const GameList = ({ games, username, userId, libraryGames }: GameListProp
         username={username!}
         userId={userId!}
         rank={i + 1}
+        view={view}
         libraryGameData={{
           finishedAt: libraryGame.finishedAt,
           notes: libraryGame.notes,

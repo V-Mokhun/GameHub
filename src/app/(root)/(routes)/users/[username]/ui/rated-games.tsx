@@ -1,10 +1,11 @@
 import { GameCard } from "@entities/game";
 import { Game } from "@prisma/client";
+import { NormalizedLibraryGame } from "@shared/api";
 import { LIBRARY_ROUTE, SETTINGS_ROUTE } from "@shared/consts";
 import { Icon, Link, Subtitle, Title, buttonVariants } from "@shared/ui";
 
 interface RatedGamesProps {
-  games: Game[];
+  games: NormalizedLibraryGame[];
   isOwnProfile: boolean;
   gamesCount: number;
   isPrivateLibrary: boolean;
@@ -36,16 +37,13 @@ export const RatedGames = ({
               name: game.name,
               cover: game.coverUrl,
               rating: game.totalRating,
-              themes: game.themes.split(",").map(Number),
-              gameModes: game.gameModes.split(",").map(Number),
-              genres: game.genres.split(",").map(Number),
+              themes: game.themes,
+              gameModes: game.gameModes,
+              genres: game.genres,
               releaseDate: game.releaseDate
                 ? new Date(game.releaseDate)
                 : undefined,
             }}
-            isInLibrary={true}
-            username={username!}
-            userId={userId}
             libraryGameData={{
               finishedAt: game.finishedAt,
               notes: game.notes,
@@ -53,6 +51,10 @@ export const RatedGames = ({
               status: game.status,
               userRating: game.userRating,
             }}
+            isInLibrary
+            userId={userId}
+            username={username}
+            disableLibraryButton={!isOwnProfile}
           />
         ))}
       </div>

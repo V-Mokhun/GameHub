@@ -2,22 +2,21 @@
 
 import { Game, NormalizedLibraryGame } from "@shared/api";
 import { GAMES_ROUTE, SIGN_IN_ROUTE } from "@shared/consts";
+import { cn } from "@shared/lib";
 import {
   Badge,
   Button,
+  Link as CustomLink,
   Icon,
   TableCell,
   TableRow,
   buttonVariants,
   useToast,
-  Link as CustomLink,
 } from "@shared/ui";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { GameLibraryModal } from "./game-library-modal";
-import { useGameListStore } from "@widgets/game-list";
-import { cn } from "@shared/lib";
 
 export type LibraryGameData = Pick<
   NormalizedLibraryGame,
@@ -31,6 +30,8 @@ interface GameCardProps {
   userId?: string | null;
   username?: string;
   rank?: number;
+  view?: "grid" | "list";
+  disableLibraryButton?: boolean;
 }
 
 export const GameCard = ({
@@ -40,12 +41,15 @@ export const GameCard = ({
   libraryGameData,
   username,
   rank,
+  view = "grid",
+  disableLibraryButton = false,
 }: GameCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const view = useGameListStore((state) => state.view);
   const { toast } = useToast();
 
   const onLibraryButtonClick = () => {
+    if (disableLibraryButton) return;
+
     if (userId) {
       setIsOpen(true);
     } else {
@@ -75,15 +79,17 @@ export const GameCard = ({
 
   return (
     <>
-      <GameLibraryModal
-        gameData={game}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        libraryGameData={libraryGameData}
-        userId={userId!}
-        username={username!}
-        isInLibrary={isInLibrary}
-      />
+      {!disableLibraryButton && (
+        <GameLibraryModal
+          gameData={game}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          libraryGameData={libraryGameData}
+          userId={userId!}
+          username={username!}
+          isInLibrary={isInLibrary}
+        />
+      )}
       {view === "grid" ? (
         <div className="group overflow-hidden text-white relative shadow-md rounded-md flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(33.3%-12px)] lg:flex-[0_1_calc(25%-12px)]">
           {/* name + rating */}
@@ -141,12 +147,14 @@ export const GameCard = ({
                   </Badge>
                 )}
               </div>
-              <Button onClick={onLibraryButtonClick} size="icon">
-                <Icon
-                  name={!isInLibrary ? "Plus" : "Edit"}
-                  className="text-primary-foreground"
-                />
-              </Button>
+              {!disableLibraryButton && (
+                <Button onClick={onLibraryButtonClick} size="icon">
+                  <Icon
+                    name={!isInLibrary ? "Plus" : "Edit"}
+                    className="text-primary-foreground"
+                  />
+                </Button>
+              )}
             </div>
           </div>
           <div className="pointer-events-none group-hover:opacity-70 transition-opacity">

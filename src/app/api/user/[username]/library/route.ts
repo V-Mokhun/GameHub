@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { username: string } }
 ) {
   try {
-    const { user } = auth();
+    const user = await currentUser();
     const { username } = params;
 
     const dbUser = await db.user.findUnique({

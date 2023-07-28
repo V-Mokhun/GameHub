@@ -33,10 +33,7 @@ const useLibrary = (username?: string) => {
   );
 };
 
-const useAddGameToLibrary = (
-  username: string,
-  onSuccess?: () => void
-) => {
+const useAddGameToLibrary = (username: string, onSuccess?: () => void) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -56,7 +53,7 @@ const useAddGameToLibrary = (
         queryClient.setQueryData(
           ["library", username],
           (oldLibrary: NormalizedLibraryGame[] = []) => [
-            ...oldLibrary,
+            ...oldLibrary.filter((game) => game.id !== newGame.id),
             normalizeLibraryGameProperties(newGame),
           ]
         );
@@ -64,7 +61,10 @@ const useAddGameToLibrary = (
         return { previousLibrary };
       },
       onError: (err, newGame, context) => {
-        queryClient.setQueryData(["library", username], context?.previousLibrary);
+        queryClient.setQueryData(
+          ["library", username],
+          context?.previousLibrary
+        );
         displayError(toast, err, "Failed to add game from library");
       },
       onSettled: () => {
@@ -102,7 +102,10 @@ const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
         return { previousLibrary };
       },
       onError: (err, deletedGameId, context) => {
-        queryClient.setQueryData(["library", username], context?.previousLibrary);
+        queryClient.setQueryData(
+          ["library", username],
+          context?.previousLibrary
+        );
         displayError(toast, err, "Failed to remove game from library");
       },
       onSettled: () => {

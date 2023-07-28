@@ -1,6 +1,6 @@
 "use client";
 
-import { userApi } from "@shared/api";
+import { userApi, userLibraryApi } from "@shared/api";
 import { UserMenu } from "./user-menu";
 import { UserView } from "./user-view";
 import { Separator } from "@shared/ui";
@@ -14,13 +14,16 @@ interface UserProfileProps {
 
 export const UserProfile = ({ username }: UserProfileProps) => {
   const { userId: authUserId } = useAuth();
-  const { data, isLoading } = userApi.getUser(username);
+  const { data: userData, isLoading: isUserLoading } =
+    userApi.getUser(username);
+  const { data: library, isLoading: isLibraryLoading } =
+    userLibraryApi.getLibrary(userData?.user.username || "");
 
   const ratedGames =
-    data &&
-    data.libraryIncluded &&
-    data.user.library
-      .filter((game) => game.userRating)
+    userData &&
+    userData.libraryIncluded &&
+    library
+      ?.filter((game) => game.userRating)
       .sort(
         (a, b) =>
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
@@ -28,24 +31,22 @@ export const UserProfile = ({ username }: UserProfileProps) => {
       .slice(0, 4);
 
   const wantedGames =
-    data &&
-    data.libraryIncluded &&
-    data.user.library
-      .filter((game) => game.status === "WANT_TO_PLAY")
-      .slice(0, 4);
+    userData &&
+    userData.libraryIncluded &&
+    library?.filter((game) => game.status === "WANT_TO_PLAY").slice(0, 4);
 
   return (
     <div className="pb-4 md:pb-6">
-      <UserMenu isLoading={isLoading} username={username} />
+      <UserMenu isLoading={isUserLoading} username={username} />
       <Separator />
       <UserView
         data={
-          data
+          userData
             ? {
-                createDate: data.user.createdAt,
-                imageUrl: data.user.imageUrl,
-                isOwnProfile: data.isOwnProfile,
-                username: data.user.username!,
+                createDate: userData.user.createdAt,
+                imageUrl: userData.user.imageUrl,
+                isOwnProfile: userData.isOwnProfile,
+                username: userData.user.username!,
               }
             : undefined
         }
@@ -55,18 +56,18 @@ export const UserProfile = ({ username }: UserProfileProps) => {
         {ratedGames && ratedGames.length > 0 && (
           <RatedGames
             games={ratedGames}
-            gamesCount={data.user._count.library}
-            isOwnProfile={data.isOwnProfile}
-            isPrivateLibrary={data.user.isPrivateLibrary}
-            username={data.user.username!}
+            gamesCount={userData.user._count.library}
+            isOwnProfile={userData.isOwnProfile}
+            isPrivateLibrary={userData.user.isPrivateLibrary}
+            username={userData.user.username!}
             userId={authUserId}
           />
         )}
         {wantedGames && wantedGames.length > 0 && (
           <WantedGames
             games={wantedGames}
-            isOwnProfile={data.isOwnProfile}
-            username={data.user.username!}
+            isOwnProfile={userData.isOwnProfile}
+            username={userData.user.username!}
             userId={authUserId}
           />
         )}

@@ -6,22 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-type UseUserApiResponse =
-  | {
-      user: User & { _count: { library: number } };
-      isOwnProfile: false;
-      libraryIncluded: false;
-    }
-  | {
-      user: User & { _count: { library: number }; library: Game[] };
-      isOwnProfile: boolean;
-      libraryIncluded: true;
-    }
-  | {
-      user: User & { _count: { library: number }; library: Game[] };
-      isOwnProfile: true;
-      libraryIncluded: true;
-    };
+type UseUserApiResponse = {
+  user: User & { _count: { library: number } };
+  isOwnProfile: boolean;
+  libraryIncluded: boolean;
+};
 
 const useUser = (username: string) => {
   const { toast } = useToast();

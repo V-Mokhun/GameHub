@@ -14,24 +14,18 @@ export async function GET(
       where: {
         username: params.username,
       },
+      include: {
+        _count: true,
+      },
     });
 
     if (!user) return new NextResponse("User not found", { status: 404 });
+
     const isOwnProfile = authUser?.username === params.username;
     const includeLibrary = isOwnProfile || !user.isPrivateLibrary;
 
-    const returnUser = await db.user.findUnique({
-      where: {
-        username: params.username,
-      },
-      include: {
-        _count: true,
-        library: includeLibrary,
-      },
-    });
-
     return NextResponse.json(
-      { user: returnUser, isOwnProfile, libraryIncluded: includeLibrary },
+      { user, isOwnProfile, libraryIncluded: includeLibrary },
       { status: 200 }
     );
   } catch (error) {
