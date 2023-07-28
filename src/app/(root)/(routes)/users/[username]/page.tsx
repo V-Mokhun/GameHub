@@ -1,3 +1,4 @@
+import { Container } from "@shared/ui";
 import { UserProfile } from "./ui";
 
 export default async function UserPage({
@@ -5,5 +6,11 @@ export default async function UserPage({
 }: {
   params: { username: string };
 }) {
-  return <UserProfile username={params.username} />;
+  return (
+    <section>
+      <Container>
+        <UserProfile username={params.username} />
+      </Container>
+    </section>
+  );
 }

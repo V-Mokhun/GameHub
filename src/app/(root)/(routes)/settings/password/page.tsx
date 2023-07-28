@@ -12,7 +12,9 @@ export default async function SettingsPasswordPage() {
   return (
     <section>
       <Container>
-        <Title className="lg:mb-4" size="large">Change your password</Title>
+        <Title className="lg:mb-4" size="large">
+          Change your password
+        </Title>
         <SettingsMenu />
         <Separator />
         <PasswordForm />

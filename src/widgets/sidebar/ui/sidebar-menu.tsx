@@ -11,9 +11,9 @@ import {
   USERS_ROUTE,
 } from "@shared/consts";
 import { cn } from "@shared/lib";
-import { Icon, Subtitle } from "@shared/ui";
+import { Icon, Subtitle, useToast } from "@shared/ui";
 import { icons } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { SidebarItem } from "./sidebar-item";
 
 export type SidebarItemT = {
@@ -85,10 +85,9 @@ interface SidebarMenuProps {
   onClose: () => void;
 }
 
-export const SidebarMenu = ({
-  onClose,
-  username,
-}: SidebarMenuProps) => {
+export const SidebarMenu = ({ onClose, username }: SidebarMenuProps) => {
+  const { toast } = useToast();
+  const router = useRouter();
   const pathname = usePathname();
 
   return (
@@ -137,7 +136,15 @@ export const SidebarMenu = ({
             ))}
           {username && (
             <li>
-              <SignOutButton>
+              <SignOutButton
+                signOutCallback={() => {
+                  toast({
+                    title: "Signed out succesfully",
+                    variant: "success",
+                  });
+                  router.refresh();
+                }}
+              >
                 <button
                   type="button"
                   onClick={() => onClose()}

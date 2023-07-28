@@ -1,9 +1,9 @@
 "use client";
 
 import { GameCard } from "@entities/game";
-import { Game, NormalizedLibraryGame, userLibraryApi } from "@shared/api";
-import { useGameListStore } from "../model";
+import { Game, NormalizedLibraryGame } from "@shared/api";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@shared/ui";
+import { useGameListStore } from "../model";
 
 interface GameListProps {
   userId?: string | null;

@@ -30,7 +30,7 @@ interface GameCardProps {
   isInLibrary?: boolean;
   userId?: string | null;
   username?: string;
-  rank: number;
+  rank?: number;
 }
 
 export const GameCard = ({

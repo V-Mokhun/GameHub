@@ -17,11 +17,13 @@ import {
   useToast,
 } from "@shared/ui";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface HeaderAvatarProps {}
 
 export const HeaderAvatar = ({}: HeaderAvatarProps) => {
   const { toast } = useToast();
+  const router = useRouter();
   const { user, isLoaded } = useUser();
 
   if ((isLoaded && !user) || !isLoaded)
@@ -77,6 +79,7 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
           <SignOutButton
             signOutCallback={() => {
               toast({ title: "Signed out succesfully", variant: "success" });
+              router.refresh();
             }}
           >
             <div className="flex items-center w-full">
