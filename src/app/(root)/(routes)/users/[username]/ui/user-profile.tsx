@@ -14,7 +14,7 @@ interface UserProfileProps {
 }
 
 const GamesSkeleton = () => (
-  <div className="">
+  <div>
     <Skeleton className="h-8 w-48 mb-4" />
     <div className="flex flex-wrap mb-2 gap-2 md:gap-x-4 md:gap-y-6">
       {[...Array(4)].map((_, i) => (
@@ -37,7 +37,6 @@ export const UserProfile = ({ username }: UserProfileProps) => {
 
   const ratedGames =
     userData &&
-    userData.libraryIncluded &&
     library
       ?.filter((game) => game.userRating)
       .sort(
@@ -48,7 +47,6 @@ export const UserProfile = ({ username }: UserProfileProps) => {
 
   const wantedGames =
     userData &&
-    userData.libraryIncluded &&
     library?.filter((game) => game.status === "WANT_TO_PLAY").slice(0, 4);
 
   const showGamesSkeleton =

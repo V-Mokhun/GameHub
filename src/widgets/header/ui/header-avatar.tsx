@@ -1,6 +1,6 @@
 "use client";
 
-import { SignOutButton, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { ThemeToggler } from "@features/theme-toggler";
 import { BROWSE_ROUTE, PROFILE_ROUTE, SETTINGS_ROUTE } from "@shared/consts";
 import {
@@ -13,17 +13,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Icon,
+  SignOutButton,
   Skeleton,
   useToast,
 } from "@shared/ui";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface HeaderAvatarProps {}
 
 export const HeaderAvatar = ({}: HeaderAvatarProps) => {
-  const { toast } = useToast();
-  const router = useRouter();
   const { user, isLoaded } = useUser();
 
   if ((isLoaded && !user) || !isLoaded)
@@ -76,12 +76,7 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer">
-          <SignOutButton
-            signOutCallback={() => {
-              toast({ title: "Signed out succesfully", variant: "success" });
-              router.refresh();
-            }}
-          >
+          <SignOutButton>
             <div className="flex items-center w-full">
               <Icon className="mr-2" name="LogOut" />
               <span>Sign out</span>
