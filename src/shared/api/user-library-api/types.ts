@@ -1,5 +1,5 @@
 import { GameStatus, Game as LibraryGame } from "@prisma/client";
-import { GameFilters } from "../games-api";
+import { GameFilters, SortFieldsOrder } from "../games-api";
 
 export enum LibrarySortFields {
   RATING = "totalRating",
@@ -12,7 +12,12 @@ export enum LibrarySortFields {
 export interface LibraryGameFilters extends GameFilters {
   userRatingMin: number;
   userRatingMax: number;
-  status: GameStatus;
+  status: GameStatus | undefined;
+}
+
+export interface LibraryGameSorts {
+  field: LibrarySortFields;
+  order: SortFieldsOrder;
 }
 
 export type NormalizedLibraryGame = Omit<

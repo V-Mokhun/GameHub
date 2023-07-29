@@ -6,6 +6,8 @@ import { useLibraryFilterStore } from "../model";
 import { Button, Icon, Overlay, Title } from "@shared/ui";
 import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
 import { GAME_CATEGORIES, gamesApi } from "@shared/api";
+import { LibraryFilterUserRating } from "./library-filter-user-rating";
+import { LibraryFilterStatus } from "./library-filter-status";
 
 interface LibraryFilterProps {}
 
@@ -50,6 +52,18 @@ export const LibraryFilter = ({}: LibraryFilterProps) => {
           </Button>
           <Title className="mb-4 lg:mb-6">Filter Games</Title>
           <div className="flex flex-col gap-4">
+            <LibraryFilterStatus
+              defaultValue={filters.status}
+              onStatusSelect={(val) => {
+                updateFilters("status", val);
+              }}
+              onClick={onOpen}
+            />
+            <LibraryFilterUserRating
+              onChange={updateFilters}
+              minRatingValue={filters.userRatingMin}
+              maxRatingValue={filters.userRatingMax}
+            />
             <FilterName
               search={filters.name || ""}
               onChange={(value) => updateFilters("name", value)}
