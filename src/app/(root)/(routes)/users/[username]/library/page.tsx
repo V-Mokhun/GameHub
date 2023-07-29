@@ -14,13 +14,13 @@ export default async function LibraryPage({
         <Container>
           <div className="flex items-center justify-between gap-4 mb-4">
             <Title className="mb-0 lg:mb-0" size="large">
-              Library
+              {params.username}&apos; Library
             </Title>
             <LibraryChangeView />
           </div>
           <LibraryFilters username={params.username} />
           <Separator />
-          <LibraryGames />
+          <LibraryGames username={params.username} />
         </Container>
       </section>
     </>

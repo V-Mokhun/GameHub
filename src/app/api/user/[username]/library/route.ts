@@ -1,4 +1,5 @@
 import { currentUser } from "@clerk/nextjs";
+import { getFilteredLibrarySchema } from "@shared/api";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
@@ -26,6 +27,75 @@ export async function GET(
       return new NextResponse("User library is private", { status: 403 });
 
     return NextResponse.json(dbUser.library, { status: 200 });
+  } catch (error) {
+    return catchError(error, "Failed to get user library");
+  }
+}
+
+export async function POST(
+  req: Request,
+  { params }: { params: { username: string } }
+) {
+  try {
+    const authUser = await currentUser();
+    const user = await db.user.findUnique({
+      where: {
+        username: params.username,
+      },
+    });
+
+    if (!user) return new NextResponse("User not found", { status: 404 });
+
+    if (authUser?.username !== params.username && user.isPrivateLibrary)
+      return new NextResponse("User library is private", { status: 403 });
+
+    const body = await req.json();
+    const { filters, paginate, sort } = getFilteredLibrarySchema.parse(body);
+
+    let whereClause: any = {};
+    if (filters.categories.length > 0) {
+      whereClause.category = { in: filters.categories };
+    }
+    if (filters.genres.length > 0) {
+      whereClause.genres = { contains: filters.genres.join(",") };
+    }
+    if (filters.themes.length > 0) {
+      whereClause.themes = { contains: filters.themes.join(",") };
+    }
+    if (filters.gameModes.length > 0) {
+      whereClause.gameModes = { contains: filters.gameModes.join(",") };
+    }
+    if (filters.name) {
+      whereClause.name = { contains: filters.name };
+    }
+    if (filters.status) {
+      whereClause.status = filters.status;
+    }
+
+    const dbUser = await db.user.findUnique({
+      where: { username: params.username },
+      include: {
+        library: {
+          orderBy: {
+            [sort.field]: sort.order,
+          },
+          take: paginate.limit,
+          skip: paginate.offset,
+          where: {
+            totalRating: { gte: filters.ratingMin, lte: filters.ratingMax },
+            userRating: {
+              gte: filters.userRatingMin,
+              lte: filters.userRatingMax,
+            },
+            ...whereClause,
+          },
+        },
+      },
+    });
+
+    console.log("FILTERED LIBRARY: ", dbUser?.library);
+
+    return NextResponse.json(dbUser!.library, { status: 200 });
   } catch (error) {
     return catchError(error, "Failed to get user library");
   }

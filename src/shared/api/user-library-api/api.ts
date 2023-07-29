@@ -6,7 +6,13 @@ import axios from "axios";
 import { normalizeLibraryGameProperties } from "./lib";
 import { useRouter } from "next/navigation";
 import { HOME_ROUTE } from "@shared/consts";
-import { NormalizedLibraryGame } from "./types";
+import {
+  LibraryGameFilters,
+  LibraryGameSorts,
+  NormalizedLibraryGame,
+} from "./types";
+import { DEFAULT_PAGINATE, DEFAULT_SORT, GamePaginate } from "../games-api";
+import { DEFAULT_LIBRARY_FILTERS, DEFAULT_LIBRARY_SORT } from "./consts";
 
 const useLibrary = (username?: string, enabled = true) => {
   const router = useRouter();
@@ -122,8 +128,46 @@ const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
   );
 };
 
+export const useFilteredLibrary = (
+  username: string,
+  params: {
+    filters: LibraryGameFilters;
+    sort: LibraryGameSorts;
+    paginate: GamePaginate;
+  } = {
+    filters: DEFAULT_LIBRARY_FILTERS,
+    sort: DEFAULT_LIBRARY_SORT,
+    paginate: DEFAULT_PAGINATE,
+  }
+) => {
+  const { toast } = useToast();
+  const page = Math.floor(params.paginate.offset / params.paginate.limit) + 1;
+
+  return useQuery(
+    ["filtered_library", username, page, params],
+    async () => {
+      const { data } = await axios.post<LibraryGame[]>(
+        `/api/user/${username}/library`,
+        params
+      );
+
+      return data.map(
+        normalizeLibraryGameProperties
+      ) as NormalizedLibraryGame[];
+    },
+    {
+      onError: (error) => {
+        return displayError(toast, error);
+      },
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
 export const userLibraryApi = {
   getLibrary: useLibrary,
   removeGame: useRemoveGameFromLibrary,
   addGame: useAddGameToLibrary,
+  getFilteredLibrary: useFilteredLibrary,
 };
