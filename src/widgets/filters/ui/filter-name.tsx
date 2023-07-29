@@ -4,15 +4,12 @@ import { useDebouncedValue } from "@shared/lib";
 import { Input, Label } from "@shared/ui";
 import { useEffect, useState } from "react";
 
-interface BrowseFilterNameProps {
+interface FilterNameProps {
   onChange: (value: string) => void;
   search: string;
 }
 
-export const BrowseFilterName = ({
-  onChange,
-  search,
-}: BrowseFilterNameProps) => {
+export const FilterName = ({ onChange, search }: FilterNameProps) => {
   const [searchValue, setSearchValue] = useState(search);
   const [debouncedSearchValue] = useDebouncedValue(searchValue);
 

@@ -20,7 +20,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type BrowseFilterSelectProps<T extends Omit<GameTheme, "slug">> = {
+type FilterSelectProps<T extends Omit<GameTheme, "slug">> = {
   fetchData: () => Pick<UseQueryResult<T[], unknown>, "data" | "isLoading">;
   title: string;
   onSelect: (value: number[]) => void;
@@ -30,7 +30,7 @@ type BrowseFilterSelectProps<T extends Omit<GameTheme, "slug">> = {
   filterValue: number[];
 };
 
-export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
+export const FilterSelect = <T extends Omit<GameTheme, "slug">>({
   fetchData,
   onSelect,
   title,
@@ -38,7 +38,7 @@ export const BrowseFilterSelect = <T extends Omit<GameTheme, "slug">>({
   selectKey,
   params,
   filterValue,
-}: BrowseFilterSelectProps<T>) => {
+}: FilterSelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState<GameTheme[]>([]);
   const { data, isLoading } = fetchData();

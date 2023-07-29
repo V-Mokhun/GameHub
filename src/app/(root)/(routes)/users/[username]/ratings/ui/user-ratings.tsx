@@ -140,8 +140,8 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
                 <YAxis
                   type="number"
                   dataKey="rating"
-                  domain={[0, 10]}
-                  tickCount={11}
+                  domain={[1, 10]}
+                  tickCount={10}
                   axisLine={{ className: "stroke-muted" }}
                   tickLine={false}
                   tick={{ fill: "currentColor" }}

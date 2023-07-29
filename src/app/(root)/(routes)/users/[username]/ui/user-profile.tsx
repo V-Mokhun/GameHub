@@ -8,6 +8,7 @@ import { RatedGames } from "./rated-games";
 import { WantedGames } from "./wanted-games";
 import { useAuth } from "@clerk/nextjs";
 import { GameCardSkeleton } from "@entities/game";
+import { GameStatus } from "@prisma/client";
 
 interface UserProfileProps {
   username: string;
@@ -47,7 +48,7 @@ export const UserProfile = ({ username }: UserProfileProps) => {
 
   const wantedGames =
     userData &&
-    library?.filter((game) => game.status === "WANT_TO_PLAY").slice(0, 4);
+    library?.filter((game) => game.status === GameStatus.WANT_TO_PLAY).slice(0, 4);
 
   const showGamesSkeleton =
     (isLibraryLoading && !userData) ||

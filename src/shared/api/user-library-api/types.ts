@@ -1,11 +1,18 @@
-import { Game as LibraryGame } from "@prisma/client";
+import { GameStatus, Game as LibraryGame } from "@prisma/client";
+import { GameFilters } from "../games-api";
 
 export enum LibrarySortFields {
-  RATING = "total_rating",
-  RELEASE_DATE = "first_release_date",
+  RATING = "totalRating",
+  RELEASE_DATE = "releaseDate",
   USER_RATING = "userRating",
   PLAY_TIME = "playTime",
-  FINISHED_DATE = "finishedAt",
+  ADDED_DATE = "createdAt",
+}
+
+export interface LibraryGameFilters extends GameFilters {
+  userRatingMin: number;
+  userRatingMax: number;
+  status: GameStatus;
 }
 
 export type NormalizedLibraryGame = Omit<

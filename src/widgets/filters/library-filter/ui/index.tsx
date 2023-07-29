@@ -1,39 +1,33 @@
 "use client";
 
-import {
-  GAME_CATEGORIES,
-  gamesApi,
-  retrieveFiltersFromSearchParams,
-  stringifyFilters,
-} from "@shared/api";
 import { cn, useClickOutside } from "@shared/lib";
-import { Button, Icon, Overlay, Title } from "@shared/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { useBrowseFilterStore } from "../model";
+import { useLibraryFilterStore } from "../model";
+import { Button, Icon, Overlay, Title } from "@shared/ui";
 import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
+import { GAME_CATEGORIES, gamesApi } from "@shared/api";
 
-interface BrowseFilterProps {}
+interface LibraryFilterProps {}
 
-export const BrowseFilter = ({}: BrowseFilterProps) => {
+export const LibraryFilter = ({}: LibraryFilterProps) => {
   const { filters, isOpen, onClose, onOpen, updateFilters, setFilters } =
-    useBrowseFilterStore();
+    useLibraryFilterStore();
 
   const ref = useClickOutside(onClose);
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    const { filters: defaultFilters } = retrieveFiltersFromSearchParams(params);
+  // useEffect(() => {
+  //   const { filters: defaultFilters } = retrieveFiltersFromSearchParams(params);
 
-    setFilters(defaultFilters);
-  }, []);
+  //   setFilters(defaultFilters);
+  // }, []);
 
-  useEffect(() => {
-    const query = stringifyFilters(params, filters);
-    router.push(`${pathname}${query}`);
-  }, [filters, params, pathname, router]);
+  // useEffect(() => {
+  //   const query = stringifyFilters(params, filters);
+  //   router.push(`${pathname}${query}`);
+  // }, [filters, params, pathname, router]);
 
   return (
     <>

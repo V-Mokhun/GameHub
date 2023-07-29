@@ -10,7 +10,7 @@ import {
   retrieveSortFromSearchParams,
   userLibraryApi,
 } from "@shared/api";
-import { Skeleton, Title } from "@shared/ui";
+import { Title } from "@shared/ui";
 import { GameList } from "@widgets/game-list";
 import { Pagination } from "@widgets/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

@@ -5,7 +5,7 @@ import { useDebouncedValue } from "@shared/lib";
 import { Input, Label } from "@shared/ui";
 import { useEffect, useState } from "react";
 
-interface BrowseFilterRatingProps {
+interface FilterRatingProps {
   onChange: (
     key: keyof GameFilters,
     value: GameFilters[keyof GameFilters]
@@ -14,11 +14,11 @@ interface BrowseFilterRatingProps {
   maxRatingValue: number;
 }
 
-export const BrowseFilterRating = ({
+export const FilterRating = ({
   onChange,
   maxRatingValue,
   minRatingValue,
-}: BrowseFilterRatingProps) => {
+}: FilterRatingProps) => {
   const [minRating, setMinRating] = useState(minRatingValue);
   const [maxRating, setMaxRating] = useState(maxRatingValue);
   const [debouncedMinRating] = useDebouncedValue(minRating, 1000);
