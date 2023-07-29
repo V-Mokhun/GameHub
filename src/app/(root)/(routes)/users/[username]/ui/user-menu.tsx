@@ -11,7 +11,8 @@ import { usePathname } from "next/navigation";
 
 interface UserMenuProps {
   username: string;
-  isLoading: boolean;
+  isLoading?: boolean;
+  includePrivateRoutes?: boolean;
 }
 
 const MENU_ITEMS = (pathname: string, username: string) => [
@@ -20,6 +21,14 @@ const MENU_ITEMS = (pathname: string, username: string) => [
     href: PROFILE_ROUTE(username),
     active: pathname === PROFILE_ROUTE(username),
   },
+  {
+    label: "Friends",
+    href: FRIENDS_ROUTE(username),
+    active: pathname === FRIENDS_ROUTE(username),
+  },
+];
+
+const PRIVATE_MENU_ITEMS = (pathname: string, username: string) => [
   {
     label: "Library",
     href: LIBRARY_ROUTE(username),
@@ -30,20 +39,19 @@ const MENU_ITEMS = (pathname: string, username: string) => [
     href: RATINGS_ROUTE(username),
     active: pathname === RATINGS_ROUTE(username),
   },
-  {
-    label: "Friends",
-    href: FRIENDS_ROUTE(username),
-    active: pathname === FRIENDS_ROUTE(username),
-  },
 ];
 
-export const UserMenu = ({ username, isLoading }: UserMenuProps) => {
+export const UserMenu = ({
+  username,
+  isLoading,
+  includePrivateRoutes = true,
+}: UserMenuProps) => {
   const pathname = usePathname();
 
   if (isLoading)
     return (
       <ul className="flex items-center gap-4">
-        {[...Array(MENU_ITEMS("", "").length)].map((_, i) => (
+        {[...Array(4)].map((_, i) => (
           <Skeleton key={i} className="w-28 h-7" />
         ))}
       </ul>
@@ -54,6 +62,10 @@ export const UserMenu = ({ username, isLoading }: UserMenuProps) => {
       {MENU_ITEMS(pathname, username).map((item) => (
         <MenuItem key={item.href} {...item} />
       ))}
+      {includePrivateRoutes &&
+        PRIVATE_MENU_ITEMS(pathname, username).map((item) => (
+          <MenuItem key={item.href} {...item} />
+        ))}
     </ul>
   );
 };

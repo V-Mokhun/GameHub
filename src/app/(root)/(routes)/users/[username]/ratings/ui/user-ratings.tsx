@@ -103,7 +103,7 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
     router.push(PROFILE_ROUTE(username));
     setTimeout(() => {
       toast({
-        title: `${username}'s library is private`,
+        title: `${username}'s ratings are private`,
         description: "You can't see their ratings",
         variant: "destructive",
       });

@@ -5,6 +5,7 @@ import {
   LibrarySortFields,
   SortFieldsOrder,
   retrieveFiltersFromSearchParams,
+  retrieveLibraryFiltersFromSearchParams,
 } from "@shared/api";
 import { LIBRARY_ROUTE } from "@shared/consts";
 import { updateSearchParams } from "@shared/lib";
@@ -29,7 +30,7 @@ export const LibraryFilters = ({ username }: LibraryFiltersProps) => {
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const { isDefault } = retrieveFiltersFromSearchParams(params);
+  const { isDefault } = retrieveLibraryFiltersFromSearchParams(params);
 
   const onSelectValue = (key: "field" | "order", value: string) => {
     const query = updateSearchParams(params, key, value);

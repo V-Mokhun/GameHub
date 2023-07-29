@@ -79,8 +79,6 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
     );
   }
 
-  console.log(data?.library);
-
   return data && data.library.length > 0 ? (
     <div className="space-y-4">
       <div className="flex flex-wrap mb-2 gap-2 md:gap-x-4 md:gap-y-6">
