@@ -38,35 +38,43 @@ export const UserProfile = ({ username }: UserProfileProps) => {
   const { data: userData, isLoading: isUserLoading } =
     userApi.getUser(username);
   const { data: ratedLibrary, isLoading: isRatedLibraryLoading } =
-    userLibraryApi.getLibrary(username, userData?.libraryIncluded, {
-      filters: {
-        ...DEFAULT_LIBRARY_FILTERS,
-        userRatingMin: MIN_USER_RATING,
-      },
-      paginate: {
-        limit: 4,
-        offset: 0,
-      },
-      sort: {
-        field: LibrarySortFields.UPDATED_DATE,
-        order: SortFieldsOrder.DESC,
-      },
-    });
+    userLibraryApi.getLibrary(
+      username,
+      { enabled: userData?.libraryIncluded || false, noLimit: false },
+      {
+        filters: {
+          ...DEFAULT_LIBRARY_FILTERS,
+          userRatingMin: MIN_USER_RATING,
+        },
+        paginate: {
+          limit: 4,
+          offset: 0,
+        },
+        sort: {
+          field: LibrarySortFields.UPDATED_DATE,
+          order: SortFieldsOrder.DESC,
+        },
+      }
+    );
   const { data: wantedLibrary, isLoading: isWantedLibraryLoading } =
-    userLibraryApi.getLibrary(username, userData?.libraryIncluded, {
-      filters: {
-        ...DEFAULT_LIBRARY_FILTERS,
-        status: GameStatus.WANT_TO_PLAY,
-      },
-      paginate: {
-        limit: 4,
-        offset: 0,
-      },
-      sort: {
-        field: LibrarySortFields.UPDATED_DATE,
-        order: SortFieldsOrder.DESC,
-      },
-    });
+    userLibraryApi.getLibrary(
+      username,
+      { enabled: userData?.libraryIncluded || false, noLimit: false },
+      {
+        filters: {
+          ...DEFAULT_LIBRARY_FILTERS,
+          status: GameStatus.WANT_TO_PLAY,
+        },
+        paginate: {
+          limit: 4,
+          offset: 0,
+        },
+        sort: {
+          field: LibrarySortFields.UPDATED_DATE,
+          order: SortFieldsOrder.DESC,
+        },
+      }
+    );
 
   const ratedGames = userData && ratedLibrary;
   const wantedGames = userData && wantedLibrary;

@@ -4,10 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { GameStatus } from "@prisma/client";
 import {
   Game,
-  retrieveLibraryFiltersFromSearchParams,
-  retrieveLibrarySortFromSearchParams,
-  retrievePaginateFromSearchParams,
-  userLibraryApi,
+  userLibraryApi
 } from "@shared/api";
 import { cn } from "@shared/lib";
 import {
@@ -28,7 +25,6 @@ import {
 } from "@shared/ui";
 import { AlertModal } from "@shared/ui/modal";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AddGameScheme, addGameScheme } from "../../model";
@@ -55,7 +51,6 @@ export const GameLibraryModal = ({
   username,
   isInLibrary,
 }: GameLibraryModalProps) => {
-  const params = useSearchParams();
   const [rating, setRating] = useState(libraryGameData?.userRating || 0);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const onChange = (open: boolean) => {
@@ -86,33 +81,22 @@ export const GameLibraryModal = ({
   const watchStatus = form.watch("status");
 
   const onSubmit: SubmitHandler<AddGameScheme> = async (data) => {
-    const sort = retrieveLibrarySortFromSearchParams(params);
-    const paginate = retrievePaginateFromSearchParams(params);
-    const { filters } = retrieveLibraryFiltersFromSearchParams(params);
-
     await addGame({
-      game: {
-        category: gameData.category,
-        name: gameData.name,
-        id: gameData.id,
-        releaseDate: gameData.releaseDate || null,
-        gameModes: gameData.gameModes?.join(",") || "",
-        genres: gameData.genres?.join(",") || "",
-        themes: gameData.themes?.join(",") || "",
-        totalRating: gameData.rating,
-        coverUrl: gameData.cover,
-        userId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        userRating: rating === 0 ? null : rating,
-        ...data,
-        playTime: Number(data.playTime),
-      },
-      params: {
-        sort,
-        paginate,
-        filters,
-      },
+      category: gameData.category,
+      name: gameData.name,
+      id: gameData.id,
+      releaseDate: gameData.releaseDate || null,
+      gameModes: gameData.gameModes?.join(",") || "",
+      genres: gameData.genres?.join(",") || "",
+      themes: gameData.themes?.join(",") || "",
+      totalRating: gameData.rating,
+      coverUrl: gameData.cover,
+      userId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userRating: rating === 0 ? null : rating,
+      ...data,
+      playTime: Number(data.playTime),
     });
   };
 

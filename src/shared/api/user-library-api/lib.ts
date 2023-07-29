@@ -20,7 +20,7 @@ export const libraryGameSchema = z.object({
   name: z.string(),
   totalRating: z.number(),
   coverUrl: z.string(),
-  releaseDate: z.string().datetime(),
+  releaseDate: z.string().datetime().nullable(),
   category: z.number(),
   themes: z.string(),
   genres: z.string(),

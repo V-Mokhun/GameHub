@@ -12,6 +12,6 @@ export const DEFAULT_LIBRARY_FILTERS: LibraryGameFilters = {
 };
 
 export const DEFAULT_LIBRARY_SORT: LibraryGameSorts = {
-  field: LibrarySortFields.RATING,
+  field: LibrarySortFields.USER_RATING,
   order: SortFieldsOrder.DESC
 };

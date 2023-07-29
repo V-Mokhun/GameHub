@@ -42,24 +42,27 @@ export const LibraryFilters = ({ username }: LibraryFiltersProps) => {
         <div className="flex items-center gap-2 flex-auto">
           <Select
             onValueChange={(val) => onSelectValue("field", val)}
-            defaultValue={params.get("field") ?? LibrarySortFields.RATING}
+            defaultValue={params.get("field") ?? LibrarySortFields.USER_RATING}
           >
             <SelectTrigger className="md:max-w-xs">
               <SelectValue placeholder="Sort by..." />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value={LibrarySortFields.USER_RATING}>
+                User Rating
+              </SelectItem>
               <SelectItem value={LibrarySortFields.RATING}>Rating</SelectItem>
               <SelectItem value={LibrarySortFields.RELEASE_DATE}>
                 Release Date
-              </SelectItem>
-              <SelectItem value={LibrarySortFields.USER_RATING}>
-                User Rating
               </SelectItem>
               <SelectItem value={LibrarySortFields.PLAY_TIME}>
                 Play Time
               </SelectItem>
               <SelectItem value={LibrarySortFields.ADDED_DATE}>
                 Date Added
+              </SelectItem>
+              <SelectItem value={LibrarySortFields.UPDATED_DATE}>
+                Date Edited
               </SelectItem>
             </SelectContent>
           </Select>

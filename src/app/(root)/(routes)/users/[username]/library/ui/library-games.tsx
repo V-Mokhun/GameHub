@@ -37,7 +37,7 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
 
   const { data, isFetching, isPreviousData } = userLibraryApi.getLibrary(
     username,
-    true,
+    { enabled: true, noLimit: false },
     {
       filters,
       paginate,

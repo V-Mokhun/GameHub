@@ -39,14 +39,16 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
     sort,
   });
 
-  const { data: libraryData } = userLibraryApi.getLibrary(user?.username || "");
+  const { data: libraryData } = userLibraryApi.getLibrary(
+    user?.username || "",
+    { noLimit: true, enabled: true }
+  );
 
   const { data: gamesCount } = gamesApi.getGamesCount({
     filters,
     paginate,
     sort,
   });
-  
 
   if (isFetching) {
     return (

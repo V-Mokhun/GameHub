@@ -14,16 +14,12 @@ import {
   NormalizedLibraryGame,
 } from "./types";
 
-type UseLibraryApiResponse = {
-  library: LibraryGame[];
-  count: number;
-  isPrivateLibrary: boolean;
-  isOwnProfile: boolean;
-};
-
 const useLibrary = (
   username?: string,
-  enabled = true,
+  options = {
+    enabled: true,
+    noLimit: false,
+  },
   params: {
     filters?: LibraryGameFilters;
     sort?: LibraryGameSorts;
@@ -46,10 +42,12 @@ const useLibrary = (
   return useQuery(
     [`library`, { username, page, params }],
     async () => {
-      const { data } = await axios.post<UseLibraryApiResponse>(
-        `/api/user/${username}/library`,
-        params
-      );
+      const { data } = await axios.post<{
+        library: LibraryGame[];
+        count: number;
+        isPrivateLibrary: boolean;
+        isOwnProfile: boolean;
+      }>(`/api/user/${username}/library`, params);
 
       return {
         count: data.count,
@@ -67,7 +65,7 @@ const useLibrary = (
       },
       refetchOnWindowFocus: false,
       keepPreviousData: true,
-      enabled: !!username && enabled,
+      enabled: !!username && options.enabled,
     }
   );
 };
@@ -75,23 +73,9 @@ const useLibrary = (
 const useAddGameToLibrary = (username: string, onSuccess?: () => void) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  let params: {
-    filters?: LibraryGameFilters;
-    sort?: LibraryGameSorts;
-    paginate?: GamePaginate;
-  };
 
   return useMutation(
-    async (options: {
-      game: LibraryGame;
-      params: {
-        filters?: LibraryGameFilters;
-        sort?: LibraryGameSorts;
-        paginate?: GamePaginate;
-      };
-    }) => {
-      const { game } = options;
-
+    async (game: LibraryGame) => {
       const { data } = await axios.post<LibraryGame>(
         `/api/user/library/${game.id}`,
         game
@@ -100,79 +84,35 @@ const useAddGameToLibrary = (username: string, onSuccess?: () => void) => {
       return normalizeLibraryGameProperties(data);
     },
     {
-      onMutate: async ({ game: newGame, params: optParams }) => {
-        params = optParams;
-
-        if (!params.filters) params.filters = DEFAULT_LIBRARY_FILTERS;
-        if (!params.sort) params.sort = DEFAULT_LIBRARY_SORT;
-        if (!params.paginate) params.paginate = DEFAULT_PAGINATE;
-
-        const page =
-          Math.floor(params.paginate.offset / params.paginate.limit) + 1;
-
+      onMutate: async (newGame) => {
         await queryClient.cancelQueries({
-          queryKey: ["library", { username, page, params }],
+          queryKey: ["library", { username }],
         });
 
         const previousLibrary = queryClient.getQueryData([
           "library",
-          { username, page, params },
+          { username },
         ]);
 
         queryClient.setQueryData(
-          ["library", { username, page, params }],
-          (
-            oldLibrary:
-              | (Omit<UseLibraryApiResponse, "library"> & {
-                  library: NormalizedLibraryGame[];
-                })
-              | undefined
-          ) => {
-            return {
-              count: oldLibrary?.count || 0,
-              isOwnProfile: oldLibrary?.isOwnProfile || false,
-              isPrivateLibrary: oldLibrary?.isPrivateLibrary || false,
-              library: [
-                ...(oldLibrary?.library || []).filter(
-                  (game) => game.id !== newGame.id
-                ),
-                normalizeLibraryGameProperties(newGame),
-              ],
-            };
-          }
+          ["library", { username }],
+          (oldLibrary: NormalizedLibraryGame[] = []) => [
+            ...oldLibrary.filter((game) => game.id !== newGame.id),
+            normalizeLibraryGameProperties(newGame),
+          ]
         );
 
         return { previousLibrary };
       },
-      onError: (err, { params: optParams }, context) => {
-        params = optParams;
-
-        if (!params.filters) params.filters = DEFAULT_LIBRARY_FILTERS;
-        if (!params.sort) params.sort = DEFAULT_LIBRARY_SORT;
-        if (!params.paginate) params.paginate = DEFAULT_PAGINATE;
-
-        const page =
-          Math.floor(params.paginate.offset / params.paginate.limit) + 1;
-
+      onError: (err, newGame, context) => {
         queryClient.setQueryData(
-          ["library", { username, page, params }],
+          ["library", { username }],
           context?.previousLibrary
         );
         displayError(toast, err, "Failed to add game from library");
       },
       onSettled: () => {
-        if (!params) params = {};
-
-        if (!params.filters) params.filters = DEFAULT_LIBRARY_FILTERS;
-        if (!params.sort) params.sort = DEFAULT_LIBRARY_SORT;
-        if (!params.paginate) params.paginate = DEFAULT_PAGINATE;
-
-        const page =
-          Math.floor(params.paginate.offset / params.paginate.limit) + 1;
-
-        queryClient.invalidateQueries({
-          queryKey: ["library", { username, page, params }],
-        });
+        queryClient.invalidateQueries({ queryKey: ["library", { username }] });
       },
       onSuccess: () => {
         toast({ title: "Game was saved to your library", variant: "success" });

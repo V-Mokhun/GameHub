@@ -72,7 +72,7 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
   const { data: libraryData, isLoading: isLibraryLoading } =
     userLibraryApi.getLibrary(
       userData?.user.username || "",
-      userData?.libraryIncluded,
+      { enabled: userData?.libraryIncluded || false, noLimit: false },
       {
         filters: {
           ...DEFAULT_LIBRARY_FILTERS,
