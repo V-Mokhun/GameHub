@@ -14,7 +14,7 @@ export default async function LibraryPage({
         <Container>
           <div className="flex items-center justify-between gap-4 mb-4">
             <Title className="mb-0 lg:mb-0" size="large">
-              {params.username}&apos; Library
+              {params.username}&apos;s Library
             </Title>
             <LibraryChangeView />
           </div>

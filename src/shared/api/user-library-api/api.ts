@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { normalizeLibraryGameProperties } from "./lib";
 import { useRouter } from "next/navigation";
-import { HOME_ROUTE } from "@shared/consts";
+import { HOME_ROUTE, PROFILE_ROUTE } from "@shared/consts";
 import {
   LibraryGameFilters,
   LibraryGameSorts,
@@ -138,29 +138,38 @@ export const useFilteredLibrary = (
     filters: DEFAULT_LIBRARY_FILTERS,
     sort: DEFAULT_LIBRARY_SORT,
     paginate: DEFAULT_PAGINATE,
-  }
+  },
+  enabled = true
 ) => {
   const { toast } = useToast();
+  const router = useRouter();
   const page = Math.floor(params.paginate.offset / params.paginate.limit) + 1;
 
   return useQuery(
     ["filtered_library", username, page, params],
     async () => {
-      const { data } = await axios.post<LibraryGame[]>(
-        `/api/user/${username}/library`,
-        params
-      );
+      const { data } = await axios.post<{
+        library: LibraryGame[];
+        count: number;
+        isPrivateLibrary: boolean;
+      }>(`/api/user/${username}/library`, params);
 
-      return data.map(
-        normalizeLibraryGameProperties
-      ) as NormalizedLibraryGame[];
+      return {
+        count: data.count,
+        library: data.library.map(
+          normalizeLibraryGameProperties
+        ) as NormalizedLibraryGame[],
+        isPrivateLibrary: data.isPrivateLibrary,
+      };
     },
     {
       onError: (error) => {
-        return displayError(toast, error);
+        displayError(toast, error);
+        router.push(PROFILE_ROUTE(username));
       },
       keepPreviousData: true,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };

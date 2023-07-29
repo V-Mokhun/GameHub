@@ -1,9 +1,19 @@
 import { GameStatus, Game as LibraryGame } from "@prisma/client";
 import { z } from "zod";
-import { MAX_USER_RATING, MIN_USER_RATING } from "./consts";
+import {
+  DEFAULT_LIBRARY_FILTERS,
+  DEFAULT_LIBRARY_SORT,
+  MAX_USER_RATING,
+  MIN_USER_RATING,
+} from "./consts";
 import { MAX_RATING, MIN_RATING, SortFieldsOrder } from "../games-api";
-import { LibrarySortFields } from "./types";
+import {
+  LibraryGameFilters,
+  LibraryGameSorts,
+  LibrarySortFields,
+} from "./types";
 import { GAMES_LIMIT } from "../consts";
+import { ReadonlyURLSearchParams } from "next/navigation";
 
 export const libraryGameSchema = z.object({
   id: z.number(),
@@ -74,3 +84,64 @@ export const normalizeLibraryGameProperties = (game: LibraryGame) => ({
   gameModes: game.gameModes.split(",").map(Number),
   genres: game.genres.split(",").map(Number),
 });
+
+export const retrieveLibraryFiltersFromSearchParams = (
+  params: ReadonlyURLSearchParams
+): { filters: LibraryGameFilters; isDefault: boolean } => {
+  const filters = { ...DEFAULT_LIBRARY_FILTERS };
+  let isDefault = true;
+  for (let key of Object.keys(filters) as Array<keyof typeof filters>) {
+    if (params.has(key)) {
+      const value = params.get(key);
+      if (
+        key === "categories" ||
+        key === "genres" ||
+        key === "themes" ||
+        key === "gameModes"
+      ) {
+        filters[key] = value?.split(",").map(Number) ?? [];
+        isDefault = false;
+      } else if (
+        key === "ratingMin" ||
+        key === "ratingMax" ||
+        key === "userRatingMax" ||
+        key === "userRatingMin"
+      ) {
+        filters[key] = Number(value);
+        if (filters[key] !== DEFAULT_LIBRARY_FILTERS[key]) {
+          isDefault = false;
+        }
+      } else if (key === "status") {
+        filters[key] = value as GameStatus;
+        if (filters[key] !== DEFAULT_LIBRARY_FILTERS[key]) {
+          isDefault = false;
+        }
+      } else {
+        filters[key] = value || "";
+        if (value !== "") {
+          isDefault = false;
+        }
+      }
+    }
+  }
+
+  return { filters, isDefault };
+};
+
+export const retrieveLibrarySortFromSearchParams = (
+  params: ReadonlyURLSearchParams
+): LibraryGameSorts => {
+  const sort = { ...DEFAULT_LIBRARY_SORT };
+  for (const key of Object.keys(sort) as Array<keyof typeof sort>) {
+    if (params.has(key)) {
+      const value = params.get(key);
+      if (key === "order") {
+        sort[key] = value as SortFieldsOrder;
+      } else {
+        sort[key] = value as LibrarySortFields;
+      }
+    }
+  }
+
+  return sort;
+};

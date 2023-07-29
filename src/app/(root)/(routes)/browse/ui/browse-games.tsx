@@ -5,6 +5,7 @@ import { GameCardSkeleton } from "@entities/game";
 import {
   GAMES_LIMIT_VALUES,
   gamesApi,
+  getPaginateQuery,
   retrieveFiltersFromSearchParams,
   retrievePaginateFromSearchParams,
   retrieveSortFromSearchParams,
@@ -27,12 +28,7 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
   const paginate = retrievePaginateFromSearchParams(params);
 
   const onPaginateChange = (limit: number, offset: number) => {
-    const current = new URLSearchParams(Array.from(params.entries()));
-
-    current.set("limit", String(limit));
-    current.set("offset", String(offset));
-    const search = current.toString();
-    const query = search ? `?${search}` : "";
+    const query = getPaginateQuery(params, limit, offset);
 
     router.push(`${pathname}${query}`);
   };

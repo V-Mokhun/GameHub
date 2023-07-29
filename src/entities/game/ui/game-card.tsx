@@ -1,7 +1,7 @@
 "use client";
 
 import { Game, NormalizedLibraryGame } from "@shared/api";
-import { GAMES_ROUTE, SIGN_IN_ROUTE } from "@shared/consts";
+import { GAMES_ROUTE, SIGN_IN_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
 import { cn } from "@shared/lib";
 import {
   Badge,
@@ -65,7 +65,7 @@ export const GameCard = ({
             onClick={() => {
               setTimeout(() => {
                 dismiss();
-              }, 1000);
+              }, TOAST_TIMEOUT);
             }}
             className={buttonVariants({
               variant: "default",

@@ -1,8 +1,8 @@
 "use client";
 
 import { userApi, userLibraryApi } from "@shared/api";
-import { PROFILE_ROUTE } from "@shared/consts";
-import { Skeleton, Subtitle, Title, useToast } from "@shared/ui";
+import { PROFILE_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
+import { Separator, Skeleton, Subtitle, Title, useToast } from "@shared/ui";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import {
@@ -14,6 +14,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { UserMenu } from "../../ui/user-menu";
 
 interface UserRatingsProps {
   username: string;
@@ -59,7 +60,8 @@ const CustomTooltip = ({
 export const UserRatings = ({ username }: UserRatingsProps) => {
   const { toast } = useToast();
   const router = useRouter();
-  const { data: userData } = userApi.getUser(username);
+  const { data: userData, isLoading: isUserLoading } =
+    userApi.getUser(username);
   const { data: library, isLoading: isLibraryLoading } =
     userLibraryApi.getLibrary(
       userData?.user.username || "",
@@ -72,20 +74,24 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
     (isLibraryLoading && userData && userData.libraryIncluded)
   )
     return (
-      <div className="pb-4 md:pb-6 overflow-x-auto space-y-4">
-        <Skeleton className="w-40 h-8" />
-        <Skeleton className="w-52 h-6" />
+      <div className="pb-4 md:pb-6 overflow-x-auto">
+        <UserMenu isLoading={true} username={username} />
+        <Skeleton className="mt-10 mb-4 w-40 h-8" />
+        <Skeleton className="w-52 h-6 mb-4" />
         <Skeleton className="w-96 h-[60vh] xs:w-full" />
       </div>
     );
 
-  if (userData.user.isPrivateLibrary) {
-    toast({
-      title: `${userData.user.username}'s library is private`,
-      description: "You can't see their ratings",
-      variant: "destructive",
-    });
+  if (!userData.libraryIncluded) {
     router.push(PROFILE_ROUTE(username));
+    setTimeout(() => {
+      toast({
+        title: `${username}'s library is private`,
+        description: "You can't see their ratings",
+        variant: "destructive",
+      });
+    }, TOAST_TIMEOUT);
+    return null;
   }
 
   const formattedData =
@@ -105,6 +111,8 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
 
   return (
     <div className="pb-4 md:pb-6 overflow-x-auto">
+      <UserMenu isLoading={isUserLoading} username={username} />
+      <Separator />
       <Title>
         {userData.isOwnProfile
           ? "Your ratings"

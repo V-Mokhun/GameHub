@@ -24,11 +24,13 @@ export async function GET(
     if (!dbUser) return new NextResponse("User not found", { status: 404 });
 
     if (user?.username !== username && dbUser.isPrivateLibrary)
-      return new NextResponse("User library is private", { status: 403 });
+      return new NextResponse(`${params.username}'s library is private`, {
+        status: 403,
+      });
 
     return NextResponse.json(dbUser.library, { status: 200 });
   } catch (error) {
-    return catchError(error, "Failed to get user library");
+    return catchError(error, `Failed to get ${params.username}'s library`);
   }
 }
 
@@ -47,7 +49,11 @@ export async function POST(
     if (!user) return new NextResponse("User not found", { status: 404 });
 
     if (authUser?.username !== params.username && user.isPrivateLibrary)
-      return new NextResponse("User library is private", { status: 403 });
+      return NextResponse.json({
+        library: [],
+        count: 0,
+        isPrivateLibrary: true,
+      });
 
     const body = await req.json();
     const { filters, paginate, sort } = getFilteredLibrarySchema.parse(body);
@@ -90,13 +96,36 @@ export async function POST(
             ...whereClause,
           },
         },
+        _count: {
+          select: {
+            library: {
+              where: {
+                totalRating: { gte: filters.ratingMin, lte: filters.ratingMax },
+                userRating: {
+                  gte: filters.userRatingMin,
+                  lte: filters.userRatingMax,
+                },
+                ...whereClause,
+              },
+            },
+          },
+        },
       },
     });
 
     console.log("FILTERED LIBRARY: ", dbUser?.library);
 
-    return NextResponse.json(dbUser!.library, { status: 200 });
+    return NextResponse.json(
+      {
+        library: dbUser!.library,
+        count: dbUser!._count.library,
+        isPrivateLibrary: false,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return catchError(error, "Failed to get user library");
+    console.log(error);
+
+    return catchError(error, `Failed to get ${params.username}'s library`);
   }
 }
