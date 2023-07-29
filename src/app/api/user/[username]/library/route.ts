@@ -57,20 +57,38 @@ export async function POST(
       });
 
     const body = await req.json();
-    const { filters, paginate, sort } = getFilteredLibrarySchema.parse(body);
+    const { filters, paginate, sort, noLimit } =
+      getFilteredLibrarySchema.parse(body);
 
     let whereClause: any = {};
+    let andClause: any[] = [];
     if (filters.categories.length > 0) {
-      whereClause.category = { in: filters.categories };
+      const orClause: any[] = [];
+      filters.categories.forEach((categoryId) =>
+        orClause.push({ category: categoryId })
+      );
+      andClause.push({ OR: orClause });
     }
     if (filters.genres.length > 0) {
-      whereClause.genres = { contains: filters.genres.join(",") };
+      const orClause: any[] = [];
+      filters.genres.forEach((genreId) =>
+        orClause.push({ genres: { contains: String(genreId) } })
+      );
+      andClause.push({ OR: orClause });
     }
     if (filters.themes.length > 0) {
-      whereClause.themes = { contains: filters.themes.join(",") };
+      const orClause: any[] = [];
+      filters.themes.forEach((themeId) =>
+        orClause.push({ themes: { contains: String(themeId) } })
+      );
+      andClause.push({ OR: orClause });
     }
     if (filters.gameModes.length > 0) {
-      whereClause.gameModes = { contains: filters.gameModes.join(",") };
+      const orClause: any[] = [];
+      filters.gameModes.forEach((gameModeId) =>
+        orClause.push({ gameModes: { contains: String(gameModeId) } })
+      );
+      andClause.push({ OR: orClause });
     }
     if (filters.userRatingMin >= MIN_USER_RATING) {
       whereClause.userRating = {
@@ -92,9 +110,10 @@ export async function POST(
           orderBy: {
             [sort.field]: sort.order,
           },
-          take: paginate.limit,
+          take: noLimit ? undefined : paginate.limit,
           skip: paginate.offset,
           where: {
+            AND: andClause,
             totalRating: { gte: filters.ratingMin, lte: filters.ratingMax },
             ...whereClause,
           },

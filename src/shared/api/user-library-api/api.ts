@@ -47,7 +47,10 @@ const useLibrary = (
         count: number;
         isPrivateLibrary: boolean;
         isOwnProfile: boolean;
-      }>(`/api/user/${username}/library`, params);
+      }>(`/api/user/${username}/library`, {
+        ...params,
+        noLimit: options.noLimit,
+      });
 
       return {
         count: data.count,
@@ -136,10 +139,15 @@ const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
     },
     {
       onMutate: async (deletedGameId: number) => {
-        await queryClient.cancelQueries({ queryKey: ["library", username] });
-        const previousLibrary = queryClient.getQueryData(["library", username]);
+        await queryClient.cancelQueries({
+          queryKey: ["library", { username }],
+        });
+        const previousLibrary = queryClient.getQueryData([
+          "library",
+          { username },
+        ]);
         queryClient.setQueryData(
-          ["library", username],
+          ["library", { username }],
           (oldLibrary: NormalizedLibraryGame[] = []) =>
             oldLibrary.filter((game) => game.id !== deletedGameId)
         );
@@ -147,13 +155,13 @@ const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
       },
       onError: (err, deletedGameId, context) => {
         queryClient.setQueryData(
-          ["library", username],
+          ["library", { username }],
           context?.previousLibrary
         );
         displayError(toast, err, "Failed to remove game from library");
       },
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ["library", username] });
+        queryClient.invalidateQueries({ queryKey: ["library", { username }] });
       },
       onSuccess: () => {
         toast({

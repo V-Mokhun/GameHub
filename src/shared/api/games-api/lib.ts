@@ -41,6 +41,11 @@ export const stringifyFilters = (
   const current = new URLSearchParams(Array.from(params.entries()));
 
   for (let key of Object.keys(filters) as Array<keyof typeof filters>) {
+    if (!filters[key]) {
+      current.delete(key);
+      continue;
+    }
+
     if (
       key === "categories" ||
       key === "genres" ||

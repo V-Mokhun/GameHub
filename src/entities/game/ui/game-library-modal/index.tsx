@@ -2,10 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GameStatus } from "@prisma/client";
-import {
-  Game,
-  userLibraryApi
-} from "@shared/api";
+import { Game, userLibraryApi } from "@shared/api";
 import { cn } from "@shared/lib";
 import {
   Button,
@@ -106,7 +103,10 @@ export const GameLibraryModal = ({
         isLoading={isDeleting}
         isOpen={isAlertOpen}
         onClose={() => setIsAlertOpen(false)}
-        onConfirm={async () => await deleteGame(gameData.id)}
+        onConfirm={async () => {
+          await deleteGame(gameData.id);
+          setIsAlertOpen(false);
+        }}
       />
       <Dialog open={isOpen} onOpenChange={onChange}>
         <DialogContent>

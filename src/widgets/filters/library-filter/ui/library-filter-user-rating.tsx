@@ -36,7 +36,10 @@ export const LibraryFilterUserRating = ({
   }, [debouncedMaxRating, debouncedMinRating]);
 
   useEffect(() => {
-    onChange("userRatingMin", Math.max(MIN_USER_RATING, debouncedMinRating));
+    onChange(
+      "userRatingMin",
+      Math.max(MIN_USER_RATING - 1, debouncedMinRating)
+    );
   }, [debouncedMinRating]);
 
   useEffect(() => {
@@ -56,13 +59,13 @@ export const LibraryFilterUserRating = ({
           onChange={(e) => {
             if (
               +e.target.value > maxRating ||
-              +e.target.value < MIN_USER_RATING
+              +e.target.value < MIN_USER_RATING - 1
             )
               return;
 
             setMinRating(+e.target.value);
           }}
-          min={MIN_USER_RATING}
+          min={MIN_USER_RATING - 1}
           max={MAX_USER_RATING}
           type="number"
           placeholder="Min"
@@ -74,7 +77,7 @@ export const LibraryFilterUserRating = ({
 
             setMaxRating(+e.target.value);
           }}
-          min={MIN_USER_RATING}
+          min={MIN_USER_RATING - 1}
           max={MAX_USER_RATING}
           type="number"
           placeholder="Max"

@@ -76,6 +76,7 @@ export const getFilteredLibrarySchema = z.object({
     limit: z.number().int().default(GAMES_LIMIT),
     offset: z.number().int().default(0),
   }),
+  noLimit: z.boolean().default(false),
 });
 
 export const normalizeLibraryGameProperties = (game: LibraryGame) => ({
