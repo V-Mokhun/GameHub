@@ -58,15 +58,15 @@ export const getFilteredLibrarySchema = z.object({
     userRatingMax: z
       .number()
       .int()
-      .min(MIN_USER_RATING)
+      .min(MIN_USER_RATING - 1)
       .max(MAX_USER_RATING)
-      .default(MAX_USER_RATING),
+      .default(MIN_USER_RATING - 1),
     userRatingMin: z
       .number()
       .int()
-      .min(MIN_USER_RATING)
+      .min(MIN_USER_RATING - 1)
       .max(MAX_USER_RATING)
-      .default(MIN_USER_RATING),
+      .default(MAX_USER_RATING),
   }),
   sort: z.object({
     field: z.nativeEnum(LibrarySortFields).default(LibrarySortFields.RATING),

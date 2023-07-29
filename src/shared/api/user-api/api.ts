@@ -17,7 +17,7 @@ const useUser = (username: string) => {
   const router = useRouter();
 
   return useQuery(
-    [`user`, username],
+    [`user`, { username }],
     async () => {
       const { data } = await axios.get<UseUserApiResponse>(
         `/api/user/${username}`

@@ -45,7 +45,7 @@ export const useGames = (
   const page = Math.floor(params.paginate.offset / params.paginate.limit) + 1;
 
   return useQuery(
-    ["browse_games", page, params],
+    ["browse_games", { page, params }],
     async () => {
       const body = stringifyGetGamesParams(params);
       const { data } = await axiosInstance.post<UseGamesApiResponse[]>(
@@ -79,7 +79,7 @@ export const useGamesCount = (
   const { toast } = useToast();
 
   return useQuery(
-    ["browse_games_count", params],
+    ["browse_games_count", { params }],
     async () => {
       const body = stringifyGetGamesParams(params);
       const { data } = await axiosInstance.post<{ count: number }>(

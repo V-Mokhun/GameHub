@@ -1,6 +1,13 @@
 "use client";
 
-import { userApi, userLibraryApi } from "@shared/api";
+import {
+  DEFAULT_LIBRARY_FILTERS,
+  LibrarySortFields,
+  MIN_USER_RATING,
+  SortFieldsOrder,
+  userApi,
+  userLibraryApi,
+} from "@shared/api";
 import { PROFILE_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
 import { Separator, Skeleton, Subtitle, Title, useToast } from "@shared/ui";
 import { format } from "date-fns";
@@ -62,10 +69,20 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
   const router = useRouter();
   const { data: userData, isLoading: isUserLoading } =
     userApi.getUser(username);
-  const { data: library, isLoading: isLibraryLoading } =
+  const { data: libraryData, isLoading: isLibraryLoading } =
     userLibraryApi.getLibrary(
       userData?.user.username || "",
-      userData?.libraryIncluded
+      userData?.libraryIncluded,
+      {
+        filters: {
+          ...DEFAULT_LIBRARY_FILTERS,
+          userRatingMin: MIN_USER_RATING,
+        },
+        sort: {
+          field: LibrarySortFields.UPDATED_DATE,
+          order: SortFieldsOrder.ASC,
+        },
+      }
     );
 
   if (
@@ -95,19 +112,13 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
   }
 
   const formattedData =
-    library &&
-    library
-      .filter((game) => game.userRating)
-      .sort(
-        (a, b) =>
-          new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
-      )
-      .map((game) => ({
-        name: game.name,
-        date: format(new Date(game.updatedAt), "dd/MM/yyyy"),
-        rating: game.userRating,
-        releaseDate: game.releaseDate,
-      }));
+    libraryData &&
+    libraryData.library.map((game) => ({
+      name: game.name,
+      date: format(new Date(game.updatedAt), "dd/MM/yyyy"),
+      rating: game.userRating,
+      releaseDate: game.releaseDate,
+    }));
 
   return (
     <div className="pb-4 md:pb-6 overflow-x-auto">

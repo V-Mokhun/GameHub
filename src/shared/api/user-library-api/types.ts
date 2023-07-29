@@ -7,6 +7,7 @@ export enum LibrarySortFields {
   USER_RATING = "userRating",
   PLAY_TIME = "playTime",
   ADDED_DATE = "createdAt",
+  UPDATED_DATE = "updatedAt",
 }
 
 export interface LibraryGameFilters extends GameFilters {

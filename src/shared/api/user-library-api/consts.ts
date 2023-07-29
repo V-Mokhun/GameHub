@@ -8,7 +8,7 @@ export const DEFAULT_LIBRARY_FILTERS: LibraryGameFilters = {
   ...DEFAULT_FILTERS,
   status: undefined,
   userRatingMax: MAX_USER_RATING,
-  userRatingMin: MIN_USER_RATING,
+  userRatingMin: MIN_USER_RATING - 1,
 };
 
 export const DEFAULT_LIBRARY_SORT: LibraryGameSorts = {

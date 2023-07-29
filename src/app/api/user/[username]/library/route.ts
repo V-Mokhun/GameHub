@@ -1,38 +1,38 @@
 import { currentUser } from "@clerk/nextjs";
-import { getFilteredLibrarySchema } from "@shared/api";
+import { MIN_USER_RATING, getFilteredLibrarySchema } from "@shared/api";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { username: string } }
-) {
-  try {
-    const user = await currentUser();
-    const { username } = params;
+// export async function GET(
+//   req: Request,
+//   { params }: { params: { username: string } }
+// ) {
+//   try {
+//     const user = await currentUser();
+//     const { username } = params;
 
-    const dbUser = await db.user.findUnique({
-      where: {
-        username,
-      },
-      include: {
-        library: true,
-      },
-    });
+//     const dbUser = await db.user.findUnique({
+//       where: {
+//         username,
+//       },
+//       include: {
+//         library: true,
+//       },
+//     });
 
-    if (!dbUser) return new NextResponse("User not found", { status: 404 });
+//     if (!dbUser) return new NextResponse("User not found", { status: 404 });
 
-    if (user?.username !== username && dbUser.isPrivateLibrary)
-      return new NextResponse(`${params.username}'s library is private`, {
-        status: 403,
-      });
+//     if (user?.username !== username && dbUser.isPrivateLibrary)
+//       return new NextResponse(`${params.username}'s library is private`, {
+//         status: 403,
+//       });
 
-    return NextResponse.json(dbUser.library, { status: 200 });
-  } catch (error) {
-    return catchError(error, `Failed to get ${params.username}'s library`);
-  }
-}
+//     return NextResponse.json(dbUser.library, { status: 200 });
+//   } catch (error) {
+//     return catchError(error, `Failed to get ${params.username}'s library`);
+//   }
+// }
 
 export async function POST(
   req: Request,
@@ -53,6 +53,7 @@ export async function POST(
         library: [],
         count: 0,
         isPrivateLibrary: true,
+        isOwnProfile: authUser?.username === params.username,
       });
 
     const body = await req.json();
@@ -70,6 +71,12 @@ export async function POST(
     }
     if (filters.gameModes.length > 0) {
       whereClause.gameModes = { contains: filters.gameModes.join(",") };
+    }
+    if (filters.userRatingMin >= MIN_USER_RATING) {
+      whereClause.userRating = {
+        gte: filters.userRatingMin,
+        lte: filters.userRatingMax,
+      };
     }
     if (filters.name) {
       whereClause.name = { contains: filters.name };
@@ -89,10 +96,6 @@ export async function POST(
           skip: paginate.offset,
           where: {
             totalRating: { gte: filters.ratingMin, lte: filters.ratingMax },
-            userRating: {
-              gte: filters.userRatingMin,
-              lte: filters.userRatingMax,
-            },
             ...whereClause,
           },
         },
@@ -101,10 +104,6 @@ export async function POST(
             library: {
               where: {
                 totalRating: { gte: filters.ratingMin, lte: filters.ratingMax },
-                userRating: {
-                  gte: filters.userRatingMin,
-                  lte: filters.userRatingMax,
-                },
                 ...whereClause,
               },
             },
@@ -113,19 +112,16 @@ export async function POST(
       },
     });
 
-    console.log("FILTERED LIBRARY: ", dbUser?.library);
-
     return NextResponse.json(
       {
         library: dbUser!.library,
         count: dbUser!._count.library,
         isPrivateLibrary: false,
+        isOwnProfile: authUser?.username === params.username,
       },
       { status: 200 }
     );
   } catch (error) {
-    console.log(error);
-
     return catchError(error, `Failed to get ${params.username}'s library`);
   }
 }

@@ -39,15 +39,14 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
     sort,
   });
 
-  const { data: libraryGames = [] } = userLibraryApi.getLibrary(
-    user?.username || ""
-  );
+  const { data: libraryData } = userLibraryApi.getLibrary(user?.username || "");
 
   const { data: gamesCount } = gamesApi.getGamesCount({
     filters,
     paginate,
     sort,
   });
+  
 
   if (isFetching) {
     return (
@@ -76,7 +75,7 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
       <GameList
         userId={user?.id}
         username={user?.username || ""}
-        libraryGames={libraryGames}
+        libraryGames={libraryData?.library || []}
         games={data || []}
       />
       <Pagination

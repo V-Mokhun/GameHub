@@ -2,7 +2,13 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GameStatus } from "@prisma/client";
-import { Game, userLibraryApi } from "@shared/api";
+import {
+  Game,
+  retrieveLibraryFiltersFromSearchParams,
+  retrieveLibrarySortFromSearchParams,
+  retrievePaginateFromSearchParams,
+  userLibraryApi,
+} from "@shared/api";
 import { cn } from "@shared/lib";
 import {
   Button,
@@ -20,14 +26,15 @@ import {
   StarRating,
   Textarea,
 } from "@shared/ui";
+import { AlertModal } from "@shared/ui/modal";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AddGameScheme, addGameScheme } from "../../model";
 import { LibraryGameData } from "../game-card";
 import { GameLibraryCalendar } from "./game-library-calendar";
 import { GameLibraryStatus } from "./game-library-status";
-import { AlertModal } from "@shared/ui/modal";
 
 interface GameLibraryModalProps {
   gameData: Game;
@@ -48,6 +55,7 @@ export const GameLibraryModal = ({
   username,
   isInLibrary,
 }: GameLibraryModalProps) => {
+  const params = useSearchParams();
   const [rating, setRating] = useState(libraryGameData?.userRating || 0);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const onChange = (open: boolean) => {
@@ -78,22 +86,33 @@ export const GameLibraryModal = ({
   const watchStatus = form.watch("status");
 
   const onSubmit: SubmitHandler<AddGameScheme> = async (data) => {
+    const sort = retrieveLibrarySortFromSearchParams(params);
+    const paginate = retrievePaginateFromSearchParams(params);
+    const { filters } = retrieveLibraryFiltersFromSearchParams(params);
+
     await addGame({
-      category: gameData.category,
-      name: gameData.name,
-      id: gameData.id,
-      releaseDate: gameData.releaseDate || null,
-      gameModes: gameData.gameModes?.join(",") || "",
-      genres: gameData.genres?.join(",") || "",
-      themes: gameData.themes?.join(",") || "",
-      totalRating: gameData.rating,
-      coverUrl: gameData.cover,
-      userId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      userRating: rating === 0 ? null : rating,
-      ...data,
-      playTime: Number(data.playTime),
+      game: {
+        category: gameData.category,
+        name: gameData.name,
+        id: gameData.id,
+        releaseDate: gameData.releaseDate || null,
+        gameModes: gameData.gameModes?.join(",") || "",
+        genres: gameData.genres?.join(",") || "",
+        themes: gameData.themes?.join(",") || "",
+        totalRating: gameData.rating,
+        coverUrl: gameData.cover,
+        userId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        userRating: rating === 0 ? null : rating,
+        ...data,
+        playTime: Number(data.playTime),
+      },
+      params: {
+        sort,
+        paginate,
+        filters,
+      },
     });
   };
 
@@ -113,6 +132,7 @@ export const GameLibraryModal = ({
                 className="object-cover"
                 src={gameData.cover}
                 fill
+                sizes="(min-width: 768px) 128px, 112px"
                 alt={gameData.name}
               />
             </div>

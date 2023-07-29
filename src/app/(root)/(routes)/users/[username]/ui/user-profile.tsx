@@ -1,6 +1,13 @@
 "use client";
 
-import { userApi, userLibraryApi } from "@shared/api";
+import {
+  DEFAULT_LIBRARY_FILTERS,
+  LibrarySortFields,
+  MIN_USER_RATING,
+  SortFieldsOrder,
+  userApi,
+  userLibraryApi,
+} from "@shared/api";
 import { UserMenu } from "./user-menu";
 import { UserView } from "./user-view";
 import { Separator, Skeleton } from "@shared/ui";
@@ -30,33 +37,48 @@ export const UserProfile = ({ username }: UserProfileProps) => {
   const { userId: authUserId } = useAuth();
   const { data: userData, isLoading: isUserLoading } =
     userApi.getUser(username);
-  const { data: library, isLoading: isLibraryLoading } =
-    userLibraryApi.getLibrary(
-      userData?.user.username || "",
-      userData?.libraryIncluded
-    );
+  const { data: ratedLibrary, isLoading: isRatedLibraryLoading } =
+    userLibraryApi.getLibrary(username, userData?.libraryIncluded, {
+      filters: {
+        ...DEFAULT_LIBRARY_FILTERS,
+        userRatingMin: MIN_USER_RATING,
+      },
+      paginate: {
+        limit: 4,
+        offset: 0,
+      },
+      sort: {
+        field: LibrarySortFields.UPDATED_DATE,
+        order: SortFieldsOrder.DESC,
+      },
+    });
+  const { data: wantedLibrary, isLoading: isWantedLibraryLoading } =
+    userLibraryApi.getLibrary(username, userData?.libraryIncluded, {
+      filters: {
+        ...DEFAULT_LIBRARY_FILTERS,
+        status: GameStatus.WANT_TO_PLAY,
+      },
+      paginate: {
+        limit: 4,
+        offset: 0,
+      },
+      sort: {
+        field: LibrarySortFields.UPDATED_DATE,
+        order: SortFieldsOrder.DESC,
+      },
+    });
 
-  const ratedGames =
-    userData &&
-    library
-      ?.filter((game) => game.userRating)
-      .sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      )
-      .slice(0, 4);
-
-  const wantedGames =
-    userData &&
-    library?.filter((game) => game.status === GameStatus.WANT_TO_PLAY).slice(0, 4);
+  const ratedGames = userData && ratedLibrary;
+  const wantedGames = userData && wantedLibrary;
+  const isLibraryLoading = isRatedLibraryLoading || isWantedLibraryLoading;
 
   const showGamesSkeleton =
     (isLibraryLoading && !userData) ||
     (isLibraryLoading && userData && userData.libraryIncluded);
 
-  const ratedGamesContent = ratedGames && ratedGames.length > 0 && (
+  const ratedGamesContent = ratedGames && ratedGames.library.length > 0 && (
     <RatedGames
-      games={ratedGames}
+      games={ratedGames.library}
       gamesCount={userData.user._count.library}
       isOwnProfile={userData.isOwnProfile}
       isPrivateLibrary={userData.user.isPrivateLibrary}
@@ -64,9 +86,9 @@ export const UserProfile = ({ username }: UserProfileProps) => {
       userId={authUserId}
     />
   );
-  const wantedGamesContent = wantedGames && wantedGames.length > 0 && (
+  const wantedGamesContent = wantedGames && wantedGames.library.length > 0 && (
     <WantedGames
-      games={wantedGames}
+      games={wantedGames.library}
       isOwnProfile={userData.isOwnProfile}
       username={userData.user.username!}
       userId={authUserId}
