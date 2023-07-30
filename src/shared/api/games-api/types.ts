@@ -70,12 +70,15 @@ export interface GameFilters {
   gameModes: number[];
 }
 
-export interface Game {
+export interface SearchGame {
   id: number;
   cover: string;
   releaseDate?: Date;
   name: string;
   rating: number;
+}
+
+export interface Game extends SearchGame {
   category: number;
   themes?: number[];
   gameModes?: number[];

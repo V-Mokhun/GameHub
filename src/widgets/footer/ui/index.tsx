@@ -32,7 +32,7 @@ export const Footer = () => {
                   rel="noreferrer"
                   href="https://github.com/V-Mokhun/GameHub"
                 >
-                  Github
+                  GitHub
                 </a>
               </span>
             </p>

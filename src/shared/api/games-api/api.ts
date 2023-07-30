@@ -3,7 +3,11 @@ import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
 import { DEFAULT_FILTERS, DEFAULT_PAGINATE, DEFAULT_SORT } from "./consts";
-import { normalizeGameProperties, stringifyGetGamesParams } from "./lib";
+import {
+  normalizeGameProperties,
+  normalizeSearchGameProperties,
+  stringifyGetGamesParams,
+} from "./lib";
 import {
   GameFilters,
   GameGenre,
@@ -13,17 +17,18 @@ import {
   GameTheme,
 } from "./types";
 
-export type UseGamesApiResponse = {
+export type UseSearchGamesApiResponse = {
   id: number;
   cover?: {
     id: number;
     image_id: string;
-    width?: number;
-    height?: number;
   };
   first_release_date?: number;
   name: string;
   total_rating: number;
+};
+
+export type UseGamesApiResponse = UseSearchGamesApiResponse & {
   category: number;
   themes: number[];
   game_modes: number[];
@@ -53,7 +58,7 @@ export const useGames = (
         body
       );
 
-      return data.map(normalizeGameProperties);
+      return data.map((game) => normalizeGameProperties(game));
     },
     {
       onError: (error) => {
@@ -95,6 +100,32 @@ export const useGamesCount = (
       },
       keepPreviousData: true,
       refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useSearchGames = (search: string) => {
+  const { toast } = useToast();
+
+  return useQuery(
+    ["search_games", { search }],
+    async () => {
+      if (!search.trim()) return [];
+
+      const body = `search "${search.toLowerCase()}"; fields name, first_release_date, total_rating, cover.image_id; where total_rating_count >= 10; limit 5;`;
+      const { data } = await axiosInstance.post<UseSearchGamesApiResponse[]>(
+        "/games",
+        body
+      );
+
+      return data.map((game) => normalizeSearchGameProperties(game));
+    },
+    {
+      onError: (error) => {
+        return displayError(toast, error);
+      },
+      refetchOnWindowFocus: false,
+      enabled: false,
     }
   );
 };
@@ -162,6 +193,7 @@ export const useModes = () => {
 export const gamesApi = {
   getGames: useGames,
   getGamesCount: useGamesCount,
+  getSearchGames: useSearchGames,
   getGenres: useGenres,
   getThemes: useThemes,
   getModes: useModes,

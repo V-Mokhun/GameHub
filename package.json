@@ -36,6 +36,7 @@
     "encoding": "^0.1.13",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
+    "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.260.0",
     "nanoid": "^4.0.2",
     "next": "13.4.10",
@@ -55,6 +56,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.7",
     "prisma": "^5.0.0"
   }
 }

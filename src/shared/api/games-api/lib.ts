@@ -1,12 +1,13 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { DEFAULT_FILTERS, DEFAULT_PAGINATE, DEFAULT_SORT } from ".";
-import { UseGamesApiResponse } from "./api";
+import { UseGamesApiResponse, UseSearchGamesApiResponse } from "./api";
 import {
   Game,
   GameFilters,
   GamePaginate,
   GameSorts,
   ImageTypes,
+  SearchGame,
   SortFields,
   SortFieldsOrder,
 } from "./types";
@@ -18,19 +19,41 @@ export const getGameImageUrl = (
   return `${process.env.NEXT_PUBLIC_GAMES_IMAGES_URL}/t_${imageType}/${imageId}.jpg`;
 };
 
-export const normalizeGameProperties = (game: UseGamesApiResponse): Game => {
+export const normalizeSearchGameProperties = (
+  game: UseSearchGamesApiResponse,
+  imageType: ImageTypes = ImageTypes.SMALL_COVER
+): SearchGame => {
   return {
     id: game.id,
     name: game.name,
     rating: Math.ceil(game.total_rating),
+    cover: game.cover?.image_id
+      ? getGameImageUrl(game?.cover?.image_id, imageType)
+      : "",
+    releaseDate: game.first_release_date
+      ? new Date(game.first_release_date * 1000)
+      : undefined,
+  };
+};
+
+export const normalizeGameProperties = (
+  game: UseGamesApiResponse,
+  imageType: ImageTypes = ImageTypes.BIG_COVER
+): Game => {
+  return {
+    id: game.id,
+    name: game.name,
+    rating: Math.ceil(game.total_rating),
+    cover: game.cover?.image_id
+      ? getGameImageUrl(game?.cover?.image_id, imageType)
+      : "",
+    releaseDate: game.first_release_date
+      ? new Date(game.first_release_date * 1000)
+      : undefined,
     category: game.category,
     themes: game.themes,
     gameModes: game.game_modes,
     genres: game.genres,
-    cover: game.cover?.image_id ? getGameImageUrl(game?.cover?.image_id) : "",
-    releaseDate: game.first_release_date
-      ? new Date(game.first_release_date * 1000)
-      : undefined,
   };
 };
 

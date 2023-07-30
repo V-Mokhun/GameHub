@@ -40,10 +40,20 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> & {
+    isLoading?: boolean;
+  }
+>(({ className, isLoading = false, ...props }, ref) => (
   <div className="flex items-center h-10 border-b px-3" cmdk-input-wrapper="">
-    <Icon size={16} name="Search" className="mr-2 shrink-0 opacity-80" />
+    {isLoading ? (
+      <Icon
+        size={16}
+        name="Loader2"
+        className="mr-2 shrink-0 opacity-80 animate-spin"
+      />
+    ) : (
+      <Icon size={16} name="Search" className="mr-2 shrink-0 opacity-80" />
+    )}
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
@@ -90,7 +100,7 @@ const CommandGroup = React.forwardRef<
   <CommandPrimitive.Group
     ref={ref}
     className={cn(
-      "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground",
+      "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1 [&_[cmdk-group-heading]]:text-base [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground",
       className
     )}
     {...props}
