@@ -14,7 +14,7 @@ export default async function LibraryPage({
       <section>
         <Container className="px-0 md:px-2">
           <UserMenu className="px-2" username={params.username} />
-          <Separator className="ml-2 w-[calc(100%-16px)]" />
+          <Separator className="mt-0 ml-2 w-[calc(100%-16px)]" />
           <div className="flex items-center justify-between gap-4 mb-4 px-2">
             <Title className="mb-0 lg:mb-0" size="large">
               {params.username}&apos;s Library

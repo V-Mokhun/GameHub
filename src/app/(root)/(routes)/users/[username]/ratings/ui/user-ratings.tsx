@@ -123,11 +123,17 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
   return (
     <div className="pb-4 md:pb-6 overflow-x-auto">
       <UserMenu isLoading={isUserLoading} username={username} />
-      <Separator />
+      <Separator className="mt-0" />
       <Title>
         {userData.isOwnProfile
           ? "Your ratings"
           : `${userData.user.username}'s ratings`}
+        {" "}
+        {formattedData && formattedData.length > 0 && (
+          <span className="text-muted-foreground">
+            ({formattedData.length})
+          </span>
+        )}
       </Title>
       {formattedData && formattedData.length > 0 ? (
         <>

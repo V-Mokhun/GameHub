@@ -106,7 +106,7 @@ export const UserProfile = ({ username }: UserProfileProps) => {
   return (
     <div className="pb-4 md:pb-6">
       <UserMenu includePrivateRoutes={userData?.libraryIncluded} isLoading={isUserLoading} username={username} />
-      <Separator />
+      <Separator className="mt-0" />
       <UserView
         data={
           userData

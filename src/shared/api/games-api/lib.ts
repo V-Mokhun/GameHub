@@ -1,7 +1,12 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { DEFAULT_FILTERS, DEFAULT_PAGINATE, DEFAULT_SORT } from ".";
-import { UseGamesApiResponse, UseSearchGamesApiResponse } from "./api";
 import {
+  UseGameApiResponse,
+  UseGamesApiResponse,
+  UseSearchGamesApiResponse,
+} from "./api";
+import {
+  FullGame,
   Game,
   GameFilters,
   GamePaginate,
@@ -12,7 +17,7 @@ import {
   SortFieldsOrder,
 } from "./types";
 
-export const getGameImageUrl = (
+export const getImageUrl = (
   imageId: string,
   imageType: ImageTypes = ImageTypes.BIG_COVER
 ) => {
@@ -28,7 +33,7 @@ export const normalizeSearchGameProperties = (
     name: game.name,
     rating: Math.ceil(game.total_rating),
     cover: game.cover?.image_id
-      ? getGameImageUrl(game?.cover?.image_id, imageType)
+      ? getImageUrl(game?.cover?.image_id, imageType)
       : "",
     releaseDate: game.first_release_date
       ? new Date(game.first_release_date * 1000)
@@ -45,7 +50,7 @@ export const normalizeGameProperties = (
     name: game.name,
     rating: Math.ceil(game.total_rating),
     cover: game.cover?.image_id
-      ? getGameImageUrl(game?.cover?.image_id, imageType)
+      ? getImageUrl(game?.cover?.image_id, imageType)
       : "",
     releaseDate: game.first_release_date
       ? new Date(game.first_release_date * 1000)
@@ -57,35 +62,60 @@ export const normalizeGameProperties = (
   };
 };
 
-export const stringifyFilters = (
-  params: ReadonlyURLSearchParams,
-  filters: GameFilters
-) => {
-  const current = new URLSearchParams(Array.from(params.entries()));
-
-  for (let key of Object.keys(filters) as Array<keyof typeof filters>) {
-    if (!filters[key]) {
-      current.delete(key);
-      continue;
-    }
-
-    if (
-      key === "categories" ||
-      key === "genres" ||
-      key === "themes" ||
-      key === "gameModes"
-    ) {
-      if (filters[key].length > 0) current.set(key, filters[key].join(","));
-      else current.delete(key);
-    } else {
-      current.set(key, String(filters[key]));
-    }
-  }
-
-  const search = current.toString();
-  const query = search ? `?${search}` : "";
-
-  return query;
+export const normalizeFullGameProperties = (
+  gameData: UseGameApiResponse
+): FullGame => {
+  return {
+    id: gameData.id,
+    name: gameData.name,
+    rating: Math.ceil(gameData.total_rating),
+    cover: gameData.cover?.image_id
+      ? getImageUrl(gameData?.cover?.image_id, ImageTypes.BIG_COVER)
+      : "",
+    releaseDate: gameData.first_release_date
+      ? new Date(gameData.first_release_date * 1000)
+      : undefined,
+    gameModes: gameData.game_modes,
+    genres: gameData.genres,
+    themes: gameData.themes,
+    storyline: gameData.storyline,
+    summary: gameData.summary,
+    artworks:
+      gameData.artworks?.map((artwork) =>
+        getImageUrl(artwork.image_id, ImageTypes.BIG_SCREENSHOT)
+      ) || [],
+    screenshots:
+      gameData.screenshots?.map((screenshot) =>
+        getImageUrl(screenshot.image_id, ImageTypes.BIG_SCREENSHOT)
+      ) || [],
+    videos: gameData.videos?.map((video) => video.video_id) || [],
+    companyLogos:
+      gameData.involved_companies?.map((company) =>
+        company.company.logo?.image_id
+          ? getImageUrl(company.company.logo.image_id, ImageTypes.MEDIUM_LOGO)
+          : ""
+      ) || [],
+    similarGames:
+      gameData.similar_games
+        ?.filter((game) => game.total_rating_count >= 10)
+        .map(
+          (game) => normalizeSearchGameProperties(game),
+          ImageTypes.BIG_COVER
+        ) || [],
+    franchises: gameData.franchises
+      ? gameData.franchises[0].games
+          .filter((game) => game.total_rating_count >= 10)
+          .map((game) =>
+            normalizeSearchGameProperties(game, ImageTypes.BIG_COVER)
+          )
+      : [],
+    dlcs:
+      gameData.dlcs
+        ?.filter((game) => game.total_rating_count >= 10)
+        .map((game) =>
+          normalizeSearchGameProperties(game, ImageTypes.BIG_COVER)
+        ) || [],
+  };
 };
 
 export const retrieveFiltersFromSearchParams = (
@@ -151,6 +181,37 @@ export const retrievePaginateFromSearchParams = (
   }
 
   return paginate;
+};
+
+export const stringifyFilters = (
+  params: ReadonlyURLSearchParams,
+  filters: GameFilters
+) => {
+  const current = new URLSearchParams(Array.from(params.entries()));
+
+  for (let key of Object.keys(filters) as Array<keyof typeof filters>) {
+    if (!filters[key]) {
+      current.delete(key);
+      continue;
+    }
+
+    if (
+      key === "categories" ||
+      key === "genres" ||
+      key === "themes" ||
+      key === "gameModes"
+    ) {
+      if (filters[key].length > 0) current.set(key, filters[key].join(","));
+      else current.delete(key);
+    } else {
+      current.set(key, String(filters[key]));
+    }
+  }
+
+  const search = current.toString();
+  const query = search ? `?${search}` : "";
+
+  return query;
 };
 
 export const stringifyGetGamesParams = (

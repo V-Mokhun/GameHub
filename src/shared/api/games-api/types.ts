@@ -85,18 +85,22 @@ export interface Game extends SearchGame {
   genres?: number[];
 }
 
-export interface FullGame extends Game {
-  artworks: number[];
-  category: number;
-  game_modes: number[];
-  genres: number[];
-  themes: number[];
-  involved_companies: number[];
-  platforms: number[];
-  screenshots: number[];
-  similar_games: number[];
-  slug: string;
-  storyline: string;
-  summary: string;
-  videos: number[];
+export interface FullGame {
+  id: number;
+  cover?: string;
+  artworks: string[];
+  videos: string[];
+  releaseDate?: Date;
+  name: string;
+  rating: number;
+  themes: { id: number; name: string }[];
+  genres: { id: number; name: string }[];
+  gameModes: { id: number; name: string }[];
+  summary?: string;
+  storyline?: string;
+  similarGames: SearchGame[];
+  dlcs: SearchGame[];
+  screenshots: string[];
+  companyLogos: string[];
+  franchises: SearchGame[];
 }
