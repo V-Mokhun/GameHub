@@ -70,19 +70,19 @@ export const normalizeFullGameProperties = (
     name: gameData.name,
     rating: Math.ceil(gameData.total_rating),
     cover: gameData.cover?.image_id
-      ? getImageUrl(gameData?.cover?.image_id, ImageTypes.BIG_COVER)
+      ? getImageUrl(gameData?.cover?.image_id, ImageTypes["1080P"])
       : "",
     releaseDate: gameData.first_release_date
       ? new Date(gameData.first_release_date * 1000)
       : undefined,
-    gameModes: gameData.game_modes,
-    genres: gameData.genres,
-    themes: gameData.themes,
+    gameModes: gameData.game_modes || [],
+    genres: gameData.genres || [],
+    themes: gameData.themes || [],
     storyline: gameData.storyline,
     summary: gameData.summary,
     artworks:
       gameData.artworks?.map((artwork) =>
-        getImageUrl(artwork.image_id, ImageTypes.BIG_SCREENSHOT)
+        getImageUrl(artwork.image_id, ImageTypes["1080P"])
       ) || [],
     screenshots:
       gameData.screenshots?.map((screenshot) =>

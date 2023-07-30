@@ -1,16 +1,9 @@
-import { Container } from "@shared/ui";
-import { GameInfo } from "./ui";
+import { GamePage } from "./ui";
 
-export default async function GamePage({
-  params,
-}: {
-  params: { gameId: string };
-}) {
+export default async function Page({ params }: { params: { gameId: string } }) {
   return (
     <section>
-      <Container>
-        <GameInfo gameId={params.gameId} />
-      </Container>
+      <GamePage gameId={params.gameId} />
     </section>
   );
 }
