@@ -15,6 +15,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  Icon,
   Input,
   Label,
   StarRating,
@@ -134,12 +135,28 @@ export const GameLibraryModal = ({
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <Label className="text-base mb-1">
-                  Rating{" "}
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <Label className="text-base">
+                    Rating
+                    {rating > 0 && (
+                      <>
+                        <span className="text-muted-foreground ml-1">
+                          {rating}
+                        </span>
+                      </>
+                    )}
+                  </Label>
                   {rating > 0 && (
-                    <span className="text-muted-foreground ml-1">{rating}</span>
+                    <Button
+                      disabled={isLoading}
+                      onClick={() => setRating(0)}
+                      variant="destructive"
+                      size="icon"
+                    >
+                      <Icon className="text-white" name="Trash" />
+                    </Button>
                   )}
-                </Label>
+                </div>
                 <StarRating
                   rating={rating}
                   onSetRating={(val) => setRating(val)}
