@@ -59,7 +59,7 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
 
   if (isFetching) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 px-2">
         <div className="flex flex-wrap gap-2 md:gap-x-4 md:gap-y-6">
           {[...Array(10)].map((_, i) => (
             <GameCardSkeleton key={i} />
@@ -80,7 +80,7 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
   }
 
   return data && data.library.length > 0 ? (
-    <div className="space-y-4">
+    <div className="space-y-4 px-2">
       <div className="flex flex-wrap mb-2 gap-2 md:gap-x-4 md:gap-y-6">
         {data.library.map((game) => (
           <GameCard

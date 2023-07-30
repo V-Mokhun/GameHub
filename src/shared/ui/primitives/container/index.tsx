@@ -16,7 +16,10 @@ export const Container = ({
 }: ContainerProps) => {
   return (
     <Component
-      className={cn("max-w-7xl px-2 md:px-4 h-full mx-auto flex flex-col", className)}
+      className={cn(
+        "max-w-7xl px-2 md:px-4 h-full mx-auto flex flex-col",
+        className
+      )}
       {...props}
     >
       {children}

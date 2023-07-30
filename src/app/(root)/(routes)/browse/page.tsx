@@ -8,8 +8,8 @@ export default async function BrowsePage() {
     <>
       <BrowseFilter />
       <section>
-        <Container>
-          <div className="flex items-center justify-between gap-4 mb-4">
+        <Container className="px-0 md:px-2">
+          <div className="flex items-center justify-between gap-4 mb-4 px-2">
             <Title className="mb-0 lg:mb-0" size="large">
               Browse Games
             </Title>

@@ -52,7 +52,7 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
 
   if (isFetching) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 px-2">
         <div className="flex flex-wrap gap-2 md:gap-x-4 md:gap-y-6">
           {[...Array(10)].map((_, i) => (
             <GameCardSkeleton key={i} />
@@ -73,7 +73,7 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
   }
 
   return data && data.length > 0 ? (
-    <div className="space-y-4">
+    <div className="space-y-4 px-2">
       <GameList
         userId={user?.id}
         username={user?.username || ""}

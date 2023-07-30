@@ -39,7 +39,7 @@ export const LibraryFilters = ({ username }: LibraryFiltersProps) => {
 
   return (
     <>
-      <div className="flex items-center justify-between gap-4 mb-2">
+      <div className="sticky top-[58px] md:top-[66px] bg-background z-10 px-2 py-4 flex items-center justify-between gap-4 mb-2">
         <div className="flex items-center gap-2 flex-auto">
           <Select
             onValueChange={(val) => onSelectValue("field", val)}
