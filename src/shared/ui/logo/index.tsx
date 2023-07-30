@@ -6,9 +6,13 @@ import { SVGProps } from "react";
 interface LogoProps {
   className?: string;
   svgProps?: SVGProps<SVGSVGElement>;
+  titleProps?: React.HTMLAttributes<HTMLHeadingElement>;
 }
 
-export const Logo = ({ svgProps, className }: LogoProps) => {
+export const Logo = ({ svgProps, titleProps, className }: LogoProps) => {
+  const { className: svgClassName, ...restSvgProps } = svgProps || {};
+  const { className: titleClassName, ...restTitleProps } = titleProps || {};
+
   return (
     <Link className={className} href={HOME_ROUTE}>
       <div className="flex items-center gap-1 mr-2">
@@ -17,8 +21,11 @@ export const Logo = ({ svgProps, className }: LogoProps) => {
           viewBox="0 0 100 50"
           height="25"
           width="50"
-          className={cn("text-secondary w-10 h-5 md:w-12 md:h-6 shrink-0", svgProps?.className)}
-          {...svgProps}
+          className={cn(
+            "text-secondary w-10 h-5 md:w-12 md:h-6 shrink-0",
+            svgClassName
+          )}
+          {...restSvgProps}
         >
           <g>
             <svg
@@ -45,7 +52,12 @@ export const Logo = ({ svgProps, className }: LogoProps) => {
             </svg>
           </g>
         </svg>
-        <h2 className="text-xl md:text-2xl font-bold">GameHub</h2>
+        <h2
+          className={cn("text-xl md:text-2xl font-bold", titleClassName)}
+          {...restTitleProps}
+        >
+          GameHub
+        </h2>
       </div>
     </Link>
   );

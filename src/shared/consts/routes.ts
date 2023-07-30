@@ -14,9 +14,16 @@ export const SETTINGS_PASSWORD_ROUTE = "/settings/password";
 export const USERS_ROUTE = "/users";
 
 export const PROFILE_ROUTE = (username: string) => `${USERS_ROUTE}/${username}`;
-export const LIBRARY_ROUTE = (username: string) => `${USERS_ROUTE}/${username}/library`;
-export const RATINGS_ROUTE = (username: string) => `${USERS_ROUTE}/${username}/ratings`;
-export const FRIENDS_ROUTE = (username: string) => `${USERS_ROUTE}/${username}/friends`;
+export const LIBRARY_ROUTE = (username: string) =>
+  `${USERS_ROUTE}/${username}/library`;
+export const RATINGS_ROUTE = (username: string) =>
+  `${USERS_ROUTE}/${username}/ratings`;
+export const FRIENDS_ROUTE = (username: string) =>
+  `${USERS_ROUTE}/${username}/friends`;
+
+export const PRIVACY_ROUTE = "/privacy";
+export const TERMS_ROUTE = "/terms";
+export const ABOUT_ROUTE = "/about";
 
 export const PUBLIC_ROUTES = [
   HOME_ROUTE,
