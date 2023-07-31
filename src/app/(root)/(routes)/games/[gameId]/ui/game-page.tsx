@@ -24,7 +24,7 @@ export const GamePage = ({ gameId }: GamePageProps) => {
 
   return (  
     <>
-      {game && user && (
+      {/* {game && user && (
         <GameLibraryModal
           gameData={{
             category: game.category,
@@ -44,10 +44,11 @@ export const GamePage = ({ gameId }: GamePageProps) => {
           username={user.username!}
           isInLibrary={!!libraryGame}
         />
-      )}
+      )} */}
       <GameBanner
         libraryGame={libraryGame}
         userId={user?.id}
+        username={user?.username}
         onOpen={() => setIsOpen(true)}
         isLoading={isLoading}
         game={game}

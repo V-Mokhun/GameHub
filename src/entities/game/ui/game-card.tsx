@@ -33,6 +33,10 @@ interface GameCardProps {
   rank?: number;
   view?: "grid" | "list";
   disableLibraryButton?: boolean;
+  classNames?: {
+    link?: string;
+    name?: string;
+  };
 }
 
 export const GameCardSkeleton = () => (
@@ -48,6 +52,7 @@ export const GameCard = ({
   rank,
   view = "grid",
   disableLibraryButton = false,
+  classNames = {},
 }: GameCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -99,7 +104,7 @@ export const GameCard = ({
         <div className="group overflow-hidden text-white relative shadow-md rounded-md flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(33.3%-12px)] lg:flex-[0_1_calc(25%-12px)]">
           {/* name + rating */}
           <div className="absolute z-[2] top-2 left-0 right-0 flex justify-between items-start gap-2 px-2">
-            <p className="text-xs">
+            <p className={cn("text-xs", classNames.name)}>
               {game.name}{" "}
               {game.releaseDate ? `${game.releaseDate.getFullYear()}` : ""}
             </p>
@@ -110,7 +115,10 @@ export const GameCard = ({
           </div>
           <Link
             href={`${GAMES_ROUTE}/${game.id}`}
-            className="relative block h-72 sm:h-96 md:h-72 lg:h-80 xl:h-96 group-hover:blur-sm"
+            className={cn(
+              "relative block h-72 sm:h-96 md:h-72 lg:h-80 xl:h-96 group-hover:blur-sm",
+              classNames.link
+            )}
           >
             {game.cover ? (
               <Image

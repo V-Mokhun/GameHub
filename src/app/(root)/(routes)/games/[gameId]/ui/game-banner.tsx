@@ -1,4 +1,4 @@
-import { GameLibraryModal } from "@entities/game";
+import { GameCard, GameLibraryModal } from "@entities/game";
 import { FullGame, NormalizedLibraryGame } from "@shared/api";
 import { SIGN_IN_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
 import { cn } from "@shared/lib";
@@ -18,6 +18,7 @@ interface GameBannerProps {
   isLoading: boolean;
   userId?: string | null;
   libraryGame?: NormalizedLibraryGame | null;
+  username?: string | null;
   onOpen: () => void;
 }
 
@@ -26,6 +27,7 @@ export const GameBanner = ({
   isLoading,
   userId,
   libraryGame,
+  username,
   onOpen,
 }: GameBannerProps) => {
   const { toast } = useToast();
@@ -63,7 +65,7 @@ export const GameBanner = ({
   return (
     game && (
       <>
-        <div className="relative -mt-6 h-[30vh] md:h-[50vh] w-full md:-mt-5">
+        <div className="relative -mt-6 h-[40vh] md:h-[50vh] w-full md:-mt-5">
           <div className="absolute inset-x-0 top-0 z-0 h-full overflow-hidden -mx-2 sm:-mx-5 md:-mx-6">
             <Image
               className="w-full h-full object-cover blur-sm"
@@ -71,55 +73,42 @@ export const GameBanner = ({
               alt={game.name}
               src={game.artworks[0] || game.cover || ""}
             />
-            <div className="absolute flex items-end gap-2 top-4 left-4 h-3/4">
-              {game.cover && (
-                <div className="relative aspect-[3/4] h-full w-full overflow-hidden rounded-md shadow-md">
-                  <div className="absolute z-[1] bottom-2 right-2">
-                    {libraryGame?.userRating && (
-                      <span
-                        className={cn(
-                          "flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-sm",
-                          libraryGame.userRating >= 8
-                            ? "bg-success"
-                            : libraryGame.userRating >= 5
-                            ? "bg-secondary"
-                            : "bg-destructive"
-                        )}
-                      >
-                        {libraryGame?.userRating}
-                      </span>
-                    )}
-                  </div>
-                  <Image
-                    className="object-cover"
-                    fill
-                    src={game.cover}
-                    alt={game.name}
-                  />
-                </div>
-              )}
-              <Button
-                className="whitespace-nowrap"
-                onClick={onLibraryButtonClick}
-              >
-                {libraryGame ? "Edit In Library" : "Add To Library"}
-              </Button>
+
+            <div className="absolute top-6 left-4 h-3/4 w-1/2 sm:w-1/3 lg:w-1/4">
+              <GameCard
+                key={game.id}
+                game={{
+                  category: game.category,
+                  id: game.id,
+                  name: game.name,
+                  cover: game.cover || "",
+                  rating: game.rating,
+                  themes: game.themes.map((theme) => theme.id),
+                  gameModes: game.gameModes.map((gameMode) => gameMode.id),
+                  genres: game.genres.map((genre) => genre.id),
+                  releaseDate: game.releaseDate
+                    ? new Date(game.releaseDate)
+                    : undefined,
+                }}
+                libraryGameData={libraryGame ?? undefined}
+                isInLibrary
+                userId={userId}
+                username={username ?? undefined}
+                classNames={{
+                  name: "hidden md:block",
+                  link: "h-[35vh] sm:h-[35vh] md:h-[37.5vh] lg:h-[37.5vh] xl:h-[37.5vh]",
+                }}
+              />
             </div>
             <div className="hidden md:block absolute bottom-0 inset-x-0 z-10 text-white bg-[rgb(196,102,8)]/80 py-2">
               <Container>
-                <Title className="flex items-center justify-between gap-2 drop-shadow-sm lg:mb-0 mb-0">
-                  <div>
-                    {game.name}{" "}
-                    {game.releaseDate && (
-                      <span className="font-medium text-gray-400 dark:text-muted-foreground">
-                        ({new Date(game.releaseDate).getFullYear()})
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Icon className="w-8 h-8 md:w-9 md:h-9" name="Star" />
-                    <span className="">{game.rating}</span>
-                  </div>
+                <Title className="drop-shadow-sm lg:mb-0 mb-0">
+                  {game.name}{" "}
+                  {game.releaseDate && (
+                    <span className="font-medium text-gray-400 dark:text-muted-foreground">
+                      ({new Date(game.releaseDate).getFullYear()})
+                    </span>
+                  )}
                 </Title>
               </Container>
             </div>
@@ -127,19 +116,13 @@ export const GameBanner = ({
         </div>
         <div className="block md:hidden text-white -mx-2 sm:-mx-4 bg-[rgb(196,102,8)] py-2">
           <Container>
-            <Title size="small" className="flex items-center justify-between gap-2 drop-shadow-sm lg:mb-0 mb-0">
-              <div>
-                {game.name}{" "}
-                {game.releaseDate && (
-                  <span className="font-medium text-gray-400 dark:text-muted-foreground">
-                    ({new Date(game.releaseDate).getFullYear()})
-                  </span>
-                )}
-              </div>
-              <div className="flex items-center gap-1">
-                <Icon className="w-7 h-7" name="Star" />
-                <span className="">{game.rating}</span>
-              </div>
+            <Title size="small" className="drop-shadow-sm lg:mb-0 mb-0">
+              {game.name}{" "}
+              {game.releaseDate && (
+                <span className="font-medium text-gray-400 dark:text-muted-foreground">
+                  ({new Date(game.releaseDate).getFullYear()})
+                </span>
+              )}
             </Title>
           </Container>
         </div>
