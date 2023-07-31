@@ -83,6 +83,7 @@ export type UseGameApiResponse = {
     id: number;
     company: {
       id: number;
+      name: string;
       logo: {
         id: number;
         image_id: string;
@@ -263,7 +264,7 @@ export const useGame = (id: string) => {
       const dlcsFields = `dlcs.name, dlcs.cover.image_id, dlcs.first_release_date, dlcs.total_rating`;
       const collectionsFields = `franchises.games.name, franchises.games.cover.image_id, franchises.games.first_release_date, franchises.games.total_rating, franchises.games.total_rating_count`;
 
-      const fields = `fields id, name, cover.image_id, first_release_date, total_rating, artworks.image_id, category, themes.name, game_modes.name, genres.name, screenshots.image_id, storyline, summary, videos.*, involved_companies.company.logo.image_id, ${similarGamesFields}, ${dlcsFields}, ${collectionsFields}`;
+      const fields = `fields id, name, cover.image_id, first_release_date, total_rating, artworks.image_id, category, themes.name, game_modes.name, genres.name, screenshots.image_id, storyline, summary, videos.*, involved_companies.company.name, involved_companies.company.logo.image_id, ${similarGamesFields}, ${dlcsFields}, ${collectionsFields}`;
       const body = `${fields}; where id = ${id};`;
       const { data } = await axiosInstance.post<[UseGameApiResponse]>(
         "/games",

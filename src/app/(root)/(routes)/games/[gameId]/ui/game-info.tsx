@@ -1,6 +1,7 @@
 "use client";
 
 import { FullGame } from "@shared/api";
+import { GameSidebar } from "./game-sidebar";
 
 interface GameInfoProps {
   game?: FullGame;
@@ -12,5 +13,12 @@ export const GameInfo = ({ game, isLoading }: GameInfoProps) => {
 
   console.log(game);
 
-  return <>game</>;
+  return (
+    game && (
+      <div className="flex mt-4 gap-2">
+        <div className="flex-1"> hi </div>
+        <GameSidebar game={game} />
+      </div>
+    )
+  );
 };

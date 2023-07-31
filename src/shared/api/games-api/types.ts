@@ -102,6 +102,6 @@ export interface FullGame {
   similarGames: SearchGame[];
   dlcs: SearchGame[];
   screenshots: string[];
-  companyLogos: string[];
+  companyLogos: { name: string; url: string }[];
   franchises: SearchGame[];
 }

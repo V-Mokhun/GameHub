@@ -1,15 +1,8 @@
-import { GameCard, GameLibraryModal } from "@entities/game";
+import { GameCard } from "@entities/game";
 import { FullGame, NormalizedLibraryGame } from "@shared/api";
-import { SIGN_IN_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
-import { cn } from "@shared/lib";
 import {
-  Button,
   Container,
-  Icon,
-  Link,
-  Title,
-  buttonVariants,
-  useToast,
+  Title
 } from "@shared/ui";
 import Image from "next/image";
 
@@ -19,7 +12,6 @@ interface GameBannerProps {
   userId?: string | null;
   libraryGame?: NormalizedLibraryGame | null;
   username?: string | null;
-  onOpen: () => void;
 }
 
 export const GameBanner = ({
@@ -28,44 +20,13 @@ export const GameBanner = ({
   userId,
   libraryGame,
   username,
-  onOpen,
 }: GameBannerProps) => {
-  const { toast } = useToast();
-
-  const onLibraryButtonClick = () => {
-    if (userId) {
-      onOpen();
-    } else {
-      const { dismiss } = toast({
-        title: "Sign in to add games to your library",
-        action: (
-          <Link
-            onClick={() => {
-              setTimeout(() => {
-                dismiss();
-              }, TOAST_TIMEOUT);
-            }}
-            className={buttonVariants({
-              variant: "default",
-              size: "sm",
-              className: "w-max self-end text-sm hover:text-white",
-            })}
-            href={SIGN_IN_ROUTE}
-          >
-            Sign in
-          </Link>
-        ),
-        variant: "destructive",
-      });
-    }
-  };
-
   if (isLoading) return null;
 
   return (
     game && (
       <>
-        <div className="relative -mt-6 h-[40vh] md:h-[50vh] w-full md:-mt-5">
+        <div className="relative -mt-6 h-[max(40vh,200px)] md:h-[max(50vh,300px)] w-full md:-mt-5">
           <div className="absolute inset-x-0 top-0 z-0 h-full overflow-hidden -mx-2 sm:-mx-5 md:-mx-6">
             <Image
               className="w-full h-full object-cover blur-sm"
@@ -96,7 +57,7 @@ export const GameBanner = ({
                 username={username ?? undefined}
                 classNames={{
                   name: "hidden md:block",
-                  link: "h-[35vh] sm:h-[35vh] md:h-[37.5vh] lg:h-[37.5vh] xl:h-[37.5vh]",
+                  link: "h-[max(35vh,160px)] sm:h-[max(35vh,160px)] md:h-[max(37.5vh,225px)] lg:h-[max(37.5vh,225px)] xl:h-[max(37.5vh,225px)]",
                 }}
               />
             </div>

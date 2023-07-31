@@ -91,11 +91,13 @@ export const normalizeFullGameProperties = (
       ) || [],
     videos: gameData.videos?.map((video) => video.video_id) || [],
     companyLogos:
-      gameData.involved_companies?.map((company) =>
-        company.company.logo?.image_id
-          ? getImageUrl(company.company.logo.image_id, ImageTypes.MEDIUM_LOGO)
-          : ""
-      ) || [],
+      gameData.involved_companies
+        ?.filter(({ company }) => company.logo.image_id)
+        ?.map(({ company }) => ({
+          name: company.name,
+          url: getImageUrl(company.logo.image_id, ImageTypes.MEDIUM_LOGO),
+        })) || [],
+
     similarGames:
       gameData.similar_games
         ?.filter((game) => game.total_rating_count >= 10)

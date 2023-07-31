@@ -24,3 +24,4 @@ export * from "./dialog";
 export * from "./select";
 export * from "./popover";
 export * from './table';
+export * from './tooltip';
