@@ -78,9 +78,11 @@ export const FilterSelect = <T extends Omit<GameTheme, "slug">>({
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" role="combobox" aria-expanded={isOpen}>
-            {selectedData.length > 0
-              ? selectedData.map((item) => item.name).join(", ")
-              : `No ${title.toLowerCase()} selected`}
+            <span className="truncate">
+              {selectedData.length > 0
+                ? selectedData.map((item) => item.name).join(", ")
+                : `No ${title.toLowerCase()} selected`}
+            </span>
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>

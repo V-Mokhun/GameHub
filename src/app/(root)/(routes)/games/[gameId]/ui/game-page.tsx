@@ -22,7 +22,7 @@ export const GamePage = ({ gameId }: GamePageProps) => {
     user?.username ?? undefined
   );
 
-  return (
+  return (  
     <>
       {game && user && (
         <GameLibraryModal
