@@ -1,12 +1,16 @@
 "use client";
 
-import { gamesApi } from "@shared/api";
+import { FullGame } from "@shared/api";
 
 interface GameInfoProps {
-  gameId: string;
+  game?: FullGame;
+  isLoading: boolean;
 }
 
-export const GameInfo = ({ gameId }: GameInfoProps) => {
+export const GameInfo = ({ game, isLoading }: GameInfoProps) => {
+  if (isLoading) return null;
+
+  console.log(game);
 
   return <>game</>;
 };

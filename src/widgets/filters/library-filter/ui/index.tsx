@@ -1,19 +1,19 @@
 "use client";
 
-import { cn, useClickOutside } from "@shared/lib";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useLibraryFilterStore } from "../model";
-import { Button, Icon, Overlay, Title } from "@shared/ui";
-import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
 import {
   GAME_CATEGORIES,
   gamesApi,
   retrieveLibraryFiltersFromSearchParams,
-  stringifyFilters,
+  stringifyLibraryFilters
 } from "@shared/api";
-import { LibraryFilterUserRating } from "./library-filter-user-rating";
-import { LibraryFilterStatus } from "./library-filter-status";
+import { cn, useClickOutside } from "@shared/lib";
+import { Button, Icon, Overlay, Title } from "@shared/ui";
+import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { useLibraryFilterStore } from "../model";
+import { LibraryFilterStatus } from "./library-filter-status";
+import { LibraryFilterUserRating } from "./library-filter-user-rating";
 
 interface LibraryFilterProps {}
 
@@ -34,7 +34,7 @@ export const LibraryFilter = ({}: LibraryFilterProps) => {
   }, []);
 
   useEffect(() => {
-    const query = stringifyFilters(params, filters);
+    const query = stringifyLibraryFilters(params, filters);
     router.push(`${pathname}${query}`);
   }, [filters, params, pathname, router]);
 

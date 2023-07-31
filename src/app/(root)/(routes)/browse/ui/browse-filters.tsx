@@ -7,7 +7,6 @@ import {
   retrieveFiltersFromSearchParams,
 } from "@shared/api";
 import { BROWSE_ROUTE } from "@shared/consts";
-import { updateSearchParams } from "@shared/lib";
 import {
   Button,
   Select,
@@ -30,7 +29,19 @@ export const BrowseFilters = ({}: BrowseFiltersProps) => {
   const { isDefault } = retrieveFiltersFromSearchParams(params);
 
   const onSelectValue = (key: "field" | "order", value: string) => {
-    const query = updateSearchParams(params, key, value);
+    const current = new URLSearchParams(Array.from(params.entries()));
+
+    if (key === "field" && value === SortFields.RATING) {
+      current.delete(key);
+    } else if (key === "order" && value === SortFieldsOrder.DESC) {
+      current.delete(key);
+    } else {
+      current.set(key, value);
+    }
+
+    const search = current.toString();
+    const query = search ? `?${search}` : "";
+
     router.push(`${pathname}${query}`);
   };
 

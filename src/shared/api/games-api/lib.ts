@@ -190,7 +190,7 @@ export const stringifyFilters = (
 ) => {
   const current = new URLSearchParams(Array.from(params.entries()));
 
-  for (let key of Object.keys(filters) as Array<keyof typeof filters>) {
+  for (const key of Object.keys(filters) as Array<keyof typeof filters>) {
     if (!filters[key]) {
       current.delete(key);
       continue;
@@ -205,7 +205,8 @@ export const stringifyFilters = (
       if (filters[key].length > 0) current.set(key, filters[key].join(","));
       else current.delete(key);
     } else {
-      current.set(key, String(filters[key]));
+      if (filters[key] === DEFAULT_FILTERS[key]) current.delete(key);
+      else current.set(key, String(filters[key]));
     }
   }
 

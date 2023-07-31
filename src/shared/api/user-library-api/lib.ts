@@ -86,6 +86,38 @@ export const normalizeLibraryGameProperties = (game: LibraryGame) => ({
   genres: game.genres.split(",").map(Number),
 });
 
+export const stringifyLibraryFilters = (
+  params: ReadonlyURLSearchParams,
+  filters: LibraryGameFilters
+) => {
+  const current = new URLSearchParams(Array.from(params.entries()));
+
+  for (const key of Object.keys(filters) as Array<keyof typeof filters>) {
+    if (!filters[key]) {
+      current.delete(key);
+      continue;
+    }
+
+    if (
+      key === "categories" ||
+      key === "genres" ||
+      key === "themes" ||
+      key === "gameModes"
+    ) {
+      if (filters[key].length > 0) current.set(key, filters[key].join(","));
+      else current.delete(key);
+    } else {
+      if (filters[key] === DEFAULT_LIBRARY_FILTERS[key]) current.delete(key);
+      else current.set(key, String(filters[key]));
+    }
+  }
+
+  const search = current.toString();
+  const query = search ? `?${search}` : "";
+
+  return query;
+};
+
 export const retrieveLibraryFiltersFromSearchParams = (
   params: ReadonlyURLSearchParams
 ): { filters: LibraryGameFilters; isDefault: boolean } => {

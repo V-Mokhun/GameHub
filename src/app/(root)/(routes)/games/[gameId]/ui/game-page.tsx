@@ -10,16 +10,15 @@ import { GameLibraryModal } from "@entities/game";
 
 interface GamePageProps {
   gameId: string;
-  userId: string | null;
 }
 
-export const GamePage = ({ gameId, userId }: GamePageProps) => {
+export const GamePage = ({ gameId }: GamePageProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUser();
   const { data: game, isLoading } = gamesApi.getGame(gameId);
   const { data: libraryGame } = userLibraryApi.getLibraryGame(
     gameId,
-    userId ?? undefined,
+    user?.id ?? undefined,
     user?.username ?? undefined
   );
 
@@ -41,20 +40,20 @@ export const GamePage = ({ gameId, userId }: GamePageProps) => {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           libraryGameData={libraryGame ?? undefined}
-          userId={userId!}
+          userId={user.id}
           username={user.username!}
           isInLibrary={!!libraryGame}
         />
       )}
       <GameBanner
         libraryGame={libraryGame}
-        userId={userId}
+        userId={user?.id}
         onOpen={() => setIsOpen(true)}
         isLoading={isLoading}
         game={game}
       />
       <Container>
-        <GameInfo gameId={gameId} />
+        <GameInfo game={game} isLoading={isLoading} />
       </Container>
     </>
   );

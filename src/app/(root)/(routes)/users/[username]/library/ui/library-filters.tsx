@@ -4,11 +4,9 @@ import { FiltersButton } from "@features/filters-button";
 import {
   LibrarySortFields,
   SortFieldsOrder,
-  retrieveFiltersFromSearchParams,
   retrieveLibraryFiltersFromSearchParams,
 } from "@shared/api";
 import { LIBRARY_ROUTE } from "@shared/consts";
-import { updateSearchParams } from "@shared/lib";
 import {
   Button,
   Select,
@@ -33,7 +31,19 @@ export const LibraryFilters = ({ username }: LibraryFiltersProps) => {
   const { isDefault } = retrieveLibraryFiltersFromSearchParams(params);
 
   const onSelectValue = (key: "field" | "order", value: string) => {
-    const query = updateSearchParams(params, key, value);
+    const current = new URLSearchParams(Array.from(params.entries()));
+
+    if (key === "field" && value === LibrarySortFields.USER_RATING) {
+      current.delete(key);
+    } else if (key === "order" && value === SortFieldsOrder.DESC) {
+      current.delete(key);
+    } else {
+      current.set(key, value);
+    }
+
+    const search = current.toString();
+    const query = search ? `?${search}` : "";
+
     router.push(`${pathname}${query}`);
   };
 
