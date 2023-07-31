@@ -5,6 +5,7 @@ import { cn } from "@shared/lib";
 import {
   Button,
   Container,
+  Icon,
   Link,
   Title,
   buttonVariants,
@@ -106,13 +107,19 @@ export const GameBanner = ({
             </div>
             <div className="hidden md:block absolute bottom-0 inset-x-0 z-10 text-white bg-[rgb(196,102,8)]/80 py-2">
               <Container>
-                <Title className="drop-shadow-sm lg:mb-0 mb-0">
-                  {game.name}{" "}
-                  {game.releaseDate && (
-                    <span className="font-medium text-gray-400 dark:text-muted-foreground">
-                      ( {new Date(game.releaseDate).getFullYear()} )
-                    </span>
-                  )}
+                <Title className="flex items-center justify-between gap-2 drop-shadow-sm lg:mb-0 mb-0">
+                  <div>
+                    {game.name}{" "}
+                    {game.releaseDate && (
+                      <span className="font-medium text-gray-400 dark:text-muted-foreground">
+                        ({new Date(game.releaseDate).getFullYear()})
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Icon className="w-8 h-8 md:w-9 md:h-9" name="Star" />
+                    <span className="">{game.rating}</span>
+                  </div>
                 </Title>
               </Container>
             </div>
@@ -120,13 +127,19 @@ export const GameBanner = ({
         </div>
         <div className="block md:hidden text-white -mx-2 sm:-mx-4 bg-[rgb(196,102,8)] py-2">
           <Container>
-            <Title size="small" className="drop-shadow-sm lg:mb-0 mb-0">
-              {game.name}{" "}
-              {game.releaseDate && (
-                <span className="font-medium text-gray-400 dark:text-muted-foreground">
-                  ({new Date(game.releaseDate).getFullYear()})
-                </span>
-              )}
+            <Title size="small" className="flex items-center justify-between gap-2 drop-shadow-sm lg:mb-0 mb-0">
+              <div>
+                {game.name}{" "}
+                {game.releaseDate && (
+                  <span className="font-medium text-gray-400 dark:text-muted-foreground">
+                    ({new Date(game.releaseDate).getFullYear()})
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-1">
+                <Icon className="w-7 h-7" name="Star" />
+                <span className="">{game.rating}</span>
+              </div>
             </Title>
           </Container>
         </div>
