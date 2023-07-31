@@ -75,6 +75,7 @@ export const normalizeFullGameProperties = (
     releaseDate: gameData.first_release_date
       ? new Date(gameData.first_release_date * 1000)
       : undefined,
+    category: gameData.category,
     gameModes: gameData.game_modes || [],
     genres: gameData.genres || [],
     themes: gameData.themes || [],

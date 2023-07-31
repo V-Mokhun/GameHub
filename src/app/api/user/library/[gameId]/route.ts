@@ -4,6 +4,31 @@ import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
 
+export async function GET(
+  req: Request,
+  { params }: { params: { gameId: string } }
+) {
+  try {
+    const { userId } = auth();
+    const { gameId } = params;
+
+    if (!gameId)
+      return new NextResponse("Game ID is required", { status: 400 });
+
+    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+
+    const game = await db.game.findUnique({
+      where: {
+        userId_id: { userId, id: +gameId },
+      },
+    });
+
+    return NextResponse.json(game || null, { status: 200 });
+  } catch (error) {
+    return catchError(error, "Failed to get game from library");
+  }
+}
+
 export async function POST(
   req: Request,
   { params }: { params: { gameId: string } }

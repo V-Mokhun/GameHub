@@ -1,11 +1,13 @@
 import { Toaster } from "@shared/ui";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryProvider, ThemeProvider } from "./providers";
 
-const font = Montserrat({ subsets: ["latin"] });
+const font = Open_Sans({
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "GameHub",

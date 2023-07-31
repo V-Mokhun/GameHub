@@ -73,6 +73,27 @@ const useLibrary = (
   );
 };
 
+const useLibraryGame = (gameId: string, userId?: string, username?: string) => {
+  const { toast } = useToast();
+
+  return useQuery(
+    [`library`, { username, gameId }],
+    async () => {
+      const { data } = await axios.get<LibraryGame | null>(
+        `/api/user/library/${gameId}`
+      );
+
+      return data ? normalizeLibraryGameProperties(data) : null;
+    },
+    {
+      onError: (error) => {
+        displayError(toast, error);
+      },
+      enabled: !!userId && !!username,
+    }
+  );
+};
+
 const useAddGameToLibrary = (username: string, onSuccess?: () => void) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -125,7 +146,10 @@ const useAddGameToLibrary = (username: string, onSuccess?: () => void) => {
   );
 };
 
-const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
+const useRemoveGameFromLibrary = (
+  username: string,
+  onSuccess?: () => void
+) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -142,15 +166,18 @@ const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
         await queryClient.cancelQueries({
           queryKey: ["library", { username }],
         });
+
         const previousLibrary = queryClient.getQueryData([
           "library",
           { username },
         ]);
+
         queryClient.setQueryData(
           ["library", { username }],
           (oldLibrary: NormalizedLibraryGame[] = []) =>
             oldLibrary.filter((game) => game.id !== deletedGameId)
         );
+
         return { previousLibrary };
       },
       onError: (err, deletedGameId, context) => {
@@ -161,7 +188,9 @@ const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
         displayError(toast, err, "Failed to remove game from library");
       },
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ["library", { username }] });
+        queryClient.invalidateQueries({
+          queryKey: ["library", { username }],
+        });
       },
       onSuccess: () => {
         toast({
@@ -176,6 +205,7 @@ const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
 
 export const userLibraryApi = {
   getLibrary: useLibrary,
+  getLibraryGame: useLibraryGame,
   removeGame: useRemoveGameFromLibrary,
   addGame: useAddGameToLibrary,
 };

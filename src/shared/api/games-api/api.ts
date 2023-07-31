@@ -67,6 +67,7 @@ export type UseGameApiResponse = {
   first_release_date?: number;
   name: string;
   total_rating: number;
+  category: number;
   themes: { id: number; name: string }[];
   genres: { id: number; name: string }[];
   game_modes: { id: number; name: string }[];
@@ -268,8 +269,6 @@ export const useGame = (id: string) => {
         "/games",
         body
       );
-      console.log("DATA", data);
-      
 
       return normalizeFullGameProperties(data[0]);
     },

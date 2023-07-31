@@ -8,7 +8,6 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogTitle,
   Form,
   FormControl,
   FormField,
@@ -20,10 +19,11 @@ import {
   Label,
   StarRating,
   Textarea,
+  Title,
 } from "@shared/ui";
 import { AlertModal } from "@shared/ui/modal";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AddGameScheme, addGameScheme } from "../../model";
 import { LibraryGameData } from "../game-card";
@@ -76,6 +76,17 @@ export const GameLibraryModal = ({
     resolver: zodResolver(addGameScheme),
   });
 
+  useEffect(() => {
+    form.setValue(
+      "finishedAt",
+      libraryGameData?.finishedAt ? new Date(libraryGameData.finishedAt) : null
+    );
+    form.setValue("notes", libraryGameData?.notes || "");
+    form.setValue("playTime", libraryGameData?.playTime || 0);
+    form.setValue("status", libraryGameData?.status || GameStatus.WANT_TO_PLAY);
+    setRating(libraryGameData?.userRating || 0);
+  }, [libraryGameData]);
+
   const watchStatus = form.watch("status");
 
   const onSubmit: SubmitHandler<AddGameScheme> = async (data) => {
@@ -110,9 +121,9 @@ export const GameLibraryModal = ({
         }}
       />
       <Dialog open={isOpen} onOpenChange={onChange}>
-        <DialogContent>
+        <DialogContent className="">
           <div className="flex gap-2">
-            <div className="relative rounded-md overflow-hidden w-28 h-40 md:w-32 md:h-44 shrink-0">
+            <div className="relative rounded-md overflow-hidden w-28 h-40 md:w-32 md:h-44 lg:w-40 lg:h-52 xl:w-48 xl:h-60 shrink-0">
               <Image
                 className="object-cover"
                 src={gameData.cover}
@@ -122,9 +133,7 @@ export const GameLibraryModal = ({
               />
             </div>
             <div className="flex flex-col">
-              <DialogTitle className="text-base md:text-lg mb-1">
-                {gameData.name}
-              </DialogTitle>
+              <Title className="mb-1 lg:mb-1">{gameData.name}</Title>
               {gameData.releaseDate && (
                 <span className="text-muted-foreground mb-2">
                   {gameData.releaseDate.getFullYear()}

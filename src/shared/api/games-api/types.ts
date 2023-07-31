@@ -93,6 +93,7 @@ export interface FullGame {
   releaseDate?: Date;
   name: string;
   rating: number;
+  category: number;
   themes: { id: number; name: string }[];
   genres: { id: number; name: string }[];
   gameModes: { id: number; name: string }[];
