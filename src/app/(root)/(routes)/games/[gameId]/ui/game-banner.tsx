@@ -1,9 +1,6 @@
 import { GameCard } from "@entities/game";
 import { FullGame, NormalizedLibraryGame } from "@shared/api";
-import {
-  Container,
-  Title
-} from "@shared/ui";
+import { Container, Title } from "@shared/ui";
 import Image from "next/image";
 
 interface GameBannerProps {
@@ -27,7 +24,7 @@ export const GameBanner = ({
     game && (
       <>
         <div className="relative -mt-6 h-[max(40vh,200px)] md:h-[max(50vh,300px)] w-full md:-mt-5">
-          <div className="absolute inset-x-0 top-0 z-0 h-full overflow-hidden -mx-2 sm:-mx-5 md:-mx-6">
+          <div className="absolute inset-x-0 top-0 z-0 h-full overflow-hidden">
             <Image
               className="w-full h-full object-cover blur-sm"
               fill
@@ -52,7 +49,7 @@ export const GameBanner = ({
                     : undefined,
                 }}
                 libraryGameData={libraryGame ?? undefined}
-                isInLibrary
+                isInLibrary={!!libraryGame}
                 userId={userId}
                 username={username ?? undefined}
                 classNames={{

@@ -18,8 +18,6 @@ interface GameSidebarProps {
 }
 
 export const GameSidebar = ({ game }: GameSidebarProps) => {
-  console.log(game);
-
   return (
     <div className="flex-[0_1_25%] min-w-[280px] bg-popover shadow-xl py-4 px-2 rounded-md">
       <Title size="small" className="text-center">
@@ -64,7 +62,7 @@ export const GameSidebar = ({ game }: GameSidebarProps) => {
                   <Tooltip>
                     <TooltipTrigger>
                       <Image
-                      className="aspect-[4/3"
+                      className="aspect-[4/3] rounded-md"
                         src={logo.url}
                         width={45}
                         height={25}

@@ -4,7 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { gamesApi, userLibraryApi } from "@shared/api";
 import { Container } from "@shared/ui";
 import { GameBanner } from "./game-banner";
-import { GameInfo } from "./game-info";
+import { GameSidebar } from "./game-sidebar";
 
 interface GamePageProps {
   gameId: string;
@@ -20,17 +20,25 @@ export const GamePage = ({ gameId }: GamePageProps) => {
   );
 
   return (
-    <>
-      <GameBanner
-        libraryGame={libraryGame}
-        userId={user?.id}
-        username={user?.username}
-        isLoading={isLoading}
-        game={game}
-      />
-      <Container>
-        <GameInfo game={game} isLoading={isLoading} />
-      </Container>
-    </>
+    game && (
+      <>
+        <GameBanner
+          libraryGame={libraryGame}
+          userId={user?.id}
+          username={user?.username}
+          isLoading={isLoading}
+          game={game}
+        />
+        <Container>
+          <div className="flex mt-6 gap-4">
+            <div className="flex-1">
+              <p className="mb-6">{game.summary}</p>
+              
+            </div>
+            <GameSidebar game={game} />
+          </div>
+        </Container>
+      </>
+    )
   );
 };
