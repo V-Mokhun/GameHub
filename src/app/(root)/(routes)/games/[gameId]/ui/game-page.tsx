@@ -9,6 +9,7 @@ import { GameGames } from "./game-games";
 import { GameMedia } from "./game-media";
 import { GameSidebar } from "./game-sidebar";
 import { GameNotes } from "./game-notes";
+import { GameSummary } from "./game-summary";
 
 interface GamePageProps {
   gameId: string;
@@ -51,7 +52,7 @@ export const GamePage = ({ gameId }: GamePageProps) => {
                 screenshots={game.screenshots}
                 videos={game.videos}
               />
-              <p className="mb-4 text-sm md:text-base">{game.summary}</p>
+              {game.summary && <GameSummary summary={game.summary} />}
               <Separator />
               {game.similarGames.length > 0 && (
                 <GameGames
