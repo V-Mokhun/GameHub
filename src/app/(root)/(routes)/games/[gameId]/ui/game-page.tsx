@@ -23,7 +23,6 @@ export const GamePage = ({ gameId }: GamePageProps) => {
     user?.username ?? undefined,
     { noLimit: true, enabled: true }
   );
-  console.log(game?.franchises);
 
   return (
     game && (
@@ -39,13 +38,33 @@ export const GamePage = ({ gameId }: GamePageProps) => {
           <div className="flex items-start mt-6 gap-4">
             <div className="flex-1 min-w-0">
               <p className="mb-6 text-sm md:text-base">{game.summary}</p>
-              <GameGames
-                title="Franchise"
-                userId={user?.id}
-                username={user?.username}
-                games={game.franchises}
-                libraryGames={libraryData?.library}
-              />
+              {game.similarGames.length > 0 && (
+                <GameGames
+                  title="Similar Games"
+                  userId={user?.id}
+                  username={user?.username}
+                  games={game.similarGames}
+                  libraryGames={libraryData?.library}
+                />
+              )}
+              {game.franchises.length > 0 && (
+                <GameGames
+                  title="Franchise"
+                  userId={user?.id}
+                  username={user?.username}
+                  games={game.franchises}
+                  libraryGames={libraryData?.library}
+                />
+              )}
+              {game.dlcs.length > 0 && (
+                <GameGames
+                  title="DLC"
+                  userId={user?.id}
+                  username={user?.username}
+                  games={game.dlcs}
+                  libraryGames={libraryData?.library}
+                />
+              )}
             </div>
             <GameSidebar game={game} />
           </div>

@@ -55,7 +55,7 @@ export const GameGames = ({
   });
 
   return (
-    <div className="my-4 min-w-0">
+    <div className="mb-4 md:mb-6 min-w-0">
       <Title >{title}</Title>
       <div className="relative md:mr-10 md:ml-10 xl:mr-5">
         {loaded && instanceRef.current && (
