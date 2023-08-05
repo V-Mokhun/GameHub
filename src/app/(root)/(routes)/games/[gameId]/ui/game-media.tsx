@@ -1,7 +1,7 @@
 "use client";
 
 import { KeyboardPlugin, ThumbnailPlugin } from "@shared/lib";
-import { CarouselArrow, PlayIcon, Title } from "@shared/ui";
+import { CarouselArrow, PlayIcon, Skeleton, Title } from "@shared/ui";
 import { useKeenSlider } from "keen-slider/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -11,12 +11,14 @@ interface GameMediaProps {
   videos: { url: string; name: string }[];
   artworks: string[];
   screenshots: string[];
+  isLoading: boolean;
 }
 
 export const GameMedia = ({
   artworks,
   screenshots,
   videos,
+  isLoading,
 }: GameMediaProps) => {
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -59,6 +61,20 @@ export const GameMedia = ({
     [ThumbnailPlugin(instanceRef)]
   );
   const images = [...artworks, ...screenshots];
+
+  if (isLoading)
+    return (
+      <div className="my-4 w-[min(100%,80vh)]">
+        <Skeleton className="h-9 w-32 lg:mb-3 mb-2" />
+        <Skeleton className="aspect-video w-full" />
+        <div className="mt-4 h-24 md:h-28 gap-2.5 flex">
+          <Skeleton className="flex-1 h-full" />
+          <Skeleton className="flex-1 h-full" />
+          <Skeleton className="flex-1 h-full hidden xs:block" />
+          <Skeleton className="flex-1 h-full hidden md:block" />
+        </div>
+      </div>
+    );
 
   return (
     <div className="my-4 w-[min(100%,80vh)]">

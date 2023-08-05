@@ -1,6 +1,6 @@
 import { GameCard } from "@entities/game";
 import { FullGame, NormalizedLibraryGame } from "@shared/api";
-import { Container, Title } from "@shared/ui";
+import { Container, Skeleton, Title } from "@shared/ui";
 import Image from "next/image";
 
 interface GameBannerProps {
@@ -18,12 +18,19 @@ export const GameBanner = ({
   libraryGame,
   username,
 }: GameBannerProps) => {
-  if (isLoading) return null;
+  if (isLoading)
+    return (
+      <>
+        <div className="relative -mt-6 mb-2 h-[max(40vh,200px)] md:h-[max(50vh,300px)] w-full md:-mt-5">
+          <Skeleton className="absolute inset-x-0 top-0 z-0 h-full overflow-hidden" />
+        </div>
+      </>
+    );
 
   return (
     game && (
       <>
-        <div className="relative -mt-6 h-[max(40vh,200px)] md:h-[max(50vh,300px)] w-full md:-mt-5">
+        <div className="relative -mt-6 mb-2 h-[max(40vh,200px)] md:h-[max(50vh,300px)] w-full md:-mt-5">
           <div className="absolute inset-x-0 top-0 z-0 h-full overflow-hidden">
             <Image
               className="w-full h-full object-cover blur-sm"
@@ -72,7 +79,7 @@ export const GameBanner = ({
             </div>
           </div>
         </div>
-        <div className="block md:hidden text-white md:-mx-4 bg-[rgb(196,102,8)] py-2">
+        <div className="block md:hidden text-white bg-[rgb(196,102,8)] py-2">
           <Container>
             <Title size="small" className="drop-shadow-sm lg:mb-0 mb-0">
               {game.name}{" "}
