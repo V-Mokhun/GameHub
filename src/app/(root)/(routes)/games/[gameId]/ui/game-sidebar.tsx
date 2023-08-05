@@ -30,7 +30,7 @@ export const GameSidebar = ({ game }: GameSidebarProps) => {
     <>
       <Button
         ref={buttonRef}
-        className="xl:hidden fixed right-2 sm:right-10 top-[calc(25%-36px)] rounded-full shadow-md"
+        className="xl:hidden fixed z-[5] right-2 sm:right-10 top-[calc(25%-36px)] rounded-full shadow-md"
         onClick={() => setOpen((prev) => !prev)}
         size="icon"
       >
@@ -39,7 +39,7 @@ export const GameSidebar = ({ game }: GameSidebarProps) => {
       <div
         ref={ref}
         className={cn(
-          "fixed max-w-xs transition-opacity pointer-events-none right-2 sm:right-10 top-1/4 xl:opacity-100 xl:static xl:flex-[0_1_25%] xl:min-w-[280px] bg-popover shadow-xl py-4 px-2 rounded-md text-sm sm:text-base",
+          "fixed z-[5] max-w-xs transition-opacity pointer-events-none xl:pointer-events-auto right-2 sm:right-10 top-1/4 xl:opacity-100 xl:static xl:flex-[0_1_25%] xl:min-w-[280px] bg-popover shadow-xl py-4 px-2 rounded-md text-sm sm:text-base",
           open && "opacity-100 pointer-events-auto",
           !open && "opacity-0"
         )}
@@ -80,7 +80,7 @@ export const GameSidebar = ({ game }: GameSidebarProps) => {
           {game.companyLogos.length > 0 && (
             <li className="flex items-start justify-between gap-2">
               <span className="font-semibold shrink-0">Companies:</span>
-              <div className="flex gap-2 text-right">
+              <div className="flex gap-2 text-right flex-wrap">
                 {game.companyLogos.map((logo) => (
                   <TooltipProvider key={logo.url}>
                     <Tooltip>

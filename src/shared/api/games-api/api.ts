@@ -51,6 +51,7 @@ export type UseGameApiResponse = {
   videos?: {
     id: number;
     video_id: string;
+    name: string;
   }[];
   first_release_date?: number;
   name: string;

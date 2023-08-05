@@ -2,10 +2,9 @@
 
 import { GameCard } from "@entities/game";
 import { Game, NormalizedLibraryGame } from "@shared/api";
-import { Button, Icon, Title } from "@shared/ui";
+import { Button, CarouselArrow, Icon, Title } from "@shared/ui";
 import { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
-import "keen-slider/keen-slider.min.css";
 
 interface GameGamesProps {
   title: string;
@@ -56,56 +55,40 @@ export const GameGames = ({
 
   return (
     <div className="mb-4 md:mb-6 min-w-0">
-      <Title >{title}</Title>
+      <Title>{title}</Title>
       <div className="relative md:mr-10 md:ml-10 xl:mr-5">
         {loaded && instanceRef.current && (
           <>
-            <Button
-              className="inline-flex absolute z-10 left-2 md:-left-10 top-1/2 transform -translate-y-1/2"
-              size="icon"
-              variant="secondary"
+            <CarouselArrow
               onClick={(e) => {
                 e.stopPropagation();
                 instanceRef.current?.prev();
               }}
               disabled={currentSlide === 0}
-            >
-              <Icon className="text-white" name="ArrowLeft" />
-            </Button>
-
-            <Button
-              className="inline-flex absolute z-10 right-2 md:-right-10 top-1/2 transform -translate-y-1/2"
+              left
+            />
+            <CarouselArrow
               onClick={(e) => {
                 e.stopPropagation();
                 instanceRef.current?.next();
               }}
-              size="icon"
-              variant="secondary"
               disabled={
                 currentSlide === instanceRef.current.track.details.maxIdx
               }
-            >
-              <Icon className="text-white" name="ArrowRight" />
-            </Button>
+            />
           </>
         )}
-        <div
-          ref={sliderRef}
-          className="keen-slider"
-        >
+        <div ref={sliderRef} className="keen-slider">
           {games.map((game) => {
             const libraryGame = libraryGames?.find(
               (libGame) => libGame.id === game.id
             );
 
             return (
-              <div
-                key={game.id}
-                className="keen-slider__slide"
-              >
+              <div key={game.id} className="keen-slider__slide">
                 <GameCard
                   classNames={{
-                    link: "h-80"
+                    link: "h-80",
                   }}
                   game={{
                     category: game.category,

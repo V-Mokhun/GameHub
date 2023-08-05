@@ -1,11 +1,13 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { gamesApi, userApi, userLibraryApi } from "@shared/api";
-import { Container } from "@shared/ui";
+import { gamesApi, userLibraryApi } from "@shared/api";
+import { Container, Separator } from "@shared/ui";
+import "keen-slider/keen-slider.min.css";
 import { GameBanner } from "./game-banner";
-import { GameSidebar } from "./game-sidebar";
 import { GameGames } from "./game-games";
+import { GameMedia } from "./game-media";
+import { GameSidebar } from "./game-sidebar";
 
 interface GamePageProps {
   gameId: string;
@@ -37,7 +39,13 @@ export const GamePage = ({ gameId }: GamePageProps) => {
         <Container>
           <div className="flex items-start mt-6 gap-4">
             <div className="flex-1 min-w-0">
-              <p className="mb-6 text-sm md:text-base">{game.summary}</p>
+              <GameMedia
+                artworks={game.artworks}
+                screenshots={game.screenshots}
+                videos={game.videos}
+              />
+              <p className="mb-4 text-sm md:text-base">{game.summary}</p>
+              <Separator />
               {game.similarGames.length > 0 && (
                 <GameGames
                   title="Similar Games"

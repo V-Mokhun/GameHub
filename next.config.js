@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['images.igdb.com']
+    domains: ['images.igdb.com', 'i.ytimg.com']
   },
   async rewrites() {
     return [

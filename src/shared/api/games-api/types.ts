@@ -89,7 +89,7 @@ export interface FullGame {
   id: number;
   cover?: string;
   artworks: string[];
-  videos: string[];
+  videos: { url: string; name: string }[];
   releaseDate?: Date;
   name: string;
   rating: number;

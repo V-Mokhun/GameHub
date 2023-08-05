@@ -89,7 +89,11 @@ export const normalizeFullGameProperties = (
       gameData.screenshots?.map((screenshot) =>
         getImageUrl(screenshot.image_id, ImageTypes.BIG_SCREENSHOT)
       ) || [],
-    videos: gameData.videos?.map((video) => video.video_id) || [],
+    videos:
+      gameData.videos?.map((video) => ({
+        url: video.video_id,
+        name: video.name,
+      })) || [],
     companyLogos:
       gameData.involved_companies
         ?.filter(({ company }) => company.logo.image_id)
