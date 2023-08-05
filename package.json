@@ -37,6 +37,7 @@
     "encoding": "^0.1.13",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
+    "keen-slider": "^6.8.6",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.260.0",
     "nanoid": "^4.0.2",

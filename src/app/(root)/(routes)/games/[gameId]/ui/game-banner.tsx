@@ -72,7 +72,7 @@ export const GameBanner = ({
             </div>
           </div>
         </div>
-        <div className="block md:hidden text-white -mx-2 sm:-mx-4 bg-[rgb(196,102,8)] py-2">
+        <div className="block md:hidden text-white md:-mx-4 bg-[rgb(196,102,8)] py-2">
           <Container>
             <Title size="small" className="drop-shadow-sm lg:mb-0 mb-0">
               {game.name}{" "}

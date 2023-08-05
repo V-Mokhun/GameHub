@@ -41,8 +41,8 @@ export const normalizeSearchGameProperties = (
   };
 };
 
-export const normalizeGameProperties = (
-  game: UseGamesApiResponse,
+export const normalizeGameProperties = <T extends UseGamesApiResponse>(
+  game: T,
   imageType: ImageTypes = ImageTypes.BIG_COVER
 ): Game => {
   return {
@@ -101,23 +101,18 @@ export const normalizeFullGameProperties = (
     similarGames:
       gameData.similar_games
         ?.filter((game) => game.total_rating_count >= 10)
-        .map(
-          (game) => normalizeSearchGameProperties(game),
-          ImageTypes.BIG_COVER
-        ) || [],
+        .map((game) => normalizeGameProperties(game), ImageTypes.BIG_COVER) ||
+      [],
     franchises: gameData.franchises
       ? gameData.franchises[0].games
           .filter((game) => game.total_rating_count >= 10)
-          .map((game) =>
-            normalizeSearchGameProperties(game, ImageTypes.BIG_COVER)
-          )
+          .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER))
       : [],
     dlcs:
       gameData.dlcs
         ?.filter((game) => game.total_rating_count >= 10)
-        .map((game) =>
-          normalizeSearchGameProperties(game, ImageTypes.BIG_COVER)
-        ) || [],
+        .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER)) ||
+      [],
   };
 };
 

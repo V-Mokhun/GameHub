@@ -12,7 +12,7 @@ type UseUserApiResponse = {
   libraryIncluded: boolean;
 };
 
-const useUser = (username: string) => {
+const useUser = (username?: string) => {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -30,6 +30,7 @@ const useUser = (username: string) => {
         displayError(toast, error);
         router.push(HOME_ROUTE);
       },
+      enabled: !!username,
     }
   );
 };

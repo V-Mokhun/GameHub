@@ -19,7 +19,7 @@ interface GameSidebarProps {
 
 export const GameSidebar = ({ game }: GameSidebarProps) => {
   return (
-    <div className="flex-[0_1_25%] min-w-[280px] bg-popover shadow-xl py-4 px-2 rounded-md">
+    <div className="fixed opacity-0 pointer-events-none right-10 top-1/4 xl:opacity-100 xl:static flex-[0_1_25%] min-w-[280px] bg-popover shadow-xl py-4 px-2 rounded-md">
       <Title size="small" className="text-center">
         Game Info
       </Title>

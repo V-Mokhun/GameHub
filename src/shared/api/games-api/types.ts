@@ -80,9 +80,9 @@ export interface SearchGame {
 
 export interface Game extends SearchGame {
   category: number;
-  themes?: number[];
-  gameModes?: number[];
-  genres?: number[];
+  themes: number[];
+  gameModes: number[];
+  genres: number[];
 }
 
 export interface FullGame {
@@ -99,9 +99,9 @@ export interface FullGame {
   gameModes: { id: number; name: string }[];
   summary?: string;
   storyline?: string;
-  similarGames: SearchGame[];
-  dlcs: SearchGame[];
+  similarGames: Game[];
+  dlcs: Game[];
   screenshots: string[];
   companyLogos: { name: string; url: string }[];
-  franchises: SearchGame[];
+  franchises: Game[];
 }
