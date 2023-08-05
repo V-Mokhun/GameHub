@@ -59,6 +59,7 @@ export const GameLibraryModal = ({
     username,
     onClose
   );
+  
   const { mutate: deleteGame, isLoading: isDeleting } =
     userLibraryApi.removeGame(username, onClose);
 

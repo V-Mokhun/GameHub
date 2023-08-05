@@ -8,6 +8,7 @@ import { GameBanner } from "./game-banner";
 import { GameGames } from "./game-games";
 import { GameMedia } from "./game-media";
 import { GameSidebar } from "./game-sidebar";
+import { GameNotes } from "./game-notes";
 
 interface GamePageProps {
   gameId: string;
@@ -39,6 +40,12 @@ export const GamePage = ({ gameId }: GamePageProps) => {
         <Container>
           <div className="flex items-start mt-6 gap-4">
             <div className="flex-1 min-w-0">
+              {libraryGame && user && (
+                <GameNotes
+                  username={user.username!}
+                  libraryGame={libraryGame}
+                />
+              )}
               <GameMedia
                 artworks={game.artworks}
                 screenshots={game.screenshots}

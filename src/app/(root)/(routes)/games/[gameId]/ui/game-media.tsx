@@ -1,54 +1,16 @@
 "use client";
 
+import { KeyboardPlugin, ThumbnailPlugin } from "@shared/lib";
 import { CarouselArrow, PlayIcon, Title } from "@shared/ui";
-import {
-  KeenSliderInstance,
-  KeenSliderPlugin,
-  useKeenSlider,
-} from "keen-slider/react";
+import { useKeenSlider } from "keen-slider/react";
 import Image from "next/image";
-import { MutableRefObject, useState } from "react";
+import { useState } from "react";
 import ReactPlayer from "react-player/lazy";
 
 interface GameMediaProps {
   videos: { url: string; name: string }[];
   artworks: string[];
   screenshots: string[];
-}
-
-function ThumbnailPlugin(
-  mainRef: MutableRefObject<KeenSliderInstance | null>
-): KeenSliderPlugin {
-  return (slider) => {
-    function removeActive() {
-      slider.slides.forEach((slide) => {
-        slide.classList.remove("active");
-      });
-    }
-    function addActive(idx: number) {
-      slider.slides[idx].classList.add("active");
-    }
-
-    function addClickEvents() {
-      slider.slides.forEach((slide, idx) => {
-        slide.addEventListener("click", () => {
-          if (mainRef.current) mainRef.current.moveToIdx(idx);
-        });
-      });
-    }
-
-    slider.on("created", () => {
-      if (!mainRef.current) return;
-      addActive(slider.track.details.rel);
-      addClickEvents();
-      mainRef.current.on("animationStarted", (main) => {
-        removeActive();
-        const next = main.animator.targetIdx || 0;
-        addActive(main.track.absToRel(next));
-        slider.moveToIdx(Math.min(slider.track.details.maxIdx, next));
-      });
-    });
-  };
 }
 
 export const GameMedia = ({
@@ -58,15 +20,18 @@ export const GameMedia = ({
 }: GameMediaProps) => {
   const [loaded, setLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    initial: 0,
-    created() {
-      setLoaded(true);
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
+    {
+      initial: 0,
+      created() {
+        setLoaded(true);
+      },
+      slideChanged(slider) {
+        setCurrentSlide(slider.track.details.rel);
+      },
     },
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel);
-    },
-  });
+    [KeyboardPlugin]
+  );
   const [thumbnailRef] = useKeenSlider<HTMLDivElement>(
     {
       initial: 0,
@@ -141,7 +106,7 @@ export const GameMedia = ({
             </div>
           ))}
           {images.map((image) => (
-            <div key={image} className="keen-slider__slide">
+            <div key={image} className="keen-slider__slide aspect-video">
               <Image src={image} fill alt="Image" />
             </div>
           ))}
