@@ -1,4 +1,9 @@
-import { ABOUT_ROUTE, PRIVACY_ROUTE, TERMS_ROUTE } from "@shared/consts";
+import {
+  ABOUT_ROUTE,
+  CONTACT_ROUTE,
+  PRIVACY_ROUTE,
+  TERMS_ROUTE,
+} from "@shared/consts";
 import { Container, Link, Logo } from "@shared/ui";
 
 export const Footer = () => {
@@ -39,13 +44,16 @@ export const Footer = () => {
           </div>
           <ul className="flex items-center gap-4">
             <li>
-              <Link href={PRIVACY_ROUTE}>Privacy</Link>
+              <Link href={ABOUT_ROUTE}>About</Link>
             </li>
             <li>
               <Link href={TERMS_ROUTE}>Terms</Link>
             </li>
             <li>
-              <Link href={ABOUT_ROUTE}>About</Link>
+              <Link href={PRIVACY_ROUTE}>Privacy</Link>
+            </li>
+            <li>
+              <Link href={CONTACT_ROUTE}>Contact</Link>
             </li>
           </ul>
         </div>
