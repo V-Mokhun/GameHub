@@ -3,9 +3,14 @@ import { Container, ExternalLink, Link, Title } from "@shared/ui";
 
 export default async function PrivacyPage() {
   return (
-    <section>
+    <section className="text-sm md:text-base">
       <Container>
         <Title size="large">Privacy Policy</Title>
+        <p className="italic mb-3">Last updated: August 6, 2023</p>
+        <p className="mb-3">
+          This Privacy Policy is part of our Terms of Use. Any words defined in
+          the Terms of Use have the same meaning in this Privacy Policy.
+        </p>
         <p className="mb-3">
           We seek to minimize the amount of personal information that we collect
           and store. We are not interested in advertising or building predatory
@@ -13,6 +18,13 @@ export default async function PrivacyPage() {
           only used to operate GameHub, provide paid services, and make informed
           decisions about how to improve GameHub. We also don&apos;t sell or
           trade visitor information with other companies.
+        </p>
+        <p className="mb-3">
+          We may modify this Privacy Policy at any time and subsequently revise
+          the &quot;Last updated&quot; date at the top of this page. Your access
+          to and use of GameHub is always subject to the current Privacy Policy.
+          If you do not agree to the new Privacy Policy, you must either stop
+          using GameHub or delete your account.
         </p>
         <p className="mb-3">
           This document provides details about what kind of data GameHub gathers
@@ -47,7 +59,7 @@ export default async function PrivacyPage() {
           If you no longer want this information on your device, you can clear
           your history and cookies:
         </p>
-        <ol className="mb-3 list-disc">
+        <ul className="mb-3 list-disc">
           <li>
             <ExternalLink href="https://support.mozilla.org/en-US/kb/clear-cookies-and-site-data-firefox?redirectslug=delete-cookies-remove-info-websites-stored&redirectlocale=en-US">
               Mozilla Firefox
@@ -83,7 +95,14 @@ export default async function PrivacyPage() {
               Chrome on Desktop
             </ExternalLink>
           </li>
-        </ol>
+        </ul>
+        <Title>Children&apos;s Privacy</Title>
+        <p className="mb-3">
+          GameHub is not intended for children under the age of 18. We do not
+          knowingly collect personal information from children under 18. If you
+          are a parent or guardian and believe that your child has used GameHub
+          and/or provided us with personal information, please contact us.
+        </p>
         <Title>GameHub Accounts</Title>
         <p className="mb-3">
           You can register for a GameHub account in order to use personalized or
