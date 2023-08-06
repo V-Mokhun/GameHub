@@ -18,12 +18,11 @@ interface GamePageProps {
 export const GamePage = ({ gameId }: GamePageProps) => {
   const { user } = useUser();
   const { data: game, isLoading } = gamesApi.getGame(gameId);
-  const { data: libraryGame, isLoading: isLibraryGameLoading } =
-    userLibraryApi.getLibraryGame(
-      gameId,
-      user?.id ?? undefined,
-      user?.username ?? undefined
-    );
+  const { data: libraryGame } = userLibraryApi.getLibraryGame(
+    gameId,
+    user?.id ?? undefined,
+    user?.username ?? undefined
+  );
   const { data: libraryData } = userLibraryApi.getLibrary(
     user?.username ?? undefined,
     { noLimit: true, enabled: true }
@@ -42,7 +41,6 @@ export const GamePage = ({ gameId }: GamePageProps) => {
         <div className="flex items-start gap-4">
           <div className="flex-1 min-w-0">
             <GameNotes
-              isLoading={isLibraryGameLoading}
               username={user?.username || ""}
               libraryGame={libraryGame || null}
             />

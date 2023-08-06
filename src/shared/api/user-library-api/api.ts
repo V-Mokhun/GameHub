@@ -146,10 +146,7 @@ const useAddGameToLibrary = (username: string, onSuccess?: () => void) => {
   );
 };
 
-const useRemoveGameFromLibrary = (
-  username: string,
-  onSuccess?: () => void
-) => {
+const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 

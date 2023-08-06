@@ -5,16 +5,11 @@ import { Button, Icon, Skeleton, Textarea, Title } from "@shared/ui";
 import { useEffect, useState } from "react";
 
 interface GameNotesProps {
-  isLoading: boolean;
   libraryGame: NormalizedLibraryGame | null;
   username: string;
 }
 
-export const GameNotes = ({
-  libraryGame,
-  username,
-  isLoading,
-}: GameNotesProps) => {
+export const GameNotes = ({ libraryGame, username }: GameNotesProps) => {
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(libraryGame?.notes || "");
   const { mutate: addGame, isLoading: isAdding } = userLibraryApi.addGame(
@@ -25,17 +20,6 @@ export const GameNotes = ({
   useEffect(() => {
     setEditedText(libraryGame?.notes || "");
   }, [libraryGame?.notes]);
-
-  if (isLoading)
-    return (
-      <div className="mt-4 mb-1">
-        <Skeleton className="w-52 h-9 mb-3" />
-        <Skeleton className="w-40 h-6 mb-1" />
-        <Skeleton className="w-56 h-6 mb-1" />
-        <Skeleton className="w-24 h-6 mb-1" />
-        <Skeleton className="w-36 h-6 mb-1" />
-      </div>
-    );
 
   if (!libraryGame || !username) return null;
 
