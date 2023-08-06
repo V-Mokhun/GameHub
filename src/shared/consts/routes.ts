@@ -24,6 +24,7 @@ export const FRIENDS_ROUTE = (username: string) =>
 export const PRIVACY_ROUTE = "/privacy";
 export const TERMS_ROUTE = "/terms";
 export const ABOUT_ROUTE = "/about";
+export const CONTACT_ROUTE = "/contact";
 
 export const PUBLIC_ROUTES = [
   HOME_ROUTE,
@@ -32,6 +33,10 @@ export const PUBLIC_ROUTES = [
   `${USERS_ROUTE}/:path*`,
   FORGOT_PASSWORD_ROUTE,
   SSO_CALLBACK_ROUTE,
+  PRIVACY_ROUTE,
+  TERMS_ROUTE,
+  ABOUT_ROUTE,
+  CONTACT_ROUTE,
   "/api/webhooks/:path*",
   "/api/token",
   "/api/igdb/:path*",

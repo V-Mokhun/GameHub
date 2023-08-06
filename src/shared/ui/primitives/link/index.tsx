@@ -34,3 +34,27 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
 );
 
 Link.displayName = "Link";
+
+export const ExternalLink = ({
+  className,
+  href,
+  children,
+}: {
+  className?: string;
+  href: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn(
+        "inline-block text-primary transition-colors hover:text-primary-hover",
+        className
+      )}
+    >
+      {children}
+    </a>
+  );
+};
