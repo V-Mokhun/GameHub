@@ -262,6 +262,6 @@ export const stringifyGetGamesParams = (
   const sortQuery = `sort ${sort.field} ${sort.order};`;
   const paginateQuery = `limit ${paginate.limit}; offset ${paginate.offset};`;
 
-  const body = `${GET_GAMES_FIELDS} ${filterQuery} ${sortQuery} ${paginateQuery}`;
+  const body = `${GET_GAMES_FIELDS}; ${filterQuery} ${sortQuery} ${paginateQuery}`;
   return body;
 };

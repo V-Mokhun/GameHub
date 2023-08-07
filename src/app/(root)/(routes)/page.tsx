@@ -7,7 +7,12 @@ import { Container, Link, buttonVariants, useToast } from "@shared/ui";
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
 import { HomeHero } from "./ui";
-import { gamesApi, userLibraryApi } from "@shared/api";
+import {
+  SortFields,
+  SortFieldsOrder,
+  gamesApi,
+  userLibraryApi,
+} from "@shared/api";
 import { GamesCarousel } from "@widgets/games-carousel";
 
 export default function Home() {
@@ -19,8 +24,13 @@ export default function Home() {
   );
   const { data: popularGames, isLoading: isPopularGamesLoading } =
     gamesApi.getPopularGames();
-  const { data: upcomingGames, isLoading: isUpcomingGamesLoading } =
-    gamesApi.getUpcomingGames();
+  const { data: topGames, isLoading: isTopGamesLoading } = gamesApi.getGames({
+    paginate: {
+      limit: 10,
+      offset: 0,
+    },
+  });
+  console.log(topGames);
 
   useEffect(() => {
     async function updateUsername() {
@@ -66,13 +76,13 @@ export default function Home() {
             isLoading={isPopularGamesLoading}
           />
           <GamesCarousel
-            title="Upcoming"
-            subtitle="Top upcoming games"
+            title="Top rated games"
+            subtitle="Highest rated games of all time"
             userId={user?.id}
             username={user?.username}
-            games={upcomingGames || []}
+            games={topGames || []}
             libraryGames={libraryData?.library}
-            isLoading={isUpcomingGamesLoading}
+            isLoading={isTopGamesLoading}
           />
         </Container>
       </section>

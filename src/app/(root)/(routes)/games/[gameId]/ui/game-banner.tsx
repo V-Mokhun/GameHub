@@ -37,7 +37,7 @@ export const GameBanner = ({
               fill
               alt={game.name}
               src={game.artworks[0] || game.cover || ""}
-              priority
+              priority={true}
               sizes="100vw"
             />
 
