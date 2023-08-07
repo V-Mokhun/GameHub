@@ -37,6 +37,8 @@ export const GameBanner = ({
               fill
               alt={game.name}
               src={game.artworks[0] || game.cover || ""}
+              priority
+              sizes="100vw"
             />
 
             <div className="absolute top-6 left-4 h-3/4 w-1/2 sm:w-1/3 lg:w-1/4">

@@ -11,6 +11,7 @@ import { gamesApi, userLibraryApi } from "@shared/api";
 import { GamesCarousel } from "@widgets/games-carousel";
 
 export default function Home() {
+  const { toast } = useToast();
   const { user, isLoaded } = useUser();
   const { data: libraryData } = userLibraryApi.getLibrary(
     user?.username ?? undefined,
@@ -18,7 +19,8 @@ export default function Home() {
   );
   const { data: popularGames, isLoading: isPopularGamesLoading } =
     gamesApi.getPopularGames();
-  const { toast } = useToast();
+  const { data: upcomingGames, isLoading: isUpcomingGamesLoading } =
+    gamesApi.getUpcomingGames();
 
   useEffect(() => {
     async function updateUsername() {
@@ -55,13 +57,22 @@ export default function Home() {
       <section>
         <Container>
           <GamesCarousel
-            title="Popular Games"
+            title="Featured"
             subtitle="Most popular games this year"
             userId={user?.id}
             username={user?.username}
             games={popularGames || []}
             libraryGames={libraryData?.library}
             isLoading={isPopularGamesLoading}
+          />
+          <GamesCarousel
+            title="Upcoming"
+            subtitle="Top upcoming games"
+            userId={user?.id}
+            username={user?.username}
+            games={upcomingGames || []}
+            libraryGames={libraryData?.library}
+            isLoading={isUpcomingGamesLoading}
           />
         </Container>
       </section>

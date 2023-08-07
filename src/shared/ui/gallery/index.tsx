@@ -97,8 +97,11 @@ export const Gallery = ({
               </div>
             ))}
             {images.map((image) => (
-              <div key={image} className="keen-slider__slide aspect-video">
-                <Image src={image} fill alt="Image" />
+              <div
+                key={image}
+                className="relative keen-slider__slide aspect-video"
+              >
+                <Image src={image} fill alt="Image" sizes="100%" />
               </div>
             ))}
           </div>

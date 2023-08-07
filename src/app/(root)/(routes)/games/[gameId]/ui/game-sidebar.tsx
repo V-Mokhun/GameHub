@@ -95,10 +95,10 @@ export const GameSidebar = ({ game, isLoading }: GameSidebarProps) => {
                       <Tooltip>
                         <TooltipTrigger>
                           <Image
-                            className="aspect-[4/3] rounded-md"
+                            className="aspect-[4/3] rounded-md w-10 h-8"
                             src={logo.url}
-                            width={45}
-                            height={25}
+                            width={40}
+                            height={32}
                             alt={logo.name}
                           />
                         </TooltipTrigger>

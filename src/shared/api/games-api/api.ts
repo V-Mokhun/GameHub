@@ -133,16 +133,43 @@ export const usePopularGames = () => {
   const secondsInYear = 315_360_00;
   const yearDiff = year - 1970;
   const secondsThisYear = yearDiff * secondsInYear;
-  const secondsNextYear = (yearDiff + 1) * secondsInYear;
+  const secondsNow = Math.floor(Date.now() / 1000);
 
   return useQuery(
     ["popular_games"],
     async () => {
-      const body = `${GET_GAMES_FIELDS} where total_rating_count >= 10 & first_release_date >= ${secondsThisYear} & first_release_date <= ${secondsNextYear}; sort total_rating desc; limit 10;`;
+      const body = `${GET_GAMES_FIELDS} where total_rating_count >= 10 & first_release_date >= ${secondsThisYear} & first_release_date <= ${secondsNow}; sort total_rating desc; limit 10;`;
       const { data } = await axiosInstance.post<UseGamesApiResponse[]>(
         "/games",
         body
       );
+
+      return data.map((game) => normalizeGameProperties(game));
+    },
+    {
+      onError: (error) => {
+        return displayError(toast, error);
+      },
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useUpcomingGames = () => {
+  const { toast } = useToast();
+  const secondsInYear = 315_360_00;
+  const secondsNow = Math.floor(Date.now() / 1000);
+  const secondsNextYear = secondsNow + secondsInYear;
+
+  return useQuery(
+    ["upcoming_games"],
+    async () => {
+      const body = `${GET_GAMES_FIELDS} where total_rating_count >= 10; sort total_rating desc; limit 10;`;
+      const { data } = await axiosInstance.post<UseGamesApiResponse[]>(
+        "/games",
+        body
+      );
+      console.log(data);
 
       return data.map((game) => normalizeGameProperties(game));
     },
@@ -307,6 +334,7 @@ export const useGame = (id: string) => {
 export const gamesApi = {
   getGames: useGames,
   getPopularGames: usePopularGames,
+  getUpcomingGames: useUpcomingGames,
   getGamesCount: useGamesCount,
   getSearchGames: useSearchGames,
   getGenres: useGenres,

@@ -101,7 +101,7 @@ export const normalizeFullGameProperties = (
       })) || [],
     companyLogos:
       gameData.involved_companies
-        ?.filter(({ company }) => company.logo.image_id)
+        ?.filter(({ company }) => company?.logo?.image_id)
         ?.map(({ company }) => ({
           name: company.name,
           url: getImageUrl(company.logo.image_id, ImageTypes.MEDIUM_LOGO),

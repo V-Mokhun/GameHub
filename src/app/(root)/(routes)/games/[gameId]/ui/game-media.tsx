@@ -30,7 +30,7 @@ export const GameMedia = ({
         setLoaded(true);
       },
       slideChanged(slider) {
-        setCurrentSlide(slider.track.details.rel);
+        setCurrentSlide(slider.track.details?.rel);
       },
     },
     [KeyboardPlugin]
@@ -107,7 +107,7 @@ export const GameMedia = ({
                   instanceRef.current?.next();
                 }}
                 disabled={
-                  currentSlide === instanceRef.current.track.details.maxIdx
+                  currentSlide === instanceRef.current.track.details?.maxIdx
                 }
               />
             </>
@@ -136,7 +136,7 @@ export const GameMedia = ({
                 key={image}
                 className="keen-slider__slide aspect-video cursor-pointer"
               >
-                <Image src={image} fill alt="Image" />
+                <Image src={image} fill alt="Image" sizes="min(100%,80vh)" />
               </div>
             ))}
           </div>
@@ -155,6 +155,7 @@ export const GameMedia = ({
                 src={`https://i.ytimg.com/vi/${video.url}/hqdefault.jpg`}
                 alt={video.name}
                 fill
+                sizes="(min-width: 768px) 25%, (min-width: 479px) 33%, 50%"
               />
             </div>
           ))}
@@ -163,7 +164,12 @@ export const GameMedia = ({
               key={image}
               className="keen-slider__slide cursor-pointer [&.active]:border-2 border-secondary border-solid"
             >
-              <Image src={image} fill alt="Image" />
+              <Image
+                src={image}
+                fill
+                alt="Image"
+                sizes="(min-width: 768px) 25%, (min-width: 479px) 33%, 50%"
+              />
             </div>
           ))}
         </div>
