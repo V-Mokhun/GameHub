@@ -29,7 +29,7 @@ export const GamesCarousel = ({
   const [loaded, setLoaded] = useState(false);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     breakpoints: {
-      "(min-width: 479px)": {
+      "(min-width: 1px)": {
         slides: {
           perView: 2,
           spacing: 10,
