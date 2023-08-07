@@ -5,6 +5,7 @@ import { SETTINGS_ROUTE } from "@shared/consts";
 import { Link, buttonVariants, useToast } from "@shared/ui";
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
+import { HomeHero } from "./ui";
 
 export default function Home() {
   const { user, isLoaded } = useUser();
@@ -39,5 +40,9 @@ export default function Home() {
     updateUsername();
   }, [isLoaded, user, toast]);
 
-  return <div>USERS: </div>;
+  return (
+    <>
+      <HomeHero />
+    </>
+  );
 }
