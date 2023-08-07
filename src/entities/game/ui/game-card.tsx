@@ -1,8 +1,9 @@
 "use client";
 
 import { Game, NormalizedLibraryGame } from "@shared/api";
-import { GAMES_ROUTE, SIGN_IN_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
+import { GAMES_ROUTE } from "@shared/consts";
 import { cn } from "@shared/lib";
+import { useCustomToasts } from "@shared/lib/hooks";
 import {
   Badge,
   Button,
@@ -11,8 +12,6 @@ import {
   Skeleton,
   TableCell,
   TableRow,
-  buttonVariants,
-  useToast,
 } from "@shared/ui";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,7 +54,7 @@ export const GameCard = ({
   classNames = {},
 }: GameCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { toast } = useToast();
+  const { signInLibraryToast } = useCustomToasts();
 
   const onLibraryButtonClick = () => {
     if (disableLibraryButton) return;
@@ -63,27 +62,7 @@ export const GameCard = ({
     if (userId) {
       setIsOpen(true);
     } else {
-      const { dismiss } = toast({
-        title: "Sign in to add games to your library",
-        action: (
-          <Link
-            onClick={() => {
-              setTimeout(() => {
-                dismiss();
-              }, TOAST_TIMEOUT);
-            }}
-            className={buttonVariants({
-              variant: "default",
-              size: "sm",
-              className: "w-max self-end text-sm hover:text-white",
-            })}
-            href={SIGN_IN_ROUTE}
-          >
-            Sign in
-          </Link>
-        ),
-        variant: "destructive",
-      });
+      signInLibraryToast();
     }
   };
 

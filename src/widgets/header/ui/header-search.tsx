@@ -2,7 +2,6 @@
 
 import { gamesApi } from "@shared/api";
 import { GAMES_ROUTE } from "@shared/consts";
-import { useClickOutside } from "@shared/lib";
 import {
   Command,
   CommandEmpty,
@@ -15,6 +14,7 @@ import debounce from "lodash.debounce";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { SearchedGame } from "./searched-game";
+import { useClickOutside } from "@shared/lib/hooks";
 
 interface HeaderSearchProps {}
 

@@ -1,10 +1,10 @@
 "use client";
 
-import "keen-slider/keen-slider.min.css";
 import { useUser } from "@clerk/nextjs";
+import { GameCard, GameCardSkeleton } from "@entities/game";
+import { gamesApi, userLibraryApi } from "@shared/api";
 import { BROWSE_ROUTE, SETTINGS_ROUTE } from "@shared/consts";
 import {
-  Button,
   Container,
   Icon,
   Link,
@@ -13,20 +13,15 @@ import {
   buttonVariants,
   useToast,
 } from "@shared/ui";
+import { GamesCarousel } from "@widgets/games-carousel";
+import "keen-slider/keen-slider.min.css";
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
 import { HomeHero } from "./ui";
-import {
-  SortFields,
-  SortFieldsOrder,
-  gamesApi,
-  userLibraryApi,
-} from "@shared/api";
-import { GamesCarousel } from "@widgets/games-carousel";
-import { GameCard, GameCardSkeleton } from "@entities/game";
+import { useCustomToasts } from "@shared/lib/hooks";
 
 export default function Home() {
-  const { toast } = useToast();
+  const { usernameGeneratedToast } = useCustomToasts();
   const { user, isLoaded } = useUser();
   const { data: libraryData } = userLibraryApi.getLibrary(
     user?.username ?? undefined,
@@ -48,30 +43,12 @@ export default function Home() {
     async function updateUsername() {
       if (isLoaded && user && !user.username) {
         await user.update({ username: nanoid(10) });
-        const { dismiss } = toast({
-          title: "Username has been generated",
-          description:
-            "Your username has been automatically generated. You can change it in your profile settings.",
-          action: (
-            <Link
-              onClick={() => dismiss()}
-              className={buttonVariants({
-                variant: "default",
-                size: "sm",
-                className: "w-max self-end text-sm hover:text-white",
-              })}
-              href={SETTINGS_ROUTE}
-            >
-              Change username
-            </Link>
-          ),
-          variant: "success",
-        });
+        usernameGeneratedToast();
       }
     }
 
     updateUsername();
-  }, [isLoaded, user, toast]);
+  }, [isLoaded, user]);
 
   return (
     <>

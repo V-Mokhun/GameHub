@@ -1,7 +1,8 @@
 "use client";
 
-import { useAuth, useUser } from "@clerk/nextjs";
-import { cn, useClickOutside } from "@shared/lib";
+import { useUser } from "@clerk/nextjs";
+import { cn } from "@shared/lib";
+import { useClickOutside } from "@shared/lib/hooks";
 import { Logo, Overlay, Skeleton } from "@shared/ui";
 import { useSidebarStore } from "../model";
 import { SidebarMenu } from "./sidebar-menu";
@@ -39,12 +40,7 @@ export const Sidebar = () => {
   );
 
   if (isLoaded)
-    content = (
-      <SidebarMenu
-        onClose={onClose}
-        username={user?.username}
-      />
-    );
+    content = <SidebarMenu onClose={onClose} username={user?.username} />;
 
   return (
     <>

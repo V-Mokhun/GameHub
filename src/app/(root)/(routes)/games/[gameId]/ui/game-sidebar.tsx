@@ -16,7 +16,8 @@ import { format } from "date-fns";
 import Image from "next/image";
 import { GameSidebarItem } from "./game-sidebar-item";
 import { useRef, useState } from "react";
-import { cn, useClickOutside } from "@shared/lib";
+import { cn } from "@shared/lib";
+import { useClickOutside } from "@shared/lib/hooks";
 
 interface GameSidebarProps {
   game?: FullGame;

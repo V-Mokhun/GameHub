@@ -1,7 +1,7 @@
 "use client";
 
 import { GameFilters, MAX_RATING, MIN_RATING } from "@shared/api";
-import { useDebouncedValue } from "@shared/lib";
+import { useDebouncedValue } from "@shared/lib/hooks";
 import { Input, Label } from "@shared/ui";
 import { useEffect, useState } from "react";
 

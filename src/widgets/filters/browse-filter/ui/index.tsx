@@ -6,12 +6,13 @@ import {
   retrieveFiltersFromSearchParams,
   stringifyFilters,
 } from "@shared/api";
-import { cn, useClickOutside } from "@shared/lib";
+import { cn } from "@shared/lib";
 import { Button, Icon, Overlay, Title } from "@shared/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useBrowseFilterStore } from "../model";
 import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
+import { useClickOutside } from "@shared/lib/hooks";
 
 interface BrowseFilterProps {}
 

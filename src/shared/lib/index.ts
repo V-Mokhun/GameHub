@@ -4,5 +4,4 @@ export { isEmail } from "./is-email";
 export { isDefaultAvatar } from './is-default-avatar';
 export { getCookie } from './cookie';
 
-export * from './hooks';
 export * from './carousel';

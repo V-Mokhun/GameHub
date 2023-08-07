@@ -13,6 +13,7 @@ import {
   LibraryGameSorts,
   NormalizedLibraryGame,
 } from "./types";
+import { useCustomToasts } from "@shared/lib/hooks";
 
 const useLibrary = (
   username?: string,
@@ -97,6 +98,7 @@ const useLibraryGame = (gameId: string, userId?: string, username?: string) => {
 const useAddGameToLibrary = (username: string, onSuccess?: () => void) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { gameSavedToast } = useCustomToasts();
 
   return useMutation(
     async (game: LibraryGame) => {
@@ -139,7 +141,7 @@ const useAddGameToLibrary = (username: string, onSuccess?: () => void) => {
         queryClient.invalidateQueries({ queryKey: ["library", { username }] });
       },
       onSuccess: () => {
-        toast({ title: "Game was saved to your library", variant: "success" });
+        gameSavedToast(username);
         if (onSuccess) onSuccess();
       },
     }
