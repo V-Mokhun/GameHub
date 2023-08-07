@@ -4,7 +4,12 @@ import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { DEFAULT_FILTERS, DEFAULT_PAGINATE, DEFAULT_SORT } from "./consts";
+import {
+  DEFAULT_FILTERS,
+  DEFAULT_PAGINATE,
+  DEFAULT_SORT,
+  GET_GAMES_FIELDS,
+} from "./consts";
 import {
   normalizeFullGameProperties,
   normalizeGameProperties,
@@ -117,6 +122,34 @@ export const useGames = (
         return displayError(toast, error);
       },
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const usePopularGames = () => {
+  const { toast } = useToast();
+  const year = new Date().getFullYear();
+  const secondsInYear = 315_360_00;
+  const yearDiff = year - 1970;
+  const secondsThisYear = yearDiff * secondsInYear;
+  const secondsNextYear = (yearDiff + 1) * secondsInYear;
+
+  return useQuery(
+    ["popular_games"],
+    async () => {
+      const body = `${GET_GAMES_FIELDS} where total_rating_count >= 10 & first_release_date >= ${secondsThisYear} & first_release_date <= ${secondsNextYear}; sort total_rating desc; limit 10;`;
+      const { data } = await axiosInstance.post<UseGamesApiResponse[]>(
+        "/games",
+        body
+      );
+
+      return data.map((game) => normalizeGameProperties(game));
+    },
+    {
+      onError: (error) => {
+        return displayError(toast, error);
+      },
       refetchOnWindowFocus: false,
     }
   );
@@ -273,6 +306,7 @@ export const useGame = (id: string) => {
 
 export const gamesApi = {
   getGames: useGames,
+  getPopularGames: usePopularGames,
   getGamesCount: useGamesCount,
   getSearchGames: useSearchGames,
   getGenres: useGenres,

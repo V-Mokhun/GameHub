@@ -1,14 +1,23 @@
 "use client";
 
+import "keen-slider/keen-slider.min.css";
 import { useUser } from "@clerk/nextjs";
 import { SETTINGS_ROUTE } from "@shared/consts";
-import { Link, buttonVariants, useToast } from "@shared/ui";
+import { Container, Link, buttonVariants, useToast } from "@shared/ui";
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
 import { HomeHero } from "./ui";
+import { gamesApi, userLibraryApi } from "@shared/api";
+import { GamesCarousel } from "@widgets/games-carousel";
 
 export default function Home() {
   const { user, isLoaded } = useUser();
+  const { data: libraryData } = userLibraryApi.getLibrary(
+    user?.username ?? undefined,
+    { noLimit: true, enabled: true }
+  );
+  const { data: popularGames, isLoading: isPopularGamesLoading } =
+    gamesApi.getPopularGames();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -43,6 +52,19 @@ export default function Home() {
   return (
     <>
       <HomeHero />
+      <section>
+        <Container>
+          <GamesCarousel
+            title="Popular Games"
+            subtitle="Most popular games this year"
+            userId={user?.id}
+            username={user?.username}
+            games={popularGames || []}
+            libraryGames={libraryData?.library}
+            isLoading={isPopularGamesLoading}
+          />
+        </Container>
+      </section>
     </>
   );
 }

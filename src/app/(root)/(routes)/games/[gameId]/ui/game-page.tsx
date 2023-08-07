@@ -5,11 +5,11 @@ import { gamesApi, userLibraryApi } from "@shared/api";
 import { Container, Separator } from "@shared/ui";
 import "keen-slider/keen-slider.min.css";
 import { GameBanner } from "./game-banner";
-import { GameGames } from "./game-games";
 import { GameMedia } from "./game-media";
 import { GameSidebar } from "./game-sidebar";
 import { GameNotes } from "./game-notes";
 import { GameSummary } from "./game-summary";
+import { GamesCarousel } from "@widgets/games-carousel";
 
 interface GamePageProps {
   gameId: string;
@@ -52,7 +52,7 @@ export const GamePage = ({ gameId }: GamePageProps) => {
             />
             <GameSummary isLoading={isLoading} summary={game?.summary} />
             <Separator />
-            <GameGames
+            <GamesCarousel
               title="Similar Games"
               userId={user?.id}
               username={user?.username}
@@ -60,7 +60,7 @@ export const GamePage = ({ gameId }: GamePageProps) => {
               libraryGames={libraryData?.library}
               isLoading={isLoading}
             />
-            <GameGames
+            <GamesCarousel
               title="Franchise"
               userId={user?.id}
               username={user?.username}
@@ -68,7 +68,7 @@ export const GamePage = ({ gameId }: GamePageProps) => {
               libraryGames={libraryData?.library}
               isLoading={isLoading}
             />
-            <GameGames
+            <GamesCarousel
               title="DLC"
               userId={user?.id}
               username={user?.username}

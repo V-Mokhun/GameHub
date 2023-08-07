@@ -2,12 +2,13 @@
 
 import { GameCard } from "@entities/game";
 import { Game, NormalizedLibraryGame } from "@shared/api";
-import { Button, CarouselArrow, Icon, Skeleton, Title } from "@shared/ui";
+import { CarouselArrow, Skeleton, Subtitle, Title } from "@shared/ui";
 import { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 
-interface GameGamesProps {
+interface GamesCarouselProps {
   title: string;
+  subtitle?: string;
   games: Game[];
   userId?: string | null;
   libraryGames?: NormalizedLibraryGame[];
@@ -15,14 +16,15 @@ interface GameGamesProps {
   isLoading: boolean;
 }
 
-export const GameGames = ({
+export const GamesCarousel = ({
   games = [],
   title,
   libraryGames = [],
   userId,
   username,
   isLoading,
-}: GameGamesProps) => {
+  subtitle,
+}: GamesCarouselProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
@@ -59,6 +61,7 @@ export const GameGames = ({
     return (
       <div className="mb-4 md:mb-6">
         <Skeleton className="h-9 w-32 lg:mb-3 mb-2" />
+        {subtitle && <Skeleton className="h-7 w-56 md:mb-4 mb-3" />}
         <div className="md:mr-10 md:ml-10 xl:mr-5">
           <div className="flex gap-2.5">
             <Skeleton className="flex-1 h-80 sm:h-96 md:h-72 lg:h-80 xl:h-96" />
@@ -74,6 +77,7 @@ export const GameGames = ({
     games.length > 0 && (
       <div className="mb-4 md:mb-6 min-w-0">
         <Title>{title}</Title>
+        {subtitle && <Subtitle>{subtitle}</Subtitle>}
         <div className="relative md:mr-10 md:ml-10 xl:mr-5">
           {loaded && instanceRef.current && (
             <>

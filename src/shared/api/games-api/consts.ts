@@ -11,6 +11,8 @@ import {
 export const MIN_RATING = 0;
 export const MAX_RATING = 100;
 
+export const GET_GAMES_FIELDS = `fields name, cover.image_id, first_release_date, total_rating, category, themes, game_modes, genres;`;
+
 export const GAME_CATEGORIES: { name: string; id: GameCategories }[] = [
   { name: "Main Game", id: GameCategories.MAIN_GAME },
   { name: "DLC / Addon", id: GameCategories.DLC_ADDON },

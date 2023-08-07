@@ -1,5 +1,10 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
-import { DEFAULT_FILTERS, DEFAULT_PAGINATE, DEFAULT_SORT } from ".";
+import {
+  DEFAULT_FILTERS,
+  DEFAULT_PAGINATE,
+  DEFAULT_SORT,
+  GET_GAMES_FIELDS,
+} from ".";
 import {
   UseGameApiResponse,
   UseGamesApiResponse,
@@ -230,7 +235,6 @@ export const stringifyGetGamesParams = (
 ) => {
   const { filters, paginate, sort } = params;
 
-  const fields = `fields name, cover.image_id, first_release_date, total_rating, category, themes, game_modes, genres;`;
   const filterQuery = `where name ~ *"${filters.name}"*
   ${
     filters.categories.length > 0
@@ -258,14 +262,6 @@ export const stringifyGetGamesParams = (
   const sortQuery = `sort ${sort.field} ${sort.order};`;
   const paginateQuery = `limit ${paginate.limit}; offset ${paginate.offset};`;
 
-  const body = `${fields} ${filterQuery} ${sortQuery} ${paginateQuery}`;
-  return body;
-};
-
-export const stringifyGetGameByIdParams = (id: number) => {
-  const fields = `fields name, cover.image_id, first_release_date, total_rating, category, themes, game_modes, genres;`;
-  const filterQuery = `where id = ${id};`;
-
-  const body = `${fields} ${filterQuery}`;
+  const body = `${GET_GAMES_FIELDS} ${filterQuery} ${sortQuery} ${paginateQuery}`;
   return body;
 };
