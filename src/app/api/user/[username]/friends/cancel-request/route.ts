@@ -2,23 +2,35 @@ import { currentUser } from "@clerk/nextjs";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
-export async function DELETE(req: Request, { username }: { username: string }) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: { username: string } }
+) {
   try {
     const authUser = await currentUser();
     if (!authUser?.id) return new NextResponse("Unauthorized", { status: 401 });
+    const { username } = params;
+    const body = await req.json();
+
+    const { receiverUsername } = z
+      .object({ receiverUsername: z.string() })
+      .parse(body);
 
     await db.friendRequest.deleteMany({
       where: {
         OR: [
-          { receiverUsername: username, senderUsername: authUser.username! },
-          { receiverUsername: authUser.username!, senderUsername: username },
+          { receiverUsername, senderUsername: username },
+          { receiverUsername: username, senderUsername: receiverUsername },
         ],
       },
     });
 
     return NextResponse.json("OK", { status: 200 });
   } catch (error) {
+    console.log(error);
+
     return catchError(error, "Failed to add a friend");
   }
 }

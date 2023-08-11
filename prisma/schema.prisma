@@ -22,8 +22,8 @@ model User {
   friends         User[] @relation("Friends")
   friendsRelation User[] @relation("Friends")
 
-  SentFriendRequests     FriendRequest[] @relation("SentFriendRequest")
-  ReceivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequest")
+  sentFriendRequests     FriendRequest[] @relation("SentFriendRequest")
+  receivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequest")
 
   conversations Conversation[]
   messages      Message[]

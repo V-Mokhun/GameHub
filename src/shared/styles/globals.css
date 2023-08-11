@@ -41,6 +41,7 @@ body {
     --destructive-foreground: 0 0% 98%;
 
     --success: 145, 100%, 39%;
+    --success-hover: 123, 43%, 39%;
     --success-foreground: 0, 0%, 96%;
 
     --ring: 240 5% 64.9%;
@@ -80,6 +81,7 @@ body {
     --destructive-foreground: 0 85.7% 97.3%;
 
     --success: 123, 43%, 39%;
+    --success-hover: 145, 100%, 39%;
     --success-foreground: 0, 0%, 96%;
 
     --ring: 240 3.7% 15.9%;

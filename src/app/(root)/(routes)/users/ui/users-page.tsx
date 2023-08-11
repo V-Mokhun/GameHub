@@ -1,5 +1,6 @@
 "use client";
 import {
+  DEFAULT_PAGINATE,
   GAMES_LIMIT_VALUES,
   getPaginateQuery,
   retrievePaginateFromSearchParams,
@@ -37,6 +38,7 @@ export const UsersPage = ({}: UsersPageProps) => {
 
     if (!value) current.delete("search");
     else current.set("search", value);
+    current.delete("offset");
 
     const search = current.toString();
     const query = search ? `?${search}` : "";
@@ -50,6 +52,7 @@ export const UsersPage = ({}: UsersPageProps) => {
       <UsersSearch onChange={onSearchChange} search={search} />
       <Separator />
       <UsersList users={data?.users} isLoading={isFetching} />
+      <Separator />
       <Pagination
         isFetching={isFetching}
         onPaginateChange={onPaginateChange}

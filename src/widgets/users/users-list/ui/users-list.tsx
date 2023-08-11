@@ -1,7 +1,7 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import { UserWithFriends } from "@shared/api";
+import { auth, useAuth, useUser } from "@clerk/nextjs";
+import { UserWithFriends, userApi } from "@shared/api";
 import { Title } from "@shared/ui";
 import { UsersItem, UsersItemSkeleton } from "./users-item";
 
@@ -11,7 +11,8 @@ interface UsersListProps {
 }
 
 export const UsersList = ({ users, isLoading }: UsersListProps) => {
-  const { user: authUser } = useUser();
+  const { userId } = useAuth();
+  const { data: ownProfile } = userApi.getOwnProfile(userId ?? undefined);
 
   if (isLoading)
     return (
@@ -25,7 +26,7 @@ export const UsersList = ({ users, isLoading }: UsersListProps) => {
   return users && users.length > 0 ? (
     <ul className="flex flex-col gap-4">
       {users.map((user) => (
-        <UsersItem key={user.id} user={user} authUser={authUser} />
+        <UsersItem key={user.id} user={user} authUser={ownProfile} />
       ))}
     </ul>
   ) : (

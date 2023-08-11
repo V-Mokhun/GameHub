@@ -2,29 +2,42 @@ import { currentUser } from "@clerk/nextjs";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
-export async function POST(req: Request, { username }: { username: string }) {
+export async function POST(
+  req: Request,
+  { params }: { params: { username: string } }
+) {
   try {
     const authUser = await currentUser();
     if (!authUser?.id) return new NextResponse("Unauthorized", { status: 401 });
 
-    await db.friendRequest.create({
+    const { username } = params;
+    const body = await req.json();
+
+    const { receiverUsername } = z
+      .object({ receiverUsername: z.string() })
+      .parse(body);
+
+    const friendRequest = await db.friendRequest.create({
       data: {
         receiver: {
           connect: {
-            username,
+            username: receiverUsername,
           },
         },
         sender: {
           connect: {
-            username: authUser.username!,
+            username,
           },
         },
       },
     });
 
-    return NextResponse.json("OK", { status: 200 });
+    return NextResponse.json(friendRequest, { status: 200 });
   } catch (error) {
+    console.log(error);
+
     return catchError(error, "Failed to add a friend");
   }
 }
