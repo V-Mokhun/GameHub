@@ -5,7 +5,7 @@ import { useToast } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { DEFAULT_PAGINATE, Paginate } from "../games-api";
+import { DEFAULT_PAGINATE } from "../games-api";
 
 type UseUserApiResponse = {
   user: User & { _count: { library: number } };
@@ -45,15 +45,12 @@ const useUsers = (search?: string, paginate = DEFAULT_PAGINATE) => {
   const router = useRouter();
 
   return useQuery(
-    [`users`, { search, paginate }],
+    [`users`, { search, ...paginate }],
     async () => {
-      console.log("search", search);
-
       const { data } = await axios.post<UseUsersApiResponse>(`/api/user`, {
         search,
         ...paginate,
       });
-      console.log("data", data);
 
       return data;
     },

@@ -11,6 +11,7 @@ import {
   Subtitle,
   Title,
   Link,
+  Skeleton,
 } from "@shared/ui";
 import NextLink from "next/link";
 
@@ -20,7 +21,24 @@ interface UsersListProps {
 }
 
 export const UsersList = ({ users, isLoading }: UsersListProps) => {
-  if (isLoading) return null;
+  if (isLoading)
+    return (
+      <ul className="flex flex-col gap-4">
+        {[...Array(10)].map((_, i) => (
+          <li key={i} className="flex items-start gap-4">
+            <Skeleton className="w-24 h-24 rounded-full" />
+            <div>
+              <Skeleton className="w-48 h-8 mb-2 lg:mb-3" />
+              <Skeleton className="w-24 h-6" />
+            </div>
+
+            <div className="flex items-center self-stretch">
+              <Skeleton className="h-8 w-8 rounded-md" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    );
 
   return users && users.length > 0 ? (
     <ul className="flex flex-col gap-4">
@@ -38,7 +56,7 @@ export const UsersList = ({ users, isLoading }: UsersListProps) => {
             >
               <Title size="small">{user.username}</Title>
             </Link>
-            <Subtitle className="md:mb-0 mb-0J">
+            <Subtitle className="md:mb-0 mb-0">
               Friends: {user.friends.length ?? 0}
             </Subtitle>
           </div>
