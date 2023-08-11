@@ -192,10 +192,60 @@ const useCancelFriendRequest = () => {
           ["own-profile", { id }],
           context?.previousData
         );
-        displayError(toast, err, "Failed to send a friend request");
+        displayError(toast, err, "Failed to cancel a friend request");
       },
       onSettled: (_, __, { id }) => {
         queryClient.invalidateQueries(["own-profile", { id }]);
+      },
+    }
+  );
+};
+
+const useAcceptFriendRequest = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    User,
+    unknown,
+    { username: string; friendUsername: string; id: string }
+  >(
+    ["accept-friend-request"],
+    async ({ friendUsername, username }) => {
+      const { data } = await axios.patch<User>(
+        `/api/user/${username}/friends/accept-request`,
+        { friendUsername }
+      );
+      return data;
+    },
+    {
+      onSettled: (_, __, { id }) => {
+        queryClient.invalidateQueries(["own-profile", { id }]);
+        queryClient.invalidateQueries(["users"]);
+      },
+    }
+  );
+};
+
+const useRemoveFriend = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    User,
+    unknown,
+    { username: string; friendUsername: string; id: string }
+  >(
+    ["remove-friend"],
+    async ({ friendUsername, username }) => {
+      const { data } = await axios.patch<User>(
+        `/api/user/${username}/friends/remove`,
+        { friendUsername }
+      );
+      return data;
+    },
+    {
+      onSettled: (_, __, { id }) => {
+        queryClient.invalidateQueries(["own-profile", { id }]);
+        queryClient.invalidateQueries(["users"]);
       },
     }
   );
@@ -207,4 +257,6 @@ export const userApi = {
   getUsers: useUsers,
   sendFriendRequest: useSendFriendRequest,
   cancelFriendRequest: useCancelFriendRequest,
+  acceptFriendRequest: useAcceptFriendRequest,
+  removeFriend: useRemoveFriend,
 };

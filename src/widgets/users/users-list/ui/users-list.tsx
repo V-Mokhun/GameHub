@@ -1,6 +1,6 @@
 "use client";
 
-import { auth, useAuth, useUser } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { UserWithFriends, userApi } from "@shared/api";
 import { Title } from "@shared/ui";
 import { UsersItem, UsersItemSkeleton } from "./users-item";

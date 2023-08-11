@@ -47,6 +47,10 @@ export const UsersItem = ({ user, authUser }: UsersItemProps) => {
     userApi.sendFriendRequest();
   const { mutate: cancelRequest, isLoading: isCancellingRequest } =
     userApi.cancelFriendRequest();
+  const { mutate: acceptRequest, isLoading: isAcceptingRequest } =
+    userApi.acceptFriendRequest();
+  const { mutate: removeFriend, isLoading: isRemovingFriend } =
+    userApi.removeFriend();
 
   const hasSentRequest = useMemo(
     () =>
@@ -80,13 +84,28 @@ export const UsersItem = ({ user, authUser }: UsersItemProps) => {
     });
   };
 
-  const onAccept = () => {};
+  const onAccept = () => {
+    acceptRequest({
+      username: authUser?.username!,
+      friendUsername: user.username!,
+      id: authUser!.id,
+    });
+  };
+
+  const onRemove = () => {
+    removeFriend({
+      username: authUser?.username!,
+      friendUsername: user.username!,
+      id: authUser!.id,
+    });
+  };
 
   const onFriendsButtonClick = () => {
     if (!authUser?.id) {
       signInToast();
     } else {
       if (user.isFriend) {
+        onRemove();
       } else if (hasSentRequest) {
         onCancel();
       } else {
@@ -95,7 +114,11 @@ export const UsersItem = ({ user, authUser }: UsersItemProps) => {
     }
   };
 
-  const isLoading = isSendingRequest || isCancellingRequest;
+  const isLoading =
+    isSendingRequest ||
+    isCancellingRequest ||
+    isAcceptingRequest ||
+    isRemovingFriend;
 
   return (
     <li key={user.id} className="flex items-start gap-4">
@@ -116,6 +139,7 @@ export const UsersItem = ({ user, authUser }: UsersItemProps) => {
         {hasRecievedRequest ? (
           <div className="flex gap-3 items-center">
             <Button
+              disabled={isLoading}
               onClick={onAccept}
               size="icon"
               className="bg-success hover:bg-success-hover"
@@ -123,6 +147,7 @@ export const UsersItem = ({ user, authUser }: UsersItemProps) => {
               <Icon name="Check" className="text-white" />
             </Button>
             <Button
+              disabled={isLoading}
               onClick={onCancel}
               size="icon"
               className="bg-destructive hover:bg-destructive-hover"
@@ -157,7 +182,7 @@ export const UsersItem = ({ user, authUser }: UsersItemProps) => {
                   {hasSentRequest
                     ? "Cancel Friend Request"
                     : user.isFriend
-                    ? "Delete Friend"
+                    ? "Remove Friend"
                     : "Send Friend Request"}
                 </span>
               </TooltipContent>

@@ -1,31 +1,37 @@
-import { currentUser } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 export async function PATCH(
   req: Request,
   { params }: { params: { username: string } }
 ) {
   try {
-    const authUser = await currentUser();
-    if (!authUser?.id) return new NextResponse("Unauthorized", { status: 401 });
+    const { userId } = auth();
+    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
     const { username } = params;
+
+    const body = await req.json();
+    const { friendUsername } = z
+      .object({ friendUsername: z.string() })
+      .parse(body);
 
     const [updatedUser] = await db.$transaction([
       db.user.update({
-        where: { id: authUser.id },
-        data: { friends: { connect: { username } } },
+        where: { id: userId },
+        data: { friends: { connect: { username: friendUsername } } },
         include: { friends: true },
       }),
       db.user.update({
         where: {
-          username,
+          username: friendUsername,
         },
         data: {
           friends: {
             connect: {
-              id: authUser.id,
+              id: userId,
             },
           },
         },
@@ -33,8 +39,8 @@ export async function PATCH(
       db.friendRequest.delete({
         where: {
           senderUsername_receiverUsername: {
-            senderUsername: username,
-            receiverUsername: authUser.username!,
+            senderUsername: friendUsername,
+            receiverUsername: username,
           },
         },
       }),
