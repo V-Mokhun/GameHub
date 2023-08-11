@@ -4,9 +4,9 @@ import {
   GAME_CATEGORIES,
   gamesApi,
   retrieveLibraryFiltersFromSearchParams,
-  stringifyLibraryFilters
+  stringifyLibraryFilters,
 } from "@shared/api";
-import { cn} from "@shared/lib";
+import { cn } from "@shared/lib";
 import { Button, Icon, Overlay, Title } from "@shared/ui";
 import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

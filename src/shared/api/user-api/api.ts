@@ -41,12 +41,14 @@ const useUsers = (search?: string, paginate = DEFAULT_PAGINATE) => {
   const router = useRouter();
 
   return useQuery(
-    [`users`],
+    [`users`, { search, paginate }],
     async () => {
-      const { data } = await axios.post<(User & { isFriend: boolean })[]>(
-        `/api/user`,
-        { search, ...paginate }
-      );
+      console.log("search", search);
+
+      const { data } = await axios.post<
+        (User & { isFriend: boolean; friends: User[] })[]
+      >(`/api/user`, { search, ...paginate });
+      console.log("data", data);
 
       return data;
     },
@@ -55,6 +57,8 @@ const useUsers = (search?: string, paginate = DEFAULT_PAGINATE) => {
         displayError(toast, error);
         router.push(HOME_ROUTE);
       },
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
     }
   );
 };

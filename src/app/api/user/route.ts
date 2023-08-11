@@ -17,11 +17,16 @@ export async function POST(req: Request) {
       })
       .parse(body);
 
+    let whereClause: any = {
+      id: { not: userId ?? undefined },
+    };
+
+    if (search) {
+      whereClause.username = { contains: search };
+    }
+
     const users = await db.user.findMany({
-      where: {
-        id: { not: userId ?? undefined },
-        username: { contains: search ?? "" },
-      },
+      where: whereClause,
       take: limit,
       skip: offset,
       include: {
@@ -29,11 +34,10 @@ export async function POST(req: Request) {
       },
     });
 
-    const usersWithFriendship = users.map((u) => {
-      const { friends, ...user } = u;
+    const usersWithFriendship = users.map((user) => {
       return {
         ...user,
-        isFriend: friends.some((friend) => friend.id === userId),
+        isFriend: user.friends.some((friend) => friend.id === userId),
       };
     });
 
