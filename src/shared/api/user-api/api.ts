@@ -145,11 +145,14 @@ const useSendFriendRequest = () => {
 };
 
 const useCancelFriendRequest = () => {
+  const { toast } = useToast();
   const queryClient = useQueryClient();
+
   return useMutation<
     FriendRequest,
     unknown,
-    { senderUsername: string; receiverUsername: string }
+    { senderUsername: string; receiverUsername: string; id: string },
+    { previousData?: unknown }
   >(
     ["cancel-friend-request"],
     async ({ receiverUsername, senderUsername }) => {
@@ -160,8 +163,39 @@ const useCancelFriendRequest = () => {
       return data;
     },
     {
-      onSettled: () => {
-        queryClient.invalidateQueries(["own-profile"]);
+      onMutate: async ({ receiverUsername, senderUsername, id }) => {
+        await queryClient.cancelQueries({
+          queryKey: ["own-profile", { id }],
+        });
+
+        const previousData = queryClient.getQueryData(["own-profile", { id }]);
+
+        queryClient.setQueryData(
+          ["own-profile", { id }],
+          (old: OwnProfile | undefined) =>
+            old
+              ? {
+                  ...old,
+                  sentFriendRequests: old.sentFriendRequests.filter(
+                    (req) =>
+                      req.receiverUsername !== receiverUsername ||
+                      req.senderUsername !== senderUsername
+                  ),
+                }
+              : old
+        );
+
+        return { previousData };
+      },
+      onError: (err, { id }, context) => {
+        queryClient.setQueryData(
+          ["own-profile", { id }],
+          context?.previousData
+        );
+        displayError(toast, err, "Failed to send a friend request");
+      },
+      onSettled: (_, __, { id }) => {
+        queryClient.invalidateQueries(["own-profile", { id }]);
       },
     }
   );

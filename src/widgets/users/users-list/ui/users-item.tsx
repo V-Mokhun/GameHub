@@ -76,6 +76,7 @@ export const UsersItem = ({ user, authUser }: UsersItemProps) => {
     cancelRequest({
       senderUsername: authUser!.username!,
       receiverUsername: user.username!,
+      id: authUser!.id,
     });
   };
 
