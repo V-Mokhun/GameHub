@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { DEFAULT_PAGINATE } from "../games-api";
+import { UserWithFriends } from "./types";
 
 type UseUserApiResponse = {
   user: User & { _count: { library: number } };
@@ -37,7 +38,7 @@ const useUser = (username?: string) => {
 };
 
 type UseUsersApiResponse = {
-  users: (User & { isFriend: boolean; friends: User[] })[];
+  users: (UserWithFriends & { isFriend: boolean })[];
   count: number;
 };
 const useUsers = (search?: string, paginate = DEFAULT_PAGINATE) => {

@@ -54,9 +54,9 @@ export const useCustomToasts = () => {
     });
   };
 
-  const signInLibraryToast = () => {
+  const signInToast = () => {
     const { dismiss } = toast({
-      title: "Sign in to add games to your library",
+      title: "You need to be signed in to do that",
       action: (
         <Link
           onClick={() => {
@@ -78,5 +78,5 @@ export const useCustomToasts = () => {
     });
   };
 
-  return { gameSavedToast, usernameGeneratedToast, signInLibraryToast };
+  return { gameSavedToast, usernameGeneratedToast, signInToast };
 };

@@ -22,9 +22,27 @@ model User {
   friends         User[] @relation("Friends")
   friendsRelation User[] @relation("Friends")
 
-  seenMessages  Message[]      @relation("SeenBy")
+  SentFriendRequests     FriendRequest[] @relation("SentFriendRequest")
+  ReceivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequest")
+
   conversations Conversation[]
   messages      Message[]
+
+  seenMessages Message[] @relation("SeenBy")
+}
+
+model FriendRequest {
+  createdAt DateTime @default(now())
+
+  senderUsername String
+  sender         User   @relation("SentFriendRequest", fields: [senderUsername], references: [username], onDelete: Cascade)
+
+  receiverUsername String
+  receiver         User   @relation("ReceivedFriendRequest", fields: [receiverUsername], references: [username], onDelete: Cascade)
+
+  @@id([senderUsername, receiverUsername])
+  @@index([senderUsername])
+  @@index([receiverUsername])
 }
 
 model Conversation {

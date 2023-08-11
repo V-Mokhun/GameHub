@@ -54,7 +54,7 @@ export const GameCard = ({
   classNames = {},
 }: GameCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { signInLibraryToast } = useCustomToasts();
+  const { signInToast } = useCustomToasts();
 
   const onLibraryButtonClick = () => {
     if (disableLibraryButton) return;
@@ -62,7 +62,7 @@ export const GameCard = ({
     if (userId) {
       setIsOpen(true);
     } else {
-      signInLibraryToast();
+      signInToast();
     }
   };
 

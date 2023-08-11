@@ -1,41 +1,23 @@
 "use client";
 
-import { User } from "@prisma/client";
-import { PROFILE_ROUTE, USERS_ROUTE } from "@shared/consts";
-import { cn } from "@shared/lib";
-import {
-  Avatar,
-  AvatarImage,
-  Button,
-  Icon,
-  Subtitle,
-  Title,
-  Link,
-  Skeleton,
-} from "@shared/ui";
-import NextLink from "next/link";
+import { useUser } from "@clerk/nextjs";
+import { UserWithFriends } from "@shared/api";
+import { Title } from "@shared/ui";
+import { UsersItem, UsersItemSkeleton } from "./users-item";
 
 interface UsersListProps {
-  users?: (User & { isFriend: boolean; friends: User[] })[];
+  users?: (UserWithFriends & { isFriend: boolean })[];
   isLoading: boolean;
 }
 
 export const UsersList = ({ users, isLoading }: UsersListProps) => {
+  const { user: authUser } = useUser();
+
   if (isLoading)
     return (
       <ul className="flex flex-col gap-4">
         {[...Array(10)].map((_, i) => (
-          <li key={i} className="flex items-start gap-4">
-            <Skeleton className="w-24 h-24 rounded-full" />
-            <div>
-              <Skeleton className="w-48 h-8 mb-2 lg:mb-3" />
-              <Skeleton className="w-24 h-6" />
-            </div>
-
-            <div className="flex items-center self-stretch">
-              <Skeleton className="h-8 w-8 rounded-md" />
-            </div>
-          </li>
+          <UsersItemSkeleton key={i} />
         ))}
       </ul>
     );
@@ -43,37 +25,7 @@ export const UsersList = ({ users, isLoading }: UsersListProps) => {
   return users && users.length > 0 ? (
     <ul className="flex flex-col gap-4">
       {users.map((user) => (
-        <li key={user.id} className="flex items-start gap-4">
-          <NextLink href={PROFILE_ROUTE(user.username!)}>
-            <Avatar className="w-24 h-24">
-              <AvatarImage src={user.imageUrl} />
-            </Avatar>
-          </NextLink>
-          <div className="min-w-0">
-            <Link
-              className="text-foreground"
-              href={PROFILE_ROUTE(user.username!)}
-            >
-              <Title size="small">{user.username}</Title>
-            </Link>
-            <Subtitle className="md:mb-0 mb-0">
-              Friends: {user.friends.length ?? 0}
-            </Subtitle>
-          </div>
-          <div className="flex items-center self-stretch">
-            <Button
-              className={cn(
-                user.isFriend && "bg-destructive hover:bg-destructive-hover"
-              )}
-              size="icon"
-            >
-              <Icon
-                className="text-white"
-                name={user.isFriend ? "UserX" : "UserCheck"}
-              />
-            </Button>
-          </div>
-        </li>
+        <UsersItem key={user.id} user={user} authUser={authUser} />
       ))}
     </ul>
   ) : (
