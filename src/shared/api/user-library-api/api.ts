@@ -5,7 +5,7 @@ import { useToast } from "@shared/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { DEFAULT_PAGINATE, GamePaginate } from "../games-api";
+import { DEFAULT_PAGINATE, Paginate } from "../games-api";
 import { DEFAULT_LIBRARY_FILTERS, DEFAULT_LIBRARY_SORT } from "./consts";
 import { normalizeLibraryGameProperties } from "./lib";
 import {
@@ -24,7 +24,7 @@ const useLibrary = (
   params: {
     filters?: LibraryGameFilters;
     sort?: LibraryGameSorts;
-    paginate?: GamePaginate;
+    paginate?: Paginate;
   } = {
     filters: DEFAULT_LIBRARY_FILTERS,
     sort: DEFAULT_LIBRARY_SORT,

@@ -14,7 +14,7 @@ import {
   FullGame,
   Game,
   GameFilters,
-  GamePaginate,
+  Paginate,
   GameSorts,
   ImageTypes,
   SearchGame,
@@ -178,7 +178,7 @@ export const retrieveSortFromSearchParams = (
 
 export const retrievePaginateFromSearchParams = (
   params: ReadonlyURLSearchParams
-): GamePaginate => {
+): Paginate => {
   const paginate = { ...DEFAULT_PAGINATE };
   for (const key of Object.keys(paginate) as Array<keyof typeof paginate>) {
     if (params.has(key)) {
@@ -226,7 +226,7 @@ export const stringifyGetGamesParams = (
   params: {
     filters: GameFilters;
     sort: GameSorts;
-    paginate: GamePaginate;
+    paginate: Paginate;
   } = {
     filters: DEFAULT_FILTERS,
     sort: DEFAULT_SORT,

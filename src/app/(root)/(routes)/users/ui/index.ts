@@ -1,1 +1,1 @@
-export { CommunityPage } from "./community-page";
+export { UsersPage } from "./users-page";

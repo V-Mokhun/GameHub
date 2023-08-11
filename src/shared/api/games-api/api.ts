@@ -20,7 +20,7 @@ import {
   GameFilters,
   GameGenre,
   GameMode,
-  GamePaginate,
+  Paginate,
   GameSorts,
   GameTheme,
 } from "./types";
@@ -96,7 +96,7 @@ export const useGames = (
   params: {
     filters?: GameFilters;
     sort?: GameSorts;
-    paginate?: GamePaginate;
+    paginate?: Paginate;
   } = {
     filters: DEFAULT_FILTERS,
     sort: DEFAULT_SORT,
@@ -118,7 +118,7 @@ export const useGames = (
         params as {
           filters: GameFilters;
           sort: GameSorts;
-          paginate: GamePaginate;
+          paginate: Paginate;
         }
       );
       const { data } = await axiosInstance.post<UseGamesApiResponse[]>(
@@ -170,7 +170,7 @@ export const useGamesCount = (
   params: {
     filters: GameFilters;
     sort: GameSorts;
-    paginate: GamePaginate;
+    paginate: Paginate;
   } = {
     filters: DEFAULT_FILTERS,
     sort: DEFAULT_SORT,

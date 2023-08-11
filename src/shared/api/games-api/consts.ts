@@ -2,7 +2,7 @@ import { GAMES_LIMIT } from "../consts";
 import {
   GameCategories,
   GameFilters,
-  GamePaginate,
+  Paginate,
   GameSorts,
   SortFields,
   SortFieldsOrder,
@@ -42,7 +42,7 @@ export const DEFAULT_SORT: GameSorts = {
   order: SortFieldsOrder.DESC,
 };
 
-export const DEFAULT_PAGINATE: GamePaginate = {
+export const DEFAULT_PAGINATE: Paginate = {
   limit: GAMES_LIMIT,
   offset: 0,
 };

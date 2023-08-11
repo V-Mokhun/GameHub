@@ -55,7 +55,7 @@ export type GameSorts = {
   order: SortFieldsOrder;
 };
 
-export type GamePaginate = {
+export type Paginate = {
   limit: number;
   offset: number;
 };

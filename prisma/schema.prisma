@@ -19,6 +19,9 @@ model User {
   isPrivateLibrary Boolean @default(false)
   library          Game[]
 
+  friends         User[] @relation("Friends")
+  friendsRelation User[] @relation("Friends")
+
   seenMessages  Message[]      @relation("SeenBy")
   conversations Conversation[]
   messages      Message[]
