@@ -1,10 +1,12 @@
 "use client";
 import {
+  GAMES_LIMIT_VALUES,
   getPaginateQuery,
   retrievePaginateFromSearchParams,
   userApi,
 } from "@shared/api";
 import { Separator, Title } from "@shared/ui";
+import { Pagination } from "@widgets/pagination";
 import { UsersList, UsersSearch } from "@widgets/users";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -19,7 +21,10 @@ export const UsersPage = ({}: UsersPageProps) => {
   const paginate = retrievePaginateFromSearchParams(params);
   const search = useMemo(() => params.get("search") ?? "", [params]);
 
-  const { data, isFetching } = userApi.getUsers(search, paginate);
+  const { data, isFetching, isPreviousData } = userApi.getUsers(
+    search,
+    paginate
+  );
 
   const onPaginateChange = (limit: number, offset: number) => {
     const query = getPaginateQuery(params, limit, offset);
@@ -44,7 +49,17 @@ export const UsersPage = ({}: UsersPageProps) => {
       <Title>Our Community</Title>
       <UsersSearch onChange={onSearchChange} search={search} />
       <Separator />
-      <UsersList users={data} isLoading={isFetching} />
+      <UsersList users={data?.users} isLoading={isFetching} />
+      <Pagination
+        isFetching={isFetching}
+        onPaginateChange={onPaginateChange}
+        isPreviousData={isPreviousData}
+        hasMore={data?.users.length === paginate.limit}
+        limit={paginate.limit}
+        limitValues={GAMES_LIMIT_VALUES}
+        offset={paginate.offset}
+        totalPages={data?.count ? Math.ceil(data.count / paginate.limit) : 0}
+      />
     </>
   );
 };

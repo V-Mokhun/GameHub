@@ -36,6 +36,10 @@ const useUser = (username?: string) => {
   );
 };
 
+type UseUsersApiResponse = {
+  users: (User & { isFriend: boolean; friends: User[] })[];
+  count: number;
+};
 const useUsers = (search?: string, paginate = DEFAULT_PAGINATE) => {
   const { toast } = useToast();
   const router = useRouter();
@@ -45,9 +49,10 @@ const useUsers = (search?: string, paginate = DEFAULT_PAGINATE) => {
     async () => {
       console.log("search", search);
 
-      const { data } = await axios.post<
-        (User & { isFriend: boolean; friends: User[] })[]
-      >(`/api/user`, { search, ...paginate });
+      const { data } = await axios.post<UseUsersApiResponse>(`/api/user`, {
+        search,
+        ...paginate,
+      });
       console.log("data", data);
 
       return data;

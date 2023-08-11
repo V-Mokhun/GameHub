@@ -25,14 +25,17 @@ export async function POST(req: Request) {
       whereClause.username = { contains: search };
     }
 
-    const users = await db.user.findMany({
-      where: whereClause,
-      take: limit,
-      skip: offset,
-      include: {
-        friends: true,
-      },
-    });
+    const [users, count] = await db.$transaction([
+      db.user.findMany({
+        where: whereClause,
+        take: limit,
+        skip: offset,
+        include: {
+          friends: true,
+        },
+      }),
+      db.user.count({ where: whereClause }),
+    ]);
 
     const usersWithFriendship = users.map((user) => {
       return {
@@ -41,7 +44,10 @@ export async function POST(req: Request) {
       };
     });
 
-    return NextResponse.json(usersWithFriendship, { status: 200 });
+    return NextResponse.json(
+      { users: usersWithFriendship, count },
+      { status: 200 }
+    );
   } catch (error) {
     return catchError(error, "Failed to get users");
   }
