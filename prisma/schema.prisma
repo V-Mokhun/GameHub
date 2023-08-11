@@ -9,14 +9,46 @@ datasource db {
 }
 
 model User {
-  id               String   @id
-  email            String   @unique
-  username         String?  @unique
-  imageUrl         String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  isPrivateLibrary Boolean  @default(false)
+  id        String   @id
+  email     String   @unique
+  username  String?  @unique
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isPrivateLibrary Boolean @default(false)
   library          Game[]
+
+  seenMessages  Message[]      @relation("SeenBy")
+  conversations Conversation[]
+  messages      Message[]
+}
+
+model Conversation {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+
+  messages Message[]
+  users    User[]
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  body      String?
+  image     String?
+  createdAt DateTime @default(now())
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  seenBy User[] @relation("SeenBy")
+
+  @@index([conversationId])
+  @@index([senderId])
 }
 
 model Game {
@@ -26,9 +58,9 @@ model Game {
   coverUrl    String
   releaseDate DateTime?
   category    Int
-  themes      String   @default("") //? [23, 64] => "23,64" Since MySql doesn't support arrays
-  genres      String   @default("")
-  gameModes   String   @default("")
+  themes      String    @default("") //? [23, 64] => "23,64" Since MySql doesn't support arrays
+  genres      String    @default("")
+  gameModes   String    @default("")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
