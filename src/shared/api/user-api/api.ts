@@ -37,7 +37,7 @@ const useUser = (username?: string) => {
   );
 };
 
-const useOwnProfile = (id?: string) => {
+const useOwnProfile = (id?: string, enabled = true) => {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -53,7 +53,7 @@ const useOwnProfile = (id?: string) => {
         displayError(toast, error);
         router.push(HOME_ROUTE);
       },
-      enabled: !!id,
+      enabled: !!id && enabled,
     }
   );
 };

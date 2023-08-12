@@ -1,5 +1,6 @@
 "use client";
 
+import { OwnProfile } from "@shared/api";
 import { SETTINGS_ROUTE } from "@shared/consts";
 import {
   Avatar,
@@ -10,6 +11,7 @@ import {
   Title,
   buttonVariants,
 } from "@shared/ui";
+import { FriendsButton } from "@widgets/users";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -20,6 +22,8 @@ interface UserViewProps {
     createDate: Date;
     isOwnProfile: boolean;
   };
+  ownProfile: OwnProfile | undefined;
+  isOwnProfileLoading: boolean;
 }
 
 export const UserViewSkeleton = () => (
@@ -28,12 +32,16 @@ export const UserViewSkeleton = () => (
     <div className="space-y-4 w-full">
       <Skeleton className="w-32 h-9" />
       <Skeleton className="w-full xs:w-72 h-6" />
-      <Skeleton className="w-32 h-10" />
+      <Skeleton className="w-16 h-8" />
     </div>
   </div>
 );
 
-export const UserView = ({ data }: UserViewProps) => {
+export const UserView = ({
+  data,
+  ownProfile,
+  isOwnProfileLoading,
+}: UserViewProps) => {
   if (!data) return <UserViewSkeleton />;
 
   const { imageUrl, username, createDate, isOwnProfile } = data;
@@ -53,6 +61,24 @@ export const UserView = ({ data }: UserViewProps) => {
           <Link className={buttonVariants()} href={SETTINGS_ROUTE}>
             Edit Profile
           </Link>
+        )}
+
+        {isOwnProfileLoading ? (
+          <div className="flex items-center self-stretch flex-1 justify-end md:justify-start">
+            <Skeleton className="h-8 w-8 rounded-md" />
+          </div>
+        ) : (
+          !isOwnProfile && (
+            <FriendsButton
+              authUser={ownProfile}
+              isUserFriend={
+                ownProfile?.friends.find(
+                  (friend) => friend.username === username
+                ) != undefined
+              }
+              userUsername={username}
+            />
+          )
         )}
       </div>
     </div>

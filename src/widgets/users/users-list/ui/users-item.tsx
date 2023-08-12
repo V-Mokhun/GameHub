@@ -1,26 +1,16 @@
 "use client";
-import { UserResource } from "@clerk/types";
-import { OwnProfile, UserWithFriends, userApi } from "@shared/api";
+import { OwnProfile, UserWithFriends } from "@shared/api";
 import { PROFILE_ROUTE } from "@shared/consts";
-import { cn } from "@shared/lib";
-import { useCustomToasts } from "@shared/lib/hooks";
 import {
   Avatar,
   AvatarImage,
-  Button,
-  Icon,
   Link,
   Skeleton,
   Subtitle,
   Title,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-  buttonVariants,
 } from "@shared/ui";
+import { FriendsButton } from "@widgets/users";
 import NextLink from "next/link";
-import { useMemo } from "react";
 
 interface UsersItemProps {
   user: UserWithFriends & { isFriend: boolean };
@@ -42,84 +32,6 @@ export const UsersItemSkeleton = () => (
 );
 
 export const UsersItem = ({ user, authUser }: UsersItemProps) => {
-  const { signInToast } = useCustomToasts();
-  const { mutate: sendRequest, isLoading: isSendingRequest } =
-    userApi.sendFriendRequest();
-  const { mutate: cancelRequest, isLoading: isCancellingRequest } =
-    userApi.cancelFriendRequest();
-  const { mutate: acceptRequest, isLoading: isAcceptingRequest } =
-    userApi.acceptFriendRequest();
-  const { mutate: removeFriend, isLoading: isRemovingFriend } =
-    userApi.removeFriend();
-
-  const hasSentRequest = useMemo(
-    () =>
-      authUser?.sentFriendRequests.some(
-        (request) => request.receiverUsername === user.username
-      ),
-    [authUser?.sentFriendRequests, user.username]
-  );
-
-  const hasRecievedRequest = useMemo(
-    () =>
-      authUser?.receivedFriendRequests.some(
-        (request) => request.senderUsername === user.username
-      ),
-    [authUser?.receivedFriendRequests, user.username]
-  );
-
-  const onSend = () => {
-    sendRequest({
-      senderUsername: authUser!.username!,
-      receiverUsername: user.username!,
-      id: authUser!.id,
-    });
-  };
-
-  const onCancel = () => {
-    cancelRequest({
-      senderUsername: authUser!.username!,
-      receiverUsername: user.username!,
-      id: authUser!.id,
-    });
-  };
-
-  const onAccept = () => {
-    acceptRequest({
-      username: authUser?.username!,
-      friendUsername: user.username!,
-      id: authUser!.id,
-    });
-  };
-
-  const onRemove = () => {
-    removeFriend({
-      username: authUser?.username!,
-      friendUsername: user.username!,
-      id: authUser!.id,
-    });
-  };
-
-  const onFriendsButtonClick = () => {
-    if (!authUser?.id) {
-      signInToast();
-    } else {
-      if (user.isFriend) {
-        onRemove();
-      } else if (hasSentRequest) {
-        onCancel();
-      } else {
-        onSend();
-      }
-    }
-  };
-
-  const isLoading =
-    isSendingRequest ||
-    isCancellingRequest ||
-    isAcceptingRequest ||
-    isRemovingFriend;
-
   return (
     <li key={user.id} className="flex items-start gap-4">
       <NextLink href={PROFILE_ROUTE(user.username!)}>
@@ -136,59 +48,11 @@ export const UsersItem = ({ user, authUser }: UsersItemProps) => {
         </Subtitle>
       </div>
       <div className="flex items-center self-stretch flex-1 justify-end md:justify-start">
-        {hasRecievedRequest ? (
-          <div className="flex gap-3 items-center">
-            <Button
-              disabled={isLoading}
-              onClick={onAccept}
-              size="icon"
-              className="bg-success hover:bg-success-hover"
-            >
-              <Icon name="Check" className="text-white" />
-            </Button>
-            <Button
-              disabled={isLoading}
-              onClick={onCancel}
-              size="icon"
-              className="bg-destructive hover:bg-destructive-hover"
-            >
-              <Icon name="X" className="text-white" />
-            </Button>
-          </div>
-        ) : (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger
-                className={buttonVariants({
-                  className: hasSentRequest
-                    ? "bg-muted hover:bg-destructive-hover"
-                    : user.isFriend
-                    ? "bg-destructive hover:bg-destructive-hover"
-                    : "bg-primary hover:bg-primary-hover",
-
-                  size: "icon",
-                  variant: "link",
-                })}
-                onClick={onFriendsButtonClick}
-                disabled={isLoading}
-              >
-                <Icon
-                  className="text-white"
-                  name={user.isFriend ? "UserX" : "UserCheck"}
-                />
-              </TooltipTrigger>
-              <TooltipContent>
-                <span>
-                  {hasSentRequest
-                    ? "Cancel Friend Request"
-                    : user.isFriend
-                    ? "Remove Friend"
-                    : "Send Friend Request"}
-                </span>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
+        <FriendsButton
+          authUser={authUser}
+          isUserFriend={user.isFriend}
+          userUsername={user.username}
+        />
       </div>
     </li>
   );

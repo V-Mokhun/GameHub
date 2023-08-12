@@ -37,6 +37,11 @@ export const UserProfile = ({ username }: UserProfileProps) => {
   const { userId: authUserId } = useAuth();
   const { data: userData, isLoading: isUserLoading } =
     userApi.getUser(username);
+  const { data: ownProfile, isLoading: isOwnProfileLoading } =
+    userApi.getOwnProfile(
+      authUserId ?? undefined,
+      !isUserLoading && !userData?.isOwnProfile
+    );
   const { data: ratedLibrary, isLoading: isRatedLibraryLoading } =
     userLibraryApi.getLibrary(
       username,
@@ -105,7 +110,11 @@ export const UserProfile = ({ username }: UserProfileProps) => {
 
   return (
     <div className="pb-4 md:pb-6">
-      <UserMenu includePrivateRoutes={userData?.libraryIncluded} isLoading={isUserLoading} username={username} />
+      <UserMenu
+        includePrivateRoutes={userData?.libraryIncluded}
+        isLoading={isUserLoading}
+        username={username}
+      />
       <Separator className="mt-0" />
       <UserView
         data={
@@ -118,6 +127,8 @@ export const UserProfile = ({ username }: UserProfileProps) => {
               }
             : undefined
         }
+        ownProfile={ownProfile}
+        isOwnProfileLoading={isOwnProfileLoading}
       />
       <Separator />
       <div className="space-y-6">
