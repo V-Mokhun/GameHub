@@ -3,7 +3,7 @@
 import { useSignUp } from "@clerk/nextjs";
 import { SocialLogin } from "@features/social-login";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SIGN_IN_ROUTE } from "@shared/consts";
+import { PRIVACY_ROUTE, SIGN_IN_ROUTE, TERMS_ROUTE } from "@shared/consts";
 import { displayError } from "@shared/lib";
 import {
   Button,
@@ -124,6 +124,11 @@ export const SignUpFormRegister = ({
       </Form>
       <p className="mt-4 text-sm md:text-base">
         Already have an account? <Link href={SIGN_IN_ROUTE}>Sign in</Link>
+      </p>
+      <p className="mt-2 text-sm">
+        By signing up, you agree to our{" "}
+        <Link href={PRIVACY_ROUTE}>Privacy Policy</Link> and{" "}
+        <Link href={TERMS_ROUTE}>Terms of Service</Link>.
       </p>
     </>
   );

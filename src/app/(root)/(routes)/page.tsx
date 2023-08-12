@@ -38,6 +38,7 @@ export default function Home() {
   const libraryGame = libraryData?.library.find(
     (game) => game.id === topGames?.[0]?.id
   );
+  
 
   useEffect(() => {
     async function updateUsername() {

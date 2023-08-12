@@ -76,7 +76,7 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer">
-          <SignOutButton>
+          <SignOutButton username={user.username!}>
             <div className="flex items-center w-full">
               <Icon className="mr-2" name="LogOut" />
               <span>Sign out</span>

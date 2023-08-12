@@ -5,16 +5,20 @@ import { useRouter } from "next/navigation";
 
 interface SignOutButtonProps {
   children?: React.ReactNode;
+  username: string;
 }
 
-export const SignOutButton = ({ children }: SignOutButtonProps) => {
+export const SignOutButton = ({ children, username }: SignOutButtonProps) => {
   const { toast } = useToast();
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   return (
     <AuthSignOutButton
       signOutCallback={() => {
-        queryClient.refetchQueries({ queryKey: ["user"] });
+        queryClient.invalidateQueries({ queryKey: ["user", { username }] });
+        queryClient.invalidateQueries({ queryKey: ["library", { username }] });
+        router.refresh();
         toast({ title: "Signed out succesfully", variant: "success" });
       }}
     >

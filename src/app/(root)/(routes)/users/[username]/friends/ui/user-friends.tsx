@@ -6,12 +6,13 @@ import {
   retrievePaginateFromSearchParams,
   userApi,
 } from "@shared/api";
-import { Separator, Title } from "@shared/ui";
+import { Separator, Skeleton, Title, useToast } from "@shared/ui";
 import { Pagination } from "@widgets/pagination";
 import { UsersList, UsersSearch } from "@widgets/users";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { UserMenu } from "../../ui";
+import { HOME_ROUTE } from "@shared/consts";
 
 interface UserFriendsProps {
   username: string;
@@ -19,8 +20,11 @@ interface UserFriendsProps {
 
 export const UserFriends = ({ username }: UserFriendsProps) => {
   const { userId: authUserId } = useAuth();
-  const { data: userData, isLoading: isUserLoading } =
-    userApi.getUser(username);
+  const {
+    data: userData,
+    isLoading: isUserLoading,
+    isError,
+  } = userApi.getUser(username);
 
   const params = useSearchParams();
   const router = useRouter();
@@ -28,6 +32,10 @@ export const UserFriends = ({ username }: UserFriendsProps) => {
 
   const paginate = retrievePaginateFromSearchParams(params);
   const search = useMemo(() => params.get("search") ?? "", [params]);
+
+  if (isError) {
+    return router.push(HOME_ROUTE);
+  }
 
   const onPaginateChange = (limit: number, offset: number) => {
     const query = getPaginateQuery(params, limit, offset);
@@ -62,10 +70,20 @@ export const UserFriends = ({ username }: UserFriendsProps) => {
   return (
     <>
       <UserMenu isLoading={isUserLoading} username={username} />
-      <Title>
-        {username}&apos;s Friends {!isUserLoading && `(${friends.length})`}
-      </Title>
-      <UsersSearch onChange={onSearchChange} search={search} />
+      <Separator />
+      {isUserLoading ? (
+        <Skeleton className="w-36 h-9 mb-2 lg:mb-3" />
+      ) : (
+        <Title>
+          {userData?.isOwnProfile ? "Your" : `${username}'s`} Friends (
+          {friends.length})
+        </Title>
+      )}
+      <UsersSearch
+        disabled={isUserLoading}
+        onChange={onSearchChange}
+        search={search}
+      />
       <Separator />
       <UsersList
         notFoundMessage="No Friends Found"

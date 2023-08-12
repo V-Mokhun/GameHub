@@ -8,7 +8,7 @@ import {
   userApi,
   userLibraryApi,
 } from "@shared/api";
-import { PROFILE_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
+import { HOME_ROUTE, PROFILE_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
 import { Separator, Skeleton, Subtitle, Title, useToast } from "@shared/ui";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
@@ -67,8 +67,11 @@ const CustomTooltip = ({
 export const UserRatings = ({ username }: UserRatingsProps) => {
   const { toast } = useToast();
   const router = useRouter();
-  const { data: userData, isLoading: isUserLoading } =
-    userApi.getUser(username);
+  const {
+    data: userData,
+    isLoading: isUserLoading,
+    isError,
+  } = userApi.getUser(username);
   const { data: libraryData, isLoading: isLibraryLoading } =
     userLibraryApi.getLibrary(
       userData?.user.username || "",
@@ -84,6 +87,10 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
         },
       }
     );
+
+  if (isError) {
+    return router.push(HOME_ROUTE);
+  }
 
   if (
     !userData ||

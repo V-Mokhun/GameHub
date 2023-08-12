@@ -153,8 +153,8 @@ export default async function TermsPage() {
         </ul>
         <Title>GameHub Content</Title>
         <p className="mb-3">
-          GameHub sources ts video game data from IGDB. More information can be
-          found on our <Link href={ABOUT_ROUTE}>About page.</Link>
+          GameHub sources video game data from IGDB. More information can be
+          found on our <Link href={ABOUT_ROUTE}>About page. </Link>
           IGDB utilizes crowdsourcing for data contributions. We do our best to
           present the data exactly as we receive it from these sources. If you
           notice any mistakes, errors, or have any issues with the data, you may

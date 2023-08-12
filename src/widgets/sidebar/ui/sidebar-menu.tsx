@@ -133,7 +133,7 @@ export const SidebarMenu = ({ onClose, username }: SidebarMenuProps) => {
             ))}
           {username && (
             <li>
-              <SignOutButton>
+              <SignOutButton username={username}>
                 <button
                   type="button"
                   onClick={() => onClose()}

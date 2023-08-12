@@ -10,7 +10,7 @@ import {
   retrievePaginateFromSearchParams,
   userLibraryApi,
 } from "@shared/api";
-import { PROFILE_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
+import { HOME_ROUTE, PROFILE_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
 import { Title, useToast } from "@shared/ui";
 import { Pagination } from "@widgets/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -35,15 +35,16 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
     router.push(`${pathname}${query}`);
   };
 
-  const { data, isFetching, isPreviousData } = userLibraryApi.getLibrary(
-    username,
-    { enabled: true, noLimit: false },
-    {
-      filters,
-      paginate,
-      sort,
-    }
-  );
+  const { data, isFetching, isPreviousData, isError } =
+    userLibraryApi.getLibrary(
+      username,
+      { enabled: true, noLimit: false },
+      {
+        filters,
+        paginate,
+        sort,
+      }
+    );
 
   if (data?.isPrivateLibrary) {
     router.push(PROFILE_ROUTE(username));
@@ -55,6 +56,10 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
       });
     }, TOAST_TIMEOUT);
     return null;
+  }
+
+  if (isError) {
+    return router.push(HOME_ROUTE);
   }
 
   if (isFetching) {

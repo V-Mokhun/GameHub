@@ -63,7 +63,7 @@ export const UserView = ({
           </Link>
         )}
 
-        {isOwnProfileLoading && !isOwnProfile ? (
+        {isOwnProfileLoading && isOwnProfile === undefined ? (
           <div className="flex items-center self-stretch flex-1 justify-end md:justify-start">
             <Skeleton className="h-8 w-8 rounded-md" />
           </div>

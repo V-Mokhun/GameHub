@@ -3,7 +3,7 @@ import {
   GAMES_LIMIT_VALUES,
   getPaginateQuery,
   retrievePaginateFromSearchParams,
-  userApi
+  userApi,
 } from "@shared/api";
 import { Separator, Title } from "@shared/ui";
 import { Pagination } from "@widgets/pagination";
@@ -48,7 +48,11 @@ export const UsersPage = ({}: UsersPageProps) => {
   return (
     <>
       <Title>Our Community</Title>
-      <UsersSearch onChange={onSearchChange} search={search} />
+      <UsersSearch
+        disabled={isFetching}
+        onChange={onSearchChange}
+        search={search}
+      />
       <Separator />
       <UsersList users={data?.users} isLoading={isFetching} />
       <Separator />
