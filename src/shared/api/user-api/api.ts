@@ -9,7 +9,10 @@ import { DEFAULT_PAGINATE } from "../games-api";
 import { OwnProfile, UserWithFriends } from "./types";
 
 type UseUserApiResponse = {
-  user: User & { _count: { library: number } };
+  user: User & {
+    friends: UserWithFriends[];
+    _count: { library: number; friends: number };
+  };
   isOwnProfile: boolean;
   libraryIncluded: boolean;
 };
@@ -243,8 +246,9 @@ const useRemoveFriend = () => {
       return data;
     },
     {
-      onSettled: (_, __, { id }) => {
+      onSettled: (_, __, { id, username }) => {
         queryClient.invalidateQueries(["own-profile", { id }]);
+        queryClient.invalidateQueries(["user", { username }]);
         queryClient.invalidateQueries(["users"]);
       },
     }

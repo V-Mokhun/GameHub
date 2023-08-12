@@ -1,7 +1,7 @@
 import { Container, Separator, Title } from "@shared/ui";
 import { LibraryFilter } from "@widgets/filters";
 import { LibraryChangeView, LibraryFilters, LibraryGames } from "./ui";
-import { UserMenu } from "../ui/user-menu";
+import { UserMenu } from "../ui";
 
 export default async function LibraryPage({
   params,

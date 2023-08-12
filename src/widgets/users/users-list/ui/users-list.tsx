@@ -8,9 +8,14 @@ import { UsersItem, UsersItemSkeleton } from "./users-item";
 interface UsersListProps {
   users?: (UserWithFriends & { isFriend: boolean })[];
   isLoading: boolean;
+  notFoundMessage?: string;
 }
 
-export const UsersList = ({ users, isLoading }: UsersListProps) => {
+export const UsersList = ({
+  users,
+  isLoading,
+  notFoundMessage = "No Users Found",
+}: UsersListProps) => {
   const { userId } = useAuth();
   const { data: ownProfile } = userApi.getOwnProfile(userId ?? undefined);
 
@@ -26,10 +31,15 @@ export const UsersList = ({ users, isLoading }: UsersListProps) => {
   return users && users.length > 0 ? (
     <ul className="flex flex-col gap-4">
       {users.map((user) => (
-        <UsersItem key={user.id} user={user} authUser={ownProfile} />
+        <UsersItem
+          isSelf={user.id === userId}
+          key={user.id}
+          user={user}
+          authUser={ownProfile}
+        />
       ))}
     </ul>
   ) : (
-    <Title>No users found</Title>
+    <Title>{notFoundMessage}</Title>
   );
 };

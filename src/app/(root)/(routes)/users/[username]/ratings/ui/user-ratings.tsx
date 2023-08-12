@@ -21,7 +21,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { UserMenu } from "../../ui/user-menu";
+import { UserMenu } from "../../ui";
 
 interface UserRatingsProps {
   username: string;
@@ -127,8 +127,7 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
       <Title>
         {userData.isOwnProfile
           ? "Your ratings"
-          : `${userData.user.username}'s ratings`}
-        {" "}
+          : `${userData.user.username}'s ratings`}{" "}
         {formattedData && formattedData.length > 0 && (
           <span className="text-muted-foreground">
             ({formattedData.length})

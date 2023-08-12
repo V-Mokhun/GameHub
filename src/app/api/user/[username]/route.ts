@@ -16,6 +16,11 @@ export async function GET(
       },
       include: {
         _count: true,
+        friends: {
+          include: {
+            friends: true,
+          },
+        },
       },
     });
 

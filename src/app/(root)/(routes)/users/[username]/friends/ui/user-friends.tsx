@@ -1,30 +1,33 @@
 "use client";
+import { useAuth } from "@clerk/nextjs";
 import {
   GAMES_LIMIT_VALUES,
   getPaginateQuery,
   retrievePaginateFromSearchParams,
-  userApi
+  userApi,
 } from "@shared/api";
 import { Separator, Title } from "@shared/ui";
 import { Pagination } from "@widgets/pagination";
 import { UsersList, UsersSearch } from "@widgets/users";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
+import { UserMenu } from "../../ui";
 
-interface UsersPageProps {}
+interface UserFriendsProps {
+  username: string;
+}
 
-export const UsersPage = ({}: UsersPageProps) => {
+export const UserFriends = ({ username }: UserFriendsProps) => {
+  const { userId: authUserId } = useAuth();
+  const { data: userData, isLoading: isUserLoading } =
+    userApi.getUser(username);
+
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
   const paginate = retrievePaginateFromSearchParams(params);
   const search = useMemo(() => params.get("search") ?? "", [params]);
-
-  const { data, isFetching, isPreviousData } = userApi.getUsers(
-    search,
-    paginate
-  );
 
   const onPaginateChange = (limit: number, offset: number) => {
     const query = getPaginateQuery(params, limit, offset);
@@ -45,22 +48,40 @@ export const UsersPage = ({}: UsersPageProps) => {
     router.push(`${pathname}${query}`);
   };
 
+  const friends = userData?.user.friends ?? [];
+  const filteredFriends = friends
+    .filter((friend) => friend.username?.includes(search))
+    .slice(paginate.offset, paginate.offset + paginate.limit)
+    .map((friend) => ({
+      ...friend,
+      isFriend:
+        userData?.isOwnProfile ||
+        friend.friends.some(({ id }) => id === authUserId),
+    }));
+
   return (
     <>
-      <Title>Our Community</Title>
+      <UserMenu isLoading={isUserLoading} username={username} />
+      <Title>
+        {username}&apos;s Friends {!isUserLoading && `(${friends.length})`}
+      </Title>
       <UsersSearch onChange={onSearchChange} search={search} />
       <Separator />
-      <UsersList users={data?.users} isLoading={isFetching} />
+      <UsersList
+        notFoundMessage="No Friends Found"
+        users={filteredFriends}
+        isLoading={isUserLoading}
+      />
       <Separator />
       <Pagination
-        isFetching={isFetching}
+        isFetching={isUserLoading}
         onPaginateChange={onPaginateChange}
-        isPreviousData={isPreviousData}
-        hasMore={data?.users.length === paginate.limit}
+        isPreviousData={false}
+        hasMore={filteredFriends.length === paginate.limit}
         limit={paginate.limit}
         limitValues={GAMES_LIMIT_VALUES}
         offset={paginate.offset}
-        totalPages={data?.count ? Math.ceil(data.count / paginate.limit) : 0}
+        totalPages={Math.ceil(friends.length / paginate.limit)}
       />
     </>
   );

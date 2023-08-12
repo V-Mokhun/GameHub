@@ -14,6 +14,7 @@ import NextLink from "next/link";
 
 interface UsersItemProps {
   user: UserWithFriends & { isFriend: boolean };
+  isSelf?: boolean;
   authUser?: OwnProfile;
 }
 
@@ -31,7 +32,7 @@ export const UsersItemSkeleton = () => (
   </li>
 );
 
-export const UsersItem = ({ user, authUser }: UsersItemProps) => {
+export const UsersItem = ({ user, authUser, isSelf }: UsersItemProps) => {
   return (
     <li key={user.id} className="flex items-start gap-4">
       <NextLink href={PROFILE_ROUTE(user.username!)}>
@@ -47,13 +48,15 @@ export const UsersItem = ({ user, authUser }: UsersItemProps) => {
           Friends: {user.friends.length ?? 0}
         </Subtitle>
       </div>
-      <div className="flex items-center self-stretch flex-1 justify-end md:justify-start">
-        <FriendsButton
-          authUser={authUser}
-          isUserFriend={user.isFriend}
-          userUsername={user.username}
-        />
-      </div>
+      {!isSelf && (
+        <div className="flex items-center self-stretch flex-1 justify-end md:justify-start">
+          <FriendsButton
+            authUser={authUser}
+            isUserFriend={user.isFriend}
+            userUsername={user.username}
+          />
+        </div>
+      )}
     </li>
   );
 };

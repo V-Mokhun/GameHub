@@ -53,7 +53,7 @@ export const UserMenu = ({
 
   if (isLoading)
     return (
-      <ul className={cn("flex items-center gap-4", className)}>
+      <ul className={cn("flex items-center gap-4 mb-4", className)}>
         {[...Array(4)].map((_, i) => (
           <Skeleton key={i} className="w-28 h-7" />
         ))}
