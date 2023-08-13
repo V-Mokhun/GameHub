@@ -35,7 +35,7 @@ export const HeaderRequests = ({ authUserId }: HeaderRequestsProps) => {
   );
 
   if (isUserLoading)
-    return <Skeleton className="w-5 h-5 shrink-0 rounded-md" />;
+    return <Skeleton className="w-5 h-6 shrink-0 rounded-sm" />;
 
   const requestFriends = userData?.receivedFriendRequests
     ? userData.receivedFriendRequests
@@ -48,7 +48,7 @@ export const HeaderRequests = ({ authUserId }: HeaderRequestsProps) => {
       <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <DropdownMenuTrigger className="relative">
           <Icon name="Bell" />
-          <span className="absolute -top-2 -right-1 text-xs w-4 h-4 rounded-full bg-accent inline-flex items-center justify-center">
+          <span className="absolute -top-2 -right-1 text-xs w-4 h-4 rounded-full bg-accent text-white inline-flex items-center justify-center">
             {(userData?.receivedFriendRequests.length ?? 0) > 9
               ? "9+"
               : userData?.receivedFriendRequests.length}

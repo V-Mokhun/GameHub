@@ -2,7 +2,9 @@
 
 import { OwnProfile } from "@shared/api";
 import { SETTINGS_ROUTE } from "@shared/consts";
+import { useActiveList } from "@shared/lib/hooks";
 import {
+  ActiveIndicator,
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -24,6 +26,7 @@ interface UserViewProps {
   };
   ownProfile: OwnProfile | undefined;
   isOwnProfileLoading: boolean;
+  isActive: boolean;
 }
 
 export const UserViewSkeleton = () => (
@@ -41,6 +44,7 @@ export const UserView = ({
   data,
   ownProfile,
   isOwnProfileLoading,
+  isActive,
 }: UserViewProps) => {
   if (!data) return <UserViewSkeleton />;
 
@@ -48,10 +52,13 @@ export const UserView = ({
 
   return (
     <div className="flex gap-4 items-start">
-      <Avatar className="w-28 h-28 md:w-36 md:h-36">
-        <AvatarImage src={imageUrl} />
-        <AvatarFallback />
-      </Avatar>
+      <div className="relative">
+        <Avatar className="w-28 h-28 md:w-36 md:h-36">
+          <AvatarImage src={imageUrl} />
+          <AvatarFallback />
+        </Avatar>
+        {isActive && <ActiveIndicator />}
+      </div>
       <div className="min-w-0">
         <Title>{username}</Title>
         <Subtitle>

@@ -16,6 +16,7 @@ import { WantedGames } from "./wanted-games";
 import { useAuth } from "@clerk/nextjs";
 import { GameCardSkeleton } from "@entities/game";
 import { GameStatus } from "@prisma/client";
+import { useActiveList } from "@shared/lib/hooks";
 
 interface UserProfileProps {
   username: string;
@@ -35,6 +36,8 @@ const GamesSkeleton = () => (
 
 export const UserProfile = ({ username }: UserProfileProps) => {
   const { userId: authUserId } = useAuth();
+  const { members } = useActiveList();
+
   const { data: userData, isLoading: isUserLoading } =
     userApi.getUser(username);
   const { data: ownProfile, isLoading: isOwnProfileLoading } =
@@ -129,6 +132,7 @@ export const UserProfile = ({ username }: UserProfileProps) => {
         }
         ownProfile={ownProfile}
         isOwnProfileLoading={isOwnProfileLoading}
+        isActive={members.some((member) => member === userData?.user.id)}
       />
       <Separator />
       <div className="space-y-6">

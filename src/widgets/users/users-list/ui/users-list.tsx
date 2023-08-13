@@ -5,6 +5,7 @@ import { UserWithFriends, userApi } from "@shared/api";
 import { Title } from "@shared/ui";
 import { UsersItem, UsersItemSkeleton } from "./users-item";
 import { cn } from "@shared/lib";
+import { useActiveList } from "@shared/lib/hooks";
 
 interface UsersListProps {
   users?: (UserWithFriends & { isFriend: boolean })[];
@@ -20,6 +21,7 @@ export const UsersList = ({
   isSmall,
 }: UsersListProps) => {
   const { userId } = useAuth();
+  const { members } = useActiveList();
   const { data: ownProfile } = userApi.getOwnProfile(userId ?? undefined);
 
   if (isLoading)
@@ -40,6 +42,7 @@ export const UsersList = ({
           user={user}
           authUser={ownProfile}
           isSmall={isSmall}
+          isActive={members?.some((m) => m === user.id)}
         />
       ))}
     </ul>

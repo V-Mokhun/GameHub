@@ -3,6 +3,7 @@ import { OwnProfile, UserWithFriends } from "@shared/api";
 import { PROFILE_ROUTE } from "@shared/consts";
 import { cn } from "@shared/lib";
 import {
+  ActiveIndicator,
   Avatar,
   AvatarImage,
   Link,
@@ -18,6 +19,7 @@ interface UsersItemProps {
   isSelf?: boolean;
   authUser?: OwnProfile;
   isSmall?: boolean;
+  isActive?: boolean;
 }
 
 export const UsersItemSkeleton = () => (
@@ -39,13 +41,14 @@ export const UsersItem = ({
   authUser,
   isSelf,
   isSmall,
+  isActive,
 }: UsersItemProps) => {
   return (
     <li
       key={user.id}
       className={cn("flex items-start", isSmall ? "gap-2" : "gap-4")}
     >
-      <NextLink href={PROFILE_ROUTE(user.username!)}>
+      <NextLink className="relative" href={PROFILE_ROUTE(user.username!)}>
         <Avatar
           className={cn(
             isSmall ? "w-6 h-6 md:w-8 md:h-8" : "w-20 h-20 md:w-24 md:h-24"
@@ -53,6 +56,7 @@ export const UsersItem = ({
         >
           <AvatarImage src={user.imageUrl} />
         </Avatar>
+        {isActive && <ActiveIndicator size="small" />}
       </NextLink>
       <div className="min-w-0">
         <Link className="text-foreground" href={PROFILE_ROUTE(user.username!)}>
