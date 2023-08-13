@@ -31,7 +31,7 @@ interface UserFriendsProps {
 
 export const UserFriends = ({ username }: UserFriendsProps) => {
   const { userId: authUserId } = useAuth();
-  
+
   const {
     data: userData,
     isLoading: isUserLoading,

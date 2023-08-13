@@ -17,12 +17,14 @@ interface FriendsButtonProps {
   authUser: OwnProfile | undefined;
   userUsername: string | null;
   isUserFriend: boolean;
+  isSmall?: boolean;
 }
 
 export const FriendsButton = ({
   userUsername,
   isUserFriend,
   authUser,
+  isSmall,
 }: FriendsButtonProps) => {
   const { signInToast } = useCustomToasts();
   const { mutate: sendRequest, isLoading: isSendingRequest } =
@@ -107,7 +109,7 @@ export const FriendsButton = ({
       <Button
         disabled={isLoading}
         onClick={onAccept}
-        size="icon"
+        size={isSmall ? "iconSmall" : "icon"}
         className="bg-success hover:bg-success-hover"
       >
         <Icon name="Check" className="text-white" />
@@ -115,7 +117,7 @@ export const FriendsButton = ({
       <Button
         disabled={isLoading}
         onClick={onCancel}
-        size="icon"
+        size={isSmall ? "iconSmall" : "icon"}
         className="bg-destructive hover:bg-destructive-hover"
       >
         <Icon name="X" className="text-white" />

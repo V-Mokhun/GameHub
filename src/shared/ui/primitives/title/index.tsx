@@ -62,15 +62,17 @@ export const Title = ({
       </h4>
     );
   else {
-    <h5
-      className={cn(
-        "break-words scroll-m-20 mb-2 text-lg font-bold tracking-tight lg:mb-3 lg:text-xl",
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </h5>;
+    content = (
+      <h5
+        className={cn(
+          "break-words scroll-m-20 mb-2 text-lg font-bold tracking-tight lg:text-xl",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </h5>
+    );
   }
 
   return content;

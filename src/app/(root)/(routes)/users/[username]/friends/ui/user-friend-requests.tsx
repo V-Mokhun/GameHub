@@ -59,8 +59,6 @@ export const UserFriendRequests = ({
   if (isError) {
     router.push(HOME_ROUTE);
   }
-  console.log(userData, authUserId);
-
   if ((userData && userData.username !== username) || authUserId === null) {
     router.push(PROFILE_ROUTE(username));
     setTimeout(() => {

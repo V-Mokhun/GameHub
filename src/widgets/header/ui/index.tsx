@@ -4,6 +4,7 @@ import { Link, Logo, buttonVariants } from "@shared/ui";
 import { HeaderAvatar } from "./header-avatar";
 import { HeaderButton } from "./header-button";
 import { HeaderSearch } from "./header-search";
+import { HeaderRequests } from "./header-requests";
 
 export const Header = async () => {
   const { userId } = auth();
@@ -16,7 +17,10 @@ export const Header = async () => {
           <HeaderButton />
           <HeaderSearch />
           {userId ? (
-            <HeaderAvatar />
+            <div className="flex items-center gap-4">
+              <HeaderRequests authUserId={userId} />
+              <HeaderAvatar />
+            </div>
           ) : (
             <Link
               href={SIGN_IN_ROUTE}

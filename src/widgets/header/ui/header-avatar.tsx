@@ -15,11 +15,8 @@ import {
   Icon,
   SignOutButton,
   Skeleton,
-  useToast,
 } from "@shared/ui";
-import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 interface HeaderAvatarProps {}
 

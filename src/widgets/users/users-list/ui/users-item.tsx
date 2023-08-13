@@ -1,6 +1,7 @@
 "use client";
 import { OwnProfile, UserWithFriends } from "@shared/api";
 import { PROFILE_ROUTE } from "@shared/consts";
+import { cn } from "@shared/lib";
 import {
   Avatar,
   AvatarImage,
@@ -16,6 +17,7 @@ interface UsersItemProps {
   user: UserWithFriends & { isFriend: boolean };
   isSelf?: boolean;
   authUser?: OwnProfile;
+  isSmall?: boolean;
 }
 
 export const UsersItemSkeleton = () => (
@@ -32,25 +34,50 @@ export const UsersItemSkeleton = () => (
   </li>
 );
 
-export const UsersItem = ({ user, authUser, isSelf }: UsersItemProps) => {
+export const UsersItem = ({
+  user,
+  authUser,
+  isSelf,
+  isSmall,
+}: UsersItemProps) => {
   return (
-    <li key={user.id} className="flex items-start gap-4">
+    <li
+      key={user.id}
+      className={cn("flex items-start", isSmall ? "gap-2" : "gap-4")}
+    >
       <NextLink href={PROFILE_ROUTE(user.username!)}>
-        <Avatar className="w-20 h-20 md:w-24 md:h-24">
+        <Avatar
+          className={cn(
+            isSmall ? "w-6 h-6 md:w-8 md:h-8" : "w-20 h-20 md:w-24 md:h-24"
+          )}
+        >
           <AvatarImage src={user.imageUrl} />
         </Avatar>
       </NextLink>
       <div className="min-w-0">
         <Link className="text-foreground" href={PROFILE_ROUTE(user.username!)}>
-          <Title size="small">{user.username}</Title>
+          <Title
+            className={isSmall ? "mb-0" : ""}
+            size={isSmall ? "xs" : "small"}
+          >
+            {user.username}
+          </Title>
         </Link>
-        <Subtitle className="md:mb-0 mb-0">
-          Friends: {user.friends.length ?? 0}
-        </Subtitle>
+        {!isSmall && (
+          <Subtitle className="md:mb-0 mb-0">
+            Friends: {user.friends.length ?? 0}
+          </Subtitle>
+        )}
       </div>
       {!isSelf && (
-        <div className="flex items-center self-stretch flex-1 justify-end md:justify-start">
+        <div
+          className={cn(
+            "flex items-center self-stretch flex-1 justify-end",
+            !isSmall && "md:justify-start"
+          )}
+        >
           <FriendsButton
+            isSmall={isSmall}
             authUser={authUser}
             isUserFriend={user.isFriend}
             userUsername={user.username}

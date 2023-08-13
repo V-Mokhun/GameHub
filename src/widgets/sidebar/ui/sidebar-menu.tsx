@@ -66,7 +66,7 @@ const SOCIAL_PRIVATE_ITEMS = (
     text: "Friends",
     href: FRIENDS_ROUTE(username),
     iconName: "Users",
-    isActive: pathname === FRIENDS_ROUTE(username),
+    isActive: pathname.includes(FRIENDS_ROUTE(username)),
   },
 ];
 

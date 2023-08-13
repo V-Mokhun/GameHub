@@ -36,8 +36,6 @@ export async function POST(
 
     return NextResponse.json(friendRequest, { status: 200 });
   } catch (error) {
-    console.log(error);
-
     return catchError(error, "Failed to add a friend");
   }
 }

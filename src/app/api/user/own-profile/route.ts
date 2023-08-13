@@ -30,6 +30,9 @@ export async function POST(req: Request) {
               },
             },
           },
+          orderBy: {
+            createdAt: "desc",
+          },
         },
         receivedFriendRequests: {
           include: {
@@ -38,6 +41,9 @@ export async function POST(req: Request) {
                 friends: true,
               },
             },
+          },
+          orderBy: {
+            createdAt: "desc",
           },
         },
       };
@@ -49,7 +55,6 @@ export async function POST(req: Request) {
       },
       include,
     });
-    console.log(includeFullRequests, user);
 
     return NextResponse.json(user, { status: 200 });
   } catch (error) {
