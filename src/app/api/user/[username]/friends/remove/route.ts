@@ -1,4 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs";
+import { pusherServer } from "@shared/config";
+import { REMOVE_FRIEND } from "@shared/consts";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
@@ -37,6 +39,10 @@ export async function PATCH(
         },
       }),
     ]);
+
+    await pusherServer.trigger(friendUsername, REMOVE_FRIEND, {
+      username: friendUsername,
+    });
 
     return NextResponse.json(updatedUser, { status: 200 });
   } catch (error) {

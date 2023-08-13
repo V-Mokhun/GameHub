@@ -46,7 +46,7 @@ export const UsersItem = ({
   return (
     <li
       key={user.id}
-      className={cn("flex items-start", isSmall ? "gap-2" : "gap-4")}
+      className={cn("flex", isSmall ? "items-center gap-2" : "items-start gap-4")}
     >
       <NextLink className="relative" href={PROFILE_ROUTE(user.username!)}>
         <Avatar

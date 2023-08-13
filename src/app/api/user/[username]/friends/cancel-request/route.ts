@@ -1,4 +1,6 @@
 import { auth } from "@clerk/nextjs";
+import { pusherServer } from "@shared/config";
+import { CANCEL_FRIEND_REQUEST } from "@shared/consts";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
@@ -26,6 +28,12 @@ export async function PATCH(
         ],
       },
     });
+
+    await pusherServer.trigger(
+      [receiverUsername, username],
+      CANCEL_FRIEND_REQUEST,
+      null
+    );
 
     return NextResponse.json("OK", { status: 200 });
   } catch (error) {

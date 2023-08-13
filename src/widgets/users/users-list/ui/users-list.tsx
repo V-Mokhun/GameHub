@@ -6,6 +6,10 @@ import { Title } from "@shared/ui";
 import { UsersItem, UsersItemSkeleton } from "./users-item";
 import { cn } from "@shared/lib";
 import { useActiveList } from "@shared/lib/hooks";
+import { useEffect, useMemo } from "react";
+import { pusherClient } from "@shared/config";
+import { SEND_FRIEND_REQUEST } from "@shared/consts";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface UsersListProps {
   users?: (UserWithFriends & { isFriend: boolean })[];

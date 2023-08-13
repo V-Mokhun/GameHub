@@ -40,6 +40,7 @@ module.exports = {
         },
         success: {
           DEFAULT: "hsl(var(--success))",
+          hover: "hsl(var(--success-hover))",
           foreground: "hsl(var(--success-foreground))",
         },
         muted: {

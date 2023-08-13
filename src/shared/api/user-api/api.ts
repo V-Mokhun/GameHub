@@ -95,7 +95,6 @@ const useUsers = (search?: string, paginate = DEFAULT_PAGINATE) => {
         displayError(toast, error);
         router.push(HOME_ROUTE);
       },
-      refetchOnWindowFocus: false,
       keepPreviousData: true,
     }
   );
@@ -231,9 +230,10 @@ const useAcceptFriendRequest = () => {
       return data;
     },
     {
-      onSettled: (_, __, { id }) => {
+      onSettled: (_, __, { id, username }) => {
         queryClient.invalidateQueries(["own-profile", { id }]);
         queryClient.invalidateQueries(["users"]);
+        queryClient.invalidateQueries(["user", { username }]);
       },
     }
   );

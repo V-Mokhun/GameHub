@@ -1,4 +1,6 @@
 import { auth } from "@clerk/nextjs";
+import { pusherServer } from "@shared/config";
+import { SEND_FRIEND_REQUEST } from "@shared/consts";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
@@ -33,6 +35,8 @@ export async function POST(
         },
       },
     });
+
+    await pusherServer.trigger(receiverUsername, SEND_FRIEND_REQUEST, null);
 
     return NextResponse.json(friendRequest, { status: 200 });
   } catch (error) {

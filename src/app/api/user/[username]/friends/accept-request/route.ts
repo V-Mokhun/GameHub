@@ -1,4 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs";
+import { pusherServer } from "@shared/config";
+import { ACCEPT_FRIEND_REQUEST } from "@shared/consts";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
@@ -45,6 +47,10 @@ export async function PATCH(
         },
       }),
     ]);
+
+    await pusherServer.trigger(friendUsername, ACCEPT_FRIEND_REQUEST, {
+      username: friendUsername,
+    });
 
     return NextResponse.json(updatedUser, { status: 200 });
   } catch (error) {
