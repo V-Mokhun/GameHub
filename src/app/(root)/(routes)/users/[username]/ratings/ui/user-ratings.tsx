@@ -89,7 +89,7 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
     );
 
   if (isError) {
-    return router.push(HOME_ROUTE);
+    router.push(HOME_ROUTE);
   }
 
   if (

@@ -38,10 +38,10 @@ export const UserProfile = ({ username }: UserProfileProps) => {
   const { data: userData, isLoading: isUserLoading } =
     userApi.getUser(username);
   const { data: ownProfile, isLoading: isOwnProfileLoading } =
-    userApi.getOwnProfile(
-      authUserId ?? undefined,
-      !isUserLoading && !userData?.isOwnProfile
-    );
+    userApi.getOwnProfile(authUserId ?? undefined, {
+      enabled: !isUserLoading && !userData?.isOwnProfile,
+      includeFullRequests: false,
+    });
   const { data: ratedLibrary, isLoading: isRatedLibraryLoading } =
     userLibraryApi.getLibrary(
       username,

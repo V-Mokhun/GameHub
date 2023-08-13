@@ -59,7 +59,7 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
   }
 
   if (isError) {
-    return router.push(HOME_ROUTE);
+    router.push(HOME_ROUTE);
   }
 
   if (isFetching) {

@@ -40,14 +40,24 @@ const useUser = (username?: string) => {
   );
 };
 
-const useOwnProfile = (id?: string, enabled = true) => {
+const useOwnProfile = (
+  id?: string,
+  options: { enabled?: boolean; includeFullRequests?: boolean } = {
+    enabled: true,
+    includeFullRequests: false,
+  }
+) => {
   const { toast } = useToast();
   const router = useRouter();
+  if (!options.enabled) options.enabled = true;
+  if (!options.includeFullRequests) options.includeFullRequests = false;
 
   return useQuery(
-    [`own-profile`, { id }],
+    [`own-profile`, { id, includeFullRequests: options.includeFullRequests }],
     async () => {
-      const { data } = await axios.get<OwnProfile>(`/api/user/own-profile`);
+      const { data } = await axios.post<OwnProfile>(`/api/user/own-profile`, {
+        includeFullRequests: options.includeFullRequests,
+      });
 
       return data;
     },
@@ -56,7 +66,7 @@ const useOwnProfile = (id?: string, enabled = true) => {
         displayError(toast, error);
         router.push(HOME_ROUTE);
       },
-      enabled: !!id && enabled,
+      enabled: !!id && options.enabled,
     }
   );
 };

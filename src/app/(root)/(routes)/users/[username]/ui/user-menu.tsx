@@ -26,7 +26,7 @@ const MENU_ITEMS = (pathname: string, username: string) => [
   {
     label: "Friends",
     href: FRIENDS_ROUTE(username),
-    active: pathname === FRIENDS_ROUTE(username),
+    active: pathname.includes(FRIENDS_ROUTE(username)),
   },
 ];
 

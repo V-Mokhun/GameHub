@@ -1,11 +1,21 @@
 "use client";
+
 import { useAuth } from "@clerk/nextjs";
 import {
   GAMES_LIMIT_VALUES,
+  UserWithFriends,
   getPaginateQuery,
   retrievePaginateFromSearchParams,
   userApi,
 } from "@shared/api";
+import {
+  FRIENDS_RECEIVED_REQUESTS_ROUTE,
+  FRIENDS_ROUTE,
+  FRIENDS_SENT_REQUESTS_ROUTE,
+  HOME_ROUTE,
+  PROFILE_ROUTE,
+  TOAST_TIMEOUT,
+} from "@shared/consts";
 import {
   Separator,
   Skeleton,
@@ -15,28 +25,29 @@ import {
 } from "@shared/ui";
 import { Pagination } from "@widgets/pagination";
 import { UsersList, UsersSearch } from "@widgets/users";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { UserMenu } from "../../ui";
-import {
-  FRIENDS_RECEIVED_REQUESTS_ROUTE,
-  HOME_ROUTE,
-  USERS_ROUTE,
-} from "@shared/consts";
-import Link from "next/link";
 
-interface UserFriendsProps {
+interface UserFriendRequestsProps {
   username: string;
+  sent?: boolean;
 }
 
-export const UserFriends = ({ username }: UserFriendsProps) => {
+export const UserFriendRequests = ({
+  username,
+  sent,
+}: UserFriendRequestsProps) => {
+  const { toast } = useToast();
   const { userId: authUserId } = useAuth();
-  
   const {
     data: userData,
     isLoading: isUserLoading,
     isError,
-  } = userApi.getUser(username);
+  } = userApi.getOwnProfile(authUserId ?? undefined, {
+    includeFullRequests: true,
+  });
 
   const params = useSearchParams();
   const router = useRouter();
@@ -47,6 +58,18 @@ export const UserFriends = ({ username }: UserFriendsProps) => {
 
   if (isError) {
     router.push(HOME_ROUTE);
+  }
+  console.log(userData, authUserId);
+
+  if ((userData && userData.username !== username) || authUserId === null) {
+    router.push(PROFILE_ROUTE(username));
+    setTimeout(() => {
+      toast({
+        title: "You are not authorized to view this page",
+        variant: "destructive",
+      });
+    }, TOAST_TIMEOUT);
+    return null;
   }
 
   const onPaginateChange = (limit: number, offset: number) => {
@@ -68,33 +91,48 @@ export const UserFriends = ({ username }: UserFriendsProps) => {
     router.push(`${pathname}${query}`);
   };
 
-  const friends = userData?.user.friends ?? [];
-  const filteredFriends = friends
-    .filter((friend) => friend.username?.includes(search))
+  let requestFriends = userData?.receivedFriendRequests
+    ? userData.receivedFriendRequests.map(
+        (req) => req.sender as UserWithFriends
+      )
+    : [];
+
+  if (sent) {
+    requestFriends = userData?.sentFriendRequests
+      ? userData.sentFriendRequests.map(
+          (req) => req.receiver as UserWithFriends
+        )
+      : [];
+  }
+
+  const filteredRequests = requestFriends
+    .filter((friend) => friend?.username?.includes(search))
     .slice(paginate.offset, paginate.offset + paginate.limit)
     .map((friend) => ({
       ...friend,
-      isFriend:
-        userData?.isOwnProfile ||
-        friend.friends.some(({ id }) => id === authUserId),
+      isFriend: false,
     }));
 
   return (
     <>
       <UserMenu isLoading={isUserLoading} username={username} />
-      {userData?.isOwnProfile && (
+      {userData && (
         <div className="flex items-center mb-2 lg:mb-3 gap-4">
           <Link
-            href={USERS_ROUTE}
+            href={FRIENDS_ROUTE(username)}
             className={buttonVariants({ variant: "secondary" })}
           >
-            Find Friends
+            Friends
           </Link>
           <Link
-            href={FRIENDS_RECEIVED_REQUESTS_ROUTE(userData.user.username!)}
+            href={
+              sent
+                ? FRIENDS_RECEIVED_REQUESTS_ROUTE(username)
+                : FRIENDS_SENT_REQUESTS_ROUTE(username)
+            }
             className={buttonVariants({ variant: "secondary" })}
           >
-            Friend Requests
+            {!sent && "Sent"} Friend Requests
           </Link>
         </div>
       )}
@@ -103,8 +141,11 @@ export const UserFriends = ({ username }: UserFriendsProps) => {
         <Skeleton className="w-36 h-9 mb-2 lg:mb-3" />
       ) : (
         <Title>
-          {userData?.isOwnProfile ? "Your" : `${username}'s`} Friends (
-          {friends.length})
+          {sent && "Sent"} Friend Requests (
+          {sent
+            ? userData?.sentFriendRequests.length
+            : userData?.receivedFriendRequests.length}
+          )
         </Title>
       )}
       <UsersSearch
@@ -114,8 +155,8 @@ export const UserFriends = ({ username }: UserFriendsProps) => {
       />
       <Separator />
       <UsersList
-        notFoundMessage="No Friends Found"
-        users={filteredFriends}
+        notFoundMessage="No Requests Found"
+        users={filteredRequests}
         isLoading={isUserLoading}
       />
       <Separator />
@@ -123,11 +164,11 @@ export const UserFriends = ({ username }: UserFriendsProps) => {
         isFetching={isUserLoading}
         onPaginateChange={onPaginateChange}
         isPreviousData={false}
-        hasMore={filteredFriends.length === paginate.limit}
+        hasMore={filteredRequests.length === paginate.limit}
         limit={paginate.limit}
         limitValues={GAMES_LIMIT_VALUES}
         offset={paginate.offset}
-        totalPages={Math.ceil(friends.length / paginate.limit)}
+        totalPages={Math.ceil(requestFriends.length / paginate.limit)}
       />
     </>
   );

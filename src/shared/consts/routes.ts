@@ -20,6 +20,10 @@ export const RATINGS_ROUTE = (username: string) =>
   `${USERS_ROUTE}/${username}/ratings`;
 export const FRIENDS_ROUTE = (username: string) =>
   `${USERS_ROUTE}/${username}/friends`;
+export const FRIENDS_RECEIVED_REQUESTS_ROUTE = (username: string) =>
+  `${USERS_ROUTE}/${username}/friends/received`;
+export const FRIENDS_SENT_REQUESTS_ROUTE = (username: string) =>
+  `${USERS_ROUTE}/${username}/friends/sent`;
 
 export const PRIVACY_ROUTE = "/privacy";
 export const TERMS_ROUTE = "/terms";
