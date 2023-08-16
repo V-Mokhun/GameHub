@@ -1,5 +1,5 @@
 import { Container, Separator, Title } from "@shared/ui";
-import { Conversations } from "./ui/conversations";
+import { ConversationsList } from "./ui";
 
 export default async function MessagesPage() {
   return (
@@ -7,7 +7,7 @@ export default async function MessagesPage() {
       <Container>
         <Title size="large">Your messages</Title>
         <Separator />
-        <Conversations />
+        <ConversationsList />
       </Container>
     </section>
   );

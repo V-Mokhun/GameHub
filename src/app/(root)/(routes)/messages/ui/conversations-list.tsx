@@ -1,19 +1,19 @@
-'use client'
+"use client";
 
 import { userApi } from "@shared/api";
-import { ConversationItem } from "./conversation-item";
+import { ConversationsItem } from "./conversations-item";
 import { Icon, Link, Title } from "@shared/ui";
 import { USERS_ROUTE } from "@shared/consts";
 
-interface ConversationsProps {}
+interface ConversationsListProps {}
 
-export const Conversations = ({}: ConversationsProps) => {
+export const ConversationsList = ({}: ConversationsListProps) => {
   const { data: conversations, isLoading } = userApi.getConversations();
 
   if (isLoading) return <div>Loading...</div>;
 
   return conversations && conversations?.length > 0 ? (
-    conversations.map((conv) => <ConversationItem key={conv.id} data={conv} />)
+    conversations.map((conv) => <ConversationsItem key={conv.id} data={conv} />)
   ) : (
     <>
       <Title>You have no messages yet</Title>

@@ -26,3 +26,23 @@ export const useConversations = () => {
     }
   );
 };
+
+export const useSingleConversation = (username: string) => {
+  const { toast } = useToast();
+  
+  return useQuery(
+    ["conversation", { username }],
+    async () => {
+      const { data } = await axios.get<FullConversation>(
+        `/api/user/conversations/${username}`
+      );
+
+      return data;
+    },
+    {
+      onError: (error) => {
+        displayError(toast, error);
+      },
+    }
+  );
+};
