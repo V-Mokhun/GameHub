@@ -1,4 +1,4 @@
-import { FriendRequest, User } from "@prisma/client";
+import { Conversation, FriendRequest, Message, User } from "@prisma/client";
 
 export type UserWithFriends = User & { friends: User[] };
 
@@ -11,4 +11,14 @@ export type OwnProfile = User & {
   friends: User[];
   sentFriendRequests: FullFriendRequest[];
   receivedFriendRequests: FullFriendRequest[];
+};
+
+export type FullMessage = Message & {
+  sender: User;
+  seenBy: User[];
+};
+
+export type FullConversation = Conversation & {
+  users: User[];
+  messages: FullMessage[];
 };

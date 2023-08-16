@@ -12,6 +12,7 @@ export const SETTINGS_ROUTE = "/settings";
 export const SETTINGS_PASSWORD_ROUTE = "/settings/password";
 
 export const USERS_ROUTE = "/users";
+export const MESSAGES_ROUTE = `/messages`;
 
 export const PROFILE_ROUTE = (username: string) => `${USERS_ROUTE}/${username}`;
 export const LIBRARY_ROUTE = (username: string) =>

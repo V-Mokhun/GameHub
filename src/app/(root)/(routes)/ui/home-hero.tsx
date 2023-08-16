@@ -3,7 +3,7 @@ import { Container, Title, buttonVariants } from "@shared/ui";
 import Image from "next/image";
 import Link from "next/link";
 
-export const HomeHero = ({}) => {
+export const HomeHero = () => {
   return (
     <section className="relative -mt-6 md:-mt-4 flex flex-col items-center justify-center min-h-[30vh] mb-4 md:mb-6 overflow-hidden after:block after:absolute after:left-0 after:top-0 after:bg-black/20 after:z-[1] after:w-full after:h-full">
       <div className="absolute left-0 right-0 h-full z-0">

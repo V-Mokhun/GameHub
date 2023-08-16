@@ -3,6 +3,7 @@ import { GAMES_LIMIT } from "@shared/api";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
+import omit from "lodash.omit";
 import { z } from "zod";
 
 export async function POST(req: Request) {
@@ -31,7 +32,15 @@ export async function POST(req: Request) {
         take: limit,
         skip: offset,
         include: {
-          friends: true,
+          friends: {
+            select: {
+              id: true,
+              username: true,
+              imageUrl: true,
+              createdAt: true,
+              isPrivateLibrary: true,
+            },
+          },
         },
       }),
       db.user.count({ where: whereClause }),
@@ -39,7 +48,7 @@ export async function POST(req: Request) {
 
     const usersWithFriendship = users.map((user) => {
       return {
-        ...user,
+        ...omit(user, "email"),
         isFriend: user.friends.some((friend) => friend.id === userId),
       };
     });

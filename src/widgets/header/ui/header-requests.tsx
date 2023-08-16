@@ -80,7 +80,7 @@ export const HeaderRequests = ({ authUserId }: HeaderRequestsProps) => {
   }, [pusherKey, authUserId, queryClient]);
 
   if (isUserLoading)
-    return <Skeleton className="w-5 h-6 shrink-0 rounded-sm" />;
+    return <Skeleton className="w-5 h-5 shrink-0 rounded-sm" />;
 
   const requestFriends = userData?.receivedFriendRequests
     ? userData.receivedFriendRequests
@@ -92,12 +92,14 @@ export const HeaderRequests = ({ authUserId }: HeaderRequestsProps) => {
     userData && (
       <DropdownMenu open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <DropdownMenuTrigger className="relative">
-          <Icon name="Bell" />
-          <span className="absolute -top-2 -right-1 text-xs w-4 h-4 rounded-full bg-accent text-white inline-flex items-center justify-center">
-            {(userData?.receivedFriendRequests.length ?? 0) > 9
-              ? "9+"
-              : userData?.receivedFriendRequests.length}
-          </span>
+          <Icon name="Users2" />
+          {userData.receivedFriendRequests.length > 0 && (
+            <span className="absolute -top-2 -right-1 text-xs w-4 h-4 rounded-full bg-accent text-white inline-flex items-center justify-center">
+              {(userData.receivedFriendRequests.length ?? 0) > 9
+                ? "9+"
+                : userData?.receivedFriendRequests.length}
+            </span>
+          )}
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[200px] max-w-xs">
           <Title size="small">Friend Requests</Title>
@@ -109,7 +111,7 @@ export const HeaderRequests = ({ authUserId }: HeaderRequestsProps) => {
             notFoundMessage="You have no friend requests at the moment."
           />
           <Separator className="my-2" />
-          {userData?.receivedFriendRequests.length > 0 ? (
+          {userData.receivedFriendRequests.length > 0 ? (
             <Link
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-1"

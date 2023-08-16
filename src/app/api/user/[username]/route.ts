@@ -2,6 +2,7 @@ import { currentUser } from "@clerk/nextjs";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
+import omit from "lodash.omit";
 
 export async function GET(
   req: Request,
@@ -18,7 +19,15 @@ export async function GET(
         _count: true,
         friends: {
           include: {
-            friends: true,
+            friends: {
+              select: {
+                id: true,
+                username: true,
+                imageUrl: true,
+                createdAt: true,
+                isPrivateLibrary: true,
+              },
+            },
           },
         },
       },
@@ -30,7 +39,11 @@ export async function GET(
     const includeLibrary = isOwnProfile || !user.isPrivateLibrary;
 
     return NextResponse.json(
-      { user, isOwnProfile, libraryIncluded: includeLibrary },
+      {
+        user: omit(user, "email"),
+        isOwnProfile,
+        libraryIncluded: includeLibrary,
+      },
       { status: 200 }
     );
   } catch (error) {

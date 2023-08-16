@@ -6,6 +6,7 @@ import {
   FRIENDS_ROUTE,
   HOME_ROUTE,
   LIBRARY_ROUTE,
+  MESSAGES_ROUTE,
   SETTINGS_ROUTE,
   USERS_ROUTE,
 } from "@shared/consts";
@@ -67,6 +68,12 @@ const SOCIAL_PRIVATE_ITEMS = (
     href: FRIENDS_ROUTE(username),
     iconName: "Users",
     isActive: pathname.includes(FRIENDS_ROUTE(username)),
+  },
+  {
+    text: "Messages",
+    href: MESSAGES_ROUTE,
+    iconName: "MessageCircle",
+    isActive: pathname.includes(MESSAGES_ROUTE),
   },
 ];
 
