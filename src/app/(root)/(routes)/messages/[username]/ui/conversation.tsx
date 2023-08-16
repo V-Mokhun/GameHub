@@ -1,4 +1,7 @@
+"use client";
+
 import { userApi } from "@shared/api";
+import { ConversationForm } from "./conversation-form";
 
 interface ConversationProps {
   username: string;
@@ -12,5 +15,11 @@ export const Conversation = ({ username }: ConversationProps) => {
 
   console.log(conversation);
 
-  return <>conversation</>;
+  return (
+    <div className="h-full">
+      <div className="h-full flex flex-col">
+        <ConversationForm />
+      </div>
+    </div>
+  );
 };

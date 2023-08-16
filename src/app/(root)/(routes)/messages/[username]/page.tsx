@@ -14,7 +14,7 @@ export default async function ConversationPage({
   if (!userId) return redirect(HOME_ROUTE);
 
   return (
-    <section>
+    <section className="h-full">
       <Container>
         <Conversation username={params.username} />
       </Container>
