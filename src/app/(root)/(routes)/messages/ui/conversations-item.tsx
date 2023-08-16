@@ -24,8 +24,8 @@ export const ConversationsItem = ({ data }: ConversationsItemProps) => {
   );
 
   const handleClick = useCallback(() => {
-    router.push(`${MESSAGES_ROUTE}/${data.id}`);
-  }, [data.id, router]);
+    router.push(`${MESSAGES_ROUTE}/${otherUser.username}`);
+  }, [router, otherUser.username]);
 
   const lastMessage = useMemo(() => {
     const messages = data.messages || [];

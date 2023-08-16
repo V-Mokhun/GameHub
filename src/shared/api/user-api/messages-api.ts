@@ -28,12 +28,13 @@ export const useConversations = () => {
 };
 
 export const useSingleConversation = (username: string) => {
+  const { userId } = useAuth();
   const { toast } = useToast();
-  
+
   return useQuery(
-    ["conversation", { username }],
+    ["conversations", { id: userId, username }],
     async () => {
-      const { data } = await axios.get<FullConversation>(
+      const { data } = await axios.get<FullConversation | null>(
         `/api/user/conversations/${username}`
       );
 
