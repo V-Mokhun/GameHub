@@ -29,10 +29,13 @@ export async function GET(
     });
 
     if (conversations.length === 0) {
-      return NextResponse.json(null, { status: 200 });
+      return NextResponse.json({ conversation: null, user }, { status: 200 });
     }
 
-    return NextResponse.json(conversations[0], { status: 200 });
+    return NextResponse.json(
+      { conversation: conversations[0], user },
+      { status: 200 }
+    );
   } catch (error) {
     return catchError(error, "Failed to get conversation");
   }

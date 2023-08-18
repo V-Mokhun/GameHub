@@ -2,16 +2,17 @@
 
 import { userApi } from "@shared/api";
 import { ConversationForm } from "./conversation-form";
+import { ConversationHeader } from "./conversation-header";
+import { ConversationBody } from "./conversation-body";
 
 interface ConversationProps {
   username: string;
 }
 
 export const Conversation = ({ username }: ConversationProps) => {
-  const { data: conversation, isLoading } =
-    userApi.getSingleConversation(username);
+  const { data, isLoading } = userApi.getSingleConversation(username);
   const { data: messages, isLoading: isMessagesLoading } = userApi.getMessages(
-    conversation?.id
+    data?.conversation?.id
   );
 
   if (isLoading) return <>Loading...</>;
@@ -19,9 +20,11 @@ export const Conversation = ({ username }: ConversationProps) => {
   return (
     <div className="h-full">
       <div className="h-full flex flex-col">
+        <ConversationHeader user={data!.user} />
+        <ConversationBody />
         <ConversationForm
           username={username}
-          conversationId={conversation?.id}
+          conversationId={data?.conversation?.id}
         />
       </div>
     </div>

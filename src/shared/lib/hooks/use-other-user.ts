@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { User } from "@prisma/client";
 import { FullConversation } from "@shared/api";
 import { useMemo } from "react";
 

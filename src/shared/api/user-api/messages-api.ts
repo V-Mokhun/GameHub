@@ -8,6 +8,7 @@ import axios from "axios";
 import { FullConversation, FullMessage } from "./types";
 import { useRouter } from "next/navigation";
 import { MESSAGES_ROUTE } from "@shared/consts";
+import { User } from "@prisma/client";
 
 export const useConversations = () => {
   const { userId } = useAuth();
@@ -29,6 +30,11 @@ export const useConversations = () => {
   );
 };
 
+export type SingleConversationApiResponse = {
+  conversation: FullConversation | null;
+  user: User;
+};
+
 export const useSingleConversation = (username: string) => {
   const { userId } = useAuth();
   const { toast } = useToast();
@@ -37,7 +43,7 @@ export const useSingleConversation = (username: string) => {
   return useQuery(
     ["conversations", { id: userId, username }],
     async () => {
-      const { data } = await axios.get<FullConversation | null>(
+      const { data } = await axios.get<SingleConversationApiResponse>(
         `/api/user/conversations/${username}`
       );
 
