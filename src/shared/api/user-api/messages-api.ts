@@ -107,7 +107,6 @@ export const useSendMessage = (username: string, conversationId?: string) => {
           "messages",
           { id: user?.id, conversationId },
         ]);
-      console.log(previousMessages);
 
       queryClient.setQueryData(
         ["messages", { id: user?.id, conversationId }],
@@ -150,8 +149,6 @@ export const useSendMessage = (username: string, conversationId?: string) => {
       );
     },
     onSettled: (data, error, variables, context) => {
-      console.log("settled");
-      
       queryClient.invalidateQueries({
         queryKey: ["messages", { id: user?.id, conversationId }],
       });

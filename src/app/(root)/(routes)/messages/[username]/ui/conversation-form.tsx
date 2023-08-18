@@ -33,10 +33,7 @@ export const ConversationForm = ({
   conversationId,
   username,
 }: ConversationFormProps) => {
-  const { mutate: sendMessage } = userApi.sendMessage(
-    username,
-    conversationId
-  );
+  const { mutate: sendMessage } = userApi.sendMessage(username, conversationId);
 
   const form = useForm<MessageFormSchema>({
     defaultValues: {

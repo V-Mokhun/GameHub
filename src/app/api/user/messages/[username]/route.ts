@@ -1,4 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs";
+import { pusherServer } from "@shared/config";
+import { CREATE_MESSAGE, UPDATE_CONVERSATION } from "@shared/consts";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
@@ -77,6 +79,12 @@ export async function POST(
           },
         },
       },
+    });
+
+    await pusherServer.trigger(convId, CREATE_MESSAGE, newMessage);
+
+    updatedConversation.users.forEach((user) => {
+      pusherServer.trigger(user.id, UPDATE_CONVERSATION, null);
     });
 
     return NextResponse.json(newMessage, { status: 200 });

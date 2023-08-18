@@ -20,6 +20,8 @@ export async function GET(req: Request) {
       include: {
         users: true,
         messages: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
           include: {
             sender: true,
             seenBy: true,

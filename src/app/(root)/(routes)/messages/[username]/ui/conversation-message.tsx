@@ -5,6 +5,7 @@ import { cn } from "@shared/lib";
 import { ActiveIndicator, Avatar, AvatarImage, Icon } from "@shared/ui";
 import { ImageModal } from "@shared/ui/modal";
 import { format } from "date-fns";
+import { CldImage } from "next-cloudinary";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -26,8 +27,6 @@ export const ConversationMessage = ({
   const [isInfoOnSameLine, setIsInfoOnSameLine] = useState(true);
 
   useEffect(() => {
-    console.log(messageRef.current);
-
     if (
       messageRef.current &&
       messageRef.current.getBoundingClientRect().height > 24
@@ -46,12 +45,9 @@ export const ConversationMessage = ({
       )}
     >
       {!isOwn && (
-        <div className="relative">
-          <Avatar className={"w-10 h-10"}>
-            <AvatarImage src={data.sender.imageUrl} />
-          </Avatar>
-          {isActive && <ActiveIndicator size="small" />}
-        </div>
+        <Avatar className={"w-10 h-10"}>
+          <AvatarImage src={data.sender.imageUrl} />
+        </Avatar>
       )}
       <div className={cn("flex flex-col gap-2 relative", isOwn && "items-end")}>
         <div
@@ -69,34 +65,45 @@ export const ConversationMessage = ({
                 isOpen={imageModalOpen}
                 onClose={() => setImageModalOpen(false)}
               />
-              <Image
+              <CldImage
+                src={data.image}
                 alt="Image"
                 height="288"
                 width="288"
                 onClick={() => setImageModalOpen(true)}
-                src={data.image}
-                className="
-                object-cover 
-                cursor-pointer 
-                hover:scale-110 
-                transition-all
-              "
+                className="object-cover cursor-pointer hover:scale-110 transition-all"
               />
             </>
           ) : (
-            <p ref={messageRef}>{data.body}</p>
+            <p className="hyphens-auto" ref={messageRef}>
+              {data.body}
+            </p>
           )}
-          <div
-            className={cn(
-              "flex items-center gap-1 justify-end",
-              (!isInfoOnSameLine || data.image) && "w-full"
-            )}
-          >
-            <time className="text-xs text-secondary">
-              {format(new Date(data.createdAt), "HH:mm")}
-            </time>
-            <Icon className="w-4 h-4" name="Check" />
-          </div>
+          {isOwn && (
+            <div
+              className={cn(
+                "flex items-center gap-1 justify-end pr-1",
+                (!isInfoOnSameLine || data.image) && "w-full"
+              )}
+            >
+              <time
+                dateTime={new Date(data.createdAt).toLocaleString()}
+                className="text-xs text-secondary"
+              >
+                {format(new Date(data.createdAt), "HH:mm")}
+              </time>
+              <Icon
+                className="w-4 h-4"
+                name={
+                  data.id === "new-message"
+                    ? "Timer"
+                    : isOwn && data.seenBy.length > 1
+                    ? "CheckCheck"
+                    : "Check"
+                }
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

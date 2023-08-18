@@ -30,6 +30,7 @@ export const Conversation = ({ username }: ConversationProps) => {
         <ConversationHeader isActive={isActive} user={data!.user} />
         <ConversationBody
           conversationId={data?.conversation?.id}
+          username={username}
           isActive={isActive}
           messages={messages || []}
         />

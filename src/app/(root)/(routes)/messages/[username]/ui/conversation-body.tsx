@@ -10,6 +10,7 @@ import { cn } from "@shared/lib";
 interface ConversationBodyProps {
   messages: FullMessage[];
   conversationId?: string;
+  username: string;
   isActive: boolean;
 }
 
@@ -17,6 +18,7 @@ export const ConversationBody = ({
   messages,
   isActive,
   conversationId,
+  username,
 }: ConversationBodyProps) => {
   const [isArrowVisible, setIsArrowVisible] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -44,6 +46,7 @@ export const ConversationBody = ({
     const observer = new IntersectionObserver(onIntersection, {
       root: body,
       threshold: 0,
+      rootMargin: "24px",
     });
 
     observer.observe(bottom!);
