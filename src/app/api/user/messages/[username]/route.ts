@@ -81,7 +81,7 @@ export async function POST(
       },
     });
 
-    await pusherServer.trigger(convId, CREATE_MESSAGE, newMessage);
+    await pusherServer.trigger(username, CREATE_MESSAGE, newMessage);
 
     updatedConversation.users.forEach((user) => {
       pusherServer.trigger(user.id, UPDATE_CONVERSATION, null);

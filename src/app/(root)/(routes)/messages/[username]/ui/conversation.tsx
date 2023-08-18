@@ -13,9 +13,11 @@ interface ConversationProps {
 
 export const Conversation = ({ username }: ConversationProps) => {
   const { data, isLoading } = userApi.getSingleConversation(username);
-  const { data: messages, isLoading: isMessagesLoading } = userApi.getMessages(
-    data?.conversation?.id
-  );
+  const {
+    data: messages,
+    isLoading: isLoadingMessages,
+    refetch,
+  } = userApi.getMessages(data?.conversation?.id);
   const { members } = useActiveList();
   const isActive = useMemo(
     () => members.some((m) => m === data?.user.id),
@@ -33,6 +35,7 @@ export const Conversation = ({ username }: ConversationProps) => {
           username={username}
           isActive={isActive}
           messages={messages || []}
+          refetchMessages={() => refetch()}
         />
         <ConversationForm
           username={username}

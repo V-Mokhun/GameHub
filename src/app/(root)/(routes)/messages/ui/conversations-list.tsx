@@ -3,12 +3,34 @@
 import { userApi } from "@shared/api";
 import { ConversationsItem } from "./conversations-item";
 import { Icon, Link, Title } from "@shared/ui";
-import { USERS_ROUTE } from "@shared/consts";
+import { UPDATE_CONVERSATION, USERS_ROUTE } from "@shared/consts";
+import { useEffect } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { pusherClient } from "@shared/config";
 
 interface ConversationsListProps {}
 
 export const ConversationsList = ({}: ConversationsListProps) => {
-  const { data: conversations, isLoading } = userApi.getConversations();
+  const { userId } = useAuth();
+  const {
+    data: conversations,
+    isLoading,
+    refetch,
+  } = userApi.getConversations();
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const channel = pusherClient.subscribe(userId);
+    channel.bind(UPDATE_CONVERSATION, () => {
+      refetch();
+    });
+
+    return () => {
+      channel.unbind(UPDATE_CONVERSATION);
+      pusherClient.unsubscribe(userId);
+    };
+  }, [userId, refetch]);
 
   if (isLoading) return <div>Loading...</div>;
 

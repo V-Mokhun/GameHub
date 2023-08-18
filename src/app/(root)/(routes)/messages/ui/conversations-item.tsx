@@ -3,7 +3,13 @@ import { FullConversation, FullMessage } from "@shared/api";
 import { MESSAGES_ROUTE } from "@shared/consts";
 import { cn } from "@shared/lib";
 import { useActiveList, useOtherUser } from "@shared/lib/hooks";
-import { ActiveIndicator, Avatar, AvatarImage, Subtitle } from "@shared/ui";
+import {
+  ActiveIndicator,
+  Avatar,
+  AvatarImage,
+  Icon,
+  Subtitle,
+} from "@shared/ui";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
@@ -83,9 +89,19 @@ export const ConversationsItem = ({ data }: ConversationsItemProps) => {
             </p>
           )}
         </div>
-        <p className={cn(`truncate text-md`, hasSeen && "text-gray-400")}>
-          {lastMessageText}
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <p className={cn(`truncate text-md`, hasSeen && "text-gray-400")}>
+            {lastMessageText}
+          </p>
+          {lastMessage.senderId === user?.id ? (
+            <Icon
+              className="shrink-0 w-4 h-4"
+              name={lastMessage.seenBy.length > 1 ? "CheckCheck" : "Check"}
+            />
+          ) : (
+            <div className="shrink-0 w-4 h-4 rounded-full bg-secondary" />
+          )}
+        </div>
       </div>
     </div>
   );

@@ -23,18 +23,15 @@ export async function PATCH(
     const conversation = await db.conversation.findUnique({
       where: { id: conversationId },
     });
+
     if (!conversation)
       return new NextResponse("Conversation not found", { status: 404 });
 
-    // await db.$executeRaw`UPDATE Message WHERE conversationId = ${conversationId}`
-
     const messages = await db.message.findMany({
       where: {
-        AND: [
-          { conversationId },
-          { senderId: { not: userId } },
-          { seenBy: { none: { id: userId } } },
-        ],
+        conversationId,
+        senderId: { not: userId },
+        seenBy: { none: { id: userId } },
       },
     });
 
@@ -50,7 +47,7 @@ export async function PATCH(
     await pusherServer.trigger(userId, UPDATE_CONVERSATION, null);
 
     if (messages.length > 0)
-      await pusherServer.trigger(conversationId!, UPDATE_MESSAGE, null);
+      await pusherServer.trigger(username, UPDATE_MESSAGE, null);
 
     return new NextResponse("OK", { status: 200 });
   } catch (error) {
