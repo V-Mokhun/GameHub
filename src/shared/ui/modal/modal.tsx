@@ -9,9 +9,9 @@ import {
 } from "../primitives";
 
 interface ModalProps {
-  title: string;
+  title?: string;
   isOpen: boolean;
-  description: string;
+  description?: string;
   onClose: () => void;
   children?: React.ReactNode;
 }

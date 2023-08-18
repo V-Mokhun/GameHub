@@ -33,7 +33,10 @@ export const ConversationForm = ({
   conversationId,
   username,
 }: ConversationFormProps) => {
-  const { mutate: sendMessage, isLoading } = userApi.sendMessage(username);
+  const { mutate: sendMessage } = userApi.sendMessage(
+    username,
+    conversationId
+  );
 
   const form = useForm<MessageFormSchema>({
     defaultValues: {
@@ -45,6 +48,7 @@ export const ConversationForm = ({
 
   const onSubmit: SubmitHandler<MessageFormSchema> = async (data) => {
     if (data.message.trim().length === 0) return;
+
     await sendMessage({
       conversationId,
       image: "",

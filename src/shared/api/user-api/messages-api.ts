@@ -80,13 +80,12 @@ export const useMessages = (conversationId?: string) => {
   );
 };
 
-export const useSendMessage = (username: string) => {
+export const useSendMessage = (username: string, conversationId?: string) => {
   const { user } = useUser();
   const queryClient = useQueryClient();
-  const queryKey = ["messages", { id: user?.id, username }];
 
   return useMutation({
-    mutationKey: ["send-message", { id: user?.id, username }],
+    mutationKey: ["send-message", { id: user?.id, conversationId }],
     mutationFn: async (data: {
       image?: string;
       message?: string;
@@ -101,46 +100,61 @@ export const useSendMessage = (username: string) => {
     },
     onMutate: async (data) => {
       await queryClient.cancelQueries({
-        queryKey,
+        queryKey: ["messages", { id: user?.id, conversationId }],
       });
       const previousMessages: FullMessage[] | undefined =
-        queryClient.getQueryData(queryKey);
+        queryClient.getQueryData([
+          "messages",
+          { id: user?.id, conversationId },
+        ]);
+      console.log(previousMessages);
 
-      queryClient.setQueryData(queryKey, (old: FullMessage[] | undefined) => {
-        const sender = {
-          createdAt: user!.createdAt || new Date(),
-          email: "",
-          id: user!.id,
-          imageUrl: user!.imageUrl,
-          isPrivateLibrary: user!.unsafeMetadata.isPrivateLibrary,
-          updatedAt: user!.updatedAt || new Date(),
-          username: user!.username,
-        };
-        const message = {
-          body: data.message || "",
-          image: data.image || "",
-          senderId: user?.id!,
-          conversationId: data.conversationId!,
-          createdAt: new Date(),
-          id: "new-message",
-          sender,
-          seenBy: [sender],
-        };
+      queryClient.setQueryData(
+        ["messages", { id: user?.id, conversationId }],
+        (old: FullMessage[] | undefined) => {
+          const sender = {
+            createdAt: user!.createdAt || new Date(),
+            email: "",
+            id: user!.id,
+            imageUrl: user!.imageUrl,
+            isPrivateLibrary: user!.unsafeMetadata.isPrivateLibrary,
+            updatedAt: user!.updatedAt || new Date(),
+            username: user!.username,
+          };
 
-        if (!old) {
-          return [message];
-        } else {
-          return [...old, message];
+          const message = {
+            body: data.message || "",
+            image: data.image || "",
+            senderId: user?.id!,
+            conversationId: data.conversationId!,
+            createdAt: new Date(),
+            id: "new-message",
+            sender,
+            seenBy: [sender],
+          };
+
+          if (!old) {
+            return [message];
+          } else {
+            return [...old, message];
+          }
         }
-      });
+      );
 
       return { previousMessages };
     },
     onError: (error, variables, context) => {
-      queryClient.setQueryData(queryKey, context?.previousMessages);
+      queryClient.setQueryData(
+        ["messages", { id: user?.id, conversationId }],
+        context?.previousMessages
+      );
     },
     onSettled: (data, error, variables, context) => {
-      queryClient.invalidateQueries({ queryKey });
+      console.log("settled");
+      
+      queryClient.invalidateQueries({
+        queryKey: ["messages", { id: user?.id, conversationId }],
+      });
     },
   });
 };

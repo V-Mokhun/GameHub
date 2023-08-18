@@ -15,7 +15,14 @@ export async function POST(req: Request) {
 
     if (!conversationId) return NextResponse.json([], { status: 200 });
 
-    const messages = await db.message.findMany({ where: { conversationId } });
+    const messages = await db.message.findMany({
+      where: { conversationId },
+      orderBy: { createdAt: "asc" },
+      include: {
+        sender: true,
+        seenBy: true,
+      },
+    });
 
     return NextResponse.json(messages, { status: 200 });
   } catch (error) {

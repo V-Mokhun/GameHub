@@ -9,15 +9,15 @@ import { useCallback, useMemo } from "react";
 
 interface ConversationHeaderProps {
   user: User;
+  isActive: boolean;
 }
 
-export const ConversationHeader = ({ user }: ConversationHeaderProps) => {
+export const ConversationHeader = ({
+  user,
+  isActive,
+}: ConversationHeaderProps) => {
   const router = useRouter();
-  const { members } = useActiveList();
-  const isActive = useMemo(
-    () => members.some((m) => m === user.id),
-    [members, user.id]
-  );
+
   const handleClick = useCallback(() => {
     router.push(PROFILE_ROUTE(user.username!));
   }, [router, user.username]);
