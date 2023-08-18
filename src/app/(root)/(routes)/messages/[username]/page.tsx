@@ -15,7 +15,7 @@ export default async function ConversationPage({
 
   return (
     <section className="h-full">
-      <Container>
+      <Container className="px-0 md:px-0">
         <Conversation username={params.username} />
       </Container>
     </section>

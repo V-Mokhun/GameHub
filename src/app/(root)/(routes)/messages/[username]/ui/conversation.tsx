@@ -25,10 +25,14 @@ export const Conversation = ({ username }: ConversationProps) => {
   if (isLoading) return <>Loading...</>;
 
   return (
-    <div className="h-[calc(100vh-70px)] -mt-5 md:-mt-4">
+    <div className="h-[calc(100vh-70px)] -mt-5 -mb-4 md:-mt-4 md:-mb-5">
       <div className="h-full flex flex-col relative">
         <ConversationHeader isActive={isActive} user={data!.user} />
-        <ConversationBody conversationId={data?.conversation?.id} isActive={isActive} messages={messages || []} />
+        <ConversationBody
+          conversationId={data?.conversation?.id}
+          isActive={isActive}
+          messages={messages || []}
+        />
         <ConversationForm
           username={username}
           conversationId={data?.conversation?.id}

@@ -57,7 +57,7 @@ model Conversation {
 
 model Message {
   id        String   @id @default(uuid())
-  body      String?
+  body      String?  @db.Text
   image     String?
   createdAt DateTime @default(now())
 
