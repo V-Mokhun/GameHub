@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { NextResponse } from "next/server";
@@ -9,29 +9,22 @@ export async function GET(
 ) {
   try {
     const { username } = params;
-    const { userId } = auth();
+    const authUser = await currentUser();
 
-    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+    if (!authUser?.id) return new NextResponse("Unauthorized", { status: 401 });
 
     const user = await db.user.findUnique({ where: { username } });
     if (!user) return new NextResponse("User not found", { status: 404 });
 
     const conversations = await db.conversation.findMany({
       where: {
-        users: {
-          every: {
-            AND: [{ id: userId }, { username }],
-          },
-        },
+        OR: [
+          { userUsernames: `${authUser.username},${username}` },
+          { userUsernames: `${username},${authUser.username}` },
+        ],
       },
       include: {
         users: true,
-        messages: {
-          include: {
-            sender: true,
-            seenBy: true,
-          },
-        },
       },
     });
 

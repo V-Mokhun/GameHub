@@ -12,7 +12,12 @@ import {
   useRemoveFriend,
   useSendFriendRequest,
 } from "./friends-api";
-import { useConversations, useSingleConversation } from "./messages-api";
+import {
+  useConversations,
+  useMessages,
+  useSendMessage,
+  useSingleConversation,
+} from "./messages-api";
 import { OwnProfile, UserWithFriends } from "./types";
 
 type UseUserApiResponse = {
@@ -117,4 +122,6 @@ export const userApi = {
   removeFriend: useRemoveFriend,
   getConversations: useConversations,
   getSingleConversation: useSingleConversation,
+  getMessages: useMessages,
+  sendMessage: useSendMessage,
 };

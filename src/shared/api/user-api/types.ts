@@ -20,5 +20,4 @@ export type FullMessage = Message & {
 
 export type FullConversation = Conversation & {
   users: User[];
-  messages: FullMessage[];
 };

@@ -1,11 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { userApi } from "@shared/api";
 import {
   Button,
   Form,
+  FormControl,
   FormField,
   FormItem,
+  FormMessage,
   Icon,
   Input,
   Textarea,
@@ -16,30 +19,45 @@ import { z } from "zod";
 
 interface ConversationFormProps {
   conversationId?: string;
+  username: string;
 }
 
 const messageFormSchema = z.object({
-  body: z.string().optional(),
+  message: z.string().max(1000, "Message must be max 1000 character long"),
   conversationId: z.string().optional(),
 });
 
 type MessageFormSchema = z.infer<typeof messageFormSchema>;
 
-export const ConversationForm = ({ conversationId }: ConversationFormProps) => {
+export const ConversationForm = ({
+  conversationId,
+  username,
+}: ConversationFormProps) => {
+  const { mutate: sendMessage, isLoading } = userApi.sendMessage(username);
+
   const form = useForm<MessageFormSchema>({
     defaultValues: {
-      body: "",
+      message: "",
+      conversationId,
     },
     resolver: zodResolver(messageFormSchema),
   });
 
   const onSubmit: SubmitHandler<MessageFormSchema> = async (data) => {
-    console.log(data);
+    if (data.message.trim().length === 0) return;
+    await sendMessage({
+      conversationId,
+      image: "",
+      message: data.message,
+    });
   };
 
-  const handleUpload = (result: any) => {
-    //      image: result?.info?.secure_url,
-    console.log(result);
+  const handleUpload = async (result: any) => {
+    await sendMessage({
+      conversationId,
+      image: result?.info?.secure_url,
+      message: "",
+    });
   };
 
   const handleUserKeyPress = (e: React.KeyboardEvent) => {
@@ -47,7 +65,7 @@ export const ConversationForm = ({ conversationId }: ConversationFormProps) => {
       e.preventDefault();
 
       form.handleSubmit(onSubmit)();
-      form.setValue("body", "");
+      form.setValue("message", "");
     }
   };
 
@@ -72,15 +90,19 @@ export const ConversationForm = ({ conversationId }: ConversationFormProps) => {
           >
             <FormField
               control={form.control}
-              name="body"
+              name="message"
               render={({ field }) => (
-                <FormItem className="w-full">
-                  <Textarea
-                    onKeyDown={handleUserKeyPress}
-                    className="min-h-0 h-10 resize-none"
-                    placeholder="Aa"
-                    {...field}
-                  />
+                <FormItem className="w-full space-y-0">
+                  <FormControl>
+                    <Textarea
+                      maxLength={1000}
+                      onKeyDown={handleUserKeyPress}
+                      className="min-h-0 h-10 resize-none"
+                      placeholder="Aa"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="absolute b-0" />
                 </FormItem>
               )}
             />

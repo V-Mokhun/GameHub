@@ -50,8 +50,9 @@ model Conversation {
   createdAt     DateTime @default(now())
   lastMessageAt DateTime @default(now())
 
-  messages Message[]
-  users    User[]
+  userUsernames String //? "username1,username2"
+  users         User[]
+  messages      Message[]
 }
 
 model Message {

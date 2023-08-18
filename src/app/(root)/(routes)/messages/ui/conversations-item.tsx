@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/nextjs";
-import { FullConversation } from "@shared/api";
+import { FullConversation, FullMessage } from "@shared/api";
 import { MESSAGES_ROUTE } from "@shared/consts";
 import { cn } from "@shared/lib";
 import { useActiveList, useOtherUser } from "@shared/lib/hooks";
@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
 interface ConversationsItemProps {
-  data: FullConversation;
+  data: FullConversation & { messages: FullMessage[] };
 }
 
 export const ConversationsItem = ({ data }: ConversationsItemProps) => {
@@ -64,23 +64,26 @@ export const ConversationsItem = ({ data }: ConversationsItemProps) => {
   }, [lastMessage]);
 
   return (
-    <div className="flex items-start gap-4" onClick={handleClick}>
+    <div
+      className="flex items-start gap-4 cursor-pointer"
+      onClick={handleClick}
+    >
       <div className="relative">
-        <Avatar className={"w-6 h-6 md:w-8 md:h-8"}>
-          <AvatarImage src={user?.imageUrl} />
+        <Avatar className={"w-14 h-14"}>
+          <AvatarImage src={otherUser?.imageUrl} />
         </Avatar>
         {isActive && <ActiveIndicator size="small" />}
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex justify-between items-center mb-1">
-          <Subtitle className="mb-0 md:mb-0">{otherUser?.username}</Subtitle>
+          <p className="text-lg">{otherUser?.username}</p>
           {lastMessage?.createdAt && (
-            <p className="text-xs text-muted font-light">
+            <p className="text-sm text-gray-400 font-light">
               {format(new Date(lastMessage.createdAt), "p")}
             </p>
           )}
         </div>
-        <p className={cn(`truncate text-sm`, hasSeen && "text-muted")}>
+        <p className={cn(`truncate text-md`, hasSeen && "text-gray-400")}>
           {lastMessageText}
         </p>
       </div>
