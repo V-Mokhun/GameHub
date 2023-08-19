@@ -11,7 +11,7 @@ import {
   Subtitle,
   Title,
 } from "@shared/ui";
-import { FriendsButton } from "@widgets/users";
+import { FriendsButton, MessageButton } from "@widgets/users";
 import NextLink from "next/link";
 
 interface UsersItemProps {
@@ -46,7 +46,10 @@ export const UsersItem = ({
   return (
     <li
       key={user.id}
-      className={cn("flex", isSmall ? "items-center gap-2" : "items-start gap-4")}
+      className={cn(
+        "flex",
+        isSmall ? "items-center gap-2" : "items-start gap-4"
+      )}
     >
       <NextLink className="relative" href={PROFILE_ROUTE(user.username!)}>
         <Avatar
@@ -76,10 +79,11 @@ export const UsersItem = ({
       {!isSelf && (
         <div
           className={cn(
-            "flex items-center self-stretch flex-1 justify-end",
+            "flex items-center self-stretch flex-1 justify-end gap-2",
             !isSmall && "md:justify-start"
           )}
         >
+          <MessageButton isSmall={isSmall} username={user.username!} />
           <FriendsButton
             isSmall={isSmall}
             authUser={authUser}

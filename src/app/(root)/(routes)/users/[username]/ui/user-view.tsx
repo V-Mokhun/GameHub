@@ -13,7 +13,7 @@ import {
   Title,
   buttonVariants,
 } from "@shared/ui";
-import { FriendsButton } from "@widgets/users";
+import { FriendsButton, MessageButton } from "@widgets/users";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -76,15 +76,18 @@ export const UserView = ({
           </div>
         ) : (
           !isOwnProfile && (
-            <FriendsButton
-              authUser={ownProfile}
-              isUserFriend={
-                ownProfile?.friends.find(
-                  (friend) => friend.username === username
-                ) != undefined
-              }
-              userUsername={username}
-            />
+            <div className="flex items-center gap-4">
+              <MessageButton username={username} />
+              <FriendsButton
+                authUser={ownProfile}
+                isUserFriend={
+                  ownProfile?.friends.find(
+                    (friend) => friend.username === username
+                  ) != undefined
+                }
+                userUsername={username}
+              />
+            </div>
           )
         )}
       </div>
