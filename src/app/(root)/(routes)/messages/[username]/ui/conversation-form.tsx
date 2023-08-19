@@ -61,8 +61,9 @@ export const ConversationForm = ({
 
   const onSubmit: SubmitHandler<MessageFormSchema> = async (data) => {
     if (data.message.trim().length === 0) return;
-
+    setIsEmojiOpen(false);
     form.setValue("message", "");
+
     await sendMessage({
       conversationId,
       image: "",

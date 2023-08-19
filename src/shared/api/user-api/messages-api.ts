@@ -81,6 +81,16 @@ export const useMessages = (conversationId?: string) => {
   );
 };
 
+export const useUnseenMessagesCount = () => {
+  const { userId } = useAuth();
+
+  return useQuery(["unseen-messages-count", { id: userId }], async () => {
+    const { data } = await axios.get<number>(`/api/user/messages/unseen`);
+
+    return data;
+  });
+};
+
 export const useSendMessage = (username: string, conversationId?: string) => {
   const { user } = useUser();
   const queryClient = useQueryClient();

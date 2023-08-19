@@ -33,7 +33,6 @@ export const Conversation = ({ username }: ConversationProps) => {
         <ConversationBody
           conversationId={data?.conversation?.id}
           username={username}
-          isActive={isActive}
           messages={messages || []}
           refetchMessages={() => refetch()}
         />

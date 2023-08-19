@@ -5,6 +5,7 @@ import { HeaderAvatar } from "./header-avatar";
 import { HeaderButton } from "./header-button";
 import { HeaderSearch } from "./header-search";
 import { HeaderRequests } from "./header-requests";
+import { HeaderMessages } from "./header-messages";
 
 export const Header = async () => {
   const { userId } = auth();
@@ -18,6 +19,7 @@ export const Header = async () => {
           <HeaderSearch />
           {userId ? (
             <div className="flex items-center gap-4">
+              <HeaderMessages authUserId={userId} />
               <HeaderRequests authUserId={userId} />
               <HeaderAvatar />
             </div>

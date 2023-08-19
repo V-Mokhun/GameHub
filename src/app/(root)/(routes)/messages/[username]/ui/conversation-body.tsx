@@ -10,22 +10,22 @@ import { pusherClient } from "@shared/config";
 import { CREATE_MESSAGE, UPDATE_MESSAGE } from "@shared/consts";
 import find from "lodash.find";
 import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ConversationBodyProps {
   messages: FullMessage[];
   conversationId?: string;
   username: string;
-  isActive: boolean;
   refetchMessages: () => void;
 }
 
 export const ConversationBody = ({
   messages,
-  isActive,
   conversationId,
   username,
   refetchMessages,
 }: ConversationBodyProps) => {
+  const queryClient = useQueryClient();
   const [isArrowVisible, setIsArrowVisible] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -37,25 +37,19 @@ export const ConversationBody = ({
 
     const channel = pusherClient.subscribe(user.username);
     const messageHandler = async (message: FullMessage) => {
-      console.log("create message");
-
-      try {
-        await axios.patch(`/api/user/conversations/${username}/seen`, {
-          conversationId,
-        });
-        refetchMessages();
-        bottomRef.current?.scrollIntoView({ block: "nearest" });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const updateMessageHandler = async () => {
-      console.log("update message");
-
       await axios.patch(`/api/user/conversations/${username}/seen`, {
         conversationId,
       });
+
+      refetchMessages();
+      bottomRef.current?.scrollIntoView({ block: "nearest" });
+    };
+
+    const updateMessageHandler = async () => {
+      await axios.patch(`/api/user/conversations/${username}/seen`, {
+        conversationId,
+      });
+
       refetchMessages();
       bottomRef.current?.scrollIntoView({ block: "nearest" });
     };
@@ -68,12 +62,15 @@ export const ConversationBody = ({
       channel.unbind(UPDATE_MESSAGE, updateMessageHandler);
       pusherClient.unsubscribe(user.username!);
     };
-  }, [user?.username, messages, refetchMessages, username, conversationId]);
+  }, [user?.username, refetchMessages, username, conversationId]);
 
   useEffect(() => {
-    axios.patch(`/api/user/conversations/${username}/seen`, {
-      conversationId,
-    });
+    async function updateMessages(id: string) {
+      await axios.patch(`/api/user/conversations/${username}/seen`, {
+        conversationId,
+      });
+      queryClient.invalidateQueries(["unseen-messages-count", { id }]);
+    }
 
     const body = bodyRef.current;
     const bottom = bottomRef.current;
@@ -96,11 +93,15 @@ export const ConversationBody = ({
 
     observer.observe(bottom!);
 
+    if (conversationId && user?.id) {
+      updateMessages(user.id);
+    }
+
     return () => {
       observer.unobserve(bottom!);
       observer.disconnect();
     };
-  }, [conversationId, username]);
+  }, [conversationId, username, user?.id, queryClient]);
 
   return (
     <div className="flex-1 overflow-y-auto" ref={bodyRef}>

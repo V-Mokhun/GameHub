@@ -49,7 +49,7 @@ export async function PATCH(
     if (messages.length > 0)
       await pusherServer.trigger(username, UPDATE_MESSAGE, null);
 
-    return new NextResponse("OK", { status: 200 });
+    return NextResponse.json("OK", { status: 200 });
   } catch (error) {
     return catchError(error, "Failed to update conversation");
   }

@@ -17,6 +17,7 @@ import {
   useMessages,
   useSendMessage,
   useSingleConversation,
+  useUnseenMessagesCount,
 } from "./messages-api";
 import { OwnProfile, UserWithFriends } from "./types";
 
@@ -123,5 +124,6 @@ export const userApi = {
   getConversations: useConversations,
   getSingleConversation: useSingleConversation,
   getMessages: useMessages,
+  getUnseenMessagesCount: useUnseenMessagesCount,
   sendMessage: useSendMessage,
 };
