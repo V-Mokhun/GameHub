@@ -37,7 +37,8 @@ export const Conversation = ({ username }: ConversationProps) => {
     data: messages,
     isLoading: isLoadingMessages,
     refetch,
-  } = userApi.getMessages(data?.conversation?.id);
+  } = userApi.getMessages(username, data?.conversation?.id);
+  
   const { members } = useActiveList();
   const isActive = useMemo(
     () => members.some((m) => m === data?.user.id),
@@ -54,7 +55,7 @@ export const Conversation = ({ username }: ConversationProps) => {
           conversationId={data?.conversation?.id}
           username={username}
           messages={messages || []}
-          isLoading={isLoadingMessages}
+          isLoading={(data?.conversation?.id && isLoadingMessages) || false}
           refetchMessages={() => refetch()}
         />
         <ConversationForm

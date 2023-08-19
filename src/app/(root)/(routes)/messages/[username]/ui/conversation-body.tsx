@@ -22,7 +22,7 @@ interface ConversationBodyProps {
 }
 
 export const ConversationBodySkeleton = () => (
-  <div className="flex-1 overflow-y-auto space-y-2 px-2 md:px-4">
+  <div className="flex-1 overflow-y-auto space-y-2 px-2 md:px-4 mt-2">
     <div className="flex justify-end">
       <Skeleton className="w-32 h-10 rounded-3xl" />
     </div>

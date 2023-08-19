@@ -59,12 +59,12 @@ export const useSingleConversation = (username: string) => {
   );
 };
 
-export const useMessages = (conversationId?: string) => {
+export const useMessages = (username: string, conversationId?: string) => {
   const { userId } = useAuth();
   const { toast } = useToast();
 
   return useQuery(
-    ["messages", { id: userId, conversationId }],
+    ["messages", { id: userId, username }],
     async () => {
       const { data } = await axios.post<FullMessage[]>(`/api/user/messages`, {
         conversationId,
@@ -96,7 +96,7 @@ export const useSendMessage = (username: string, conversationId?: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["send-message", { id: user?.id, conversationId }],
+    mutationKey: ["send-message", { id: user?.id }],
     mutationFn: async (data: {
       image?: string;
       message?: string;
@@ -111,16 +111,13 @@ export const useSendMessage = (username: string, conversationId?: string) => {
     },
     onMutate: async (data) => {
       await queryClient.cancelQueries({
-        queryKey: ["messages", { id: user?.id, conversationId }],
+        queryKey: ["messages", { id: user?.id, username }],
       });
       const previousMessages: FullMessage[] | undefined =
-        queryClient.getQueryData([
-          "messages",
-          { id: user?.id, conversationId },
-        ]);
+        queryClient.getQueryData(["messages", { id: user?.id, username }]);
 
       queryClient.setQueryData(
-        ["messages", { id: user?.id, conversationId }],
+        ["messages", { id: user?.id, username }],
         (old: FullMessage[] | undefined) => {
           const sender = {
             createdAt: user!.createdAt || new Date(),
@@ -156,13 +153,22 @@ export const useSendMessage = (username: string, conversationId?: string) => {
     },
     onError: (error, variables, context) => {
       queryClient.setQueryData(
-        ["messages", { id: user?.id, conversationId }],
+        ["messages", { id: user?.id, username }],
         context?.previousMessages
       );
     },
     onSettled: (data, error, variables, context) => {
+      if (
+        !context?.previousMessages ||
+        context?.previousMessages?.length === 0
+      ) {
+        queryClient.invalidateQueries({
+          queryKey: ["conversations", { id: user?.id, username }],
+        });
+      }
+
       queryClient.invalidateQueries({
-        queryKey: ["messages", { id: user?.id, conversationId }],
+        queryKey: ["messages", { id: user?.id, username }],
       });
     },
   });
