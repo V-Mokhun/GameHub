@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { HOME_ROUTE } from "@shared/consts";
 import { Container } from "@shared/ui";
 import { redirect } from "next/navigation";
@@ -9,9 +9,10 @@ export default async function ConversationPage({
 }: {
   params: { username: string };
 }) {
-  const { userId } = auth();
+  const user = await currentUser();
 
-  if (!userId) return redirect(HOME_ROUTE);
+  if (!user?.id || user.username === params.username)
+    return redirect(HOME_ROUTE);
 
   return (
     <section className="h-full">

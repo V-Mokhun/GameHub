@@ -85,7 +85,7 @@ export const ConversationsItem = ({ data }: ConversationsItemProps) => {
           <p className="text-lg">{otherUser?.username}</p>
           {lastMessage?.createdAt && (
             <p className="text-sm text-gray-400 font-light">
-              {format(new Date(lastMessage.createdAt), "p")}
+              {format(new Date(lastMessage.createdAt), "HH:mm")}
             </p>
           )}
         </div>
@@ -98,9 +98,9 @@ export const ConversationsItem = ({ data }: ConversationsItemProps) => {
               className="shrink-0 w-4 h-4"
               name={lastMessage.seenBy.length > 1 ? "CheckCheck" : "Check"}
             />
-          ) : (
+          ) : !hasSeen ? (
             <div className="shrink-0 w-4 h-4 rounded-full bg-secondary" />
-          )}
+          ) : null}
         </div>
       </div>
     </div>

@@ -71,6 +71,10 @@ export const ConversationBody = ({
   }, [user?.username, messages, refetchMessages, username, conversationId]);
 
   useEffect(() => {
+    axios.patch(`/api/user/conversations/${username}/seen`, {
+      conversationId,
+    });
+
     const body = bodyRef.current;
     const bottom = bottomRef.current;
 
@@ -96,17 +100,15 @@ export const ConversationBody = ({
       observer.unobserve(bottom!);
       observer.disconnect();
     };
-  }, []);
+  }, [conversationId, username]);
 
   return (
     <div className="flex-1 overflow-y-auto" ref={bodyRef}>
       {messages.map((message, i) => (
         <ConversationMessage
           isOwn={message.senderId === user?.id}
-          isLast={i === messages.length - 1}
           key={message.id}
           data={message}
-          isActive={isActive}
         />
       ))}
       <Button

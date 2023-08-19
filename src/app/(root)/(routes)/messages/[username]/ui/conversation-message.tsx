@@ -2,25 +2,20 @@
 
 import { FullMessage } from "@shared/api";
 import { cn } from "@shared/lib";
-import { ActiveIndicator, Avatar, AvatarImage, Icon } from "@shared/ui";
+import { Avatar, AvatarImage, Icon } from "@shared/ui";
 import { ImageModal } from "@shared/ui/modal";
 import { format } from "date-fns";
 import { CldImage } from "next-cloudinary";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 interface ConversationMessageProps {
-  isLast: boolean;
   isOwn: boolean;
-  isActive: boolean;
-  data: FullMessage;
+  data: FullMessage & { isSending?: boolean };
 }
 
 export const ConversationMessage = ({
   data,
-  isLast,
   isOwn,
-  isActive,
 }: ConversationMessageProps) => {
   const messageRef = useRef<HTMLDivElement>(null);
   const [imageModalOpen, setImageModalOpen] = useState(false);
@@ -95,7 +90,7 @@ export const ConversationMessage = ({
               <Icon
                 className="w-4 h-4"
                 name={
-                  data.id === "new-message"
+                  data.isSending
                     ? "Timer"
                     : isOwn && data.seenBy.length > 1
                     ? "CheckCheck"

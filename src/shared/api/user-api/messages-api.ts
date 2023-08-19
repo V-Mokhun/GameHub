@@ -9,6 +9,7 @@ import { FullConversation, FullMessage } from "./types";
 import { useRouter } from "next/navigation";
 import { MESSAGES_ROUTE } from "@shared/consts";
 import { User } from "@prisma/client";
+import { nanoid } from "nanoid";
 
 export const useConversations = () => {
   const { userId } = useAuth();
@@ -127,9 +128,10 @@ export const useSendMessage = (username: string, conversationId?: string) => {
             senderId: user?.id!,
             conversationId: data.conversationId!,
             createdAt: new Date(),
-            id: "new-message",
+            id: nanoid(10),
             sender,
             seenBy: [sender],
+            isSending: true,
           };
 
           if (!old) {
