@@ -10,12 +10,26 @@ import {
   FormItem,
   FormMessage,
   Icon,
-  Input,
   Textarea,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@shared/ui";
+import { Theme } from "emoji-picker-react";
 import { CldUploadButton } from "next-cloudinary";
+import { useTheme } from "next-themes";
+import dynamic from "next/dynamic";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+
+const Picker = dynamic(
+  () => {
+    return import("emoji-picker-react");
+  },
+  { ssr: false }
+);
 
 interface ConversationFormProps {
   conversationId?: string;
@@ -33,6 +47,8 @@ export const ConversationForm = ({
   conversationId,
   username,
 }: ConversationFormProps) => {
+  const { resolvedTheme } = useTheme();
+  const [isEmojiOpen, setIsEmojiOpen] = useState(false);
   const { mutate: sendMessage } = userApi.sendMessage(username, conversationId);
 
   const form = useForm<MessageFormSchema>({
@@ -46,6 +62,7 @@ export const ConversationForm = ({
   const onSubmit: SubmitHandler<MessageFormSchema> = async (data) => {
     if (data.message.trim().length === 0) return;
 
+    form.setValue("message", "");
     await sendMessage({
       conversationId,
       image: "",
@@ -73,17 +90,34 @@ export const ConversationForm = ({
   return (
     <div className="px-2 py-2 md:py-4 shadow-lg">
       <div className="flex items-center gap-2">
-        <CldUploadButton
-          options={{ maxFiles: 1 }}
-          onUpload={handleUpload}
-          uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME}
-        >
-          <Icon
-            className="md:h-8 md:w-8 hover:text-secondary-hover transition-colors"
-            name="Image"
-          />
-        </CldUploadButton>
-
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center justify-center">
+                <CldUploadButton
+                  options={{
+                    maxFiles: 1,
+                    clientAllowedFormats: [
+                      "jpeg",
+                      "jpg",
+                      "png",
+                      "webp",
+                      "avif",
+                    ],
+                  }}
+                  onUpload={handleUpload}
+                  uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME}
+                >
+                  <Icon
+                    className="md:h-8 md:w-8 hover:text-secondary-hover transition-colors"
+                    name="Image"
+                  />
+                </CldUploadButton>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>Attach an Image</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -93,16 +127,32 @@ export const ConversationForm = ({
               control={form.control}
               name="message"
               render={({ field }) => (
-                <FormItem className="w-full space-y-0">
+                <FormItem className="w-full space-y-0 relative">
                   <FormControl>
                     <Textarea
                       maxLength={1000}
                       onKeyDown={handleUserKeyPress}
-                      className="min-h-0 h-10 resize-none"
+                      className="min-h-0 h-10 resize-none text-base rounded-3xl pr-10"
                       placeholder="Aa"
+                      onFocus={() => setIsEmojiOpen(false)}
                       {...field}
                     />
                   </FormControl>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger
+                        className={"absolute right-1 bottom-2 md:bottom-1"}
+                        onClick={() => setIsEmojiOpen((prev) => !prev)}
+                        type="button"
+                      >
+                        <Icon
+                          className="fill-secondary hover:fill-secondary-hover transition-colors text-white dark:text-muted w-6 h-6 md:w-8 md:h-8"
+                          name={"Smile"}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>Choose an emoji</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                   <FormMessage className="absolute b-0" />
                 </FormItem>
               )}
@@ -119,6 +169,22 @@ export const ConversationForm = ({
             </Button>
           </form>
         </Form>
+        {isEmojiOpen && (
+          <div className="absolute right-10 bottom-16">
+            <Picker
+              theme={resolvedTheme === "light" ? Theme.LIGHT : Theme.DARK}
+              previewConfig={{
+                showPreview: false,
+              }}
+              onEmojiClick={(emoji) => {
+                form.setValue(
+                  "message",
+                  form.getValues("message") + emoji.emoji
+                );
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
