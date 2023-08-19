@@ -2,16 +2,31 @@
 
 import { User } from "@prisma/client";
 import { MESSAGES_ROUTE, PROFILE_ROUTE } from "@shared/consts";
-import { useActiveList } from "@shared/lib/hooks";
-import { ActiveIndicator, Avatar, AvatarImage, Icon } from "@shared/ui";
+import {
+  ActiveIndicator,
+  Avatar,
+  AvatarImage,
+  Icon,
+  Skeleton,
+} from "@shared/ui";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
 interface ConversationHeaderProps {
   user: User;
   isActive: boolean;
 }
+
+export const ConversationHeaderSkeleton = () => (
+  <div className="p-2 flex items-center gap-4">
+    <Skeleton className="w-8 h-8 md:hidden" />
+    <div className="flex items-center gap-2">
+      <Skeleton className="w-10 h-10 rounded-full" />
+      <Skeleton className="w-24 h-7" />
+    </div>
+  </div>
+);
 
 export const ConversationHeader = ({
   user,

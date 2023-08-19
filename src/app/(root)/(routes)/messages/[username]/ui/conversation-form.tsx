@@ -10,6 +10,7 @@ import {
   FormItem,
   FormMessage,
   Icon,
+  Skeleton,
   Textarea,
   Tooltip,
   TooltipContent,
@@ -42,6 +43,16 @@ const messageFormSchema = z.object({
 });
 
 type MessageFormSchema = z.infer<typeof messageFormSchema>;
+
+export const ConversationFormSkeleton = () => (
+  <div className="px-2 py-2 md:py-4">
+    <div className="flex items-center gap-2">
+      <Skeleton className="w-6 h-6 md:w-8 md:h-8 rounded-md" />
+      <Skeleton className="w-full h-10 rounded-3xl" />
+      <Skeleton className="w-6 h-6 rounded-md" />
+    </div>
+  </div>
+);
 
 export const ConversationForm = ({
   conversationId,
@@ -165,6 +176,7 @@ export const ConversationForm = ({
             >
               <Icon
                 name="Send"
+                size={24}
                 className="hover:text-secondary-hover transition-colors"
               />
             </Button>

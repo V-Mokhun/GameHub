@@ -4,7 +4,7 @@ import { FullMessage } from "@shared/api";
 import { useEffect, useRef, useState } from "react";
 import { ConversationMessage } from "./conversation-message";
 import { useAuth, useUser } from "@clerk/nextjs";
-import { Button, Icon, TextSeparator } from "@shared/ui";
+import { Button, Icon, Skeleton, TextSeparator } from "@shared/ui";
 import { cn } from "@shared/lib";
 import { pusherClient } from "@shared/config";
 import { CREATE_MESSAGE, UPDATE_MESSAGE } from "@shared/consts";
@@ -18,13 +18,41 @@ interface ConversationBodyProps {
   conversationId?: string;
   username: string;
   refetchMessages: () => void;
+  isLoading: boolean;
 }
+
+export const ConversationBodySkeleton = () => (
+  <div className="flex-1 overflow-y-auto space-y-2 px-2 md:px-4">
+    <div className="flex justify-end">
+      <Skeleton className="w-32 h-10 rounded-3xl" />
+    </div>
+    <div className="flex justify-end">
+      <Skeleton className="w-[80%] h-16 rounded-3xl" />
+    </div>
+    <div className="flex gap-2">
+      <Skeleton className="w-10 h-10 rounded-full" />
+      <Skeleton className="w-56 h-10 rounded-3xl" />
+    </div>
+    <div className="flex gap-2">
+      <Skeleton className="w-10 h-10 rounded-full" />
+      <Skeleton className="w-24 h-10 rounded-3xl" />
+    </div>
+    <div className="flex justify-end">
+      <Skeleton className="w-48 h-10 rounded-3xl" />
+    </div>
+    <div className="flex gap-2">
+      <Skeleton className="w-10 h-10 rounded-full" />
+      <Skeleton className="w-28 h-10 rounded-3xl" />
+    </div>
+  </div>
+);
 
 export const ConversationBody = ({
   messages,
   conversationId,
   username,
   refetchMessages,
+  isLoading,
 }: ConversationBodyProps) => {
   const queryClient = useQueryClient();
   const [isArrowVisible, setIsArrowVisible] = useState(false);
@@ -33,6 +61,8 @@ export const ConversationBody = ({
   const { user } = useUser();
 
   useEffect(() => {
+    if (isLoading) return;
+
     bottomRef.current?.scrollIntoView({ block: "nearest" });
     if (!user?.username || !conversationId) return;
 
@@ -54,9 +84,11 @@ export const ConversationBody = ({
       channel.unbind(UPDATE_MESSAGE, messageHandler);
       pusherClient.unsubscribe(user.username!);
     };
-  }, [user?.username, refetchMessages, username, conversationId]);
+  }, [user?.username, refetchMessages, username, conversationId, isLoading]);
 
   useEffect(() => {
+    if (isLoading) return;
+
     async function updateMessages(id: string) {
       await axios.patch(`/api/user/conversations/${username}/seen`, {
         conversationId,
@@ -93,7 +125,9 @@ export const ConversationBody = ({
       observer.unobserve(bottom!);
       observer.disconnect();
     };
-  }, [conversationId, username, user?.id, queryClient]);
+  }, [conversationId, username, user?.id, queryClient, isLoading]);
+
+  if (isLoading) return <ConversationBodySkeleton />;
 
   return (
     <div className="flex-1 overflow-y-auto" ref={bodyRef}>
