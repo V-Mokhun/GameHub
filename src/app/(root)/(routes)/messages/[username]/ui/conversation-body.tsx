@@ -4,13 +4,14 @@ import { FullMessage } from "@shared/api";
 import { useEffect, useRef, useState } from "react";
 import { ConversationMessage } from "./conversation-message";
 import { useAuth, useUser } from "@clerk/nextjs";
-import { Button, Icon } from "@shared/ui";
+import { Button, Icon, TextSeparator } from "@shared/ui";
 import { cn } from "@shared/lib";
 import { pusherClient } from "@shared/config";
 import { CREATE_MESSAGE, UPDATE_MESSAGE } from "@shared/consts";
 import find from "lodash.find";
 import axios from "axios";
 import { useQueryClient } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 interface ConversationBodyProps {
   messages: FullMessage[];
@@ -36,16 +37,7 @@ export const ConversationBody = ({
     if (!user?.username || !conversationId) return;
 
     const channel = pusherClient.subscribe(user.username);
-    const messageHandler = async (message: FullMessage) => {
-      await axios.patch(`/api/user/conversations/${username}/seen`, {
-        conversationId,
-      });
-
-      refetchMessages();
-      bottomRef.current?.scrollIntoView({ block: "nearest" });
-    };
-
-    const updateMessageHandler = async () => {
+    const messageHandler = async () => {
       await axios.patch(`/api/user/conversations/${username}/seen`, {
         conversationId,
       });
@@ -55,11 +47,11 @@ export const ConversationBody = ({
     };
 
     channel.bind(CREATE_MESSAGE, messageHandler);
-    channel.bind(UPDATE_MESSAGE, updateMessageHandler);
+    channel.bind(UPDATE_MESSAGE, messageHandler);
 
     return () => {
       channel.unbind(CREATE_MESSAGE, messageHandler);
-      channel.unbind(UPDATE_MESSAGE, updateMessageHandler);
+      channel.unbind(UPDATE_MESSAGE, messageHandler);
       pusherClient.unsubscribe(user.username!);
     };
   }, [user?.username, refetchMessages, username, conversationId]);
@@ -106,11 +98,23 @@ export const ConversationBody = ({
   return (
     <div className="flex-1 overflow-y-auto" ref={bodyRef}>
       {messages.map((message, i) => (
-        <ConversationMessage
-          isOwn={message.senderId === user?.id}
-          key={message.id}
-          data={message}
-        />
+        <>
+          {/* render text separator only if message is written not on the same day as last one */}
+          {(i === 0 ||
+            new Date(message.createdAt).toISOString().split("T")[0] !==
+              new Date(messages[i - 1].createdAt)
+                .toISOString()
+                .split("T")[0]) && (
+            <TextSeparator
+              text={format(new Date(message.createdAt), "LLLL dd")}
+            />
+          )}
+          <ConversationMessage
+            isOwn={message.senderId === user?.id}
+            key={message.id}
+            data={message}
+          />
+        </>
       ))}
       <Button
         className={cn(
