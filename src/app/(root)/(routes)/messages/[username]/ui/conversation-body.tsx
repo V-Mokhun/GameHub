@@ -63,11 +63,8 @@ export const ConversationBody = ({
   const { user } = useUser();
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ block: "nearest" });
-  }, [isLoading]);
-
-  useEffect(() => {
     if (isLoading) return;
+    bottomRef.current?.scrollIntoView({ block: "nearest" });
 
     if (!user?.username || !conversationId) return;
 

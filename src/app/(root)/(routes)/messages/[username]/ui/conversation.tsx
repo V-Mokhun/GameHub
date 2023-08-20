@@ -14,7 +14,7 @@ import {
   ConversationBodySkeleton,
 } from "./conversation-body";
 import { useActiveList } from "@shared/lib/hooks";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 interface ConversationProps {
   username: string;
@@ -37,6 +37,7 @@ export const Conversation = ({ username }: ConversationProps) => {
     isLoading: isLoadingMessages,
     refetch,
   } = userApi.getMessages(username, data?.conversation?.id);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [replyingMessage, setReplyingMessage] = useState<FullMessage | null>(
     null
   );
@@ -59,9 +60,13 @@ export const Conversation = ({ username }: ConversationProps) => {
           messages={messages || []}
           isLoading={(data?.conversation?.id && isLoadingMessages) || false}
           refetchMessages={() => refetch()}
-          onReplyClick={(message) => setReplyingMessage(message)}
+          onReplyClick={(message) => {
+            setReplyingMessage(message);
+            textareaRef.current?.focus();
+          }}
         />
         <ConversationForm
+          ref={textareaRef}
           replyingMessage={replyingMessage}
           resetReplyingMessage={() => setReplyingMessage(null)}
           username={username}

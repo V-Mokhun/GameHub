@@ -916,6 +916,11 @@
   dependencies:
     "tslib" "^2.4.0"
 
+"@tailwindcss/line-clamp@^0.4.4":
+  "integrity" "sha512-5U6SY5z8N42VtrCrKlsTAA35gy2VSyYtHWCsg1H87NU1SXnEfekTVlrga9fzUDrrHcGi2Lb5KenUWb4lRQT5/g=="
+  "resolved" "https://registry.npmjs.org/@tailwindcss/line-clamp/-/line-clamp-0.4.4.tgz"
+  "version" "0.4.4"
+
 "@tanstack/query-core@4.32.5":
   "integrity" "sha512-UOxiDYmzYWD21ASIUnW3w+Nq3LcW1BPFFfIyZOor6UsRl76KGLlvUhJ402/dof1JxcQFPK7nZ5iUGPVqLiT8zg=="
   "resolved" "https://registry.npmjs.org/@tanstack/query-core/-/query-core-4.32.5.tgz"
@@ -3865,7 +3870,7 @@
   "resolved" "https://registry.npmjs.org/tailwindcss-animate/-/tailwindcss-animate-1.0.6.tgz"
   "version" "1.0.6"
 
-"tailwindcss@>=3.0.0 || insiders", "tailwindcss@3.3.3":
+"tailwindcss@>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1", "tailwindcss@>=3.0.0 || insiders", "tailwindcss@3.3.3":
   "integrity" "sha512-A0KgSkef7eE4Mf+nKJ83i75TMyq8HqY3qmFIJSWy8bNt0v1lG7jUcpGpoTFxAwYcWOphcTBLPPJg+bDfhDf52w=="
   "resolved" "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.3.3.tgz"
   "version" "3.3.3"

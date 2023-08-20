@@ -21,14 +21,18 @@ export async function POST(req: Request) {
       include: {
         sender: true,
         seenBy: true,
-        replyingTo: true,
+        replyingTo: {
+          include: {
+            sender: true,
+          },
+        },
       },
     });
 
     return NextResponse.json(messages, { status: 200 });
   } catch (error) {
     console.log(error);
-    
+
     return catchError(error, "Failed to get messages");
   }
 }
