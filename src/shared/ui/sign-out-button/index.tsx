@@ -1,7 +1,7 @@
 import { SignOutButton as AuthSignOutButton } from "@clerk/nextjs";
 import { useQueryClient } from "@tanstack/react-query";
-import { useToast } from "../primitives";
 import { useRouter } from "next/navigation";
+import { useToast } from "../primitives";
 
 interface SignOutButtonProps {
   children?: React.ReactNode;

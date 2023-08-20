@@ -2,8 +2,8 @@ import { GAMES_LIMIT } from "../consts";
 import {
   GameCategories,
   GameFilters,
-  Paginate,
   GameSorts,
+  Paginate,
   SortFields,
   SortFieldsOrder,
 } from "./types";

@@ -1,8 +1,8 @@
-import { Container, Separator, Title } from "@shared/ui";
-import { ConversationsList } from "./ui";
 import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 import { HOME_ROUTE } from "@shared/consts";
+import { Container, Separator, Title } from "@shared/ui";
+import { redirect } from "next/navigation";
+import { ConversationsList } from "./ui";
 
 export default async function MessagesPage() {
   const { userId } = auth();

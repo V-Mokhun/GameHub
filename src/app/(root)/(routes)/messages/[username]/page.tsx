@@ -1,6 +1,5 @@
-import { auth, currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { HOME_ROUTE } from "@shared/consts";
-import { Container } from "@shared/ui";
 import { redirect } from "next/navigation";
 import { Conversation } from "./ui";
 

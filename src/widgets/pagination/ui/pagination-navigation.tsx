@@ -48,7 +48,9 @@ export const PaginationNavigaton = ({
             onPageChange((oldOffset) => oldOffset + limit);
           }
         }}
-        disabled={isPreviousData || !hasMore || isFetching || totalPages === page}
+        disabled={
+          isPreviousData || !hasMore || isFetching || totalPages === page
+        }
         size="icon"
         variant="secondary"
       >
@@ -58,7 +60,9 @@ export const PaginationNavigaton = ({
         onClick={() => {
           onPageChange(totalPages * limit - limit);
         }}
-        disabled={isPreviousData || !hasMore || isFetching || totalPages === page}
+        disabled={
+          isPreviousData || !hasMore || isFetching || totalPages === page
+        }
         size="icon"
         variant="secondary"
       >

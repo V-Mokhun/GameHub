@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@shared/lib";
-import { StarIcon } from "./star-icon";
 import { useState } from "react";
+import { StarIcon } from "./star-icon";
 
 interface StarRatingProps {
   rating: number;

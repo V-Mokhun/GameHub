@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "../primitives";
 import { Modal } from ".";
+import { Button } from "../primitives";
 
 interface AlertModalProps {
   isOpen: boolean;

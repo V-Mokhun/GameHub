@@ -1,6 +1,5 @@
 "use client";
 
-import { Subtitle } from "@shared/ui";
 import {
   Area,
   AreaChart,

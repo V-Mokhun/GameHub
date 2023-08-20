@@ -1,8 +1,8 @@
 import { currentUser } from "@clerk/nextjs";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
-import { NextResponse } from "next/server";
 import omit from "lodash.omit";
+import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,

@@ -3,13 +3,7 @@ import { FullConversation, FullMessage } from "@shared/api";
 import { MESSAGES_ROUTE } from "@shared/consts";
 import { cn } from "@shared/lib";
 import { useActiveList, useOtherUser } from "@shared/lib/hooks";
-import {
-  ActiveIndicator,
-  Avatar,
-  AvatarImage,
-  Icon,
-  Subtitle,
-} from "@shared/ui";
+import { ActiveIndicator, Avatar, AvatarImage, Icon } from "@shared/ui";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";

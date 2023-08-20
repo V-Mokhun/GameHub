@@ -1,6 +1,7 @@
 import { Game as LibraryGame } from "@prisma/client";
 import { HOME_ROUTE } from "@shared/consts";
 import { displayError } from "@shared/lib";
+import { useCustomToasts } from "@shared/lib/hooks";
 import { useToast } from "@shared/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -13,7 +14,6 @@ import {
   LibraryGameSorts,
   NormalizedLibraryGame,
 } from "./types";
-import { useCustomToasts } from "@shared/lib/hooks";
 
 const useLibrary = (
   username?: string,

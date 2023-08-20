@@ -1,6 +1,7 @@
 "use client";
 
 import { useSignIn } from "@clerk/nextjs";
+import { SocialLogin } from "@features/social-login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FORGOT_PASSWORD_ROUTE,
@@ -26,7 +27,6 @@ import {
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SignInFormSchema, signInFormSchema } from "../model";
-import { SocialLogin } from "@features/social-login";
 
 interface SignInFormProps {}
 

@@ -19,9 +19,9 @@ import {
   Title,
   useToast,
 } from "@shared/ui";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
 
 interface ForgotPasswordFormRegisterProps {
   onFormSubmit: () => void;

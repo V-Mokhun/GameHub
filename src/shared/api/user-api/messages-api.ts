@@ -1,15 +1,15 @@
 "use client";
 
 import { useAuth, useUser } from "@clerk/nextjs";
+import { User } from "@prisma/client";
+import { MESSAGES_ROUTE } from "@shared/consts";
 import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { FullConversation, FullMessage } from "./types";
-import { useRouter } from "next/navigation";
-import { MESSAGES_ROUTE } from "@shared/consts";
-import { User } from "@prisma/client";
 import { nanoid } from "nanoid";
+import { useRouter } from "next/navigation";
+import { FullConversation, FullMessage } from "./types";
 
 export const useConversations = () => {
   const { userId } = useAuth();
@@ -103,12 +103,12 @@ export const useSendMessage = (username: string) => {
       conversationId?: string;
       replyingMessage: FullMessage | null;
     }) => {
-      const { data: newMessage } = await axios.post<FullMessage>(
+      const { data: resp } = await axios.post(
         `/api/user/messages/${username}`,
         data
       );
 
-      return newMessage;
+      return resp;
     },
     onMutate: async (data) => {
       await queryClient.cancelQueries({

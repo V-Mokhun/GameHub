@@ -1,6 +1,8 @@
 "use client";
 
 import { FullGame, GAME_CATEGORIES } from "@shared/api";
+import { cn } from "@shared/lib";
+import { useClickOutside } from "@shared/lib/hooks";
 import {
   Button,
   Icon,
@@ -14,10 +16,8 @@ import {
 } from "@shared/ui";
 import { format } from "date-fns";
 import Image from "next/image";
-import { GameSidebarItem } from "./game-sidebar-item";
 import { useRef, useState } from "react";
-import { cn } from "@shared/lib";
-import { useClickOutside } from "@shared/lib/hooks";
+import { GameSidebarItem } from "./game-sidebar-item";
 
 interface GameSidebarProps {
   game?: FullGame;
@@ -30,7 +30,11 @@ export const GameSidebar = ({ game, isLoading }: GameSidebarProps) => {
   const ref = useClickOutside(() => setOpen(false), [buttonRef.current]);
 
   if (isLoading)
-    return <Skeleton className={"w-72 h-80 flex-[0_1_25%] rounded-md hidden xl:block"} />;
+    return (
+      <Skeleton
+        className={"w-72 h-80 flex-[0_1_25%] rounded-md hidden xl:block"}
+      />
+    );
 
   return (
     game && (

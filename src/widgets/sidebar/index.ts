@@ -1,2 +1,2 @@
-export { Sidebar } from './ui';
-export { useSidebarStore } from './model';
+export { useSidebarStore } from "./model";
+export { Sidebar } from "./ui";

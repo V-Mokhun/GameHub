@@ -7,7 +7,10 @@ export async function POST(req: Request) {
   try {
     const url = new URL(`${process.env.AUTH_BASE_URL}/token`);
 
-    url.searchParams.set("client_id", process.env.NEXT_PUBLIC_API_CLIENT_ID || "");
+    url.searchParams.set(
+      "client_id",
+      process.env.NEXT_PUBLIC_API_CLIENT_ID || ""
+    );
     url.searchParams.set("client_secret", process.env.API_CLIENT_SECRET || "");
     url.searchParams.set("grant_type", "client_credentials");
 

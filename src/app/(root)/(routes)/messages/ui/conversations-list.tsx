@@ -1,12 +1,12 @@
 "use client";
 
-import { userApi } from "@shared/api";
-import { ConversationsItem } from "./conversations-item";
-import { Icon, Link, Skeleton, Title } from "@shared/ui";
-import { UPDATE_CONVERSATION, USERS_ROUTE } from "@shared/consts";
-import { useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
+import { userApi } from "@shared/api";
 import { pusherClient } from "@shared/config";
+import { UPDATE_CONVERSATION, USERS_ROUTE } from "@shared/consts";
+import { Icon, Link, Skeleton, Title } from "@shared/ui";
+import { useEffect } from "react";
+import { ConversationsItem } from "./conversations-item";
 
 interface ConversationsListProps {}
 

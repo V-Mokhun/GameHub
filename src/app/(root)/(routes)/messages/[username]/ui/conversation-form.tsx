@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FullMessage, userApi } from "@shared/api";
+import { cn } from "@shared/lib";
 import {
   Button,
   Form,
@@ -25,7 +26,6 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { ConversationFormReplying } from "./conversation-form-replying";
-import { cn } from "@shared/lib";
 
 const Picker = dynamic(
   () => {

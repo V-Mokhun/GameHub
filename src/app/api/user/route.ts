@@ -2,8 +2,8 @@ import { auth } from "@clerk/nextjs";
 import { GAMES_LIMIT } from "@shared/api";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
-import { NextResponse } from "next/server";
 import omit from "lodash.omit";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 
 export async function POST(req: Request) {

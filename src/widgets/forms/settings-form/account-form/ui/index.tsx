@@ -18,12 +18,12 @@ import {
   buttonVariants,
   useToast,
 } from "@shared/ui";
+import { AlertModal } from "@shared/ui/modal";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AccountSettingsFormSchema, accountSettingsFormSchema } from "../model";
 import { AccountFormAvatar } from "./account-form-avatar";
-import { AlertModal } from "@shared/ui/modal";
 import { AccountFormSkeleton } from "./skeleton";
 
 export const AccountForm = () => {

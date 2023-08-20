@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  AvatarImage,
-  Container,
-  ExternalLink,
-  Subtitle,
-  Title,
-} from "@shared/ui";
+import { Container, ExternalLink, Subtitle, Title } from "@shared/ui";
 import Image from "next/image";
 
 export default async function AboutPage() {

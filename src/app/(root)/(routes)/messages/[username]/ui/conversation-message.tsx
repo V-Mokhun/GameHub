@@ -2,7 +2,7 @@
 
 import { FullMessage } from "@shared/api";
 import { cn } from "@shared/lib";
-import { Avatar, AvatarImage, Button, Icon } from "@shared/ui";
+import { Button, Icon } from "@shared/ui";
 import { ImageModal } from "@shared/ui/modal";
 import { format } from "date-fns";
 import { CldImage } from "next-cloudinary";

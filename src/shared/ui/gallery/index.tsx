@@ -6,11 +6,11 @@ import {
   KeenSliderOptions,
   useKeenSlider,
 } from "keen-slider/react";
-import { MutableRefObject, useEffect, useRef, useState } from "react";
-import { CarouselArrow } from "../carousel-arrow";
-import ReactPlayer from "react-player/lazy";
-import { PlayIcon } from "../play-icon";
 import Image from "next/image";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
+import ReactPlayer from "react-player/lazy";
+import { CarouselArrow } from "../carousel-arrow";
+import { PlayIcon } from "../play-icon";
 import { Dialog, DialogContent } from "../primitives";
 
 interface GalleryProps {

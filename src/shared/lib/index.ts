@@ -1,7 +1,7 @@
 export { cn } from "./cn";
+export { getCookie } from "./cookie";
 export { catchError, displayError, throwError } from "./error";
+export { isDefaultAvatar } from "./is-default-avatar";
 export { isEmail } from "./is-email";
-export { isDefaultAvatar } from './is-default-avatar';
-export { getCookie } from './cookie';
 
-export * from './carousel';
+export * from "./carousel";

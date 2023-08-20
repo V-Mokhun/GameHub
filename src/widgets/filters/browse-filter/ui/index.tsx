@@ -7,12 +7,12 @@ import {
   stringifyFilters,
 } from "@shared/api";
 import { cn } from "@shared/lib";
+import { useClickOutside } from "@shared/lib/hooks";
 import { Button, Icon, Overlay, Title } from "@shared/ui";
+import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useBrowseFilterStore } from "../model";
-import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
-import { useClickOutside } from "@shared/lib/hooks";
 
 interface BrowseFilterProps {}
 

@@ -1,2 +1,2 @@
-export * from './model';
-export { PasswordForm } from './ui';
+export * from "./model";
+export { PasswordForm } from "./ui";

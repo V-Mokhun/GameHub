@@ -20,9 +20,9 @@ import {
   GameFilters,
   GameGenre,
   GameMode,
-  Paginate,
   GameSorts,
   GameTheme,
+  Paginate,
 } from "./types";
 
 export type UseSearchGamesApiResponse = {

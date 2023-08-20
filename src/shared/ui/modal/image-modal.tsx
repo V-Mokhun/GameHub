@@ -1,8 +1,7 @@
 "use client";
 
-import { Dialog, DialogContent } from "../primitives";
-import { Modal } from "./";
 import Image from "next/image";
+import { Dialog, DialogContent } from "../primitives";
 
 interface ImageModalProps {
   isOpen?: boolean;

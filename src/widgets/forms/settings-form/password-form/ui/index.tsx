@@ -1,12 +1,9 @@
 "use client";
 
-import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  PasswordSettingsFormSchema,
-  passwordSettingsFormSchema,
-} from "../model";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useUser } from "@clerk/nextjs";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SETTINGS_ROUTE } from "@shared/consts";
+import { displayError } from "@shared/lib";
 import {
   Button,
   Form,
@@ -18,10 +15,13 @@ import {
   Input,
   useToast,
 } from "@shared/ui";
-import { useEffect, useState } from "react";
-import { displayError } from "@shared/lib";
 import { useRouter } from "next/navigation";
-import { SETTINGS_ROUTE } from "@shared/consts";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  PasswordSettingsFormSchema,
+  passwordSettingsFormSchema,
+} from "../model";
 import { PasswordFormSkeleton } from "./skeleton";
 
 export const PasswordForm = ({}) => {

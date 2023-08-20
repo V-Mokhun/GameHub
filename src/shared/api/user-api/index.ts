@@ -1,2 +1,2 @@
 export { userApi } from "./api";
-export * from './types';
+export * from "./types";

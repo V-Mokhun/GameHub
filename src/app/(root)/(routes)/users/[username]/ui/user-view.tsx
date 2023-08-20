@@ -2,7 +2,6 @@
 
 import { OwnProfile } from "@shared/api";
 import { SETTINGS_ROUTE } from "@shared/consts";
-import { useActiveList } from "@shared/lib/hooks";
 import {
   ActiveIndicator,
   Avatar,

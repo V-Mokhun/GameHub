@@ -13,11 +13,6 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from "@shared/ui";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";

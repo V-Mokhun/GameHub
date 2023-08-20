@@ -7,23 +7,17 @@ import {
   userApi,
 } from "@shared/api";
 import {
-  Separator,
-  Skeleton,
-  Title,
-  buttonVariants,
-  useToast,
-} from "@shared/ui";
-import { Pagination } from "@widgets/pagination";
-import { UsersList, UsersSearch } from "@widgets/users";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
-import { UserMenu } from "../../ui";
-import {
   FRIENDS_RECEIVED_REQUESTS_ROUTE,
   HOME_ROUTE,
   USERS_ROUTE,
 } from "@shared/consts";
+import { Separator, Skeleton, Title, buttonVariants } from "@shared/ui";
+import { Pagination } from "@widgets/pagination";
+import { UsersList, UsersSearch } from "@widgets/users";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
+import { UserMenu } from "../../ui";
 
 interface UserFriendsProps {
   username: string;

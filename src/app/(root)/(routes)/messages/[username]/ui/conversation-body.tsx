@@ -1,17 +1,16 @@
 "use client";
 
+import { useUser } from "@clerk/nextjs";
 import { FullMessage } from "@shared/api";
-import { useEffect, useRef, useState } from "react";
-import { ConversationMessage } from "./conversation-message";
-import { useAuth, useUser } from "@clerk/nextjs";
-import { Button, Icon, Skeleton, TextSeparator } from "@shared/ui";
-import { cn } from "@shared/lib";
 import { pusherClient } from "@shared/config";
 import { CREATE_MESSAGE, UPDATE_MESSAGE } from "@shared/consts";
-import find from "lodash.find";
-import axios from "axios";
+import { cn } from "@shared/lib";
+import { Button, Icon, Skeleton, TextSeparator } from "@shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { format } from "date-fns";
+import { useEffect, useRef, useState } from "react";
+import { ConversationMessage } from "./conversation-message";
 
 interface ConversationBodyProps {
   messages: FullMessage[];

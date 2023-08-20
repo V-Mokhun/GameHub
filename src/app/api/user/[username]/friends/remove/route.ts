@@ -1,4 +1,4 @@
-import { auth, currentUser } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
 import { pusherServer } from "@shared/config";
 import { REMOVE_FRIEND } from "@shared/consts";
 import { catchError } from "@shared/lib";

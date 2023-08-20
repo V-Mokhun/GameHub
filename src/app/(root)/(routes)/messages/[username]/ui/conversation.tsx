@@ -1,6 +1,12 @@
 "use client";
 
 import { FullMessage, userApi } from "@shared/api";
+import { useActiveList } from "@shared/lib/hooks";
+import { useMemo, useRef, useState } from "react";
+import {
+  ConversationBody,
+  ConversationBodySkeleton,
+} from "./conversation-body";
 import {
   ConversationForm,
   ConversationFormSkeleton,
@@ -9,12 +15,6 @@ import {
   ConversationHeader,
   ConversationHeaderSkeleton,
 } from "./conversation-header";
-import {
-  ConversationBody,
-  ConversationBodySkeleton,
-} from "./conversation-body";
-import { useActiveList } from "@shared/lib/hooks";
-import { useMemo, useRef, useState } from "react";
 
 interface ConversationProps {
   username: string;

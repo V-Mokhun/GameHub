@@ -1,4 +1,4 @@
-import { auth, currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { pusherServer } from "@shared/config";
 import { CREATE_MESSAGE, UPDATE_CONVERSATION } from "@shared/consts";
 import { catchError } from "@shared/lib";
@@ -64,7 +64,7 @@ export async function POST(
       };
     }
 
-    const newMessage = await db.message.create({
+    const { id } = await db.message.create({
       data,
       include: {
         seenBy: true,
@@ -79,7 +79,7 @@ export async function POST(
         lastMessageAt: new Date(),
         messages: {
           connect: {
-            id: newMessage.id,
+            id,
           },
         },
       },
@@ -88,13 +88,13 @@ export async function POST(
       },
     });
 
-    await pusherServer.trigger(username, CREATE_MESSAGE, newMessage);
+    await pusherServer.trigger(username, CREATE_MESSAGE, null);
 
     updatedConversation.users.forEach((user) => {
       pusherServer.trigger(user.id, UPDATE_CONVERSATION, null);
     });
 
-    return NextResponse.json(newMessage, { status: 200 });
+    return NextResponse.json("OK", { status: 200 });
   } catch (error) {
     return catchError(error, "Failed to send message");
   }

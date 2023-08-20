@@ -1,5 +1,4 @@
 import { GameCard } from "@entities/game";
-import { Game } from "@prisma/client";
 import { NormalizedLibraryGame } from "@shared/api";
 import { LIBRARY_ROUTE, SETTINGS_ROUTE } from "@shared/consts";
 import { Icon, Link, Subtitle, Title, buttonVariants } from "@shared/ui";

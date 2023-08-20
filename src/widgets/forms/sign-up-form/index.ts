@@ -1,2 +1,2 @@
-export { SignUpForm } from "./ui";
 export * from "./model";
+export { SignUpForm } from "./ui";

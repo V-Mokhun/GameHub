@@ -1,8 +1,8 @@
-import { Toaster } from "@shared/ui";
+import { ClerkProvider } from "@clerk/nextjs";
 import "@shared/styles/globals.css";
+import { Toaster } from "@shared/ui";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
 import { QueryProvider, ThemeProvider } from "./providers";
 
 const font = Open_Sans({

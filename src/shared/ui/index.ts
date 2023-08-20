@@ -1,9 +1,9 @@
+export { ActiveIndicator } from "./active-indicator";
+export { CarouselArrow } from "./carousel-arrow";
+export { Gallery } from "./gallery";
 export { Logo } from "./logo";
-export { StarRating } from './star-rating';
-export { SignOutButton } from './sign-out-button';
-export { PlayIcon } from './play-icon';
-export { CarouselArrow } from './carousel-arrow';
-export { Gallery } from './gallery';
-export { ActiveIndicator } from './active-indicator';
+export { PlayIcon } from "./play-icon";
+export { SignOutButton } from "./sign-out-button";
+export { StarRating } from "./star-rating";
 
 export * from "./primitives";

@@ -7,6 +7,7 @@ import {
   stringifyLibraryFilters,
 } from "@shared/api";
 import { cn } from "@shared/lib";
+import { useClickOutside } from "@shared/lib/hooks";
 import { Button, Icon, Overlay, Title } from "@shared/ui";
 import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -14,7 +15,6 @@ import { useEffect } from "react";
 import { useLibraryFilterStore } from "../model";
 import { LibraryFilterStatus } from "./library-filter-status";
 import { LibraryFilterUserRating } from "./library-filter-user-rating";
-import { useClickOutside } from "@shared/lib/hooks";
 
 interface LibraryFilterProps {}
 

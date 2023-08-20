@@ -1,3 +1,4 @@
+import { AddGameScheme } from "@entities/game";
 import { GameStatus } from "@prisma/client";
 import {
   FormControl,
@@ -12,7 +13,6 @@ import {
   SelectValue,
 } from "@shared/ui";
 import { Control, UseFormSetValue } from "react-hook-form";
-import { AddGameScheme } from "@entities/game";
 
 interface GameLibraryStatusProps {
   control: Control<AddGameScheme>;

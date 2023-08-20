@@ -1,6 +1,6 @@
+import { cn } from "@shared/lib";
 import { Icon, Link } from "@shared/ui";
 import { SidebarItemT } from "./sidebar-menu";
-import { cn } from "@shared/lib";
 
 export const SidebarItem = ({
   href,

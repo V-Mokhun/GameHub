@@ -2,7 +2,6 @@
 
 import { useSignUp } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { displayError } from "@shared/lib";
 import {
   Button,
   Form,

@@ -1,5 +1,8 @@
 "use client";
 
+import { useAuth } from "@clerk/nextjs";
+import { GameCardSkeleton } from "@entities/game";
+import { GameStatus } from "@prisma/client";
 import {
   DEFAULT_LIBRARY_FILTERS,
   LibrarySortFields,
@@ -8,15 +11,12 @@ import {
   userApi,
   userLibraryApi,
 } from "@shared/api";
-import { UserMenu } from "./user-menu";
-import { UserView } from "./user-view";
+import { useActiveList } from "@shared/lib/hooks";
 import { Separator, Skeleton } from "@shared/ui";
 import { RatedGames } from "./rated-games";
+import { UserMenu } from "./user-menu";
+import { UserView } from "./user-view";
 import { WantedGames } from "./wanted-games";
-import { useAuth } from "@clerk/nextjs";
-import { GameCardSkeleton } from "@entities/game";
-import { GameStatus } from "@prisma/client";
-import { useActiveList } from "@shared/lib/hooks";
 
 interface UserProfileProps {
   username: string;

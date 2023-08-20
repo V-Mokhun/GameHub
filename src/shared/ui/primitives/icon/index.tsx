@@ -1,6 +1,6 @@
+import { cn } from "@shared/lib";
 import { icons, LucideProps } from "lucide-react";
 import { forwardRef } from "react";
-import { cn } from "@shared/lib";
 
 interface IconProps extends LucideProps {
   name: keyof typeof icons;
