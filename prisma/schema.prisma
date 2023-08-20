@@ -61,9 +61,9 @@ model Message {
   image     String?
   createdAt DateTime @default(now())
 
-  replyingToId       String?  @unique
-  replyingTo         Message? @relation("ReplyTo", fields: [replyingToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  replyingToRelation Message? @relation("ReplyTo")
+  replyingToId String?
+  replyingTo   Message?  @relation("ReplyTo", fields: [replyingToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  repliedTo    Message[] @relation("ReplyTo")
 
   conversationId String
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
@@ -75,6 +75,7 @@ model Message {
 
   @@index([conversationId])
   @@index([senderId])
+  @@index([replyingToId])
 }
 
 model Game {

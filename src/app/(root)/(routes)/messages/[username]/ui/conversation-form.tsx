@@ -99,6 +99,7 @@ export const ConversationForm = ({
       message: data.message,
       replyingMessage: replyingMessage,
     });
+    resetReplyingMessage();
   };
 
   const handleUpload = async (result: any) => {
@@ -108,6 +109,7 @@ export const ConversationForm = ({
       message: "",
       replyingMessage: replyingMessage,
     });
+    resetReplyingMessage();
   };
 
   const handleUserKeyPress = (e: React.KeyboardEvent) => {

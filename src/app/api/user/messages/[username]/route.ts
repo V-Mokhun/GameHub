@@ -16,12 +16,12 @@ export async function POST(
     const { username } = params;
 
     const body = await req.json();
-    const { message, image, conversationId, replyingMessageId } = z
+    const { message, image, conversationId, replyingMessage } = z
       .object({
         message: z.string().max(1000).optional(),
         image: z.string().optional(),
         conversationId: z.string().optional(),
-        replyingMessageId: z.string().optional(),
+        replyingMessage: z.any(),
       })
       .parse(body);
 
@@ -56,10 +56,10 @@ export async function POST(
       },
     };
 
-    if (replyingMessageId) {
+    if (replyingMessage) {
       data.replyingTo = {
         connect: {
-          id: replyingMessageId,
+          id: replyingMessage.id,
         },
       };
     }
@@ -69,6 +69,7 @@ export async function POST(
       include: {
         seenBy: true,
         sender: true,
+        replyingTo: true,
       },
     });
 
