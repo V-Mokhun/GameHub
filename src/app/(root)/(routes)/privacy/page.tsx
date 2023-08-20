@@ -1,12 +1,18 @@
 import { CONTACT_ROUTE } from "@shared/consts";
 import { Container, ExternalLink, Link, Title } from "@shared/ui";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy - GameHub",
+  description: "GameHub Privacy Policy",
+};
 
 export default async function PrivacyPage() {
   return (
     <section className="text-sm md:text-base">
       <Container>
         <Title size="large">Privacy Policy</Title>
-        <p className="italic mb-3">Last updated: August 6, 2023</p>
+        <p className="italic mb-3">Last updated: August 20, 2023</p>
         <p className="mb-3">
           This Privacy Policy is part of our Terms of Use. Any words defined in
           the Terms of Use have the same meaning in this Privacy Policy.
@@ -123,7 +129,7 @@ export default async function PrivacyPage() {
         </p>
         <Title size="small">Data privacy</Title>
         <p className="mb-3">
-          Your email address is private. Your username,avatar, and library data
+          Your email address is private. Your username, avatar, and library data
           is public. They may be visible to other people who use GameHub.
         </p>
         <Title size="small">Email policy</Title>

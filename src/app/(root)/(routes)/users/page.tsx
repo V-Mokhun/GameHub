@@ -1,7 +1,13 @@
 import { Container } from "@shared/ui";
 import { UsersPage } from "./ui";
+import { Metadata } from "next";
 
-export default async function Page() {
+export const metadata: Metadata = {
+  title: "Community - GameHub",
+  description: "Community page",
+};
+
+export default async function Users() {
   return (
     <section>
       <Container>

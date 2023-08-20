@@ -2,6 +2,20 @@ import { Container, Separator, Title } from "@shared/ui";
 import { LibraryFilter } from "@widgets/filters";
 import { UserMenu } from "../ui";
 import { LibraryChangeView, LibraryFilters, LibraryGames } from "./ui";
+import { Metadata } from "next";
+
+type Props = {
+  params: { username: string };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const username = params.username;
+
+  return {
+    title: `${username}'s Library - GameHub`,
+    description: `${username}'s library on GameHub`,
+  };
+}
 
 export default async function LibraryPage({
   params,

@@ -1,12 +1,18 @@
 import { ABOUT_ROUTE, CONTACT_ROUTE } from "@shared/consts";
 import { Container, Link, Title } from "@shared/ui";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms of Use - GameHub",
+  description: "GameHub Terms of Use",
+};
 
 export default async function TermsPage() {
   return (
     <section className="text-sm md:text-base">
       <Container>
         <Title size="large">Terms of Use</Title>
-        <p className="italic mb-3">Last updated: August 6, 2023</p>
+        <p className="italic mb-3">Last updated: August 20, 2023</p>
         <Title>Agreement to Terms</Title>
         <p className="mb-3">
           These Terms of Use constitute a legally binding agreement made between
@@ -75,7 +81,7 @@ export default async function TermsPage() {
           specifically endorsed or approved by us.
         </p>
         <p className="mb-3">As a user of the Site, you agree not to:</p>
-        <ul className="mb-3">
+        <ul className="mb-3 list-disc">
           <li>
             Systematically retrieve data or other content from the Site to
             create or compile, directly or indirectly, a collection,

@@ -4,6 +4,12 @@ import { Container, Separator, Subtitle, Title } from "@shared/ui";
 import { AccountForm } from "@widgets/forms";
 import { redirect } from "next/navigation";
 import { SettingsMenu } from "./ui";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Settings - GameHub",
+  description: "Settings page",
+};
 
 export default async function SettingsPage() {
   const { userId } = auth();

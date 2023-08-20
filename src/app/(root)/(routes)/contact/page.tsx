@@ -1,4 +1,10 @@
 import { Container, ExternalLink, Subtitle, Title } from "@shared/ui";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact - GameHub",
+  description: "Contact GameHub team",
+};
 
 export default async function ContactPage() {
   return (

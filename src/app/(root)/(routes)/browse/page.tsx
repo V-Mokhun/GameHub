@@ -2,6 +2,12 @@ import { Container, Separator, Title } from "@shared/ui";
 import { BrowseFilter } from "@widgets/filters";
 import { BrowseChangeView, BrowseFilters } from "./ui";
 import { BrowseGames } from "./ui/browse-games";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Browse - GameHub",
+  description: "Browse games on GameHub",
+};
 
 export default async function BrowsePage() {
   return (

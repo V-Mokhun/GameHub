@@ -4,6 +4,12 @@ import { Container, Separator, Title } from "@shared/ui";
 import { PasswordForm } from "@widgets/forms";
 import { redirect } from "next/navigation";
 import { SettingsMenu } from "../ui";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Change Password - GameHub",
+  description: "Change your password",
+};
 
 export default async function SettingsPasswordPage() {
   const { userId } = auth();

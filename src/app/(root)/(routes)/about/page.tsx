@@ -1,5 +1,11 @@
 import { Container, ExternalLink, Subtitle, Title } from "@shared/ui";
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "About - GameHub",
+  description: "About GameHub and its founder",
+};
 
 export default async function AboutPage() {
   return (
@@ -20,6 +26,23 @@ export default async function AboutPage() {
             Keep in touch with your friends while discussing your favorite games
           </li>
         </ul>
+        <Title>Video Game Data</Title>
+        <p className="mb-3">
+          Video game data is sourced from{" "}
+          <ExternalLink href="https://www.igdb.com/about">
+            Internet Games Database
+          </ExternalLink>{" "}
+          (IGDB) which is operated by Twitch. This product uses the IGDB API but
+          is not endorsed or certified by Twitch.
+        </p>
+        <ExternalLink className="mb-3" href="https://www.igdb.com/about">
+          <Image
+            src={"/images/igdb.png"}
+            alt="IGDB Logo"
+            width={150}
+            height={150}
+          />
+        </ExternalLink>
         <Title>Founder</Title>
         <ExternalLink href="https://www.linkedin.com/in/volodymyr-mokhun-35005723b/">
           <div className="relative w-60 h-64">
