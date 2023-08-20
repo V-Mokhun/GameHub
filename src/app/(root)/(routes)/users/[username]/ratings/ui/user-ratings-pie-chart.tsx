@@ -1,7 +1,14 @@
 "use client";
 
 import { Title } from "@shared/ui";
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 
 const CustomTooltip = ({
   active,
@@ -112,6 +119,18 @@ export const UserRatingsPieChart = ({ data }: UserRatingsPieChartProps) => {
             </Pie>
             {/* @ts-ignore */}
             <Tooltip content={<CustomTooltip length={data.length} />} />
+            <Legend
+              iconSize={16}
+              layout="vertical"
+              verticalAlign="middle"
+              align="left"
+              payload={formattedData.map(({ rating }) => ({
+                value: rating,
+                id: rating.toString(),
+                color: COLORS[rating.toString() as keyof typeof COLORS],
+                type: "square",
+              }))}
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>
