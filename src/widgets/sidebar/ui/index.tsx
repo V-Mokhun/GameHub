@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@shared/lib";
 import { useClickOutside } from "@shared/lib/hooks";
-import { ActiveStatus, Logo, Overlay, Skeleton } from "@shared/ui";
+import { Logo, Overlay, Skeleton } from "@shared/ui";
 import { useSidebarStore } from "../model";
 import { SidebarMenu } from "./sidebar-menu";
 

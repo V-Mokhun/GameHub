@@ -24,7 +24,7 @@ export const ImageModal = ({
   return (
     <Dialog open={isOpen !== false} onOpenChange={onChange}>
       <DialogContent className="p-0 md:p-0 border-none bg-transparent w-full max-w-full lg:max-w-[90%]">
-        <div className="relative aspect-square md:aspect-video w-full h-full">
+        <div className="relative aspect-square w-full h-full">
           <Image src={src} fill alt="Image" sizes="100%" />
         </div>
       </DialogContent>
