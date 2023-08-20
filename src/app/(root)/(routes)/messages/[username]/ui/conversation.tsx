@@ -1,6 +1,6 @@
 "use client";
 
-import { userApi } from "@shared/api";
+import { FullMessage, userApi } from "@shared/api";
 import {
   ConversationForm,
   ConversationFormSkeleton,
@@ -14,8 +14,7 @@ import {
   ConversationBodySkeleton,
 } from "./conversation-body";
 import { useActiveList } from "@shared/lib/hooks";
-import { useMemo } from "react";
-import { Skeleton } from "@shared/ui";
+import { useMemo, useState } from "react";
 
 interface ConversationProps {
   username: string;
@@ -38,7 +37,10 @@ export const Conversation = ({ username }: ConversationProps) => {
     isLoading: isLoadingMessages,
     refetch,
   } = userApi.getMessages(username, data?.conversation?.id);
-  
+  const [replyingMessage, setReplyingMessage] = useState<FullMessage | null>(
+    null
+  );
+
   const { members } = useActiveList();
   const isActive = useMemo(
     () => members.some((m) => m === data?.user.id),
@@ -57,8 +59,11 @@ export const Conversation = ({ username }: ConversationProps) => {
           messages={messages || []}
           isLoading={(data?.conversation?.id && isLoadingMessages) || false}
           refetchMessages={() => refetch()}
+          onReplyClick={(message) => setReplyingMessage(message)}
         />
         <ConversationForm
+          replyingMessage={replyingMessage}
+          resetReplyingMessage={() => setReplyingMessage(null)}
           username={username}
           conversationId={data?.conversation?.id}
         />

@@ -19,6 +19,7 @@ interface ConversationBodyProps {
   username: string;
   refetchMessages: () => void;
   isLoading: boolean;
+  onReplyClick: (message: FullMessage) => void;
 }
 
 export const ConversationBodySkeleton = () => (
@@ -53,6 +54,7 @@ export const ConversationBody = ({
   username,
   refetchMessages,
   isLoading,
+  onReplyClick,
 }: ConversationBodyProps) => {
   const queryClient = useQueryClient();
   const [isArrowVisible, setIsArrowVisible] = useState(false);
@@ -61,9 +63,12 @@ export const ConversationBody = ({
   const { user } = useUser();
 
   useEffect(() => {
+    bottomRef.current?.scrollIntoView({ block: "nearest" });
+  }, [isLoading]);
+
+  useEffect(() => {
     if (isLoading) return;
 
-    bottomRef.current?.scrollIntoView({ block: "nearest" });
     if (!user?.username || !conversationId) return;
 
     const channel = pusherClient.subscribe(user.username);
@@ -73,7 +78,9 @@ export const ConversationBody = ({
       });
 
       refetchMessages();
-      bottomRef.current?.scrollIntoView({ block: "nearest" });
+      bottomRef.current?.scrollIntoView({
+        block: "nearest",
+      });
     };
 
     channel.bind(CREATE_MESSAGE, messageHandler);
@@ -112,7 +119,7 @@ export const ConversationBody = ({
     const observer = new IntersectionObserver(onIntersection, {
       root: body,
       threshold: 0,
-      rootMargin: "24px",
+      rootMargin: "0% 0% 200px 0%",
     });
 
     observer.observe(bottom!);
@@ -145,6 +152,7 @@ export const ConversationBody = ({
             />
           )}
           <ConversationMessage
+            onReplyClick={() => onReplyClick(message)}
             isOwn={message.senderId === user?.id}
             key={message.id}
             data={message}
@@ -153,11 +161,16 @@ export const ConversationBody = ({
       ))}
       <Button
         className={cn(
-          "absolute bottom-20 left-1/2 -translate-x-1/2 rounded-full bg-secondary hover:bg-secondary-hover h-10 w-10 opacity-0 transition-opacity pointer-events-none",
+          "absolute bottom-28 left-1/2 -translate-x-1/2 rounded-full bg-secondary hover:bg-secondary-hover h-10 w-10 opacity-0 transition-opacity pointer-events-none z-[1]",
           isArrowVisible && "opacity-100 pointer-events-auto"
         )}
         size="icon"
-        onClick={() => bottomRef.current?.scrollIntoView({ block: "nearest" })}
+        onClick={() =>
+          bottomRef.current?.scrollIntoView({
+            block: "nearest",
+            behavior: "smooth",
+          })
+        }
       >
         <Icon name="ArrowBigDown" className="text-white w-8 h-8" />
       </Button>

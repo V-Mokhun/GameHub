@@ -91,7 +91,7 @@ export const useUnseenMessagesCount = () => {
   });
 };
 
-export const useSendMessage = (username: string, conversationId?: string) => {
+export const useSendMessage = (username: string) => {
   const { user } = useUser();
   const queryClient = useQueryClient();
 
@@ -101,6 +101,7 @@ export const useSendMessage = (username: string, conversationId?: string) => {
       image?: string;
       message?: string;
       conversationId?: string;
+      replyingMessage: FullMessage | null;
     }) => {
       const { data: newMessage } = await axios.post<FullMessage>(
         `/api/user/messages/${username}`,
@@ -139,6 +140,8 @@ export const useSendMessage = (username: string, conversationId?: string) => {
             sender,
             seenBy: [sender],
             isSending: true,
+            replyingToId: data.replyingMessage?.id || null,
+            replyingTo: data.replyingMessage ?? undefined,
           };
 
           if (!old) {

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userApi } from "@shared/api";
+import { FullMessage, userApi } from "@shared/api";
 import {
   Button,
   Form,
@@ -24,6 +24,8 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { ConversationFormReplying } from "./conversation-form-replying";
+import { cn } from "@shared/lib";
 
 const Picker = dynamic(
   () => {
@@ -35,11 +37,14 @@ const Picker = dynamic(
 interface ConversationFormProps {
   conversationId?: string;
   username: string;
+  replyingMessage: FullMessage | null;
+  resetReplyingMessage: () => void;
 }
 
 const messageFormSchema = z.object({
   message: z.string().max(1000, "Message must be max 1000 character long"),
   conversationId: z.string().optional(),
+  replyingMessageId: z.string().optional(),
 });
 
 type MessageFormSchema = z.infer<typeof messageFormSchema>;
@@ -57,10 +62,12 @@ export const ConversationFormSkeleton = () => (
 export const ConversationForm = ({
   conversationId,
   username,
+  replyingMessage,
+  resetReplyingMessage,
 }: ConversationFormProps) => {
   const { resolvedTheme } = useTheme();
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
-  const { mutate: sendMessage } = userApi.sendMessage(username, conversationId);
+  const { mutate: sendMessage } = userApi.sendMessage(username);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [selection, setSelection] = useState<{ start: number; end: number }>();
 
@@ -75,6 +82,7 @@ export const ConversationForm = ({
     defaultValues: {
       message: "",
       conversationId,
+      replyingMessageId: replyingMessage?.id,
     },
     resolver: zodResolver(messageFormSchema),
   });
@@ -89,6 +97,7 @@ export const ConversationForm = ({
       conversationId,
       image: "",
       message: data.message,
+      replyingMessage: replyingMessage,
     });
   };
 
@@ -97,6 +106,7 @@ export const ConversationForm = ({
       conversationId,
       image: result?.info?.secure_url,
       message: "",
+      replyingMessage: replyingMessage,
     });
   };
 
@@ -110,7 +120,18 @@ export const ConversationForm = ({
   };
 
   return (
-    <div className="px-2 py-2 md:py-4 shadow-lg">
+    <div
+      className={cn(
+        "px-2 py-2 md:pb-4 shadow-lg relative z-[2] bg-background",
+        !replyingMessage && "md:pt-4"
+      )}
+    >
+      {replyingMessage && (
+        <ConversationFormReplying
+          onClose={resetReplyingMessage}
+          replyingMessage={replyingMessage}
+        />
+      )}
       <div className="flex items-end gap-2">
         <TooltipProvider>
           <Tooltip>
@@ -131,7 +152,7 @@ export const ConversationForm = ({
                   uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME}
                 >
                   <Icon
-                    className="md:h-8 md:w-8 hover:text-secondary-hover transition-colors"
+                    className="h-8 w-8 hover:text-secondary-hover transition-colors"
                     name="Image"
                   />
                 </CldUploadButton>

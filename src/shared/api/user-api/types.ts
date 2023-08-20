@@ -16,6 +16,7 @@ export type OwnProfile = User & {
 export type FullMessage = Message & {
   sender: User;
   seenBy: User[];
+  replyingTo?: FullMessage;
 };
 
 export type FullConversation = Conversation & {

@@ -61,6 +61,10 @@ model Message {
   image     String?
   createdAt DateTime @default(now())
 
+  replyingToId       String?  @unique
+  replyingTo         Message? @relation("ReplyTo", fields: [replyingToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replyingToRelation Message? @relation("ReplyTo")
+
   conversationId String
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 

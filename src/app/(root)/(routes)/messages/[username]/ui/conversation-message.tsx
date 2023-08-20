@@ -2,7 +2,7 @@
 
 import { FullMessage } from "@shared/api";
 import { cn } from "@shared/lib";
-import { Avatar, AvatarImage, Icon } from "@shared/ui";
+import { Avatar, AvatarImage, Button, Icon } from "@shared/ui";
 import { ImageModal } from "@shared/ui/modal";
 import { format } from "date-fns";
 import { CldImage } from "next-cloudinary";
@@ -11,11 +11,13 @@ import { useEffect, useRef, useState } from "react";
 interface ConversationMessageProps {
   isOwn: boolean;
   data: FullMessage & { isSending?: boolean };
+  onReplyClick: () => void;
 }
 
 export const ConversationMessage = ({
   data,
   isOwn,
+  onReplyClick,
 }: ConversationMessageProps) => {
   const messageRef = useRef<HTMLDivElement>(null);
   const [imageModalOpen, setImageModalOpen] = useState(false);
@@ -35,7 +37,7 @@ export const ConversationMessage = ({
   return (
     <div
       className={cn(
-        "flex gap-2 px-2 py-2 md:px-4 selection:bg-secondary max-w-[90%] whitespace-pre-wrap",
+        "flex gap-2 px-2 py-2 md:px-4 selection:bg-secondary max-w-[90%] whitespace-pre-wrap group",
         isOwn && "justify-end ml-auto"
       )}
     >
@@ -100,6 +102,20 @@ export const ConversationMessage = ({
             </div>
           )}
         </div>
+        <Button
+          onClick={onReplyClick}
+          className={cn(
+            "bg-transparent hover:bg-transparent absolute top-1/2 -translate-y-1/2 md:opacity-0 md:group-hover:opacity-100 md:group-hover:pointer-events-auto transition-opacity md:pointer-events-none",
+            isOwn ? "-left-8" : "-right-8"
+          )}
+          size="icon"
+        >
+          <Icon
+            name="Reply"
+            size={24}
+            className="hover:text-secondary-hover transition-colors"
+          />
+        </Button>
       </div>
     </div>
   );

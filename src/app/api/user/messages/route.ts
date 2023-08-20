@@ -21,6 +21,7 @@ export async function POST(req: Request) {
       include: {
         sender: true,
         seenBy: true,
+        replyingTo: true,
       },
     });
 
