@@ -83,6 +83,7 @@ export const ConversationForm = ({
     if (data.message.trim().length === 0) return;
     setIsEmojiOpen(false);
     form.setValue("message", "");
+    if (textareaRef.current) textareaRef.current.style.height = "2.5rem";
 
     await sendMessage({
       conversationId,
