@@ -140,6 +140,7 @@ export const ConversationBody = ({
                 .toISOString()
                 .split("T")[0]) && (
             <TextSeparator
+              key={format(new Date(message.createdAt), "LLLL dd")}
               text={format(new Date(message.createdAt), "LLLL dd")}
             />
           )}
