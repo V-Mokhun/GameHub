@@ -76,7 +76,10 @@ export const UserView = ({
         ) : (
           !isOwnProfile && (
             <div className="flex items-center gap-4">
-              <MessageButton username={username} />
+              <MessageButton
+                isAutheticated={!!ownProfile?.id}
+                username={username}
+              />
               <FriendsButton
                 authUser={ownProfile}
                 isUserFriend={

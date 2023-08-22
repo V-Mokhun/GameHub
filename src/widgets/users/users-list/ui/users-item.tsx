@@ -83,7 +83,11 @@ export const UsersItem = ({
             !isSmall && "md:justify-start"
           )}
         >
-          <MessageButton isSmall={isSmall} username={user.username!} />
+          <MessageButton
+            isSmall={isSmall}
+            username={user.username!}
+            isAutheticated={!!authUser?.id}
+          />
           <FriendsButton
             isSmall={isSmall}
             authUser={authUser}
