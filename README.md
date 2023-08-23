@@ -98,7 +98,7 @@ GameHub is your one-stop destination for everything gaming. Whether you're an av
 - One of the challenges I faced was finding out how to fetch the IGDB Api correctly, which included using axios interceptors to keep the token updated, Next.js rewrites to avoid proxy issues and writing custom functions to create body for requests.
 - Another challenge was to handle the data from IGDB Api, which was not always consistent and required a lot of data manipulation.
 - It was also challenging to handle the cache correctly, when and how to invalidate it, how to use it with realtime chat and how to use it with IGDB Api.
-- Lastly, it was challenging to implement the realtime chat, which required a lot of research and testing.
+- Lastly, it was challenging to implement the realtime chat, which required a lot of research and testing. Especially, I tried to implement infinite scroll for messages, but it was not working correctly with the cache, so I had to abandon it.
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -178,7 +178,7 @@ By clicking on either Plus or Edit Icon on the game card you can add or edit gam
 
 #### /browse
 
-On the browse page you can search for games by name. You can also filter games by genre, platform, theme, mode and rating. You can also sort games by rating and release date.
+On the browse page you can search for games by name, filter by genre, platform, theme, mode and rating, sort by rating and release date.
 
 [![Browse Screenshot][browse]](https://example.com)
 
@@ -208,7 +208,7 @@ On the settings page you can change your profile picture, username, password and
 
 #### /users
 
-On the community page you can see all the users, search them by username. You can send a friend request to a user or chat with hime. You can also click on a user to see their profile.
+On the community page you can see all the users, search them by username. You can send a friend request to a user or chat with him. You can also click on user to see their profile.
 
 [![Community Screenshot][community]](https://example.com)
 
@@ -228,7 +228,7 @@ On the profile page you can see when the user joined, their rated games and game
 
 #### /users/[username]/library
 
-On the library page you can see all the games the user has in their library. You can also filter games by status and user rating. You can also sort games by user rating, play time, date added and edited. Note: you can only see this page if user has public library.
+On the library page you can see all the games the user has in their library. You can also filter games by status and user rating, sort by user rating, play time, date added and edited. Note: you can only see this page if user has public library.
 
 [![Library Screenshot][library]](https://example.com)
 
@@ -238,7 +238,7 @@ On the library page you can see all the games the user has in their library. You
 
 #### /users/[username]/friends
 
-On the friends page you can see all your friends, search them by username. You can also click on a user to see their profile. From there you can also go to the Friend Request page to see all your friend requests.
+On the friends page you can see all user's friends, search them by username. You can also click on a user to see their profile. From there you can also go to the Friend Request page to see all your friend requests.
 
 [![Friends Screenshot][friends]](https://example.com)
 
@@ -268,7 +268,7 @@ On the messages page you can see all your conversations. You can also click on a
 
 #### /messages/[username]
 
-On the chat page you can chat with users. You can also see if they are online or offline. You can also see what messages are unread.
+On the chat page you can chat with users. You can also see if they are online or offline, what messages are unread. There is also and emoji picker and you can send images.
 
 [![Chat Screenshot][chat]](https://example.com)
 
