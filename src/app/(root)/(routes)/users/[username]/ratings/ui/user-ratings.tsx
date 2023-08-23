@@ -85,7 +85,11 @@ export const UserRatings = ({ username }: UserRatingsProps) => {
 
   return (
     <div className="pb-4 md:pb-6 overflow-x-auto">
-      <UserMenu isLoading={isUserLoading} username={username} />
+      <UserMenu
+        isLoading={isUserLoading}
+        username={username}
+        includePrivateRoutes={userData?.libraryIncluded}
+      />
       <Separator className="mt-0" />
       <Title>
         {userData.isOwnProfile

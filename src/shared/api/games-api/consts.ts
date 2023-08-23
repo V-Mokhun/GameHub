@@ -25,6 +25,10 @@ export const GAME_CATEGORIES: { name: string; id: GameCategories }[] = [
   { name: "Episode", id: GameCategories.EPISODE },
   { name: "Season", id: GameCategories.SEASON },
   { name: "Expanded Game", id: GameCategories.EXPANDED_GAME },
+  { name: "Port", id: GameCategories.PORT },
+  { name: "Fork", id: GameCategories.FORK },
+  { name: "Pack", id: GameCategories.PACK },
+  { name: "Update", id: GameCategories.UPDATE },
 ];
 
 export const DEFAULT_FILTERS: GameFilters = {

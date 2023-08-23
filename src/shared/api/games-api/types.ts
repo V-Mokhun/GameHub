@@ -16,6 +16,10 @@ export enum GameCategories {
   REMAKE = 8,
   REMASTER = 9,
   EXPANDED_GAME = 10,
+  PORT = 11,
+  FORK = 12,
+  PACK = 13,
+  UPDATE = 14,
 }
 
 export enum ImageTypes {

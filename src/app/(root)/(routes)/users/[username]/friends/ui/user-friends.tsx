@@ -75,7 +75,11 @@ export const UserFriends = ({ username }: UserFriendsProps) => {
 
   return (
     <>
-      <UserMenu isLoading={isUserLoading} username={username} />
+      <UserMenu
+        isLoading={isUserLoading}
+        username={username}
+        includePrivateRoutes={userData?.libraryIncluded}
+      />
       {userData?.isOwnProfile && (
         <div className="flex items-center mb-2 lg:mb-3 gap-4">
           <Link
