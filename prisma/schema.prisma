@@ -11,7 +11,7 @@ datasource db {
 model User {
   id        String   @id
   email     String   @unique
-  username  String?  @unique
+  username  String   @unique
   imageUrl  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -50,9 +50,10 @@ model Conversation {
   createdAt     DateTime @default(now())
   lastMessageAt DateTime @default(now())
 
-  userUsernames String //? "username1,username2"
-  users         User[]
-  messages      Message[]
+  firstUserUsername  String
+  secondUserUsername String
+  users              User[]
+  messages           Message[]
 }
 
 model Message {

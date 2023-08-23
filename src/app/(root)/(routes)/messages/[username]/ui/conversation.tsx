@@ -66,6 +66,7 @@ export const Conversation = ({ username }: ConversationProps) => {
           }}
         />
         <ConversationForm
+          isLoading={messages?.length === 1 && messages[0].isSending === true}
           ref={textareaRef}
           replyingMessage={replyingMessage}
           resetReplyingMessage={() => setReplyingMessage(null)}

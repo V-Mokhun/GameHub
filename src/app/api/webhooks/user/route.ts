@@ -80,24 +80,114 @@ async function handler(req: Request) {
       });
 
       if (!user) return NextResponse.json({}, { status: 200 });
-
-      await db.user.update({
-        where: { id },
-        data: {
-          email: email_addresses[0].email_address,
-          username,
-          imageUrl: profile_image_url,
-          isPrivateLibrary,
-        },
-      });
+      if (user.username === username) {
+        await db.user.update({
+          where: { id },
+          data: {
+            email: email_addresses[0].email_address,
+            username,
+            imageUrl: profile_image_url,
+            isPrivateLibrary,
+          },
+        });
+      } else {
+        await db.$transaction([
+          db.user.update({
+            where: { id },
+            data: {
+              email: email_addresses[0].email_address,
+              username: username!,
+              imageUrl: profile_image_url,
+              isPrivateLibrary,
+            },
+          }),
+          db.conversation.updateMany({
+            where: {
+              firstUserUsername: user.username,
+            },
+            data: {
+              firstUserUsername: username!,
+            },
+          }),
+          db.conversation.updateMany({
+            where: { secondUserUsername: user.username },
+            data: { secondUserUsername: username! },
+          }),
+        ]);
+      }
     } catch (error) {
       catchError(error, "Could not update your profile");
     }
   } else if (eventType === "user.deleted") {
     try {
-      const { id } = evt.data;
-      await db.user.delete({ where: { id } });
+      // const { id } = evt.data;
+      const id = "user_2UOfw9QnAy6R9wOM3BBLwQoPxGX";
+      const conversations = await db.conversation.findMany({
+        where: { users: { some: { id } } },
+      });
+      const userIds = await db.user.findMany({
+        where: {
+          conversations: {
+            some: {
+              id: {
+                in: conversations.map((c) => c.id),
+              },
+            },
+          },
+          id: {
+            not: id,
+          },
+        },
+        select: {
+          id: true,
+          seenMessages: {
+            where: {
+              conversationId: {
+                notIn: conversations.map((c) => c.id),
+              },
+            },
+            select: {
+              id: true,
+            },
+          },
+        },
+      });
+
+      await db.$transaction([
+        db.$queryRaw`DELETE FROM Message WHERE conversationId IN (${conversations
+          .map((c) => c.id)
+          .join(",")})`,
+        db.conversation.deleteMany({
+          where: {
+            users: {
+              some: {
+                id,
+              },
+            },
+          },
+        }),
+        db.user.delete({ where: { id } }),
+      ]);
+
+      await Promise.all(
+        userIds.map(async ({ id, seenMessages }) => {
+          db.user.update({
+            where: { id },
+            data: {
+              conversations: {
+                disconnect: conversations.map((c) => ({ id: c.id })),
+              },
+              seenMessages: {
+                set: [],
+                connect: seenMessages.map((m) => ({ id: m.id })),
+              },
+            },
+          });
+        })
+      );
     } catch (error) {
+      console.log(error);
+
       catchError(error, "Could not delete your profile");
     }
   }

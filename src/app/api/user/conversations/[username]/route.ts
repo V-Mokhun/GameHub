@@ -19,8 +19,14 @@ export async function GET(
     const conversations = await db.conversation.findMany({
       where: {
         OR: [
-          { userUsernames: `${authUser.username},${username}` },
-          { userUsernames: `${username},${authUser.username}` },
+          {
+            firstUserUsername: authUser.username!,
+            secondUserUsername: username,
+          },
+          {
+            firstUserUsername: username,
+            secondUserUsername: authUser.username!,
+          },
         ],
       },
       include: {

@@ -39,6 +39,7 @@ interface ConversationFormProps {
   username: string;
   replyingMessage: FullMessage | null;
   resetReplyingMessage: () => void;
+  isLoading: boolean;
 }
 
 const messageFormSchema = z.object({
@@ -64,7 +65,13 @@ export const ConversationForm = forwardRef<
   ConversationFormProps
 >(
   (
-    { conversationId, username, replyingMessage, resetReplyingMessage },
+    {
+      conversationId,
+      username,
+      replyingMessage,
+      resetReplyingMessage,
+      isLoading,
+    },
     ref
   ) => {
     const { resolvedTheme } = useTheme();
@@ -76,13 +83,6 @@ export const ConversationForm = forwardRef<
       end: number;
     }>();
 
-    useEffect(() => {
-      if (!selection || !textareaRef.current) return;
-      const { start, end } = selection;
-      textareaRef.current.focus();
-      textareaRef.current.setSelectionRange(start, end);
-    }, [selection]);
-
     const form = useForm<MessageFormSchema>({
       defaultValues: {
         message: "",
@@ -92,8 +92,16 @@ export const ConversationForm = forwardRef<
       resolver: zodResolver(messageFormSchema),
     });
 
+    useEffect(() => {
+      if (!selection || !textareaRef.current) return;
+      const { start, end } = selection;
+      textareaRef.current.focus();
+      textareaRef.current.setSelectionRange(start, end);
+    }, [selection]);
+
     const onSubmit: SubmitHandler<MessageFormSchema> = async (data) => {
-      if (data.message.trim().length === 0) return;
+      if (data.message.trim().length === 0 || isLoading) return;
+
       setIsEmojiOpen(false);
       form.setValue("message", "");
       if (textareaRef?.current) textareaRef.current.style.height = "2.5rem";
@@ -108,6 +116,8 @@ export const ConversationForm = forwardRef<
     };
 
     const handleUpload = async (result: any) => {
+      if (isLoading) return;
+
       await sendMessage({
         conversationId,
         image: result?.info?.secure_url,
@@ -229,6 +239,7 @@ export const ConversationForm = forwardRef<
                 type="submit"
                 className="bg-transparent hover:bg-transparent mb-1"
                 size="icon"
+                disabled={isLoading}
               >
                 <Icon
                   name="Send"

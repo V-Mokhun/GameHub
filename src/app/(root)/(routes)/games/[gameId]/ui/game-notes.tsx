@@ -54,10 +54,7 @@ export const GameNotes = ({ libraryGame, username }: GameNotesProps) => {
             value={editedText}
             onChange={(e) => setEditedText(e.target.value)}
           />
-          <div className="flex items-center justify-between gap-2">
-            <Button disabled={isAdding} type="submit">
-              Save
-            </Button>
+          <div className="flex items-center justify-end gap-2">
             <Button
               onClick={() => setEditing(false)}
               disabled={isAdding}
@@ -65,6 +62,9 @@ export const GameNotes = ({ libraryGame, username }: GameNotesProps) => {
               variant="destructive"
             >
               Close
+            </Button>
+            <Button disabled={isAdding} type="submit">
+              Save
             </Button>
           </div>
         </form>

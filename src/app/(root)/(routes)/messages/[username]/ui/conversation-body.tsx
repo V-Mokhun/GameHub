@@ -9,7 +9,7 @@ import { Button, Icon, Skeleton, TextSeparator } from "@shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { format } from "date-fns";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { ConversationMessage } from "./conversation-message";
 
 interface ConversationBodyProps {
@@ -135,7 +135,7 @@ export const ConversationBody = ({
   return (
     <div className="flex-1 overflow-y-auto" ref={bodyRef}>
       {messages.map((message, i) => (
-        <>
+        <Fragment key={message.id}>
           {/* render text separator only if message is written not on the same day as last one */}
           {(i === 0 ||
             new Date(message.createdAt).toISOString().split("T")[0] !==
@@ -143,17 +143,15 @@ export const ConversationBody = ({
                 .toISOString()
                 .split("T")[0]) && (
             <TextSeparator
-              key={format(new Date(message.createdAt), "LLLL dd")}
               text={format(new Date(message.createdAt), "LLLL dd")}
             />
           )}
           <ConversationMessage
             onReplyClick={() => onReplyClick(message)}
             isOwn={message.senderId === user?.id}
-            key={message.id}
             data={message}
           />
-        </>
+        </Fragment>
       ))}
       <Button
         className={cn(

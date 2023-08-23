@@ -17,6 +17,7 @@ export type FullMessage = Message & {
   sender: User;
   seenBy: User[];
   replyingTo?: Message & { sender: User };
+  isSending?: boolean;
 };
 
 export type FullConversation = Conversation & {

@@ -29,7 +29,8 @@ export async function POST(
     if (!convId) {
       const conversation = await db.conversation.create({
         data: {
-          userUsernames: `${user.username},${username}`,
+          firstUserUsername: user.username!,
+          secondUserUsername: username,
           users: { connect: [{ id: user.id }, { username }] },
         },
       });

@@ -127,7 +127,7 @@ export const useSendMessage = (username: string) => {
             imageUrl: user!.imageUrl,
             isPrivateLibrary: user!.unsafeMetadata.isPrivateLibrary,
             updatedAt: user!.updatedAt || new Date(),
-            username: user!.username,
+            username: user!.username!,
           };
 
           const message = {
