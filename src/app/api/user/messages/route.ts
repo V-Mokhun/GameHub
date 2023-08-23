@@ -31,8 +31,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(messages, { status: 200 });
   } catch (error) {
-    console.log(error);
-
     return catchError(error, "Failed to get messages");
   }
 }

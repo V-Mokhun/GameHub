@@ -11,18 +11,12 @@ import {
   USERS_ROUTE,
 } from "@shared/consts";
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
   Icon,
   Link,
   Separator,
-  SignOutButton,
   Skeleton,
   Title,
 } from "@shared/ui";

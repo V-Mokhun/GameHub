@@ -44,7 +44,7 @@ export function HomePage() {
         setTimeout(async () => {
           await user.update({ username: nanoid(10) });
           usernameGeneratedToast();
-        }, 3000);
+        }, 1000);
       }
     }
 

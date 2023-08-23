@@ -27,7 +27,6 @@ export const GamePage = ({ gameId }: GamePageProps) => {
     user?.username ?? undefined,
     { noLimit: true, enabled: true }
   );
-  console.log(game);
 
   return (
     <>
