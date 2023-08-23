@@ -5,7 +5,7 @@
 
 <br />
 <div align="center">
-  <a href="https://github.com/v-mokhun/gamehub">
+  <a href="https://gamehub-proj.vercel.app/">
 		<img src="readme-images/logo.png" alt="Logo" width="400" height="50">
   </a>
 
@@ -13,7 +13,7 @@
 GameHub is your one-stop destination for everything gaming. Whether you're an avid gamer or just starting your journey, GameHub offers a platform where you can explore, connect, and conquer.
     <br />
     <br />
-    <a href="https://github.com/v-mokhun/gamehub">View Site</a>
+    <a href="https://gamehub-proj.vercel.app/">View Site</a>
     ·
     <a href="https://github.com/v-mokhun/gamehub/issues">Report Bug</a>
     ·
@@ -66,7 +66,7 @@ GameHub is your one-stop destination for everything gaming. Whether you're an av
 
 ## About The Project
 
-[![Home Screenshot][home]](https://example.com)
+[![Home Screenshot][home]](https://gamehub-proj.vercel.app/)
 
 🎮 Discover Games: Dive into a vast collection of games from various genres, categories, and themes. Our curated selection ensures you never miss the next gaming masterpiece.
 
@@ -151,8 +151,8 @@ Project works best when you are logged in, but it's not required.
 
 On the sign up page you can sign up with your email, google, github or twitch. After signing up with an email you will be redirected to verify your email by providing a code.
 
-[![Sign Up Screenshot][sign-up]](https://example.com)
-[![Verify Code Screenshot][verify-code]](https://example.com)
+[![Sign Up Screenshot][sign-up]](https://gamehub-proj.vercel.app/sign-up)
+[![Verify Code Screenshot][verify-code]](https://gamehub-proj.vercel.app/sign-up)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -162,7 +162,7 @@ On the sign up page you can sign up with your email, google, github or twitch. A
 
 On the home page you can see an example of a game card, which you cant either click to go to a game page, or click on the plus icon to add game to your library. You can also see a list of featured and top rated games.
 
-[![Home Card Screenshot][home-card]](https://example.com)
+[![Home Card Screenshot][home-card]](https://gamehub-proj.vercel.app)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -170,7 +170,7 @@ On the home page you can see an example of a game card, which you cant either cl
 
 By clicking on either Plus or Edit Icon on the game card you can add or edit game in your library. Available options are: status, rating, hours played, finished date and notes.
 
-[![Add Game Screenshot][add-game]](https://example.com)
+[![Add Game Screenshot][add-game]](https://gamehub-proj.vercel.app)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -180,17 +180,17 @@ By clicking on either Plus or Edit Icon on the game card you can add or edit gam
 
 On the browse page you can search for games by name, filter by genre, platform, theme, mode and rating, sort by rating and release date.
 
-[![Browse Screenshot][browse]](https://example.com)
+[![Browse Screenshot][browse]](https://gamehub-proj.vercel.app/browse)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
 ### Game Page
 
-#### /game/[id]
+#### /games/[id]
 
 On the game page you can see all the information about the game, including screenshots, videos, description, rating, release date, platforms, genres, themes, modes, developers. Games from the Franchise and Similar Games to the one you are currently observing are included. You can also add game to your library by clicking on the plus icon.
 
-[![Game Page Screenshot][game]](https://example.com)
+[![Game Page Screenshot][game]](https://gamehub-proj.vercel.app/games/45131)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -200,7 +200,7 @@ On the game page you can see all the information about the game, including scree
 
 On the settings page you can change your profile picture, username, password and delete your account.
 
-[![Settings Screenshot][settings]](https://example.com)
+[![Settings Screenshot][settings]](https://gamehub-proj.vercel.app/settings)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -210,7 +210,7 @@ On the settings page you can change your profile picture, username, password and
 
 On the community page you can see all the users, search them by username. You can send a friend request to a user or chat with him. You can also click on user to see their profile.
 
-[![Community Screenshot][community]](https://example.com)
+[![Community Screenshot][community]](https://gamehub-proj.vercel.app/users)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -220,7 +220,7 @@ On the community page you can see all the users, search them by username. You ca
 
 On the profile page you can see when the user joined, their rated games and games they want to play. Note: you can only see their games if they have public library.
 
-[![Profile Screenshot][profile]](https://example.com)
+[![Profile Screenshot][profile]](https://gamehub-proj.vercel.app/users/v_mokhun)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -230,7 +230,7 @@ On the profile page you can see when the user joined, their rated games and game
 
 On the library page you can see all the games the user has in their library. You can also filter games by status and user rating, sort by user rating, play time, date added and edited. Note: you can only see this page if user has public library.
 
-[![Library Screenshot][library]](https://example.com)
+[![Library Screenshot][library]](https://gamehub-proj.vercel.app/users/v_mokhun/library)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -240,7 +240,7 @@ On the library page you can see all the games the user has in their library. You
 
 On the friends page you can see all user's friends, search them by username. You can also click on a user to see their profile. From there you can also go to the Friend Request page to see all your friend requests.
 
-[![Friends Screenshot][friends]](https://example.com)
+[![Friends Screenshot][friends]](https://gamehub-proj.vercel.app/users/v_mokhun/friends)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -250,7 +250,7 @@ On the friends page you can see all user's friends, search them by username. You
 
 On the ratings page you can see an area graph of user's ratings and also pie chart on distribution of ratings.
 
-[![Ratings Screenshot][ratings]](https://example.com)
+[![Ratings Screenshot][ratings]](https://gamehub-proj.vercel.app/users/v_mokhun/ratings)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -260,7 +260,7 @@ On the ratings page you can see an area graph of user's ratings and also pie cha
 
 On the messages page you can see all your conversations. You can also click on a user to see your conversation with them.
 
-[![Messages Screenshot][messages]](https://example.com)
+[![Messages Screenshot][messages]](https://gamehub-proj.vercel.app/messages)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -270,7 +270,7 @@ On the messages page you can see all your conversations. You can also click on a
 
 On the chat page you can chat with users. You can also see if they are online or offline, what messages are unread. There is also and emoji picker and you can send images.
 
-[![Chat Screenshot][chat]](https://example.com)
+[![Chat Screenshot][chat]](https://gamehub-proj.vercel.app/messages/v_mokhun)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -301,7 +301,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 [LinkedIn](https://www.linkedin.com/in/volodymyr-mokhun-35005723b/)
 
-Project Link: [https://github.com/v-mokhun/gamehub](https://github.com/v-mokhun/gamehub)
+Project Link: [https://gamehub-proj.vercel.app](https://gamehub-proj.vercel.app)
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
