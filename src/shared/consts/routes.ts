@@ -42,9 +42,4 @@ export const PUBLIC_ROUTES = [
   TERMS_ROUTE,
   ABOUT_ROUTE,
   CONTACT_ROUTE,
-  "/api/webhooks/:path*",
-  "/api/token",
-  "/api/pusher/auth",
-  "/api/igdb/:path*",
-  "/api/user/:path*",
 ];
