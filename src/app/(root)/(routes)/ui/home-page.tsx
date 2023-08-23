@@ -39,12 +39,11 @@ export function HomePage() {
   );
 
   useEffect(() => {
-    function updateUsername() {
+    async function updateUsername() {
       if (isLoaded && user && !user.username) {
-        setTimeout(async () => {
-          await user.update({ username: nanoid(10) });
-          usernameGeneratedToast();
-        }, 1000);
+        const username = user.id.slice(7, 18);
+        await user.update({ username });
+        usernameGeneratedToast();
       }
     }
 

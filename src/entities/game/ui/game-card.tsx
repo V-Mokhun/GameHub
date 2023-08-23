@@ -191,7 +191,7 @@ export const GameCard = ({
             </div>
           </TableCell>
           <TableCell className="text-right">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center justify-end gap-1">
               <Button
                 onClick={onLibraryButtonClick}
                 variant="link"

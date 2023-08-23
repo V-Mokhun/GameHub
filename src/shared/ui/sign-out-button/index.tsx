@@ -6,9 +6,14 @@ import { useToast } from "../primitives";
 interface SignOutButtonProps {
   children?: React.ReactNode;
   username: string;
+  id: string;
 }
 
-export const SignOutButton = ({ children, username }: SignOutButtonProps) => {
+export const SignOutButton = ({
+  children,
+  username,
+  id,
+}: SignOutButtonProps) => {
   const { toast } = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -18,6 +23,7 @@ export const SignOutButton = ({ children, username }: SignOutButtonProps) => {
       signOutCallback={() => {
         queryClient.invalidateQueries({ queryKey: ["user", { username }] });
         queryClient.invalidateQueries({ queryKey: ["library", { username }] });
+        queryClient.invalidateQueries({ queryKey: ["own-profile", { id }] });
         router.refresh();
         toast({ title: "Signed out succesfully", variant: "success" });
       }}

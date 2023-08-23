@@ -40,7 +40,7 @@ export const Sidebar = () => {
   );
 
   if (isLoaded)
-    content = <SidebarMenu onClose={onClose} username={user?.username} />;
+    content = <SidebarMenu onClose={onClose} id={user?.id} username={user?.username} />;
 
   return (
     <>

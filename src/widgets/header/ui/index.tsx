@@ -1,4 +1,6 @@
-import { auth } from "@clerk/nextjs";
+"use client";
+
+import { useAuth } from "@clerk/nextjs";
 import { SIGN_IN_ROUTE } from "@shared/consts";
 import { Link, Logo, buttonVariants } from "@shared/ui";
 import { HeaderAvatar } from "./header-avatar";
@@ -7,8 +9,8 @@ import { HeaderSearch } from "./header-search";
 import { HeaderRequests } from "./header-requests";
 import { HeaderMessages } from "./header-messages";
 
-export const Header = async () => {
-  const { userId } = auth();
+export const Header = () => {
+  const { userId } = useAuth();
 
   return (
     <header className="fixed w-full z-10 md:z-40 bg-primary py-2 md:py-3">

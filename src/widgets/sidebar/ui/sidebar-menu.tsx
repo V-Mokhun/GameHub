@@ -88,10 +88,11 @@ const GENERAL_PRIVATE_ITEMS = (pathname: string): SidebarItemT[] => [
 
 interface SidebarMenuProps {
   username?: string | null;
+  id?: string;
   onClose: () => void;
 }
 
-export const SidebarMenu = ({ onClose, username }: SidebarMenuProps) => {
+export const SidebarMenu = ({ onClose, username, id }: SidebarMenuProps) => {
   const pathname = usePathname();
 
   return (
@@ -138,9 +139,9 @@ export const SidebarMenu = ({ onClose, username }: SidebarMenuProps) => {
             GENERAL_PRIVATE_ITEMS(pathname).map((item) => (
               <SidebarItem onClick={onClose} key={item.href} {...item} />
             ))}
-          {username && (
+          {username && id && (
             <li>
-              <SignOutButton username={username}>
+              <SignOutButton id={id} username={username}>
                 <button
                   type="button"
                   onClick={() => onClose()}

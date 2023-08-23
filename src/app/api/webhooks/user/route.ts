@@ -48,12 +48,17 @@ async function handler(req: Request) {
   if (eventType === "user.created") {
     try {
       const { id, email_addresses, username, profile_image_url } = evt.data;
+      let tempUsername = username;
+
+      if (!tempUsername) {
+        tempUsername = id.slice(7, 18);
+      }
 
       await db.user.create({
         data: {
           id,
           email: email_addresses[0].email_address,
-          username,
+          username: tempUsername,
           imageUrl: profile_image_url,
         },
       });
@@ -69,8 +74,6 @@ async function handler(req: Request) {
         profile_image_url,
         unsafe_metadata: { isPrivateLibrary },
       } = evt.data;
-
-      if (!username) return NextResponse.json({}, { status: 200 });
 
       const user = await db.user.findUnique({
         where: { id },

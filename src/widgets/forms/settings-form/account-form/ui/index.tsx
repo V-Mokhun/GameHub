@@ -25,6 +25,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AccountSettingsFormSchema, accountSettingsFormSchema } from "../model";
 import { AccountFormAvatar } from "./account-form-avatar";
 import { AccountFormSkeleton } from "./skeleton";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const AccountForm = () => {
   const router = useRouter();
@@ -34,6 +35,7 @@ export const AccountForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const imageRef = useRef<HTMLInputElement | null>(null);
+  const queryClient = useQueryClient();
 
   const form = useForm<AccountSettingsFormSchema>({
     defaultValues: {
@@ -84,12 +86,20 @@ export const AccountForm = () => {
     form.setValue("image", null);
 
     try {
+      const username = user.username;
+      const id = user.id;
       await user.delete();
+
+      queryClient.invalidateQueries({ queryKey: ["user", { username }] });
+      queryClient.invalidateQueries({ queryKey: ["library", { username }] });
+      queryClient.invalidateQueries({ queryKey: ["own-profile", { id }] });
+
+      router.push(HOME_ROUTE);
+      router.refresh();
       toast({
         title: "Account deleted successfully",
         variant: "success",
       });
-      router.push(HOME_ROUTE);
     } catch (error) {
       displayError(toast, error, "Account could not be deleted");
     } finally {
