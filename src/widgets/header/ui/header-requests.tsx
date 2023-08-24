@@ -103,6 +103,7 @@ export const HeaderRequests = ({ authUserId }: HeaderRequestsProps) => {
             isLoading={isUserLoading}
             users={requestFriends}
             notFoundMessage="You have no friend requests at the moment."
+            isReceivedRequests
           />
           <Separator className="my-2" />
           {userData.receivedFriendRequests.length > 0 ? (

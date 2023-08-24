@@ -50,11 +50,11 @@ export const ConversationMessage = ({
             data.image ? "rounded-md p-0" : "rounded-3xl py-2 px-3"
           )}
         >
-          {data.replyingTo && (
+          {data.replyingTo && data.replyingTo[0] && (
             <ConversationReplyBody
-              body={data.replyingTo.body ?? ""}
-              image={data.replyingTo.image ?? ""}
-              username={data.replyingTo.sender.username!}
+              body={data.replyingTo[0].body ?? ""}
+              image={data.replyingTo[0].image ?? ""}
+              username={data.replyingTo[0].sender.username!}
               className={cn("text-sm", data.image && "mb-1 mx-2")}
             />
           )}

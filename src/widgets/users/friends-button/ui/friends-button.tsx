@@ -18,6 +18,7 @@ interface FriendsButtonProps {
   userUsername: string | null;
   isUserFriend: boolean;
   isSmall?: boolean;
+  isReceivedRequest?: boolean;
 }
 
 export const FriendsButton = ({
@@ -25,6 +26,7 @@ export const FriendsButton = ({
   isUserFriend,
   authUser,
   isSmall,
+  isReceivedRequest,
 }: FriendsButtonProps) => {
   const { signInToast } = useCustomToasts();
   const { mutate: sendRequest, isLoading: isSendingRequest } =
@@ -44,7 +46,7 @@ export const FriendsButton = ({
     [authUser?.sentFriendRequests, userUsername]
   );
 
-  const hasRecievedRequest = useMemo(
+  const hasReceivedRequest = useMemo(
     () =>
       authUser?.receivedFriendRequests.some(
         (request) => request.senderUsername === userUsername
@@ -104,7 +106,7 @@ export const FriendsButton = ({
     isAcceptingRequest ||
     isRemovingFriend;
 
-  return hasRecievedRequest ? (
+  return hasReceivedRequest || isReceivedRequest ? (
     <div className="flex gap-3 items-center">
       <Button
         disabled={isLoading}

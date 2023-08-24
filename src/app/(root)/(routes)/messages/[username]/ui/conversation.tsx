@@ -53,7 +53,7 @@ export const Conversation = ({ username }: ConversationProps) => {
   return (
     <div className="h-[calc(100vh-70px)] -mt-5 -mb-4 md:-mt-4 md:-mb-5">
       <div className="h-full flex flex-col relative">
-        <ConversationHeader isActive={isActive} user={data!.user} />
+        <ConversationHeader isActive={isActive} user={data?.user} />
         <ConversationBody
           conversationId={data?.conversation?.id}
           username={username}

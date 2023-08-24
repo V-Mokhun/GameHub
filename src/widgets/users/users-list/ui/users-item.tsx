@@ -20,6 +20,7 @@ interface UsersItemProps {
   authUser?: OwnProfile;
   isSmall?: boolean;
   isActive?: boolean;
+  isReceivedRequest?: boolean;
 }
 
 export const UsersItemSkeleton = () => (
@@ -42,6 +43,7 @@ export const UsersItem = ({
   isSelf,
   isSmall,
   isActive,
+  isReceivedRequest,
 }: UsersItemProps) => {
   return (
     <li
@@ -93,6 +95,7 @@ export const UsersItem = ({
             authUser={authUser}
             isUserFriend={user.isFriend}
             userUsername={user.username}
+            isReceivedRequest={isReceivedRequest}
           />
         </div>
       )}

@@ -120,10 +120,11 @@ async function handler(req: Request) {
     }
   } else if (eventType === "user.deleted") {
     try {
-      // const { id } = evt.data;
-      const id = "user_2UOfw9QnAy6R9wOM3BBLwQoPxGX";
+      const { id } = evt.data;
+
       const conversations = await db.conversation.findMany({
         where: { users: { some: { id } } },
+        select: { id: true },
       });
       const userIds = await db.user.findMany({
         where: {
@@ -175,19 +176,24 @@ async function handler(req: Request) {
             where: { id },
             data: {
               conversations: {
-                disconnect: conversations.map((c) => ({ id: c.id })),
+                set: [],
+                connect: conversations.map((c) => ({ id: c.id })),
               },
               seenMessages: {
                 set: [],
                 connect: seenMessages.map((m) => ({ id: m.id })),
+              },
+              friends: {
+                disconnect: { id },
+              },
+              friendsRelation: {
+                disconnect: { id },
               },
             },
           });
         })
       );
     } catch (error) {
-      console.log(error);
-
       catchError(error, "Could not delete your profile");
     }
   }

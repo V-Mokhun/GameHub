@@ -140,8 +140,7 @@ export const useSendMessage = (username: string) => {
             sender,
             seenBy: [sender],
             isSending: true,
-            replyingToId: data.replyingMessage?.id || null,
-            replyingTo: data.replyingMessage ?? undefined,
+            replyingTo: data.replyingMessage ? [data.replyingMessage] : [],
           };
 
           if (!old) {

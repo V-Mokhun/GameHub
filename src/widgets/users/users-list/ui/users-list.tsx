@@ -12,6 +12,7 @@ interface UsersListProps {
   isLoading: boolean;
   notFoundMessage?: string;
   isSmall?: boolean;
+  isReceivedRequests?: boolean;
 }
 
 export const UsersList = ({
@@ -19,6 +20,7 @@ export const UsersList = ({
   isLoading,
   notFoundMessage = "No Users Found",
   isSmall,
+  isReceivedRequests,
 }: UsersListProps) => {
   const { userId } = useAuth();
   const { members } = useActiveList();
@@ -43,6 +45,7 @@ export const UsersList = ({
           authUser={ownProfile}
           isSmall={isSmall}
           isActive={members?.some((m) => m === user.id)}
+          isReceivedRequest={isReceivedRequests}
         />
       ))}
     </ul>
