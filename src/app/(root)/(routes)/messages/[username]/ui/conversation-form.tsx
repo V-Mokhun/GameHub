@@ -194,15 +194,17 @@ export const ConversationForm = forwardRef<
                       <Textarea
                         maxLength={1000}
                         onKeyDown={handleUserKeyPress}
-                        className="min-h-0 max-h-40 h-10 resize-none text-base rounded-3xl pr-10"
+                        className="min-h-0 max-h-40 h-10 resize-none text-base rounded-3xl pr-10 md:pr-12"
                         placeholder="Aa"
                         onChange={(e) => {
                           onChange(e);
                           if (!textareaRef.current) return;
                           textareaRef.current.style.height = "2.5rem";
-                          const scrollHeight =
-                            textareaRef.current?.scrollHeight;
+                          const scrollHeight = textareaRef.current.scrollHeight;
                           textareaRef.current.style.height = `${scrollHeight}px`;
+                          if (scrollHeight > 160)
+                            textareaRef.current.style.overflowY = "auto";
+                          else textareaRef.current.style.overflowY = "hidden";
                         }}
                         ref={(e) => {
                           formRef(e);
@@ -219,7 +221,7 @@ export const ConversationForm = forwardRef<
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger
-                          className={"absolute right-1 bottom-2 md:bottom-1"}
+                          className={"absolute right-3 bottom-2 md:bottom-1"}
                           onClick={() => setIsEmojiOpen((prev) => !prev)}
                           type="button"
                         >
