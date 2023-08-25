@@ -17,6 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { GameLibraryModal } from "./game-library-modal";
+import { GameStatus } from "@prisma/client";
 
 export type LibraryGameData = Pick<
   NormalizedLibraryGame,
@@ -130,7 +131,20 @@ export const GameCard = ({
             <div className="flex justify-end items-center gap-2">
               <div className="flex-1">
                 {libraryGameData?.status && (
-                  <Badge>
+                  <Badge
+                    className={cn(
+                      libraryGameData.status === GameStatus.WANT_TO_PLAY &&
+                        "bg-primary",
+                      libraryGameData.status === GameStatus.PLAYING &&
+                        "bg-secondary hover:bg-secondary-hover",
+                      libraryGameData.status === GameStatus.COMPLETED &&
+                        "bg-success hover:bg-success-hover",
+                      libraryGameData.status === GameStatus.ABANDONED &&
+                        "bg-destructive hover:bg-destructive-hover",
+                      libraryGameData.status === GameStatus.WANT_TO_REPLAY &&
+                        "bg-purple-500 dark:bg-purple-600 hover:bg-purple-600 dark:hover:bg-purple-500"
+                    )}
+                  >
                     {libraryGameData?.status
                       .toLowerCase()
                       .split("_")
