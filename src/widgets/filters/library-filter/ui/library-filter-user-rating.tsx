@@ -23,12 +23,27 @@ export const LibraryFilterUserRating = ({
   maxRatingValue,
   minRatingValue,
 }: LibraryFilterUserRatingProps) => {
-  const [minRating, setMinRating] = useState(minRatingValue);
-  const [maxRating, setMaxRating] = useState(maxRatingValue);
+  const [minRating, setMinRating] = useState<number | undefined>(
+    minRatingValue
+  );
+  const [maxRating, setMaxRating] = useState<number | undefined>(
+    maxRatingValue
+  );
   const [debouncedMinRating] = useDebouncedValue(minRating, 1000);
   const [debouncedMaxRating] = useDebouncedValue(maxRating, 1000);
 
   useEffect(() => {
+    if (!debouncedMaxRating || debouncedMaxRating > MAX_USER_RATING) {
+      setMaxRating(MAX_USER_RATING);
+      onChange("userRatingMax", MAX_USER_RATING);
+      return;
+    }
+    if (debouncedMinRating === undefined) {
+      setMinRating(MIN_USER_RATING);
+      onChange("userRatingMin", MIN_USER_RATING);
+      return;
+    }
+
     if (debouncedMaxRating < debouncedMinRating)
       return setMaxRating(debouncedMinRating);
 
@@ -36,6 +51,12 @@ export const LibraryFilterUserRating = ({
   }, [debouncedMaxRating, debouncedMinRating]);
 
   useEffect(() => {
+    if (debouncedMinRating === undefined) {
+      setMinRating(MIN_USER_RATING);
+      onChange("userRatingMin", 0);
+      return;
+    }
+
     onChange(
       "userRatingMin",
       Math.max(MIN_USER_RATING - 1, debouncedMinRating)
@@ -55,31 +76,35 @@ export const LibraryFilterUserRating = ({
       <Label className="text-base">User Rating</Label>
       <div className="flex items-center gap-4">
         <Input
-          value={minRating}
+          value={minRating ?? ""}
+          inputMode="numeric"
+          pattern="[0-9]*"
           onChange={(e) => {
+            if (!e.target.value) return setMinRating(undefined);
+
             if (
-              +e.target.value > maxRating ||
-              +e.target.value < MIN_USER_RATING - 1
+              +e.target.value > (maxRating || MAX_USER_RATING) ||
+              !e.target.value.match(/^\d+$/)
             )
               return;
 
             setMinRating(+e.target.value);
           }}
-          min={MIN_USER_RATING - 1}
-          max={MAX_USER_RATING}
-          type="number"
+          type="text"
           placeholder="Min"
         />
         <Input
-          value={maxRating}
+          value={maxRating ?? ""}
+          inputMode="numeric"
+          pattern="[0-9]*"
           onChange={(e) => {
-            if (+e.target.value > MAX_USER_RATING) return;
+            if (!e.target.value) return setMaxRating(undefined);
+
+            if (!e.target.value.match(/^\d+$/)) return;
 
             setMaxRating(+e.target.value);
           }}
-          min={MIN_USER_RATING - 1}
-          max={MAX_USER_RATING}
-          type="number"
+          type="text"
           placeholder="Max"
         />
       </div>

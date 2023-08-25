@@ -18,7 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@shared/ui";
-import { Theme } from "emoji-picker-react";
+import { EmojiStyle, Theme } from "emoji-picker-react";
 import { CldUploadButton } from "next-cloudinary";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
@@ -285,6 +285,7 @@ export const ConversationForm = forwardRef<
                     end: cursorPosition + emoji.emoji.length,
                   });
                 }}
+                emojiStyle={EmojiStyle.GOOGLE}
               />
             </div>
           )}

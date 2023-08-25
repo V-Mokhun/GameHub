@@ -81,7 +81,7 @@ export const ConversationMessage = ({
                 />
               </>
             ) : (
-              <p className="hyphens-auto" ref={messageRef}>
+              <p className="hyphens-auto break-all" ref={messageRef}>
                 {data.body}
               </p>
             )}
