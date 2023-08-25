@@ -2,7 +2,12 @@
 
 import { useUser } from "@clerk/nextjs";
 import { ThemeToggler } from "@features/theme-toggler";
-import { BROWSE_ROUTE, PROFILE_ROUTE, SETTINGS_ROUTE } from "@shared/consts";
+import {
+  BROWSE_ROUTE,
+  LIBRARY_ROUTE,
+  PROFILE_ROUTE,
+  SETTINGS_ROUTE,
+} from "@shared/consts";
 import {
   Avatar,
   AvatarFallback,
@@ -55,15 +60,15 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href={SETTINGS_ROUTE} className="cursor-pointer">
-            <Icon className="mr-2" name="Settings" />
-            <span>Settings</span>
+          <Link className="cursor-pointer" href={LIBRARY_ROUTE(user.username!)}>
+            <Icon className="mr-2" name="Library" />
+            <span>Library</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link className="cursor-pointer" href={BROWSE_ROUTE}>
-            <Icon className="mr-2" name="Globe" />
-            <span>Browse</span>
+          <Link href={SETTINGS_ROUTE} className="cursor-pointer">
+            <Icon className="mr-2" name="Settings" />
+            <span>Settings</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

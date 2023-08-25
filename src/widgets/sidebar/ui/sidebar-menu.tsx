@@ -77,15 +77,6 @@ const SOCIAL_PRIVATE_ITEMS = (
   },
 ];
 
-const GENERAL_PRIVATE_ITEMS = (pathname: string): SidebarItemT[] => [
-  {
-    text: "Settings",
-    href: SETTINGS_ROUTE,
-    iconName: "Settings",
-    isActive: pathname === SETTINGS_ROUTE,
-  },
-];
-
 interface SidebarMenuProps {
   username?: string | null;
   id?: string;
@@ -127,36 +118,18 @@ export const SidebarMenu = ({ onClose, username, id }: SidebarMenuProps) => {
         </ul>
       </div>
 
-      <div>
-        <Subtitle className="uppercase font-semibold" size="large">
-          General
-        </Subtitle>
-        <ul className="space-y-6 md:space-y-4">
-          <li>
-            <ThemeToggler id="sidebar-theme" />
-          </li>
-          {username &&
-            GENERAL_PRIVATE_ITEMS(pathname).map((item) => (
-              <SidebarItem onClick={onClose} key={item.href} {...item} />
-            ))}
-          {username && id && (
+      {!username && (
+        <div>
+          <Subtitle className="uppercase font-semibold" size="large">
+            General
+          </Subtitle>
+          <ul className="space-y-6 md:space-y-4">
             <li>
-              <SignOutButton id={id} username={username}>
-                <button
-                  type="button"
-                  onClick={() => onClose()}
-                  className={cn(
-                    "flex items-center gap-2 font-medium transition-colors hover:text-primary"
-                  )}
-                >
-                  <Icon name="LogOut" />
-                  <span>Sign Out</span>
-                </button>
-              </SignOutButton>
+              <ThemeToggler id="sidebar-theme" />
             </li>
-          )}
-        </ul>
-      </div>
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
