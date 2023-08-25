@@ -2,6 +2,7 @@
 import {
   GAMES_LIMIT_VALUES,
   getPaginateQuery,
+  onPaginate,
   retrievePaginateFromSearchParams,
   userApi,
 } from "@shared/api";
@@ -25,13 +26,6 @@ export const UsersPage = ({}: UsersPageProps) => {
     search,
     paginate
   );
-
-  const onPaginateChange = (limit: number, offset: number) => {
-    const query = getPaginateQuery(params, limit, offset);
-
-    router.push(`${pathname}${query}`);
-    window.scrollTo({ top: 0 });
-  };
 
   const onSearchChange = (value: string) => {
     const current = new URLSearchParams(Array.from(params.entries()));
@@ -59,7 +53,15 @@ export const UsersPage = ({}: UsersPageProps) => {
       <Separator />
       <Pagination
         isFetching={isFetching}
-        onPaginateChange={onPaginateChange}
+        onPaginateChange={(limit, offset) =>
+          onPaginate({
+            limit,
+            offset,
+            params,
+            pathname,
+            router,
+          })
+        }
         isPreviousData={isPreviousData}
         hasMore={data?.users.length === paginate.limit}
         limit={paginate.limit}

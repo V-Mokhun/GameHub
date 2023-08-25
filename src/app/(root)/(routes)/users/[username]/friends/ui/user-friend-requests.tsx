@@ -5,6 +5,7 @@ import {
   GAMES_LIMIT_VALUES,
   UserWithFriends,
   getPaginateQuery,
+  onPaginate,
   retrievePaginateFromSearchParams,
   userApi,
 } from "@shared/api";
@@ -69,13 +70,6 @@ export const UserFriendRequests = ({
     }, TOAST_TIMEOUT);
     return null;
   }
-
-  const onPaginateChange = (limit: number, offset: number) => {
-    const query = getPaginateQuery(params, limit, offset);
-
-    router.push(`${pathname}${query}`);
-    window.scrollTo({ top: 0 });
-  };
 
   const onSearchChange = (value: string) => {
     const current = new URLSearchParams(Array.from(params.entries()));
@@ -161,7 +155,15 @@ export const UserFriendRequests = ({
       <Separator />
       <Pagination
         isFetching={isUserLoading}
-        onPaginateChange={onPaginateChange}
+        onPaginateChange={(limit, offset) =>
+          onPaginate({
+            limit,
+            offset,
+            params,
+            pathname,
+            router,
+          })
+        }
         isPreviousData={false}
         hasMore={filteredRequests.length === paginate.limit}
         limit={paginate.limit}

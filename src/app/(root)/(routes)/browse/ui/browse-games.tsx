@@ -5,11 +5,11 @@ import { GameCardSkeleton } from "@entities/game";
 import {
   GAMES_LIMIT_VALUES,
   gamesApi,
-  getPaginateQuery,
+  onPaginate,
   retrieveFiltersFromSearchParams,
   retrievePaginateFromSearchParams,
   retrieveSortFromSearchParams,
-  userLibraryApi,
+  userLibraryApi
 } from "@shared/api";
 import { Title } from "@shared/ui";
 import { GameList } from "@widgets/game-list";
@@ -28,13 +28,6 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
   const sort = retrieveSortFromSearchParams(params);
   const paginate = retrievePaginateFromSearchParams(params);
   const topRef = useRef<HTMLDivElement | null>(null);
-
-  const onPaginateChange = (limit: number, offset: number) => {
-    const query = getPaginateQuery(params, limit, offset);
-
-    router.push(`${pathname}${query}`);
-    window.scrollTo({ top: 0 });
-  };
 
   const { data, isFetching, isPreviousData } = gamesApi.getGames({
     filters,
@@ -63,7 +56,15 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
         </div>
         <Pagination
           isFetching={isFetching}
-          onPaginateChange={onPaginateChange}
+          onPaginateChange={(limit, offset) =>
+            onPaginate({
+              limit,
+              offset,
+              params,
+              pathname,
+              router,
+            })
+          }
           isPreviousData={isPreviousData}
           hasMore={data?.length === paginate.limit}
           limit={paginate.limit}
@@ -85,7 +86,15 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
       />
       <Pagination
         isFetching={isFetching}
-        onPaginateChange={onPaginateChange}
+        onPaginateChange={(limit, offset) =>
+          onPaginate({
+            limit,
+            offset,
+            params,
+            pathname,
+            router,
+          })
+        }
         isPreviousData={isPreviousData}
         hasMore={data?.length === paginate.limit}
         limit={paginate.limit}

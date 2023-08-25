@@ -4,11 +4,11 @@ import { useAuth } from "@clerk/nextjs";
 import { GameCard, GameCardSkeleton } from "@entities/game";
 import {
   GAMES_LIMIT_VALUES,
-  getPaginateQuery,
+  onPaginate,
   retrieveLibraryFiltersFromSearchParams,
   retrieveLibrarySortFromSearchParams,
   retrievePaginateFromSearchParams,
-  userLibraryApi,
+  userLibraryApi
 } from "@shared/api";
 import { HOME_ROUTE, PROFILE_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
 import { Title, useToast } from "@shared/ui";
@@ -28,13 +28,6 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
   const sort = retrieveLibrarySortFromSearchParams(params);
   const paginate = retrievePaginateFromSearchParams(params);
   const { filters } = retrieveLibraryFiltersFromSearchParams(params);
-
-  const onPaginateChange = (limit: number, offset: number) => {
-    const query = getPaginateQuery(params, limit, offset);
-
-    router.push(`${pathname}${query}`);
-    window.scrollTo({ top: 0 });
-  };
 
   const { data, isFetching, isPreviousData, isError } =
     userLibraryApi.getLibrary(
@@ -73,7 +66,15 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
         </div>
         <Pagination
           isFetching={isFetching}
-          onPaginateChange={onPaginateChange}
+          onPaginateChange={(limit, offset) =>
+            onPaginate({
+              limit,
+              offset,
+              params,
+              pathname,
+              router,
+            })
+          }
           isPreviousData={isPreviousData}
           hasMore={data?.library.length === paginate.limit}
           limit={paginate.limit}
@@ -120,7 +121,15 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
       </div>
       <Pagination
         isFetching={isFetching}
-        onPaginateChange={onPaginateChange}
+        onPaginateChange={(limit, offset) =>
+          onPaginate({
+            limit,
+            offset,
+            params,
+            pathname,
+            router,
+          })
+        }
         isPreviousData={isPreviousData}
         hasMore={data.library.length === paginate.limit}
         limit={paginate.limit}
