@@ -8,10 +8,19 @@ import {
   retrieveLibraryFiltersFromSearchParams,
   retrieveLibrarySortFromSearchParams,
   retrievePaginateFromSearchParams,
-  userLibraryApi
+  userLibraryApi,
 } from "@shared/api";
 import { HOME_ROUTE, PROFILE_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
-import { Title, useToast } from "@shared/ui";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Title,
+  useToast,
+} from "@shared/ui";
+import { useGameListStore } from "@widgets/game-list";
 import { Pagination } from "@widgets/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -28,6 +37,7 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
   const sort = retrieveLibrarySortFromSearchParams(params);
   const paginate = retrievePaginateFromSearchParams(params);
   const { filters } = retrieveLibraryFiltersFromSearchParams(params);
+  const view = useGameListStore((state) => state.view);
 
   const { data, isFetching, isPreviousData, isError } =
     userLibraryApi.getLibrary(
@@ -86,39 +96,59 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
     );
   }
 
+  const content =
+    data &&
+    data.library.map((game, i) => (
+      <GameCard
+        view={view}
+        key={game.id}
+        rank={i + 1}
+        game={{
+          category: game.category,
+          id: game.id,
+          name: game.name,
+          cover: game.coverUrl,
+          rating: game.totalRating,
+          themes: game.themes,
+          gameModes: game.gameModes,
+          genres: game.genres,
+          releaseDate: game.releaseDate
+            ? new Date(game.releaseDate)
+            : undefined,
+        }}
+        libraryGameData={{
+          finishedAt: game.finishedAt,
+          notes: game.notes,
+          playTime: game.playTime,
+          status: game.status,
+          userRating: game.userRating,
+        }}
+        isInLibrary
+        userId={authUserId}
+        username={username}
+        disableLibraryButton={!data.isOwnProfile}
+      />
+    ));
+
   return data && data.library.length > 0 ? (
     <div className="space-y-4 px-2">
-      <div className="flex flex-wrap mb-2 gap-2 md:gap-x-4 md:gap-y-6">
-        {data.library.map((game) => (
-          <GameCard
-            key={game.id}
-            game={{
-              category: game.category,
-              id: game.id,
-              name: game.name,
-              cover: game.coverUrl,
-              rating: game.totalRating,
-              themes: game.themes,
-              gameModes: game.gameModes,
-              genres: game.genres,
-              releaseDate: game.releaseDate
-                ? new Date(game.releaseDate)
-                : undefined,
-            }}
-            libraryGameData={{
-              finishedAt: game.finishedAt,
-              notes: game.notes,
-              playTime: game.playTime,
-              status: game.status,
-              userRating: game.userRating,
-            }}
-            isInLibrary
-            userId={authUserId}
-            username={username}
-            disableLibraryButton={!data.isOwnProfile}
-          />
-        ))}
-      </div>
+      {view === "grid" ? (
+        <div className="flex flex-wrap mb-2 gap-2 md:gap-x-4 md:gap-y-6">
+          {content}
+        </div>
+      ) : (
+        <Table className="whitespace-nowrap xs:whitespace-normal">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-12">Rank</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Rating</TableHead>
+              <TableHead className="text-right">Library</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>{content}</TableBody>
+        </Table>
+      )}
       <Pagination
         isFetching={isFetching}
         onPaginateChange={(limit, offset) =>

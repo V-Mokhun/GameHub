@@ -1,4 +1,5 @@
 "use client";
+
 import { ChangeGamesView } from "@features/change-games-view";
 import { useGameListStore } from "@widgets/game-list";
 
