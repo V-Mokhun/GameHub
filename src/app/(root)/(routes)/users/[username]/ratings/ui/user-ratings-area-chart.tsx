@@ -59,7 +59,7 @@ export const UserRatingsAreaChart = ({
   formattedData,
 }: UserRatingsAreaChartProps) => {
   return (
-    <div className="w-96 h-[60vh] xs:w-full mb-6">
+    <div className="w-[450px] h-[60vh] xs:w-full mb-6">
       <ResponsiveContainer className={"w-full h-full text-muted-foreground"}>
         <AreaChart
           data={formattedData}

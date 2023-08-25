@@ -70,7 +70,7 @@ export const UserRatingsPieChart = ({ data }: UserRatingsPieChartProps) => {
   return (
     <>
       <Title size="small">Rating distribution</Title>
-      <div className="w-96 h-[60vh] xs:w-full">
+      <div className="w-[450px] h-[50vh] xs:w-full mx-auto">
         <ResponsiveContainer className={"w-full h-full text-muted-foreground"}>
           <PieChart>
             <Pie
@@ -121,9 +121,9 @@ export const UserRatingsPieChart = ({ data }: UserRatingsPieChartProps) => {
             <Tooltip content={<CustomTooltip length={data.length} />} />
             <Legend
               iconSize={16}
-              layout="vertical"
-              verticalAlign="middle"
-              align="left"
+              layout="horizontal"
+              verticalAlign="top"
+              align="center"
               payload={formattedData.map(({ rating }) => ({
                 value: rating,
                 id: rating.toString(),
