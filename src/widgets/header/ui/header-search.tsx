@@ -63,10 +63,12 @@ export const HeaderSearch = ({}: HeaderSearchProps) => {
       />
       {input.trim().length > 0 && (
         <CommandList className="absolute bg-popover top-full inset-x-0 shadow rounded-b-md">
-          {isFetched && <CommandEmpty>No results found.</CommandEmpty>}
+          {isFetched && searchedGames?.length === 0 && (
+            <p className="py-6 text-center text-sm">No results found.</p>
+          )}
           {searchedGames && searchedGames.length > 0 && (
             <CommandGroup heading="Games">
-              {searchedGames.map((game) => (
+              {searchedGames?.map((game) => (
                 <CommandItem
                   key={game.id}
                   value={String(game.id)}
