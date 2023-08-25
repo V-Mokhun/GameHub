@@ -17,11 +17,13 @@ import { Control, UseFormSetValue } from "react-hook-form";
 interface GameLibraryStatusProps {
   control: Control<AddGameScheme>;
   setValue: UseFormSetValue<AddGameScheme>;
+  setRating: (value: number) => void;
 }
 
 export const GameLibraryStatus = ({
   control,
   setValue,
+  setRating
 }: GameLibraryStatusProps) => {
   return (
     <FormField
@@ -38,6 +40,7 @@ export const GameLibraryStatus = ({
               } else if (value === GameStatus.WANT_TO_PLAY) {
                 setValue("finishedAt", null);
                 setValue("playTime", 0);
+                setRating(0)
               }
             }}
             defaultValue={field.value}

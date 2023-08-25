@@ -7,9 +7,14 @@ import { StarIcon } from "./star-icon";
 interface StarRatingProps {
   rating: number;
   onSetRating: (rating: number) => void;
+  disabled?: boolean;
 }
 
-export const StarRating = ({ rating, onSetRating }: StarRatingProps) => {
+export const StarRating = ({
+  rating,
+  onSetRating,
+  disabled,
+}: StarRatingProps) => {
   const [hover, setHover] = useState<number | null>(null);
 
   return (
@@ -17,6 +22,7 @@ export const StarRating = ({ rating, onSetRating }: StarRatingProps) => {
       {[...Array(10)].map((_, i) => {
         return (
           <button
+            disabled={disabled}
             key={i + 1}
             onClick={() => onSetRating(i + 1)}
             type="button"
@@ -28,7 +34,8 @@ export const StarRating = ({ rating, onSetRating }: StarRatingProps) => {
               className={cn(
                 i + 1 <= (hover || rating)
                   ? "text-secondary"
-                  : "text-muted-foreground"
+                  : "text-muted-foreground",
+                disabled && "opacity-50"
               )}
             />
           </button>

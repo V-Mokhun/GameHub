@@ -168,12 +168,14 @@ export const GameLibraryModal = ({
                   )}
                 </div>
                 <StarRating
+                  disabled={watchStatus === GameStatus.WANT_TO_PLAY}
                   rating={rating}
                   onSetRating={(val) => setRating(val)}
                 />
               </div>
               <div className="flex justify-between gap-2">
                 <GameLibraryStatus
+                  setRating={setRating}
                   control={form.control}
                   setValue={form.setValue}
                 />
