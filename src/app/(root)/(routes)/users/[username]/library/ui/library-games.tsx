@@ -33,6 +33,7 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
     const query = getPaginateQuery(params, limit, offset);
 
     router.push(`${pathname}${query}`);
+    window.scrollTo({ top: 0 });
   };
 
   const { data, isFetching, isPreviousData, isError } =

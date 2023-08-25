@@ -74,6 +74,7 @@ export const UserFriendRequests = ({
     const query = getPaginateQuery(params, limit, offset);
 
     router.push(`${pathname}${query}`);
+    window.scrollTo({ top: 0 });
   };
 
   const onSearchChange = (value: string) => {

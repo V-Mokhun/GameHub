@@ -15,6 +15,7 @@ import { Title } from "@shared/ui";
 import { GameList } from "@widgets/game-list";
 import { Pagination } from "@widgets/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRef } from "react";
 
 interface BrowseGamesProps {}
 
@@ -26,11 +27,13 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
   const { filters } = retrieveFiltersFromSearchParams(params);
   const sort = retrieveSortFromSearchParams(params);
   const paginate = retrievePaginateFromSearchParams(params);
+  const topRef = useRef<HTMLDivElement | null>(null);
 
   const onPaginateChange = (limit: number, offset: number) => {
     const query = getPaginateQuery(params, limit, offset);
 
     router.push(`${pathname}${query}`);
+    window.scrollTo({ top: 0 });
   };
 
   const { data, isFetching, isPreviousData } = gamesApi.getGames({
@@ -73,7 +76,7 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
   }
 
   return data && data.length > 0 ? (
-    <div className="space-y-4 px-2">
+    <div ref={topRef} className="space-y-4 px-2">
       <GameList
         userId={user?.id}
         username={user?.username || ""}
