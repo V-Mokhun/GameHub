@@ -48,7 +48,7 @@ export const Sidebar = () => {
       <nav
         ref={ref}
         className={cn(
-          "fixed left-0 top-0 md:pt-16 md:z-20 z-30 shadow-xl w-[250px] md:w-[220px] h-screen overflow-hidden flex flex-col transition-transform",
+          "fixed left-0 top-0 md:pt-16 md:z-20 z-30 shadow-xl dark:shadow-zinc-600 shadow-zinc-400 w-[250px] md:w-[220px] h-screen overflow-hidden flex flex-col transition-transform",
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
