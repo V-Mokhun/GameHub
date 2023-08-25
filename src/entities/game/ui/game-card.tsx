@@ -113,7 +113,7 @@ export const GameCard = ({
             )}
           </Link>
           {/* Add to library + user rating + status */}
-          <div className="absolute z-[2] bottom-2 left-0 right-0 flex flex-col gap-2 px-2">
+          <div className="absolute z-[2] bottom-2 left-0 right-0 flex flex-col gap-1 px-2">
             {libraryGameData?.userRating && (
               <span
                 className={cn(
@@ -128,6 +128,14 @@ export const GameCard = ({
                 {libraryGameData?.userRating}
               </span>
             )}
+            {libraryGameData?.playTime && libraryGameData.playTime > 0 ? (
+              <div className="inline-block mt-1">
+                <Badge className="inline-flex flex-auto items-center gap-1 text-sm px-2">
+                  <Icon className="w-4 h-4" name="Clock" />
+                  <span>{libraryGameData.playTime}</span>
+                </Badge>
+              </div>
+            ) : null}
             <div className="flex justify-end items-center gap-2">
               <div className="flex-1">
                 {libraryGameData?.status && (

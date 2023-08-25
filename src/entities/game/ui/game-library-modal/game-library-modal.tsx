@@ -194,7 +194,6 @@ export const GameLibraryModal = ({
                       <FormControl>
                         <Input
                           disabled={watchStatus === GameStatus.WANT_TO_PLAY}
-                          min={0}
                           type="number"
                           placeholder="Hours played"
                           {...field}
