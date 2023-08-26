@@ -44,6 +44,66 @@ export const GameLibraryCalendar = ({
       <FormField
         control={control}
         name="finishedAt"
+        render={({ field }) => (
+          <FormItem
+            className={cn(
+              "flex flex-col flex-1 w-full xs:w-auto",
+              (watchStatus === GameStatus.PLAYING ||
+                watchStatus === GameStatus.WANT_TO_PLAY) &&
+                "pointer-events-none"
+            )}
+          >
+            <FormLabel>Finished Year</FormLabel>
+            <Select
+              disabled={
+                watchStatus === GameStatus.PLAYING ||
+                watchStatus === GameStatus.WANT_TO_PLAY
+              }
+              onValueChange={(year) => {
+                const value = field.value;
+                const date = value
+                  ? new Date(value.setFullYear(+year))
+                  : new Date(new Date().setFullYear(+year));
+
+                field.onChange(date);
+              }}
+              defaultValue={
+                field.value ? `${field.value.getFullYear()}` : `${currentYear}`
+              }
+              value={
+                field.value ? `${field.value.getFullYear()}` : `${currentYear}`
+              }
+            >
+              <FormControl>
+                <SelectTrigger className="bg-background hover:bg-primary hover:text-primary-foreground transition-colors text-muted-foreground">
+                  <SelectValue placeholder="Select a year of finishing the game" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent className="max-h-96">
+                {years.map((year) => {
+                  if (!releaseDate)
+                    return (
+                      <SelectItem value={`${year}`} key={year}>
+                        {year}
+                      </SelectItem>
+                    );
+
+                  if (releaseDate.getFullYear() <= year)
+                    return (
+                      <SelectItem value={`${year}`} key={year}>
+                        {year}
+                      </SelectItem>
+                    );
+                })}
+              </SelectContent>
+            </Select>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+     <FormField
+        control={control}
+        name="finishedAt"
         render={({ field }) => {
           return (
             <FormItem
@@ -117,66 +177,6 @@ export const GameLibraryCalendar = ({
             </FormItem>
           );
         }}
-      />
-      <FormField
-        control={control}
-        name="finishedAt"
-        render={({ field }) => (
-          <FormItem
-            className={cn(
-              "flex flex-col flex-1 w-full xs:w-auto",
-              (watchStatus === GameStatus.PLAYING ||
-                watchStatus === GameStatus.WANT_TO_PLAY) &&
-                "pointer-events-none"
-            )}
-          >
-            <FormLabel>Finished Year</FormLabel>
-            <Select
-              disabled={
-                watchStatus === GameStatus.PLAYING ||
-                watchStatus === GameStatus.WANT_TO_PLAY
-              }
-              onValueChange={(year) => {
-                const value = field.value;
-                const date = value
-                  ? new Date(value.setFullYear(+year))
-                  : new Date(new Date().setFullYear(+year));
-
-                field.onChange(date);
-              }}
-              defaultValue={
-                field.value ? `${field.value.getFullYear()}` : `${currentYear}`
-              }
-              value={
-                field.value ? `${field.value.getFullYear()}` : `${currentYear}`
-              }
-            >
-              <FormControl>
-                <SelectTrigger className="bg-background hover:bg-primary hover:text-primary-foreground transition-colors text-muted-foreground">
-                  <SelectValue placeholder="Select a year of finishing the game" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent className="max-h-96">
-                {years.map((year) => {
-                  if (!releaseDate)
-                    return (
-                      <SelectItem value={`${year}`} key={year}>
-                        {year}
-                      </SelectItem>
-                    );
-
-                  if (releaseDate.getFullYear() <= year)
-                    return (
-                      <SelectItem value={`${year}`} key={year}>
-                        {year}
-                      </SelectItem>
-                    );
-                })}
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
       />
     </div>
   );

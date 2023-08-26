@@ -120,10 +120,24 @@ export const UserRatingsPieChart = ({ data }: UserRatingsPieChartProps) => {
             {/* @ts-ignore */}
             <Tooltip content={<CustomTooltip length={data.length} />} />
             <Legend
+              className="xs:hidden"
               iconSize={16}
               layout="horizontal"
               verticalAlign="top"
               align="center"
+              payload={formattedData.map(({ rating }) => ({
+                value: rating,
+                id: rating.toString(),
+                color: COLORS[rating.toString() as keyof typeof COLORS],
+                type: "square",
+              }))}
+            />
+            <Legend
+              className="hidden xs:block"
+              iconSize={16}
+              layout="vertical"
+              verticalAlign="middle"
+              align="left"
               payload={formattedData.map(({ rating }) => ({
                 value: rating,
                 id: rating.toString(),

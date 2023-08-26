@@ -18,7 +18,7 @@ import {
 import { UseQueryResult } from "@tanstack/react-query";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { ReadonlyURLSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Ref, useEffect, useState } from "react";
 
 type FilterSelectProps<T extends Omit<GameTheme, "slug">> = {
   fetchData: () => Pick<UseQueryResult<T[], unknown>, "data" | "isLoading">;
@@ -77,7 +77,12 @@ export const FilterSelect = <T extends Omit<GameTheme, "slug">>({
       <Label className="text-base">{title}</Label>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" role="combobox" aria-expanded={isOpen}>
+          <Button
+            data-ignore-outside-clicks
+            variant="outline"
+            role="combobox"
+            aria-expanded={isOpen}
+          >
             <span className="truncate">
               {selectedData.length > 0
                 ? selectedData.map((item) => item.name).join(", ")
@@ -86,13 +91,14 @@ export const FilterSelect = <T extends Omit<GameTheme, "slug">>({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent onClick={onFilterOpen} className="p-0">
+        <PopoverContent data-ignore-outside-clicks className="p-0">
           <Command>
             <CommandInput placeholder={`Search ${title.toLowerCase()}...`} />
             <CommandList>
               <CommandEmpty>No {title.toLowerCase()} found.</CommandEmpty>
               {data.map((item) => (
                 <CommandItem
+                  data-ignore-outside-clicks
                   key={item.id}
                   value={item.name}
                   onSelect={(currentValue) => {

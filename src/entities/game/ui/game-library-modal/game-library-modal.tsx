@@ -144,35 +144,6 @@ export const GameLibraryModal = ({
           </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-1">
-                  <Label className="text-base">
-                    Rating
-                    {rating > 0 && (
-                      <>
-                        <span className="text-muted-foreground ml-1">
-                          {rating}
-                        </span>
-                      </>
-                    )}
-                  </Label>
-                  {rating > 0 && (
-                    <Button
-                      disabled={isLoading}
-                      onClick={() => setRating(0)}
-                      variant="destructive"
-                      size="icon"
-                    >
-                      <Icon className="text-white" name="Trash" />
-                    </Button>
-                  )}
-                </div>
-                <StarRating
-                  disabled={watchStatus === GameStatus.WANT_TO_PLAY}
-                  rating={rating}
-                  onSetRating={(val) => setRating(val)}
-                />
-              </div>
               <div className="flex justify-between gap-2">
                 <GameLibraryStatus
                   setRating={setRating}
@@ -202,6 +173,35 @@ export const GameLibraryModal = ({
                       <FormMessage />
                     </FormItem>
                   )}
+                />
+              </div>
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <Label className="text-base">
+                    Rating
+                    {rating > 0 && (
+                      <>
+                        <span className="text-muted-foreground ml-1">
+                          {rating}
+                        </span>
+                      </>
+                    )}
+                  </Label>
+                  {rating > 0 && (
+                    <Button
+                      disabled={isLoading}
+                      onClick={() => setRating(0)}
+                      variant="destructive"
+                      size="icon"
+                    >
+                      <Icon className="text-white" name="Trash" />
+                    </Button>
+                  )}
+                </div>
+                <StarRating
+                  disabled={watchStatus === GameStatus.WANT_TO_PLAY}
+                  rating={rating}
+                  onSetRating={(val) => setRating(val)}
                 />
               </div>
               <GameLibraryCalendar

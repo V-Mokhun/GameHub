@@ -11,7 +11,7 @@ import { useClickOutside } from "@shared/lib/hooks";
 import { Button, Icon, Overlay, Title } from "@shared/ui";
 import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useBrowseFilterStore } from "../model";
 
 interface BrowseFilterProps {}
@@ -20,7 +20,7 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
   const { filters, isOpen, onClose, onOpen, updateFilters, setFilters } =
     useBrowseFilterStore();
 
-  const ref = useClickOutside(onClose);
+  const ref = useClickOutside(onClose, []);
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
