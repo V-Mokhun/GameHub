@@ -295,10 +295,11 @@ export const useGame = (id: string) => {
       const similarGamesFields = createGamesFileds("similar_games");
       const dlcsFields = createGamesFileds("dlcs");
       const franchiseFields = createGamesFileds("franchise.games");
-      const parentFields = createGamesFileds("parent_game");
+      const parentFields = `parent_game.id, parent_game.name`;
       const collectionFields = createGamesFileds("collection.games");
+      const expansionFields = createGamesFileds("expansions");
 
-      const fields = `fields id, name, cover.image_id, first_release_date, total_rating, artworks.image_id, category, themes.name, game_modes.name, genres.name, screenshots.image_id, storyline, summary, videos.*, involved_companies.company.name, involved_companies.company.logo.image_id, ${similarGamesFields}, ${dlcsFields}, ${franchiseFields}, ${parentFields}, ${collectionFields}`;
+      const fields = `fields id, name, cover.image_id, first_release_date, total_rating, artworks.image_id, category, themes.name, game_modes.name, genres.name, screenshots.image_id, storyline, summary, videos.*, involved_companies.company.name, involved_companies.company.logo.image_id, ${similarGamesFields}, ${dlcsFields}, ${franchiseFields}, ${parentFields}, ${collectionFields}, ${expansionFields}`;
       const body = `${fields}; where id = ${id};`;
       const { data } = await axiosInstance.post<[UseGameApiResponse]>(
         "/games",

@@ -7,22 +7,30 @@ import {
   stringifyFilters,
 } from "@shared/api";
 import { cn } from "@shared/lib";
-import { useClickOutside } from "@shared/lib/hooks";
 import { Button, Icon, Overlay, Title } from "@shared/ui";
 import { FilterName, FilterRating, FilterSelect } from "@widgets/filters/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { useBrowseFilterStore } from "../model";
 
 interface BrowseFilterProps {}
 
 export const BrowseFilter = ({}: BrowseFilterProps) => {
-  const { filters, isOpen, onClose, onOpen, updateFilters, setFilters } =
+  const { filters, isOpen, onClose, updateFilters, setFilters } =
     useBrowseFilterStore();
 
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+
+  const categories = useMemo(
+    () =>
+      Object.entries(GAME_CATEGORIES).map((c) => ({
+        id: Number(c[0]),
+        name: c[1],
+      })),
+    []
+  );
 
   useEffect(() => {
     const { filters: defaultFilters } = retrieveFiltersFromSearchParams(params);
@@ -70,7 +78,6 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
               }}
               title="Genre"
               fetchData={gamesApi.getGenres}
-              onFilterOpen={onOpen}
               params={params}
               selectKey="genres"
               filterValue={filters.genres}
@@ -81,7 +88,6 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
               }}
               title="Themes"
               fetchData={gamesApi.getThemes}
-              onFilterOpen={onOpen}
               params={params}
               selectKey="themes"
               filterValue={filters.themes}
@@ -91,8 +97,10 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
                 updateFilters("categories", val);
               }}
               title="Categories"
-              fetchData={() => ({ data: GAME_CATEGORIES, isLoading: false })}
-              onFilterOpen={onOpen}
+              fetchData={() => ({
+                data: categories,
+                isLoading: false,
+              })}
               params={params}
               selectKey="categories"
               filterValue={filters.categories}
@@ -103,7 +111,6 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
               }}
               title="Modes"
               fetchData={gamesApi.getModes}
-              onFilterOpen={onOpen}
               params={params}
               selectKey="gameModes"
               filterValue={filters.gameModes}

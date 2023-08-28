@@ -24,7 +24,6 @@ type FilterSelectProps<T extends Omit<GameTheme, "slug">> = {
   fetchData: () => Pick<UseQueryResult<T[], unknown>, "data" | "isLoading">;
   title: string;
   onSelect: (value: number[]) => void;
-  onFilterOpen: () => void;
   selectKey: string;
   params: ReadonlyURLSearchParams;
   filterValue: number[];
@@ -34,7 +33,6 @@ export const FilterSelect = <T extends Omit<GameTheme, "slug">>({
   fetchData,
   onSelect,
   title,
-  onFilterOpen,
   selectKey,
   params,
   filterValue,

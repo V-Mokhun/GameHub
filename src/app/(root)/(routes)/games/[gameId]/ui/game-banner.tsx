@@ -23,6 +23,7 @@ export const GameBanner = ({
     () => game?.artworks[Math.floor(Math.random() * game.artworks.length)],
     []
   );
+
   if (isLoading)
     return (
       <>

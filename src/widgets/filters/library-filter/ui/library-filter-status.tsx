@@ -20,7 +20,6 @@ import { useEffect, useState } from "react";
 interface LibraryFilterStatusProps {
   defaultValue: GameStatus | undefined;
   onStatusSelect: (value: GameStatus | undefined) => void;
-  onClick: () => void;
 }
 
 const transformStatus = (status: GameStatus) =>
@@ -33,7 +32,6 @@ const transformStatus = (status: GameStatus) =>
 export const LibraryFilterStatus = ({
   defaultValue,
   onStatusSelect,
-  onClick,
 }: LibraryFilterStatusProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(
@@ -59,7 +57,7 @@ export const LibraryFilterStatus = ({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent onClick={onClick} className="p-0">
+        <PopoverContent className="p-0">
           <Command>
             <CommandInput placeholder="Search status..." />
             <CommandEmpty>No status found.</CommandEmpty>

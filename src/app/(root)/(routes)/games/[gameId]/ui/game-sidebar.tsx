@@ -26,8 +26,7 @@ interface GameSidebarProps {
 
 export const GameSidebar = ({ game, isLoading }: GameSidebarProps) => {
   const [open, setOpen] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const ref = useClickOutside(() => setOpen(false), [buttonRef.current]);
+  const ref = useClickOutside(() => setOpen(false));
 
   if (isLoading)
     return (
@@ -40,7 +39,6 @@ export const GameSidebar = ({ game, isLoading }: GameSidebarProps) => {
     game && (
       <>
         <Button
-          ref={buttonRef}
           className="xl:hidden fixed z-[5] right-2 sm:right-10 top-[calc(25%-36px)] rounded-full shadow-md"
           onClick={() => setOpen((prev) => !prev)}
           size="icon"
@@ -87,7 +85,7 @@ export const GameSidebar = ({ game, isLoading }: GameSidebarProps) => {
               items={[
                 {
                   id: game.category,
-                  name: GAME_CATEGORIES[game.category].name,
+                  name: GAME_CATEGORIES[game.category],
                 },
               ]}
             />

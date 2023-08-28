@@ -13,23 +13,23 @@ export const MAX_RATING = 100;
 
 export const GET_GAMES_FIELDS = `fields name, cover.image_id, first_release_date, total_rating, category, themes, game_modes, genres`;
 
-export const GAME_CATEGORIES: { name: string; id: GameCategories }[] = [
-  { name: "Main Game", id: GameCategories.MAIN_GAME },
-  { name: "DLC / Addon", id: GameCategories.DLC_ADDON },
-  { name: "Remake", id: GameCategories.REMAKE },
-  { name: "Remaster", id: GameCategories.REMASTER },
-  { name: "Expansion", id: GameCategories.EXPANSION },
-  { name: "Mod", id: GameCategories.MOD },
-  { name: "Bundle", id: GameCategories.BUNDLE },
-  { name: "Standalone Expansion", id: GameCategories.STANDALONE_EXPANSION },
-  { name: "Episode", id: GameCategories.EPISODE },
-  { name: "Season", id: GameCategories.SEASON },
-  { name: "Expanded Game", id: GameCategories.EXPANDED_GAME },
-  { name: "Port", id: GameCategories.PORT },
-  { name: "Fork", id: GameCategories.FORK },
-  { name: "Pack", id: GameCategories.PACK },
-  { name: "Update", id: GameCategories.UPDATE },
-];
+export const GAME_CATEGORIES: { [key: number]: string } = {
+  [GameCategories.MAIN_GAME]: "Main Game",
+  [GameCategories.DLC_ADDON]: "DLC / Addon",
+  [GameCategories.EXPANSION]: "Expansion",
+  [GameCategories.REMAKE]: "Remake",
+  [GameCategories.REMASTER]: "Remaster",
+  [GameCategories.MOD]: "Mod",
+  [GameCategories.BUNDLE]: "Bundle",
+  [GameCategories.STANDALONE_EXPANSION]: "Standalone Expansion",
+  [GameCategories.EPISODE]: "Episode",
+  [GameCategories.SEASON]: "Season",
+  [GameCategories.EXPANDED_GAME]: "Expanded Game",
+  [GameCategories.PORT]: "Port",
+  [GameCategories.FORK]: "Fork",
+  [GameCategories.PACK]: "Pack",
+  [GameCategories.UPDATE]: "Update",
+};
 
 export const DEFAULT_FILTERS: GameFilters = {
   name: "",
