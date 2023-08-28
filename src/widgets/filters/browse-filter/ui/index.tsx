@@ -20,7 +20,6 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
   const { filters, isOpen, onClose, onOpen, updateFilters, setFilters } =
     useBrowseFilterStore();
 
-  const ref = useClickOutside(onClose, []);
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -40,7 +39,6 @@ export const BrowseFilter = ({}: BrowseFilterProps) => {
     <>
       <Overlay isOpen={isOpen} />
       <aside
-        ref={ref}
         className={cn(
           "fixed right-0 top-0 z-40 shadow-xl w-[300px] h-screen overflow-hidden flex flex-col transition-transform",
           isOpen ? "translate-x-0" : "translate-x-full"

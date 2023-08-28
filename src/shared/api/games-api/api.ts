@@ -11,6 +11,7 @@ import {
   GET_GAMES_FIELDS,
 } from "./consts";
 import {
+  createGamesFileds,
   normalizeFullGameProperties,
   normalizeGameProperties,
   normalizeSearchGameProperties,
@@ -84,12 +85,10 @@ export type UseGameApiResponse = {
       };
     };
   }[];
-  franchises?: [
-    {
-      id: number;
-      games: (UseGamesApiResponse & { total_rating_count: number })[];
-    }
-  ];
+  franchise?: {
+    id: number;
+    games: (UseGamesApiResponse & { total_rating_count: number })[];
+  };
 };
 
 export const useGames = (
@@ -293,16 +292,19 @@ export const useGame = (id: string) => {
   return useQuery(
     ["game", { id }],
     async () => {
-      const similarGamesFields = `similar_games.name, similar_games.cover.image_id, similar_games.first_release_date, similar_games.total_rating, similar_games.total_rating_count, similar_games.category, similar_games.themes, similar_games.game_modes, similar_games.genres`;
-      const dlcsFields = `dlcs.name, dlcs.cover.image_id, dlcs.first_release_date, dlcs.total_rating, dlcs.category, dlcs.themes, dlcs.game_modes, dlcs.genres`;
-      const collectionsFields = `franchises.games.name, franchises.games.cover.image_id, franchises.games.first_release_date, franchises.games.total_rating, franchises.games.total_rating_count, franchises.games.category, franchises.games.themes, franchises.games.game_modes, franchises.games.genres`;
+      const similarGamesFields = createGamesFileds("similar_games");
+      const dlcsFields = createGamesFileds("dlcs");
+      const franchiseFields = createGamesFileds("franchise.games");
+      const parentFields = createGamesFileds("parent_game");
+      const collectionFields = createGamesFileds("collection.games");
 
-      const fields = `fields id, name, cover.image_id, first_release_date, total_rating, artworks.image_id, category, themes.name, game_modes.name, genres.name, screenshots.image_id, storyline, summary, videos.*, involved_companies.company.name, involved_companies.company.logo.image_id, ${similarGamesFields}, ${dlcsFields}, ${collectionsFields}`;
+      const fields = `fields id, name, cover.image_id, first_release_date, total_rating, artworks.image_id, category, themes.name, game_modes.name, genres.name, screenshots.image_id, storyline, summary, videos.*, involved_companies.company.name, involved_companies.company.logo.image_id, ${similarGamesFields}, ${dlcsFields}, ${franchiseFields}, ${parentFields}, ${collectionFields}`;
       const body = `${fields}; where id = ${id};`;
       const { data } = await axiosInstance.post<[UseGameApiResponse]>(
         "/games",
         body
       );
+      console.log(data);
 
       return normalizeFullGameProperties(data[0]);
     },

@@ -107,5 +107,5 @@ export interface FullGame {
   dlcs: Game[];
   screenshots: string[];
   companyLogos: { name: string; url: string }[];
-  franchises: Game[];
+  franchise: Game[];
 }

@@ -2,6 +2,7 @@ import { GameCard } from "@entities/game";
 import { FullGame, NormalizedLibraryGame } from "@shared/api";
 import { Container, Skeleton, Title } from "@shared/ui";
 import Image from "next/image";
+import { useMemo, useState } from "react";
 
 interface GameBannerProps {
   game?: FullGame;
@@ -18,6 +19,10 @@ export const GameBanner = ({
   libraryGame,
   username,
 }: GameBannerProps) => {
+  const randomArtwork = useMemo(
+    () => game?.artworks[Math.floor(Math.random() * game.artworks.length)],
+    []
+  );
   if (isLoading)
     return (
       <>
@@ -36,7 +41,7 @@ export const GameBanner = ({
               className="w-full h-full object-cover blur-sm"
               fill
               alt={game.name}
-              src={game.artworks[0] || game.cover || ""}
+              src={randomArtwork || game.cover || ""}
               priority={true}
               sizes="100vw"
             />

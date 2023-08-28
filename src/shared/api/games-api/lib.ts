@@ -70,6 +70,18 @@ export const normalizeGameProperties = <T extends UseGamesApiResponse>(
 export const normalizeFullGameProperties = (
   gameData: UseGameApiResponse
 ): FullGame => {
+  const logosArr =
+    gameData.involved_companies
+      ?.filter(({ company }) => company?.logo?.image_id)
+      ?.map(({ company }) => ({
+        name: company.name,
+        url: getImageUrl(company.logo.image_id, ImageTypes.MEDIUM_LOGO),
+      })) || [];
+  const logos: typeof logosArr = [];
+  for (const logo of logosArr) {
+    if (!logos.find((l) => l.name === logo.name)) logos.push(logo);
+  }
+
   return {
     id: gameData.id,
     name: gameData.name,
@@ -99,23 +111,20 @@ export const normalizeFullGameProperties = (
         url: video.video_id,
         name: video.name,
       })) || [],
-    companyLogos:
-      gameData.involved_companies
-        ?.filter(({ company }) => company?.logo?.image_id)
-        ?.map(({ company }) => ({
-          name: company.name,
-          url: getImageUrl(company.logo.image_id, ImageTypes.MEDIUM_LOGO),
-        })) || [],
-
+    companyLogos: logos,
     similarGames:
       gameData.similar_games
         ?.filter((game) => game.total_rating_count >= 10)
         .map((game) => normalizeGameProperties(game), ImageTypes.BIG_COVER) ||
       [],
-    franchises: gameData.franchises
-      ? gameData.franchises[0].games
+    franchise: gameData.franchise
+      ? gameData.franchise.games
           .filter((game) => game.total_rating_count >= 10)
           .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER))
+          .sort(
+            (a, b) =>
+              (a.releaseDate?.getTime() ?? 0) - (b.releaseDate?.getTime() ?? 0)
+          )
       : [],
     dlcs:
       gameData.dlcs
@@ -264,4 +273,9 @@ export const stringifyGetGamesParams = (
 
   const body = `${GET_GAMES_FIELDS}; ${filterQuery} ${sortQuery} ${paginateQuery}`;
   return body;
+};
+
+export const createGamesFileds = (name: string) => {
+  const fields = `${name}.name, ${name}.cover.image_id, ${name}.first_release_date, ${name}.total_rating, ${name}.total_rating_count, ${name}.category, ${name}.themes, ${name}.game_modes, ${name}.genres`;
+  return fields;
 };

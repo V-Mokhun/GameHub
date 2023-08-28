@@ -77,12 +77,7 @@ export const FilterSelect = <T extends Omit<GameTheme, "slug">>({
       <Label className="text-base">{title}</Label>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <Button
-            data-ignore-outside-clicks
-            variant="outline"
-            role="combobox"
-            aria-expanded={isOpen}
-          >
+          <Button variant="outline" role="combobox" aria-expanded={isOpen}>
             <span className="truncate">
               {selectedData.length > 0
                 ? selectedData.map((item) => item.name).join(", ")
@@ -91,14 +86,13 @@ export const FilterSelect = <T extends Omit<GameTheme, "slug">>({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent data-ignore-outside-clicks className="p-0">
+        <PopoverContent className="p-0">
           <Command>
             <CommandInput placeholder={`Search ${title.toLowerCase()}...`} />
             <CommandList>
               <CommandEmpty>No {title.toLowerCase()} found.</CommandEmpty>
               {data.map((item) => (
                 <CommandItem
-                  data-ignore-outside-clicks
                   key={item.id}
                   value={item.name}
                   onSelect={(currentValue) => {

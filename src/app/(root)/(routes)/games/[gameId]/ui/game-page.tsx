@@ -27,6 +27,7 @@ export const GamePage = ({ gameId }: GamePageProps) => {
     user?.username ?? undefined,
     { noLimit: true, enabled: true }
   );
+  console.log(game);
 
   return (
     <>
@@ -64,7 +65,7 @@ export const GamePage = ({ gameId }: GamePageProps) => {
               title="Franchise"
               userId={user?.id}
               username={user?.username}
-              games={game?.franchises || []}
+              games={game?.franchise || []}
               libraryGames={libraryData?.library}
               isLoading={isLoading}
             />
