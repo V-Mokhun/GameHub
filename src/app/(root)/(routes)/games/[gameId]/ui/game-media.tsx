@@ -78,102 +78,107 @@ export const GameMedia = ({
     );
 
   return (
-    <>
-      <Gallery
-        controlledSlider={instanceRef}
-        images={images}
-        open={galleryOpen}
-        onClose={() => setGalleryOpen(false)}
-        videos={videos}
-      />
-      <div className="my-4 w-[min(100%,80vh)]">
-        <Title>Media</Title>
-        <div className="relative">
-          {loaded && instanceRef.current && (
-            <>
-              <CarouselArrow
-                className="md:left-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  instanceRef.current?.prev();
-                }}
-                disabled={currentSlide === 0}
-                left
-              />
-              <CarouselArrow
-                className="md:right-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  instanceRef.current?.next();
-                }}
-                disabled={
-                  currentSlide === instanceRef.current.track.details?.maxIdx
-                }
-              />
-            </>
-          )}
-          <div ref={sliderRef} className="keen-slider">
-            {videos.map((video) => (
-              <div key={video.url} className="keen-slider__slide aspect-video">
-                <ReactPlayer
-                  playIcon={
-                    <PlayIcon
-                      wrapperClassName="w-14 h-10"
-                      iconClassName="w-8 h-8"
-                    />
+    (images.length > 0 || videos.length > 0) && (
+      <>
+        <Gallery
+          controlledSlider={instanceRef}
+          images={images}
+          open={galleryOpen}
+          onClose={() => setGalleryOpen(false)}
+          videos={videos}
+        />
+        <div className="my-4 w-[min(100%,80vh)]">
+          <Title>Media</Title>
+          <div className="relative">
+            {loaded && instanceRef.current && (
+              <>
+                <CarouselArrow
+                  className="md:left-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    instanceRef.current?.prev();
+                  }}
+                  disabled={currentSlide === 0}
+                  left
+                />
+                <CarouselArrow
+                  className="md:right-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    instanceRef.current?.next();
+                  }}
+                  disabled={
+                    currentSlide === instanceRef.current.track.details?.maxIdx
                   }
-                  width="100%"
-                  height="100%"
-                  controls
-                  light
-                  url={`https://www.youtube.com/watch?v=${video.url}`}
+                />
+              </>
+            )}
+            <div ref={sliderRef} className="keen-slider">
+              {videos.map((video) => (
+                <div
+                  key={video.url}
+                  className="keen-slider__slide aspect-video"
+                >
+                  <ReactPlayer
+                    playIcon={
+                      <PlayIcon
+                        wrapperClassName="w-14 h-10"
+                        iconClassName="w-8 h-8"
+                      />
+                    }
+                    width="100%"
+                    height="100%"
+                    controls
+                    light
+                    url={`https://www.youtube.com/watch?v=${video.url}`}
+                  />
+                </div>
+              ))}
+              {images.map((image, idx) => (
+                <div
+                  onClick={() => setGalleryOpen(videos.length + idx)}
+                  key={image}
+                  className="keen-slider__slide aspect-video cursor-pointer"
+                >
+                  <Image src={image} fill alt="Image" sizes="min(100%,80vh)" />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div
+            ref={thumbnailRef}
+            className="keen-slider thumbnail mt-4 h-24 md:h-28"
+          >
+            {videos.map((video) => (
+              <div
+                key={video.url}
+                className="keen-slider__slide cursor-pointer [&.active]:border-2 border-secondary border-solid"
+              >
+                <PlayIcon />
+                <Image
+                  src={`https://i.ytimg.com/vi/${video.url}/hqdefault.jpg`}
+                  alt={video.name}
+                  fill
+                  sizes="(min-width: 768px) 25%, (min-width: 479px) 33%, 50%"
                 />
               </div>
             ))}
-            {images.map((image, idx) => (
+            {images.map((image) => (
               <div
-                onClick={() => setGalleryOpen(videos.length + idx)}
                 key={image}
-                className="keen-slider__slide aspect-video cursor-pointer"
+                className="keen-slider__slide cursor-pointer [&.active]:border-2 border-secondary border-solid"
               >
-                <Image src={image} fill alt="Image" sizes="min(100%,80vh)" />
+                <Image
+                  src={image}
+                  fill
+                  alt="Image"
+                  sizes="(min-width: 768px) 25%, (min-width: 479px) 33%, 50%"
+                />
               </div>
             ))}
           </div>
         </div>
-        <div
-          ref={thumbnailRef}
-          className="keen-slider thumbnail mt-4 h-24 md:h-28"
-        >
-          {videos.map((video) => (
-            <div
-              key={video.url}
-              className="keen-slider__slide cursor-pointer [&.active]:border-2 border-secondary border-solid"
-            >
-              <PlayIcon />
-              <Image
-                src={`https://i.ytimg.com/vi/${video.url}/hqdefault.jpg`}
-                alt={video.name}
-                fill
-                sizes="(min-width: 768px) 25%, (min-width: 479px) 33%, 50%"
-              />
-            </div>
-          ))}
-          {images.map((image) => (
-            <div
-              key={image}
-              className="keen-slider__slide cursor-pointer [&.active]:border-2 border-secondary border-solid"
-            >
-              <Image
-                src={image}
-                fill
-                alt="Image"
-                sizes="(min-width: 768px) 25%, (min-width: 479px) 33%, 50%"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </>
+      </>
+    )
   );
 };

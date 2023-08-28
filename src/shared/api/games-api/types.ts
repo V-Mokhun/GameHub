@@ -105,7 +105,15 @@ export interface FullGame {
   storyline?: string;
   similarGames: Game[];
   dlcs: Game[];
+  expansions: Game[];
+  remakes: Game[];
+  remasters: Game[];
   screenshots: string[];
   companyLogos: { name: string; url: string }[];
   franchise: Game[];
+  collection: Game[];
+  parent_game?: {
+    id: number;
+    name: string;
+  };
 }

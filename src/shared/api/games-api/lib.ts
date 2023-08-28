@@ -126,8 +126,32 @@ export const normalizeFullGameProperties = (
               (a.releaseDate?.getTime() ?? 0) - (b.releaseDate?.getTime() ?? 0)
           )
       : [],
+    collection: gameData.collection
+      ? gameData.collection.games
+          .filter((game) => game.total_rating_count >= 10)
+          .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER))
+          .sort(
+            (a, b) =>
+              (a.releaseDate?.getTime() ?? 0) - (b.releaseDate?.getTime() ?? 0)
+          )
+      : [],
     dlcs:
       gameData.dlcs
+        ?.filter((game) => game.total_rating_count >= 10)
+        .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER)) ||
+      [],
+    expansions:
+      gameData.expansions
+        ?.filter((game) => game.total_rating_count >= 10)
+        .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER)) ||
+      [],
+    remakes:
+      gameData.remakes
+        ?.filter((game) => game.total_rating_count >= 10)
+        .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER)) ||
+      [],
+    remasters:
+      gameData.remasters
         ?.filter((game) => game.total_rating_count >= 10)
         .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER)) ||
       [],
