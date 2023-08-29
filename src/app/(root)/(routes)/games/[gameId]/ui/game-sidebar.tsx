@@ -48,7 +48,7 @@ export const GameSidebar = ({ game, isLoading }: GameSidebarProps) => {
         <div
           ref={ref}
           className={cn(
-            "fixed z-[5] max-w-xs transition-opacity pointer-events-none xl:pointer-events-auto right-2 sm:right-10 top-1/4 xl:opacity-100 xl:static xl:flex-[0_1_25%] xl:min-w-[18rem] bg-popover shadow-xl py-4 px-2 rounded-md text-sm sm:text-base",
+            "fixed z-[5] max-w-xs transition-opacity pointer-events-none xl:pointer-events-auto right-2 sm:right-10 top-1/4 xl:opacity-100 xl:sticky xl:top-20 xl:right-0 xl:flex-[0_1_25%] xl:min-w-[18rem] bg-popover shadow-xl py-4 px-2 rounded-md text-sm sm:text-base",
             open && "opacity-100 pointer-events-auto",
             !open && "opacity-0"
           )}

@@ -87,7 +87,13 @@ export const GamesCarousel = ({
       <div className="mb-4 md:mb-6 min-w-0">
         {title && <Title>{title}</Title>}
         {subtitle && <Subtitle>{subtitle}</Subtitle>}
-        <div className="relative md:mr-10 md:ml-10 xl:mr-5">
+        <div
+          className={cn(
+            "relative",
+            !instanceRef.current?.options.disabled &&
+              "md:mr-10 md:ml-10 xl:mr-6"
+          )}
+        >
           {loaded &&
             instanceRef.current &&
             !instanceRef.current.options.disabled && (
@@ -115,7 +121,8 @@ export const GamesCarousel = ({
             ref={sliderRef}
             className={cn(
               "keen-slider",
-              instanceRef.current?.options.disabled &&
+              instanceRef.current &&
+                instanceRef.current.options.disabled &&
                 "flex flex-wrap gap-2 md:gap-x-4"
             )}
           >

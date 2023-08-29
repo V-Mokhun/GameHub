@@ -26,7 +26,7 @@ export const GameAbout = ({
   libraryGame,
 }: GameAboutProps) => {
   return (
-    <div className="mb-6">
+    <div className="mb-6 mt-4">
       <Title>About</Title>
       {game?.parent && (
         <p className="mb-2">
@@ -46,17 +46,21 @@ export const GameAbout = ({
       <GameNotes username={username || ""} libraryGame={libraryGame || null} />
       {game?.websites && game.websites.length > 0 && (
         <ul className="flex gap-4 flex-wrap mt-8">
-          {game.websites.map((website) => (
-            <li key={website.category}>
-              <ExternalLink
-                className="inline-flex gap-1 items-center text-foreground"
-                href={website.url}
-              >
-                {GAME_WEBSITES[website.category].Icon}
-                <span className="text-sm">{GAME_WEBSITES[website.category].name}</span>
-              </ExternalLink>
-            </li>
-          ))}
+          {game.websites
+            .sort((a, b) => a.category - b.category)
+            .map((website) => (
+              <li key={website.category}>
+                <ExternalLink
+                  className="inline-flex gap-1 items-center text-foreground"
+                  href={website.url}
+                >
+                  {GAME_WEBSITES[website.category].Icon}
+                  <span className="text-sm">
+                    {GAME_WEBSITES[website.category].name}
+                  </span>
+                </ExternalLink>
+              </li>
+            ))}
         </ul>
       )}
     </div>

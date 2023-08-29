@@ -10,6 +10,7 @@ import { GameBanner } from "./game-banner";
 import { GameMedia } from "./game-media";
 import { GameSidebar } from "./game-sidebar";
 import { GameRelated } from "./game-related";
+import { GameCollection } from "./game-collection";
 
 interface GamePageProps {
   gameId: string;
@@ -59,6 +60,24 @@ export const GamePage = ({ gameId }: GamePageProps) => {
               libraryGames={libraryData?.library}
               isLoading={isLoading}
               game={game}
+            />
+            <GameCollection
+              isLoading={isLoading}
+              userId={user?.id}
+              username={user?.username}
+              games={game?.collection || []}
+              libraryGames={libraryData?.library}
+              gameId={game?.id}
+              title="Series"
+            />
+            <GameCollection
+              isLoading={isLoading}
+              userId={user?.id}
+              username={user?.username}
+              games={game?.franchise || []}
+              libraryGames={libraryData?.library}
+              gameId={game?.id}
+              title="Franchise"
             />
             <GamesCarousel
               title="Similar"

@@ -37,6 +37,7 @@ interface GameCardProps {
     link?: string;
     name?: string;
   };
+  selected?: boolean;
 }
 
 export const GameCardSkeleton = () => (
@@ -53,6 +54,7 @@ export const GameCard = ({
   view = "grid",
   disableLibraryButton = false,
   classNames = {},
+  selected,
 }: GameCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { signInToast } = useCustomToasts();
@@ -177,7 +179,7 @@ export const GameCard = ({
           </div>
         </div>
       ) : (
-        <TableRow>
+        <TableRow className={cn(selected && "bg-muted")}>
           <TableCell className="font-medium text-center">{rank}</TableCell>
           <TableCell>
             <CustomLink

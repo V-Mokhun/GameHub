@@ -119,6 +119,7 @@ export interface FullGame {
   screenshots: string[];
   companyLogos: { name: string; url: string }[];
   collection: Game[];
+  franchise: Game[];
   parent?: {
     id: number;
     name: string;

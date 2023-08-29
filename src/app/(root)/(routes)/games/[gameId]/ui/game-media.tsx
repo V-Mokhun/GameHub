@@ -139,7 +139,13 @@ export const GameMedia = ({
                   key={image}
                   className="keen-slider__slide aspect-video cursor-pointer"
                 >
-                  <Image src={image} fill alt="Image" sizes="min(100%,80vh)" />
+                  <Image
+                    className="object-cover hover:scale-105 transition-transform"
+                    src={image}
+                    fill
+                    alt="Image"
+                    sizes="min(100%,80vh)"
+                  />
                 </div>
               ))}
             </div>

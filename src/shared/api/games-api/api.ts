@@ -92,6 +92,10 @@ export type UseGameApiResponse = {
     category: number;
     url: string;
   }[];
+  franchise?: {
+    id: number;
+    games: (UseGamesApiResponse & { total_rating_count: number })[];
+  };
   collection?: {
     id: number;
     games: (UseGamesApiResponse & { total_rating_count: number })[];

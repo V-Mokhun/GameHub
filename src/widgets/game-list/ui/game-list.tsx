@@ -10,6 +10,8 @@ interface GameListProps {
   username?: string;
   games: Game[];
   libraryGames: NormalizedLibraryGame[];
+  gamesView?: "grid" | "list";
+  selectedGameId?: number;
 }
 
 export const GameList = ({
@@ -17,8 +19,12 @@ export const GameList = ({
   username,
   userId,
   libraryGames,
+  gamesView,
+  selectedGameId,
 }: GameListProps) => {
-  const view = useGameListStore((state) => state.view);
+  const storeView = useGameListStore((state) => state.view);
+
+  const view = gamesView ?? storeView;
 
   const content = games.map((game, i) => {
     const libraryGame = libraryGames.find((g) => g.id === game.id);
@@ -31,6 +37,7 @@ export const GameList = ({
           key={game.id}
           game={game}
           view={view}
+          selected={selectedGameId === game.id}
         />
       );
 
@@ -50,6 +57,7 @@ export const GameList = ({
           status: libraryGame.status,
           userRating: libraryGame.userRating,
         }}
+        selected={selectedGameId === game.id}
       />
     );
   });
