@@ -25,7 +25,7 @@ export const GameSummary = ({ summary, isLoading }: GameSummaryProps) => {
   return (
     summary && (
       <p className="mb-4 text-sm md:text-base">
-        {isReadMore ? summary.slice(0, 150) : summary + " "}
+        {isReadMore ? summary.slice(0, 400) : summary + " "}
         <button
           type="button"
           onClick={toggleReadMore}

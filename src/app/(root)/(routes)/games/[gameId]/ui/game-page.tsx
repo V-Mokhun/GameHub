@@ -1,15 +1,21 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { gamesApi, userLibraryApi } from "@shared/api";
-import { Container, Separator } from "@shared/ui";
+import {
+  GAME_CATEGORIES,
+  GameCategories,
+  gamesApi,
+  userLibraryApi,
+} from "@shared/api";
+import { Container, Link, Separator, Title } from "@shared/ui";
+import { GamesCarousel } from "@widgets/games-carousel";
 import "keen-slider/keen-slider.min.css";
 import { GameBanner } from "./game-banner";
 import { GameMedia } from "./game-media";
-import { GameSidebar } from "./game-sidebar";
 import { GameNotes } from "./game-notes";
+import { GameSidebar } from "./game-sidebar";
 import { GameSummary } from "./game-summary";
-import { GamesCarousel } from "@widgets/games-carousel";
+import { GameAbout } from "./game-about";
 
 interface GamePageProps {
   gameId: string;
@@ -27,7 +33,6 @@ export const GamePage = ({ gameId }: GamePageProps) => {
     user?.username ?? undefined,
     { noLimit: true, enabled: true }
   );
-  console.log(game);
 
   return (
     <>
@@ -41,9 +46,11 @@ export const GamePage = ({ gameId }: GamePageProps) => {
       <Container>
         <div className="flex items-start gap-4">
           <div className="flex-1 min-w-0">
-            <GameNotes
-              username={user?.username || ""}
-              libraryGame={libraryGame || null}
+            <GameAbout
+              libraryGame={libraryGame}
+              username={user?.username ?? ""}
+              isLoading={isLoading}
+              game={game}
             />
             <GameMedia
               artworks={game?.artworks || []}
@@ -51,21 +58,12 @@ export const GamePage = ({ gameId }: GamePageProps) => {
               videos={game?.videos || []}
               isLoading={isLoading}
             />
-            <GameSummary isLoading={isLoading} summary={game?.summary} />
             <Separator />
             <GamesCarousel
               title="Similar Games"
               userId={user?.id}
               username={user?.username}
               games={game?.similarGames || []}
-              libraryGames={libraryData?.library}
-              isLoading={isLoading}
-            />
-            <GamesCarousel
-              title="Franchise"
-              userId={user?.id}
-              username={user?.username}
-              games={game?.franchise || []}
               libraryGames={libraryData?.library}
               isLoading={isLoading}
             />

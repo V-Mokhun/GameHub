@@ -64,6 +64,23 @@ export const GameSidebar = ({ game, isLoading }: GameSidebarProps) => {
                 <span>{format(new Date(game.releaseDate), "dd/MM/yyyy")}</span>
               </li>
             )}
+            {game.criticsRating && (
+              <li className="flex items-start justify-between gap-1">
+                <span className="font-semibold shrink-0">Critics Rating:</span>
+                <span
+                  className={cn(
+                    "p-1 rounded-sm text-sm",
+                    game.criticsRating < 50 && "bg-destructive",
+                    game.criticsRating < 75 &&
+                      game.criticsRating >= 50 &&
+                      "bg-secondary",
+                    game.criticsRating >= 75 && "bg-success"
+                  )}
+                >
+                  {game.criticsRating}
+                </span>
+              </li>
+            )}
             <GameSidebarItem
               title="Genre"
               redirectName="genres"

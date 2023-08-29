@@ -25,3 +25,4 @@ export * from "./select";
 export * from "./table";
 export * from "./toast";
 export * from "./tooltip";
+export * from "./tabs";

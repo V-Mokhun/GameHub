@@ -110,10 +110,10 @@ export interface FullGame {
   remasters: Game[];
   screenshots: string[];
   companyLogos: { name: string; url: string }[];
-  franchise: Game[];
   collection: Game[];
-  parent_game?: {
+  parent?: {
     id: number;
     name: string;
   };
+  criticsRating?: number;
 }

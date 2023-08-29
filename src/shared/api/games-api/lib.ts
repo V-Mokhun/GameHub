@@ -13,6 +13,7 @@ import {
 import {
   FullGame,
   Game,
+  GameCategories,
   GameFilters,
   GameSorts,
   ImageTypes,
@@ -86,6 +87,8 @@ export const normalizeFullGameProperties = (
     id: gameData.id,
     name: gameData.name,
     rating: Math.ceil(gameData.total_rating),
+    criticsRating:
+      gameData.aggregated_rating && Math.ceil(gameData.aggregated_rating),
     cover: gameData.cover?.image_id
       ? getImageUrl(gameData?.cover?.image_id, ImageTypes["1080P"])
       : "",
@@ -117,18 +120,15 @@ export const normalizeFullGameProperties = (
         ?.filter((game) => game.total_rating_count >= 10)
         .map((game) => normalizeGameProperties(game), ImageTypes.BIG_COVER) ||
       [],
-    franchise: gameData.franchise
-      ? gameData.franchise.games
-          .filter((game) => game.total_rating_count >= 10)
-          .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER))
-          .sort(
-            (a, b) =>
-              (a.releaseDate?.getTime() ?? 0) - (b.releaseDate?.getTime() ?? 0)
-          )
-      : [],
     collection: gameData.collection
       ? gameData.collection.games
-          .filter((game) => game.total_rating_count >= 10)
+          .filter(
+            (game) =>
+              game.total_rating_count >= 10 &&
+              (game.category === GameCategories.MAIN_GAME ||
+                game.category === GameCategories.REMAKE ||
+                game.category === GameCategories.REMASTER)
+          )
           .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER))
           .sort(
             (a, b) =>
@@ -155,6 +155,7 @@ export const normalizeFullGameProperties = (
         ?.filter((game) => game.total_rating_count >= 10)
         .map((game) => normalizeGameProperties(game, ImageTypes.BIG_COVER)) ||
       [],
+    parent: gameData.parent_game,
   };
 };
 

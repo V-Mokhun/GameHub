@@ -88,10 +88,6 @@ export type UseGameApiResponse = {
       };
     };
   }[];
-  franchise?: {
-    id: number;
-    games: (UseGamesApiResponse & { total_rating_count: number })[];
-  };
   collection?: {
     id: number;
     games: (UseGamesApiResponse & { total_rating_count: number })[];
@@ -100,6 +96,7 @@ export type UseGameApiResponse = {
     id: number;
     name: string;
   };
+  aggregated_rating?: number;
 };
 
 export const useGames = (
@@ -312,13 +309,12 @@ export const useGame = (id: string) => {
       const remakesFields = createGamesFileds("remakes");
       const remastersFields = createGamesFileds("remasters");
 
-      const fields = `fields id, name, cover.image_id, first_release_date, total_rating, artworks.image_id, category, themes.name, game_modes.name, genres.name, screenshots.image_id, storyline, summary, videos.*, involved_companies.company.name, involved_companies.company.logo.image_id, ${similarGamesFields}, ${dlcsFields}, ${franchiseFields}, ${parentFields}, ${collectionFields}, ${expansionFields}, ${remakesFields}, ${remastersFields}`;
+      const fields = `fields id, name, cover.image_id, first_release_date, total_rating, aggregated_rating, artworks.image_id, category, themes.name, game_modes.name, genres.name, screenshots.image_id, storyline, summary, videos.*, involved_companies.company.name, involved_companies.company.logo.image_id, ${similarGamesFields}, ${dlcsFields}, ${franchiseFields}, ${parentFields}, ${collectionFields}, ${expansionFields}, ${remakesFields}, ${remastersFields}`;
       const body = `${fields}; where id = ${id};`;
       const { data } = await axiosInstance.post<[UseGameApiResponse]>(
         "/games",
         body
       );
-      console.log(data);
 
       return normalizeFullGameProperties(data[0]);
     },
