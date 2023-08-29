@@ -3,11 +3,13 @@
 import { GameCard } from "@entities/game";
 import { Game, NormalizedLibraryGame } from "@shared/api";
 import { CarouselArrow, Skeleton, Subtitle, Title } from "@shared/ui";
-import { useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
+import { useMediaQuery } from "@shared/lib/hooks";
+import { cn } from "@shared/lib";
 
 interface GamesCarouselProps {
-  title: string;
+  title?: string;
   subtitle?: string;
   games: Game[];
   userId?: string | null;
@@ -27,6 +29,8 @@ export const GamesCarousel = ({
 }: GamesCarouselProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const matchesXl = useMediaQuery("(min-width: 1280px)");
+  const matchesMd = useMediaQuery("(min-width: 768px)");
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     breakpoints: {
       "(min-width: 1px)": {
@@ -52,6 +56,11 @@ export const GamesCarousel = ({
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel);
     },
+    disabled:
+      !isLoading &&
+      ((matchesXl && games.length <= 4) ||
+        (matchesMd && games.length <= 3) ||
+        (!matchesXl && !matchesXl && games.length <= 2)),
     created() {
       setLoaded(true);
     },
@@ -76,60 +85,75 @@ export const GamesCarousel = ({
   return (
     games.length > 0 && (
       <div className="mb-4 md:mb-6 min-w-0">
-        <Title>{title}</Title>
+        {title && <Title>{title}</Title>}
         {subtitle && <Subtitle>{subtitle}</Subtitle>}
         <div className="relative md:mr-10 md:ml-10 xl:mr-5">
-          {loaded && instanceRef.current && (
-            <>
-              <CarouselArrow
-                onClick={(e) => {
-                  e.stopPropagation();
-                  instanceRef.current?.prev();
-                }}
-                disabled={currentSlide === 0}
-                left
-              />
-              <CarouselArrow
-                onClick={(e) => {
-                  e.stopPropagation();
-                  instanceRef.current?.next();
-                }}
-                disabled={
-                  currentSlide === instanceRef.current.track.details.maxIdx
-                }
-              />
-            </>
-          )}
-          <div ref={sliderRef} className="keen-slider">
+          {loaded &&
+            instanceRef.current &&
+            !instanceRef.current.options.disabled && (
+              <>
+                <CarouselArrow
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    instanceRef.current?.prev();
+                  }}
+                  disabled={currentSlide === 0}
+                  left
+                />
+                <CarouselArrow
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    instanceRef.current?.next();
+                  }}
+                  disabled={
+                    currentSlide === instanceRef.current.track.details.maxIdx
+                  }
+                />
+              </>
+            )}
+          <div
+            ref={sliderRef}
+            className={cn(
+              "keen-slider",
+              instanceRef.current?.options.disabled &&
+                "flex flex-wrap gap-2 md:gap-x-4"
+            )}
+          >
             {games.map((game) => {
               const libraryGame = libraryGames?.find(
                 (libGame) => libGame.id === game.id
               );
+              const content = (
+                <GameCard
+                  classNames={{
+                    link: "h-80",
+                  }}
+                  game={{
+                    category: game.category,
+                    id: game.id,
+                    name: game.name,
+                    cover: game.cover || "",
+                    rating: game.rating,
+                    themes: game.themes,
+                    gameModes: game.gameModes,
+                    genres: game.genres,
+                    releaseDate: game.releaseDate
+                      ? new Date(game.releaseDate)
+                      : undefined,
+                  }}
+                  libraryGameData={libraryGame ?? undefined}
+                  isInLibrary={!!libraryGame}
+                  userId={userId}
+                  username={username ?? undefined}
+                />
+              );
 
-              return (
+              return instanceRef.current &&
+                instanceRef.current.options.disabled ? (
+                <Fragment key={game.id}>{content}</Fragment>
+              ) : (
                 <div key={game.id} className="keen-slider__slide">
-                  <GameCard
-                    classNames={{
-                      link: "h-80",
-                    }}
-                    game={{
-                      category: game.category,
-                      id: game.id,
-                      name: game.name,
-                      cover: game.cover || "",
-                      rating: game.rating,
-                      themes: game.themes,
-                      gameModes: game.gameModes,
-                      genres: game.genres,
-                      releaseDate: game.releaseDate
-                        ? new Date(game.releaseDate)
-                        : undefined,
-                    }}
-                    libraryGameData={libraryGame ?? undefined}
-                    isInLibrary={!!libraryGame}
-                    userId={userId}
-                    username={username ?? undefined}
-                  />
+                  {content}
                 </div>
               );
             })}

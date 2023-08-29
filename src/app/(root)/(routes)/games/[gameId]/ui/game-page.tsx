@@ -1,21 +1,15 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import {
-  GAME_CATEGORIES,
-  GameCategories,
-  gamesApi,
-  userLibraryApi,
-} from "@shared/api";
-import { Container, Link, Separator, Title } from "@shared/ui";
+import { gamesApi, userLibraryApi } from "@shared/api";
+import { Container, Separator } from "@shared/ui";
 import { GamesCarousel } from "@widgets/games-carousel";
 import "keen-slider/keen-slider.min.css";
+import { GameAbout } from "./game-about";
 import { GameBanner } from "./game-banner";
 import { GameMedia } from "./game-media";
-import { GameNotes } from "./game-notes";
 import { GameSidebar } from "./game-sidebar";
-import { GameSummary } from "./game-summary";
-import { GameAbout } from "./game-about";
+import { GameRelated } from "./game-related";
 
 interface GamePageProps {
   gameId: string;
@@ -59,6 +53,13 @@ export const GamePage = ({ gameId }: GamePageProps) => {
               isLoading={isLoading}
             />
             <Separator />
+            <GameRelated
+              userId={user?.id}
+              username={user?.username}
+              libraryGames={libraryData?.library}
+              isLoading={isLoading}
+              game={game}
+            />
             <GamesCarousel
               title="Similar Games"
               userId={user?.id}
