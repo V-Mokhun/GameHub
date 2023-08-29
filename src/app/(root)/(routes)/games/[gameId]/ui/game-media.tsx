@@ -88,7 +88,6 @@ export const GameMedia = ({
           videos={videos}
         />
         <div className="my-4 w-[min(100%,80vh)]">
-          <Title>Media</Title>
           <div className="relative">
             {loaded && instanceRef.current && (
               <>

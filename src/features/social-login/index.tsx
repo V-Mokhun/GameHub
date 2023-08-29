@@ -33,7 +33,7 @@ export const SocialLogin = ({
         variant="outline"
         className="hover:bg-foreground hover:text-background"
       >
-        <Image src="/icons/google.svg" alt="Google" width={24} height={24} />
+        <Image unoptimized src="/icons/google.svg" alt="Google" width={24} height={24} />
         <span className="ml-2">{text} Google</span>
       </Button>
       <Button
@@ -41,7 +41,7 @@ export const SocialLogin = ({
         variant="outline"
         className="hover:bg-foreground hover:text-background"
       >
-        <Image src="/icons/github.svg" alt="Github" width={24} height={24} />
+        <Image unoptimized src="/icons/github.svg" alt="Github" width={24} height={24} />
         <span className="ml-2">{text} GitHub</span>
       </Button>
       <Button
@@ -49,7 +49,7 @@ export const SocialLogin = ({
         variant="outline"
         className="hover:bg-purple-600 hover:text-background dark:hover:text-foreground"
       >
-        <Image src="/icons/twitch.svg" alt="Twitch" width={24} height={24} />
+        <Image unoptimized src="/icons/twitch.svg" alt="Twitch" width={24} height={24} />
         <span className="ml-2">{text} Twitch</span>
       </Button>
     </div>

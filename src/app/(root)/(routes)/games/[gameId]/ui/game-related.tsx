@@ -45,45 +45,70 @@ export const GameRelated = ({
     defaultValue = TabValues.REMASTERS;
 
   return (
-    <>
-      <Title>Related</Title>
-      <Tabs defaultValue={defaultValue}>
-        <TabsList>
+    defaultValue && (
+      <>
+        <Title>Related</Title>
+        <Tabs defaultValue={defaultValue}>
+          <TabsList className="mb-2">
+            {(game?.dlcs || []).length > 0 && (
+              <TabsTrigger value={TabValues.DLCS}>DLCs</TabsTrigger>
+            )}
+            {(game?.expansions || []).length > 0 && (
+              <TabsTrigger value={TabValues.EXPANSIONS}>Expansions</TabsTrigger>
+            )}
+            {(game?.remakes || []).length > 0 && (
+              <TabsTrigger value={TabValues.REMAKES}>Remakes</TabsTrigger>
+            )}
+            {(game?.remasters || []).length > 0 && (
+              <TabsTrigger value={TabValues.REMASTERS}>Remasters</TabsTrigger>
+            )}
+          </TabsList>
           {(game?.dlcs || []).length > 0 && (
-            <TabsTrigger value={TabValues.DLCS}>DLCs</TabsTrigger>
+            <TabsContent value={TabValues.DLCS}>
+              <GamesCarousel
+                userId={userId}
+                username={username}
+                games={game?.dlcs || []}
+                libraryGames={libraryGames}
+                isLoading={isLoading}
+              />
+            </TabsContent>
           )}
           {(game?.expansions || []).length > 0 && (
-            <TabsTrigger value={TabValues.EXPANSIONS}>Expansions</TabsTrigger>
+            <TabsContent value={TabValues.EXPANSIONS}>
+              <GamesCarousel
+                userId={userId}
+                username={username}
+                games={game?.expansions || []}
+                libraryGames={libraryGames}
+                isLoading={isLoading}
+              />
+            </TabsContent>
           )}
           {(game?.remakes || []).length > 0 && (
-            <TabsTrigger value={TabValues.REMAKES}>Remakes</TabsTrigger>
+            <TabsContent value={TabValues.REMAKES}>
+              <GamesCarousel
+                userId={userId}
+                username={username}
+                games={game?.remakes || []}
+                libraryGames={libraryGames}
+                isLoading={isLoading}
+              />
+            </TabsContent>
           )}
           {(game?.remasters || []).length > 0 && (
-            <TabsTrigger value={TabValues.REMASTERS}>Remasters</TabsTrigger>
+            <TabsContent value={TabValues.REMASTERS}>
+              <GamesCarousel
+                userId={userId}
+                username={username}
+                games={game?.remasters || []}
+                libraryGames={libraryGames}
+                isLoading={isLoading}
+              />
+            </TabsContent>
           )}
-        </TabsList>
-        {(game?.dlcs || []).length > 0 && (
-          <TabsContent value={TabValues.DLCS}>
-            <GamesCarousel
-              title="DLC"
-              userId={userId}
-              username={username}
-              games={game?.dlcs || []}
-              libraryGames={libraryGames}
-              isLoading={isLoading}
-            />
-          </TabsContent>
-        )}
-        {(game?.expansions || []).length > 0 && (
-          <TabsContent value={TabValues.EXPANSIONS}>Expansions</TabsContent>
-        )}
-        {(game?.remakes || []).length > 0 && (
-          <TabsContent value={TabValues.REMAKES}>Remakes</TabsContent>
-        )}
-        {(game?.remasters || []).length > 0 && (
-          <TabsContent value={TabValues.REMASTERS}>Remasters</TabsContent>
-        )}
-      </Tabs>
-    </>
+        </Tabs>
+      </>
+    )
   );
 };

@@ -16,6 +16,7 @@ import {
   GameCategories,
   GameFilters,
   GameSorts,
+  GameWebsites,
   ImageTypes,
   Paginate,
   SearchGame,
@@ -82,6 +83,7 @@ export const normalizeFullGameProperties = (
   for (const logo of logosArr) {
     if (!logos.find((l) => l.name === logo.name)) logos.push(logo);
   }
+  const websitesCategories = Object.values(GameWebsites).filter(Number);
 
   return {
     id: gameData.id,
@@ -101,6 +103,9 @@ export const normalizeFullGameProperties = (
     themes: gameData.themes || [],
     storyline: gameData.storyline,
     summary: gameData.summary,
+    websites: gameData.websites?.filter((website) =>
+      websitesCategories.includes(website.category)
+    ),
     artworks:
       gameData.artworks?.map((artwork) =>
         getImageUrl(artwork.image_id, ImageTypes["1080P"])

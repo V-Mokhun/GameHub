@@ -22,6 +22,14 @@ export enum GameCategories {
   UPDATE = 14,
 }
 
+export enum GameWebsites {
+  OFFICIAL = 1,
+  TWITCH = 6,
+  YOUTUBE = 9,
+  STEAM = 13,
+  EPICGAMES = 16,
+}
+
 export enum ImageTypes {
   "SMALL_COVER" = "cover_small",
   "MEDIUM_SCREENSHOT" = "screenshot_med",
@@ -116,4 +124,5 @@ export interface FullGame {
     name: string;
   };
   criticsRating?: number;
+  websites?: { category: GameCategories; url: string }[];
 }

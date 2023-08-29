@@ -16,7 +16,7 @@ export const GameSummary = ({ summary, isLoading }: GameSummaryProps) => {
 
   if (isLoading)
     return (
-      <div className="mb-4">
+      <div className="mb-2">
         <Skeleton className="h-6 w-full mb-1" />
         <Skeleton className="h-6 w-1/2" />
       </div>
@@ -24,15 +24,17 @@ export const GameSummary = ({ summary, isLoading }: GameSummaryProps) => {
 
   return (
     summary && (
-      <p className="mb-4 text-sm md:text-base">
+      <p className="mb-2 text-sm md:text-base">
         {isReadMore ? summary.slice(0, 400) : summary + " "}
-        <button
-          type="button"
-          onClick={toggleReadMore}
-          className="text-muted-foreground"
-        >
-          {isReadMore ? "...read more" : "show less"}
-        </button>
+        {summary.length > 400 && (
+          <button
+            type="button"
+            onClick={toggleReadMore}
+            className="text-muted-foreground"
+          >
+            {isReadMore ? "...read more" : "show less"}
+          </button>
+        )}
       </p>
     )
   );

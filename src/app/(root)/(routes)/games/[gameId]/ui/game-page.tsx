@@ -61,18 +61,10 @@ export const GamePage = ({ gameId }: GamePageProps) => {
               game={game}
             />
             <GamesCarousel
-              title="Similar Games"
+              title="Similar"
               userId={user?.id}
               username={user?.username}
               games={game?.similarGames || []}
-              libraryGames={libraryData?.library}
-              isLoading={isLoading}
-            />
-            <GamesCarousel
-              title="DLC"
-              userId={user?.id}
-              username={user?.username}
-              games={game?.dlcs || []}
               libraryGames={libraryData?.library}
               isLoading={isLoading}
             />
