@@ -15,7 +15,7 @@ interface GamesCarouselProps {
   userId?: string | null;
   libraryGames?: NormalizedLibraryGame[];
   username?: string | null;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 export const GamesCarousel = ({
@@ -84,7 +84,7 @@ export const GamesCarousel = ({
 
   return (
     games.length > 0 && (
-      <div className="mb-4 md:mb-6 min-w-0">
+      <div className="my-4 md:my-6 min-w-0">
         {title && <Title>{title}</Title>}
         {subtitle && <Subtitle>{subtitle}</Subtitle>}
         <div

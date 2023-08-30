@@ -84,7 +84,7 @@ export interface GameFilters {
 
 export interface SearchGame {
   id: number;
-  cover: string;
+  cover?: string;
   releaseDate?: Date;
   name: string;
   rating: number;
@@ -97,14 +97,9 @@ export interface Game extends SearchGame {
   genres: number[];
 }
 
-export interface FullGame {
-  id: number;
-  cover?: string;
+export interface FullGame extends SearchGame {
   artworks: string[];
   videos: { url: string; name: string }[];
-  releaseDate?: Date;
-  name: string;
-  rating: number;
   category: number;
   themes: { id: number; name: string }[];
   genres: { id: number; name: string }[];

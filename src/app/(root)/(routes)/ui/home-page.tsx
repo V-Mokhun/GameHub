@@ -18,6 +18,7 @@ import "keen-slider/keen-slider.min.css";
 import { nanoid, random } from "nanoid";
 import { useEffect, useMemo } from "react";
 import { HomeHero } from "./home-hero";
+import { ViewedGames } from "@widgets/viewed-games";
 
 export function HomePage() {
   const { usernameGeneratedToast } = useCustomToasts();
@@ -153,6 +154,11 @@ export function HomePage() {
               </Link>
             </div>
           )}
+          <ViewedGames
+            libraryGames={libraryData?.library}
+            userId={user?.id}
+            username={user?.username}
+          />
         </Container>
       </section>
     </>
