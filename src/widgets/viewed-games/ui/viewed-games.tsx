@@ -1,6 +1,6 @@
 "use client";
 
-import { Game, NormalizedLibraryGame } from "@shared/api";
+import { NormalizedLibraryGame } from "@shared/api";
 import { RECENTLY_VIEWED_GAMES } from "@shared/consts";
 import { GamesCarousel } from "@widgets/games-carousel";
 import { useMemo } from "react";

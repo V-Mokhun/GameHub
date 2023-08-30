@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { SearchGame } from "@shared/api";
 import { Icon } from "@shared/ui";
@@ -11,13 +11,17 @@ interface SearchedGameProps {
 export const SearchedGame = ({ game }: SearchedGameProps) => {
   return (
     <div className="cursor-pointer flex w-full items-start gap-2">
-      <Image
-        className="object-cover"
-        alt={game.name}
-        src={game.cover}
-        width={40}
-        height={40}
-      />
+      {game.cover ? (
+        <Image
+          className="object-cover"
+          alt={game.name}
+          src={game.cover}
+          width={40}
+          height={40}
+        />
+      ) : (
+        <div className="w-10 h-10 bg-muted" />
+      )}
       <div className="flex flex-1 justify-between gap-1">
         <p>
           {game.name} {""}

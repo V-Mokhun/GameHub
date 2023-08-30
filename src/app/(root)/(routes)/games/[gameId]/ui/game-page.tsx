@@ -1,23 +1,18 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { Game, gamesApi, userApi, userLibraryApi } from "@shared/api";
+import { gamesApi, userLibraryApi } from "@shared/api";
+import { useViewedGames } from "@shared/lib/hooks";
 import { Container, Separator } from "@shared/ui";
 import { GamesCarousel } from "@widgets/games-carousel";
+import { ViewedGames } from "@widgets/viewed-games";
 import "keen-slider/keen-slider.min.css";
 import { GameAbout } from "./game-about";
 import { GameBanner } from "./game-banner";
-import { GameMedia } from "./game-media";
-import { GameSidebar } from "./game-sidebar";
-import { GameRelated } from "./game-related";
 import { GameCollection } from "./game-collection";
-import { ViewedGames } from "@widgets/viewed-games";
-import { useEffect } from "react";
-import {
-  RECENTLY_VIEWED_GAMES,
-  RECENTLY_VIEWED_GAMES_LIMIT,
-} from "@shared/consts";
-import { useViewedGames } from "@shared/lib/hooks";
+import { GameMedia } from "./game-media";
+import { GameRelated } from "./game-related";
+import { GameSidebar } from "./game-sidebar";
 
 interface GamePageProps {
   gameId: string;

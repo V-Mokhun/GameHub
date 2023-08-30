@@ -14,11 +14,10 @@ import {
   buttonVariants,
 } from "@shared/ui";
 import { GamesCarousel } from "@widgets/games-carousel";
+import { ViewedGames } from "@widgets/viewed-games";
 import "keen-slider/keen-slider.min.css";
-import { nanoid, random } from "nanoid";
 import { useEffect, useMemo } from "react";
 import { HomeHero } from "./home-hero";
-import { ViewedGames } from "@widgets/viewed-games";
 
 export function HomePage() {
   const { usernameGeneratedToast } = useCustomToasts();

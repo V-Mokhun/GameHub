@@ -100,7 +100,7 @@ export const GameLibraryModal = ({
       genres: gameData.genres?.join(",") || "",
       themes: gameData.themes?.join(",") || "",
       totalRating: gameData.rating,
-      coverUrl: gameData.cover,
+      coverUrl: gameData.cover ?? "",
       userId,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -125,13 +125,17 @@ export const GameLibraryModal = ({
         <DialogContent className="">
           <div className="flex gap-2">
             <div className="relative rounded-md overflow-hidden w-28 h-40 md:w-32 md:h-44 lg:w-40 lg:h-52 xl:w-48 xl:h-60 shrink-0">
-              <Image
-                className="object-cover"
-                src={gameData.cover}
-                fill
-                sizes="(min-width: 768px) 128px, 112px"
-                alt={gameData.name}
-              />
+              {gameData.cover ? (
+                <Image
+                  className="object-cover"
+                  src={gameData.cover}
+                  fill
+                  sizes="(min-width: 768px) 128px, 112px"
+                  alt={gameData.name}
+                />
+              ) : (
+                <div className="absolute w-full h-full bg-muted"></div>
+              )}
             </div>
             <div className="flex flex-col">
               <Title className="mb-1 lg:mb-1">{gameData.name}</Title>
