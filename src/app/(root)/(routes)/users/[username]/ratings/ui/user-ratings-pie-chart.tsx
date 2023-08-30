@@ -1,5 +1,6 @@
 "use client";
 
+import { useMediaQuery } from "@shared/lib/hooks";
 import { Title } from "@shared/ui";
 import {
   Cell,
@@ -58,6 +59,7 @@ const COLORS = {
 };
 
 export const UserRatingsPieChart = ({ data }: UserRatingsPieChartProps) => {
+  const xsMatches = useMediaQuery("(min-width: 475px)");
   let formattedData = new Array(10).fill(0).map((_, i) => ({
     rating: i + 1,
     count: 0,
@@ -119,32 +121,33 @@ export const UserRatingsPieChart = ({ data }: UserRatingsPieChartProps) => {
             </Pie>
             {/* @ts-ignore */}
             <Tooltip content={<CustomTooltip length={data.length} />} />
-            <Legend
-              className="xs:hidden"
-              iconSize={16}
-              layout="horizontal"
-              verticalAlign="top"
-              align="center"
-              payload={formattedData.map(({ rating }) => ({
-                value: rating,
-                id: rating.toString(),
-                color: COLORS[rating.toString() as keyof typeof COLORS],
-                type: "square",
-              }))}
-            />
-            <Legend
-              className="hidden xs:block"
-              iconSize={16}
-              layout="vertical"
-              verticalAlign="middle"
-              align="left"
-              payload={formattedData.map(({ rating }) => ({
-                value: rating,
-                id: rating.toString(),
-                color: COLORS[rating.toString() as keyof typeof COLORS],
-                type: "square",
-              }))}
-            />
+            {xsMatches ? (
+              <Legend
+                iconSize={16}
+                layout="vertical"
+                verticalAlign="middle"
+                align="left"
+                payload={formattedData.map(({ rating }) => ({
+                  value: rating,
+                  id: rating.toString(),
+                  color: COLORS[rating.toString() as keyof typeof COLORS],
+                  type: "square",
+                }))}
+              />
+            ) : (
+              <Legend
+                iconSize={16}
+                layout="horizontal"
+                verticalAlign="top"
+                align="center"
+                payload={formattedData.map(({ rating }) => ({
+                  value: rating,
+                  id: rating.toString(),
+                  color: COLORS[rating.toString() as keyof typeof COLORS],
+                  type: "square",
+                }))}
+              />
+            )}
           </PieChart>
         </ResponsiveContainer>
       </div>

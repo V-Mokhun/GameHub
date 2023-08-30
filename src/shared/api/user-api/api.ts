@@ -9,6 +9,7 @@ import { DEFAULT_PAGINATE } from "../games-api";
 import {
   useAcceptFriendRequest,
   useCancelFriendRequest,
+  useGameFriends,
   useRemoveFriend,
   useSendFriendRequest,
 } from "./friends-api";
@@ -117,6 +118,7 @@ export const userApi = {
   getUser: useUser,
   getOwnProfile: useOwnProfile,
   getUsers: useUsers,
+  getGameFriends: useGameFriends,
   sendFriendRequest: useSendFriendRequest,
   cancelFriendRequest: useCancelFriendRequest,
   acceptFriendRequest: useAcceptFriendRequest,

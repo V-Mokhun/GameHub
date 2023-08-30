@@ -17,7 +17,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { GameLibraryModal } from "./game-library-modal";
-import { GameStatus } from "@prisma/client";
+import { GameStatus } from "./game-status";
+import { GameUserRating } from "./game-user-rating";
 
 export type LibraryGameData = Pick<
   NormalizedLibraryGame,
@@ -117,18 +118,7 @@ export const GameCard = ({
           {/* Add to library + user rating + status */}
           <div className="absolute z-[2] bottom-2 left-0 right-0 flex flex-col gap-1 px-2">
             {libraryGameData?.userRating && (
-              <span
-                className={cn(
-                  "flex items-center justify-center w-6 h-6 rounded-sm",
-                  libraryGameData.userRating >= 8
-                    ? "bg-success"
-                    : libraryGameData.userRating >= 5
-                    ? "bg-secondary"
-                    : "bg-destructive"
-                )}
-              >
-                {libraryGameData?.userRating}
-              </span>
+              <GameUserRating userRating={libraryGameData.userRating} />
             )}
             {libraryGameData?.playTime && libraryGameData.playTime > 0 ? (
               <div className="inline-block mt-1">
@@ -141,26 +131,7 @@ export const GameCard = ({
             <div className="flex justify-end items-center gap-2">
               <div className="flex-1">
                 {libraryGameData?.status && (
-                  <Badge
-                    className={cn(
-                      libraryGameData.status === GameStatus.WANT_TO_PLAY &&
-                        "bg-primary",
-                      libraryGameData.status === GameStatus.PLAYING &&
-                        "bg-secondary hover:bg-secondary-hover",
-                      libraryGameData.status === GameStatus.COMPLETED &&
-                        "bg-success hover:bg-success-hover",
-                      libraryGameData.status === GameStatus.ABANDONED &&
-                        "bg-destructive hover:bg-destructive-hover",
-                      libraryGameData.status === GameStatus.WANT_TO_REPLAY &&
-                        "bg-purple-500 dark:bg-purple-600 hover:bg-purple-600 dark:hover:bg-purple-500"
-                    )}
-                  >
-                    {libraryGameData?.status
-                      .toLowerCase()
-                      .split("_")
-                      .map((word) => word[0].toUpperCase() + word.slice(1))
-                      .join(" ")}
-                  </Badge>
+                  <GameStatus status={libraryGameData.status} />
                 )}
               </div>
               {!disableLibraryButton && (
@@ -194,18 +165,10 @@ export const GameCard = ({
               </span>
             )}
             {libraryGameData?.userRating && (
-              <span
-                className={cn(
-                  "inline-flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-sm text-white ml-2",
-                  libraryGameData.userRating >= 8
-                    ? "bg-success"
-                    : libraryGameData.userRating >= 5
-                    ? "bg-secondary"
-                    : "bg-destructive"
-                )}
-              >
-                {libraryGameData?.userRating}
-              </span>
+              <GameUserRating
+                userRating={libraryGameData.userRating}
+                className="inline-flex w-5 h-5 md:w-6 md:h-6 text-white ml-2"
+              />
             )}
           </TableCell>
           <TableCell>

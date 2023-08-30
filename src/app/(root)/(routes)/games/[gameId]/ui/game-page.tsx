@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { gamesApi, userLibraryApi } from "@shared/api";
+import { gamesApi, userApi, userLibraryApi } from "@shared/api";
 import { Container, Separator } from "@shared/ui";
 import { GamesCarousel } from "@widgets/games-carousel";
 import "keen-slider/keen-slider.min.css";

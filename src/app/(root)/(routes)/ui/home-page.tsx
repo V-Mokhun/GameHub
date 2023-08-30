@@ -15,8 +15,8 @@ import {
 } from "@shared/ui";
 import { GamesCarousel } from "@widgets/games-carousel";
 import "keen-slider/keen-slider.min.css";
-import { nanoid } from "nanoid";
-import { useEffect } from "react";
+import { nanoid, random } from "nanoid";
+import { useEffect, useMemo } from "react";
 import { HomeHero } from "./home-hero";
 
 export function HomePage() {
@@ -34,8 +34,16 @@ export function HomePage() {
       offset: 0,
     },
   });
+  const games = useMemo(
+    () => [...(popularGames || []), ...(topGames || [])],
+    [popularGames, topGames]
+  );
+  const randomGame = useMemo(
+    () => games[Math.floor(Math.random() * games.length)],
+    [games]
+  );
   const libraryGame = libraryData?.library.find(
-    (game) => game.id === topGames?.[0]?.id
+    (game) => game.id === randomGame?.id
   );
 
   useEffect(() => {
@@ -72,22 +80,22 @@ export function HomePage() {
               icon
             </Subtitle>
             <div className="w-1/2 md:w-1/3 lg:w-1/4">
-              {isTopGamesLoading ? (
+              {isTopGamesLoading || isPopularGamesLoading ? (
                 <GameCardSkeleton />
               ) : (
-                topGames && (
+                games.length > 0 && (
                   <GameCard
                     game={{
-                      category: topGames[0].category,
-                      id: topGames[0].id,
-                      name: topGames[0].name,
-                      cover: topGames[0].cover || "",
-                      rating: topGames[0].rating,
-                      themes: topGames[0].themes,
-                      gameModes: topGames[0].gameModes,
-                      genres: topGames[0].genres,
-                      releaseDate: topGames[0].releaseDate
-                        ? new Date(topGames[0].releaseDate)
+                      category: randomGame.category,
+                      id: randomGame.id,
+                      name: randomGame.name,
+                      cover: randomGame.cover || "",
+                      rating: randomGame.rating,
+                      themes: randomGame.themes,
+                      gameModes: randomGame.gameModes,
+                      genres: randomGame.genres,
+                      releaseDate: randomGame.releaseDate
+                        ? new Date(randomGame.releaseDate)
                         : undefined,
                     }}
                     libraryGameData={libraryGame ?? undefined}

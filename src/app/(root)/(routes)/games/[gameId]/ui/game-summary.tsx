@@ -30,9 +30,9 @@ export const GameSummary = ({ summary, isLoading }: GameSummaryProps) => {
           <button
             type="button"
             onClick={toggleReadMore}
-            className="text-muted-foreground"
+            className="text-muted-foreground hover:text-muted-foreground/70 transition-colors"
           >
-            {isReadMore ? "...read more" : "show less"}
+            {isReadMore ? "...Read More" : "Show Less"}
           </button>
         )}
       </p>

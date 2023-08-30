@@ -1,4 +1,6 @@
 import { Conversation, FriendRequest, Message, User } from "@prisma/client";
+import { Game } from "../games-api";
+import { NormalizedLibraryGame } from "../user-library-api";
 
 export type UserWithFriends = User & { friends: User[] };
 
@@ -22,4 +24,11 @@ export type FullMessage = Message & {
 
 export type FullConversation = Conversation & {
   users: User[];
+};
+
+export type GameFriend = {
+  id: string;
+  username: string;
+  imageUrl: string;
+  game: NormalizedLibraryGame;
 };

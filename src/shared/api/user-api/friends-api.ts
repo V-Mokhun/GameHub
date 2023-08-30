@@ -1,9 +1,36 @@
-import { FriendRequest, User } from "@prisma/client";
+import { FriendRequest, Game, User } from "@prisma/client";
 import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { OwnProfile } from "./types";
+import { GameFriend, OwnProfile } from "./types";
+import { useAuth } from "@clerk/nextjs";
+import { normalizeLibraryGameProperties } from "../user-library-api";
+
+type GameFriendsResponse = Omit<GameFriend, "game"> & { game: Game };
+
+export const useGameFriends = (gameId: string) => {
+  const { userId } = useAuth();
+
+  return useQuery(
+    ["game-friends", { gameId, userId }],
+    async (): Promise<GameFriend[]> => {
+      const { data } = await axios.post<GameFriendsResponse[]>(
+        `/api/game/${gameId}/friends`,
+        {
+          userId,
+        }
+      );
+
+      const normalizedData = data.map((friend) => ({
+        ...friend,
+        game: normalizeLibraryGameProperties(friend.game),
+      }));
+
+      return normalizedData;
+    }
+  );
+};
 
 export const useSendFriendRequest = () => {
   const queryClient = useQueryClient();
