@@ -37,7 +37,7 @@ export const GameNotes = ({ libraryGame, username }: GameNotesProps) => {
 
   return (
     <>
-      <div className="flex items-center gap-4 mb-2 mt-4 lg:mb-3">
+      <div className="flex items-center gap-4 my-4">
         <Title size="small" className="lg:mb-0 mb-0">Your notes</Title>
         <Button
           size="icon"

@@ -11,9 +11,11 @@ import {
   NormalizedLibraryGame,
 } from "@shared/api";
 import Image from "next/image";
+import { GameFriends } from "./game-friends";
 
 interface GameAboutProps {
   game?: FullGame;
+  gameId: string;
   isLoading: boolean;
   username: string | null;
   libraryGame?: NormalizedLibraryGame | null;
@@ -24,6 +26,7 @@ export const GameAbout = ({
   game,
   username,
   libraryGame,
+  gameId,
 }: GameAboutProps) => {
   return (
     <div className="mb-6 mt-4">
@@ -44,8 +47,9 @@ export const GameAbout = ({
       )}
       <GameSummary isLoading={isLoading} summary={game?.summary} />
       <GameNotes username={username || ""} libraryGame={libraryGame || null} />
+      <GameFriends gameId={gameId} />
       {game?.websites && game.websites.length > 0 && (
-        <ul className="flex gap-4 flex-wrap mt-8">
+        <ul className="flex gap-4 flex-wrap md:mt-8 md:mb-6 mt-6 mb-4">
           {game.websites
             .sort((a, b) => a.category - b.category)
             .map((website) => (

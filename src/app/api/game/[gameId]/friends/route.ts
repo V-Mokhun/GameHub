@@ -22,7 +22,7 @@ export async function POST(
         library: { some: { id: Number(gameId) } },
         isPrivateLibrary: false,
       },
-      take: 5,
+      // take: 5,
       include: {
         library: {
           where: {

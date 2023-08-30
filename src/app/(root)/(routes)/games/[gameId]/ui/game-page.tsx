@@ -42,6 +42,7 @@ export const GamePage = ({ gameId }: GamePageProps) => {
         <div className="flex items-start gap-4">
           <div className="flex-1 min-w-0">
             <GameAbout
+              gameId={gameId}
               libraryGame={libraryGame}
               username={user?.username ?? ""}
               isLoading={isLoading}
