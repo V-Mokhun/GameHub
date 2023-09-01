@@ -28,7 +28,8 @@ model User {
   conversations Conversation[]
   messages      Message[]
 
-  seenMessages Message[] @relation("SeenBy")
+  seenMessages Message[]    @relation("SeenBy")
+  gameReviews  GameReview[]
 }
 
 model FriendRequest {
@@ -98,7 +99,9 @@ model Game {
   notes      String?    @default("")
 
   userId String
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  gameReviews GameReview[]
 
   @@id([userId, id])
   @@index([userId])
@@ -110,4 +113,24 @@ enum GameStatus {
   PLAYING
   WANT_TO_REPLAY
   ABANDONED
+}
+
+model GameReview {
+  id         String  @id @default(uuid())
+  title      String
+  body       String  @db.Text
+  rating     Int
+  hasSpoiler Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  gameId Int
+  game   Game @relation(fields: [gameId, userId], references: [id, userId], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([gameId, userId])
+  @@index([userId])
 }
