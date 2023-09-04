@@ -27,9 +27,10 @@ model User {
 
   conversations Conversation[]
   messages      Message[]
-
   seenMessages Message[]    @relation("SeenBy")
+
   gameReviews  GameReview[]
+  gameReviewVotes GameReviewVote[]
 }
 
 model FriendRequest {
@@ -131,6 +132,25 @@ model GameReview {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  votes GameReviewVote[]
+
   @@index([gameId, userId])
   @@index([userId])
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+model GameReviewVote {
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  gameReviewId String
+  gameReview   GameReview @relation(fields: [gameReviewId], references: [id])
+
+  type VoteType
+
+  @@id([userId, gameReviewId])
 }

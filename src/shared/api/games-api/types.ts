@@ -1,3 +1,5 @@
+import { GameReview, User } from "@prisma/client";
+
 export interface Token {
   access_token: string;
   expires_in: number;
@@ -122,3 +124,12 @@ export interface FullGame extends SearchGame {
   criticsRating?: number;
   websites?: { category: GameCategories; url: string }[];
 }
+
+export type FullGameReview = GameReview & {
+  user: Pick<User, "id" | "imageUrl" | "username">;
+};
+
+export type CreateOrUpdateReview = Omit<
+  GameReview,
+  "gameId" | "createdAt" | "updatedAt" | "id"
+>;

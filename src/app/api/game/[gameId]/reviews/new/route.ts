@@ -1,4 +1,6 @@
 import { auth } from "@clerk/nextjs";
+import { Game, GameStatus } from "@prisma/client";
+import { CreateOrUpdateReview } from "@shared/api";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { reviewFormSchema } from "@widgets/forms";
@@ -13,20 +15,53 @@ export async function POST(
     const { gameId } = params;
     const { userId: authUserId } = auth();
 
-    const body = await req.json();
+    const body: { review: CreateOrUpdateReview; game: Game } = await req.json();
+    const { review, game } = body;
     const {
       body: content,
       hasSpoiler,
       rating,
       title,
       userId,
-    } = reviewFormSchema.extend({ userId: z.string() }).parse(body);
+    } = reviewFormSchema.extend({ userId: z.string() }).parse(review);
 
     if (!authUserId || authUserId !== userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    db.gameReview.create({
+    const libraryGame = await db.game.findUnique({
+      where: {
+        userId_id: {
+          id: Number(gameId),
+          userId: userId,
+        },
+      },
+    });
+
+    if (!libraryGame) {
+      await db.game.create({
+        data: {
+          ...game,
+          userRating: rating,
+          status: GameStatus.COMPLETED,
+        },
+      });
+    } else if (libraryGame.status !== GameStatus.COMPLETED) {
+      await db.game.update({
+        where: {
+          userId_id: {
+            id: Number(gameId),
+            userId: userId,
+          },
+        },
+        data: {
+          userRating: rating,
+          status: GameStatus.COMPLETED,
+        },
+      });
+    }
+
+    await db.gameReview.create({
       data: {
         gameId: Number(gameId),
         body: content,

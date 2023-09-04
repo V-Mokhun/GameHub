@@ -18,10 +18,13 @@ export const ViewedGames = ({
   username,
   gameId,
 }: ViewedGamesProps) => {
-  const viewedGames = useMemo(
-    () => JSON.parse(localStorage.getItem(RECENTLY_VIEWED_GAMES) ?? "[]"),
-    [gameId]
-  );
+  const viewedGames = useMemo(() => {
+    if (typeof window !== "undefined") {
+      return JSON.parse(localStorage.getItem(RECENTLY_VIEWED_GAMES) ?? "[]");
+    }
+
+    return [];
+  }, [gameId]);
 
   return (
     <GamesCarousel

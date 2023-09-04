@@ -21,12 +21,17 @@ import {
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { ReviewFormSchema, reviewFormSchema } from "../model";
+import { gamesApi } from "@shared/api";
+import { useRouter } from "next/navigation";
+import { cn } from "@shared/lib";
+import { Game } from "@prisma/client";
 
 interface ReviewFormProps {
   title?: string;
   gameId: string;
   userRating?: number;
   userId: string;
+  game: Game;
 }
 
 export const ReviewForm = ({
@@ -34,7 +39,9 @@ export const ReviewForm = ({
   userId,
   userRating,
   title = "New Review",
+  game,
 }: ReviewFormProps) => {
+  const router = useRouter();
   const form = useForm<ReviewFormSchema>({
     resolver: zodResolver(reviewFormSchema),
     defaultValues: {
@@ -44,9 +51,11 @@ export const ReviewForm = ({
       rating: userRating,
     },
   });
+  const { mutate: createReview, isLoading } = gamesApi.createReview(gameId);
 
   const onSubmit = async (data: ReviewFormSchema) => {
-    console.log(data);
+    await createReview({ review: { ...data, userId }, game });
+    router.push(REVIEWS_ROUTE(gameId));
   };
 
   return (
@@ -60,11 +69,15 @@ export const ReviewForm = ({
           <FormField
             control={form.control}
             name="title"
-            render={({ field }) => (
+            render={({ field, formState }) => (
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="Give your review a title" {...field} />
+                  <Input
+                    disabled={isLoading}
+                    placeholder="Give your review a title"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -73,11 +86,12 @@ export const ReviewForm = ({
           <FormField
             control={form.control}
             name="body"
-            render={({ field }) => (
+            render={({ field, formState }) => (
               <FormItem>
                 <FormLabel>Content</FormLabel>
                 <FormControl>
                   <Textarea
+                    disabled={isLoading}
                     placeholder="Give a detailed review of the game"
                     className="resize-none min-h-[200px] md:min-h-[320px]"
                     maxLength={8000}
@@ -92,11 +106,12 @@ export const ReviewForm = ({
             <FormField
               control={form.control}
               name="hasSpoiler"
-              render={({ field }) => (
+              render={({ field, formState }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Does this review contain spoilers?</FormLabel>
                   <FormControl>
                     <Switch
+                      disabled={isLoading}
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
@@ -107,7 +122,7 @@ export const ReviewForm = ({
             <FormField
               control={form.control}
               name="rating"
-              render={({ field }) => (
+              render={({ field, formState }) => (
                 <FormItem>
                   <div className="flex justify-between items-center gap-2">
                     <FormLabel>Your Rating</FormLabel>
@@ -115,7 +130,7 @@ export const ReviewForm = ({
                   </div>
                   <FormControl>
                     <StarRating
-                      disabled={false}
+                      disabled={isLoading}
                       rating={field.value}
                       onSetRating={(val) => field.onChange(val)}
                     />
@@ -128,11 +143,16 @@ export const ReviewForm = ({
           <div className="flex justify-between items-center gap-4 mt-4">
             <Link
               href={REVIEWS_ROUTE(gameId)}
-              className={buttonVariants({ variant: "secondary" })}
+              className={buttonVariants({
+                variant: "secondary",
+                className: cn(isLoading && "pointer-events-none opacity-50"),
+              })}
             >
               Go Back
             </Link>
-            <Button type="submit">Create</Button>
+            <Button disabled={isLoading} type="submit">
+              Create
+            </Button>
           </div>
         </form>
       </Form>

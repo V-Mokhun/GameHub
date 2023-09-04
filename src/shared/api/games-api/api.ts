@@ -25,6 +25,7 @@ import {
   GameTheme,
   Paginate,
 } from "./types";
+import { useCreateReview, useReviews } from "./reviews-api";
 
 export type UseSearchGamesApiResponse = {
   id: number;
@@ -344,4 +345,7 @@ export const gamesApi = {
   getThemes: useThemes,
   getModes: useModes,
   getGame: useGame,
+
+  getReviews: useReviews,
+  createReview: useCreateReview,
 };

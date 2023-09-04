@@ -1,26 +1,27 @@
 "use client";
 
 import { GameCard } from "@entities/game";
-import { NormalizedLibraryGame, gamesApi, userLibraryApi } from "@shared/api";
+import {
+  FullGame,
+  NormalizedLibraryGame,
+  gamesApi,
+  userLibraryApi,
+} from "@shared/api";
 import { Title } from "@shared/ui";
 
 interface CreateReviewSidebarProps {
-  gameId: string;
   userId?: string;
   username?: string;
   libraryGame?: NormalizedLibraryGame | null;
+  game: FullGame | undefined;
 }
 
 export const CreateReviewSidebar = ({
-  gameId,
   userId,
   username,
   libraryGame,
+  game,
 }: CreateReviewSidebarProps) => {
-  const { data: game, isLoading } = gamesApi.getGame(gameId);
-
-  if (isLoading) return <div>Loading...</div>;
-
   return (
     game && (
       <div className="flex-[0_1_25%] space-y-4">
