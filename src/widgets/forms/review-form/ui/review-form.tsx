@@ -20,39 +20,23 @@ import {
 } from "@shared/ui";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ReviewFormSchema, reviewFormSchema } from "../model";
 
-interface CreateReviewFormProps {
+interface ReviewFormProps {
+  title?: string;
   gameId: string;
   userRating?: number;
   userId: string;
 }
 
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(3, "Title must be minimum 3 characters long")
-    .max(100, "Title must be maximum 100 characters long"),
-  body: z
-    .string()
-    .min(300, "Review must be minimum 300 characters long")
-    .max(8000, "Review must be maximum 8000 characters long"),
-  hasSpoiler: z.boolean().default(false),
-  rating: z
-    .number({ required_error: "Rating the game is required" })
-    .min(1)
-    .max(10),
-});
-
-type FormSchema = z.infer<typeof formSchema>;
-
-export const CreateReviewForm = ({
+export const ReviewForm = ({
   gameId,
   userId,
   userRating,
-}: CreateReviewFormProps) => {
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+  title = "New Review",
+}: ReviewFormProps) => {
+  const form = useForm<ReviewFormSchema>({
+    resolver: zodResolver(reviewFormSchema),
     defaultValues: {
       body: "",
       title: "",
@@ -61,13 +45,13 @@ export const CreateReviewForm = ({
     },
   });
 
-  const onSubmit = async (data: FormSchema) => {
+  const onSubmit = async (data: ReviewFormSchema) => {
     console.log(data);
   };
 
   return (
     <div className="space-y-4 flex-1">
-      <Title>New Review</Title>
+      <Title>{title}</Title>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

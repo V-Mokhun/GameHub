@@ -20,7 +20,6 @@ export const CreateReviewSidebar = ({
   const { data: game, isLoading } = gamesApi.getGame(gameId);
 
   if (isLoading) return <div>Loading...</div>;
-  console.log(game);
 
   return (
     game && (
