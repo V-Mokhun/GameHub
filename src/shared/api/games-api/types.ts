@@ -1,4 +1,5 @@
 import { GameReview, User } from "@prisma/client";
+import { NormalizedLibraryGame } from "../user-library-api/types";
 
 export interface Token {
   access_token: string;
@@ -128,6 +129,8 @@ export interface FullGame extends SearchGame {
 export type FullGameReview = GameReview & {
   user: Pick<User, "id" | "imageUrl" | "username">;
 };
+
+export type SingleGameReview = GameReview & { game: NormalizedLibraryGame };
 
 export type CreateOrUpdateReview = Omit<
   GameReview,

@@ -3,7 +3,7 @@
 import { NormalizedLibraryGame } from "@shared/api";
 import { RECENTLY_VIEWED_GAMES } from "@shared/consts";
 import { GamesCarousel } from "@widgets/games-carousel";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface ViewedGamesProps {
   userId?: string | null;
@@ -18,12 +18,12 @@ export const ViewedGames = ({
   username,
   gameId,
 }: ViewedGamesProps) => {
-  const viewedGames = useMemo(() => {
-    if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem(RECENTLY_VIEWED_GAMES) ?? "[]");
-    }
+  const [viewedGames, setViewedGames] = useState([]);
 
-    return [];
+  useEffect(() => {
+    setViewedGames(() =>
+      JSON.parse(localStorage.getItem(RECENTLY_VIEWED_GAMES) ?? "[]")
+    );
   }, [gameId]);
 
   return (
