@@ -3,11 +3,7 @@ import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import {
-  CreateOrUpdateReview,
-  FullGameReview,
-  SingleGameReview,
-} from "./types";
+import { CreateOrEditReview, FullGameReview, SingleGameReview } from "./types";
 import { useAuth } from "@clerk/nextjs";
 
 export const useReviews = (gameId: string) => {
@@ -51,7 +47,7 @@ export const useCreateReview = (gameId: string) => {
 
   return useMutation(
     ["create-review", gameId],
-    async ({ review, game }: { review: CreateOrUpdateReview; game: Game }) => {
+    async ({ review, game }: { review: CreateOrEditReview; game: Game }) => {
       const { data } = await axios.post(`/api/game/${gameId}/reviews/new`, {
         review,
         game,
@@ -66,6 +62,34 @@ export const useCreateReview = (gameId: string) => {
         queryClient.invalidateQueries(["reviews", { gameId }]);
         toast({
           title: "Review has been created successfully",
+          variant: "success",
+        });
+      },
+    }
+  );
+};
+
+export const useEditReview = (gameId: string, reviewId?: string) => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    ["edit-review", gameId, reviewId],
+    async (review: CreateOrEditReview) => {
+      const { data } = await axios.patch(
+        `/api/game/${gameId}/reviews/${reviewId}/edit`,
+        review
+      );
+      return data;
+    },
+    {
+      onError: (error: unknown) => {
+        return displayError(toast, error);
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(["reviews", { gameId }]);
+        toast({
+          title: "Review has been edited successfully",
           variant: "success",
         });
       },

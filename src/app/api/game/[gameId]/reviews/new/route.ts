@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs";
 import { Game, GameStatus } from "@prisma/client";
-import { CreateOrUpdateReview } from "@shared/api";
+import { CreateOrEditReview } from "@shared/api";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import { reviewFormSchema } from "@widgets/forms";
@@ -15,7 +15,7 @@ export async function POST(
     const { gameId } = params;
     const { userId: authUserId } = auth();
 
-    const body: { review: CreateOrUpdateReview; game: Game } = await req.json();
+    const body: { review: CreateOrEditReview; game: Game } = await req.json();
     const { review, game } = body;
     const {
       body: content,
@@ -75,8 +75,6 @@ export async function POST(
 
     return NextResponse.json("OK", { status: 200 });
   } catch (error) {
-    console.log(error);
-
     return catchError(error, "Error creating review");
   }
 }

@@ -132,7 +132,7 @@ export type FullGameReview = GameReview & {
 
 export type SingleGameReview = FullGameReview & { game: NormalizedLibraryGame };
 
-export type CreateOrUpdateReview = Omit<
+export type CreateOrEditReview = Omit<
   GameReview,
   "gameId" | "createdAt" | "updatedAt" | "id"
 >;

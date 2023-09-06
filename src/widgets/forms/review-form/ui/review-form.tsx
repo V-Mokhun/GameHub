@@ -28,33 +28,50 @@ import { Game } from "@prisma/client";
 
 interface ReviewFormProps {
   gameId: string;
+  reviewId?: string;
   userRating?: number;
   userId: string;
   game: Game;
   isEdit?: boolean;
+  defaultValues?: ReviewFormSchema;
 }
 
 export const ReviewForm = ({
   gameId,
+  reviewId,
   userId,
   userRating,
   game,
   isEdit,
+  defaultValues,
 }: ReviewFormProps) => {
   const router = useRouter();
   const form = useForm<ReviewFormSchema>({
     resolver: zodResolver(reviewFormSchema),
-    defaultValues: {
+    defaultValues: defaultValues ?? {
       body: "",
       title: "",
       hasSpoiler: false,
       rating: userRating,
     },
   });
-  const { mutate: createReview, isLoading } = gamesApi.createReview(gameId);
+  const { mutate: createReview, isLoading: isCreating } =
+    gamesApi.createReview(gameId);
+  const { mutate: editReview, isLoading: isEditing } = gamesApi.editReview(
+    gameId,
+    reviewId
+  );
+
+  const isLoading = isCreating || isEditing;
 
   const onSubmit = async (data: ReviewFormSchema) => {
-    await createReview({ review: { ...data, userId }, game });
+    if (isEdit) {
+      if (!reviewId) return;
+
+      await editReview({ ...data, userId });
+    } else {
+      await createReview({ review: { ...data, userId }, game });
+    }
     router.push(REVIEWS_ROUTE(gameId));
   };
 
@@ -69,7 +86,7 @@ export const ReviewForm = ({
           <FormField
             control={form.control}
             name="title"
-            render={({ field, formState }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
@@ -86,7 +103,7 @@ export const ReviewForm = ({
           <FormField
             control={form.control}
             name="body"
-            render={({ field, formState }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Content</FormLabel>
                 <FormControl>
@@ -106,7 +123,7 @@ export const ReviewForm = ({
             <FormField
               control={form.control}
               name="hasSpoiler"
-              render={({ field, formState }) => (
+              render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Does this review contain spoilers?</FormLabel>
                   <FormControl>
@@ -122,7 +139,7 @@ export const ReviewForm = ({
             <FormField
               control={form.control}
               name="rating"
-              render={({ field, formState }) => (
+              render={({ field }) => (
                 <FormItem>
                   <div className="flex justify-between items-center gap-2">
                     <FormLabel>Your Rating</FormLabel>
@@ -151,7 +168,7 @@ export const ReviewForm = ({
               Go Back
             </Link>
             <Button disabled={isLoading} type="submit">
-              Create
+              {isEdit ? "Edit" : "Create"}
             </Button>
           </div>
         </form>

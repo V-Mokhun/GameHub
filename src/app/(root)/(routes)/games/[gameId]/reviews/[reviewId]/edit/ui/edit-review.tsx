@@ -48,6 +48,8 @@ export const EditReview = ({
     review && (
       <div className="flex gap-4">
         <ReviewForm
+          isEdit
+          reviewId={reviewId}
           game={{
             category: game.category,
             name: game.name,
@@ -70,6 +72,12 @@ export const EditReview = ({
           gameId={gameId}
           userId={review.user.id}
           userRating={review.game.userRating ?? undefined}
+          defaultValues={{
+            title: review.title,
+            body: review.body,
+            hasSpoiler: review.hasSpoiler,
+            rating: review.rating,
+          }}
         />
         <ReviewSidebar
           libraryGame={review.game}
