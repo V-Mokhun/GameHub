@@ -21,6 +21,7 @@ export async function POST(
       where: { id: Number(reviewId), gameId: Number(gameId), userId },
       include: {
         game: true,
+        user: true,
       },
     });
 

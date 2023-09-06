@@ -1,17 +1,21 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
 import { gamesApi } from "@shared/api";
 import { Separator, Subtitle } from "@shared/ui";
 import { GameReviewCard } from "./game-review-card";
+import { GameReviewContent } from "./game-review-content";
 
 interface GameReviewProps {
   gameId: string;
   reviewId: string;
+  authUserId: string | null;
 }
 
-export const GameReview = ({ gameId, reviewId }: GameReviewProps) => {
-  const { user } = useUser();
+export const GameReview = ({
+  gameId,
+  reviewId,
+  authUserId,
+}: GameReviewProps) => {
   const { data: review, isLoading } = gamesApi.getReview(gameId, reviewId);
 
   if (isLoading) return <p>Loading...</p>;
@@ -26,10 +30,11 @@ export const GameReview = ({ gameId, reviewId }: GameReviewProps) => {
         <GameReviewCard
           gameId={gameId}
           review={review}
-          userId={user?.id}
-          username={user?.username ?? undefined}
+          userId={review.user.id}
+          username={review.user.username}
         />
         <Separator />
+        <GameReviewContent review={review} authUserId={authUserId} />
       </>
     )
   );

@@ -1,13 +1,19 @@
 import { cn } from "@shared/lib";
 
-export const StarIcon = ({ className }: { className?: string }) => {
+export const StarIcon = ({
+  className,
+  strokeColor,
+}: {
+  className?: string;
+  strokeColor?: string;
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 53.867 53.867"
       className={cn("w-6 h-6 text-secondary", className)}
       fill="currentColor"
-      stroke="#000"
+      stroke={strokeColor ?? "#000"}
       strokeWidth={2}
     >
       <g strokeWidth={1}>

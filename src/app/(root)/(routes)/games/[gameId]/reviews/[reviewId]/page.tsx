@@ -1,6 +1,7 @@
 import { Container } from "@shared/ui";
 import { Metadata } from "next";
 import { GameReview } from "./ui";
+import { auth } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Game Review - GameHub",
@@ -13,11 +14,12 @@ export default async function GameReviewPage({
   params: { gameId: string; reviewId: string };
 }) {
   const { gameId, reviewId } = params;
+  const { userId } = auth();
 
   return (
     <section>
       <Container>
-        <GameReview gameId={gameId} reviewId={reviewId} />
+        <GameReview authUserId={userId} gameId={gameId} reviewId={reviewId} />
       </Container>
     </section>
   );

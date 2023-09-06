@@ -130,7 +130,7 @@ export type FullGameReview = GameReview & {
   user: Pick<User, "id" | "imageUrl" | "username">;
 };
 
-export type SingleGameReview = GameReview & { game: NormalizedLibraryGame };
+export type SingleGameReview = FullGameReview & { game: NormalizedLibraryGame };
 
 export type CreateOrUpdateReview = Omit<
   GameReview,

@@ -25,7 +25,7 @@ export const useReview = (gameId: string, reviewId: string) => {
   return useQuery(
     ["reviews", { gameId, reviewId }],
     async (): Promise<SingleGameReview> => {
-      const { data } = await axios.post<GameReview & { game: Game }>(
+      const { data } = await axios.post<FullGameReview & { game: Game }>(
         `/api/game/${gameId}/reviews/${reviewId}`,
         { userId }
       );

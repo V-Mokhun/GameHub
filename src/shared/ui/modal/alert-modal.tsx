@@ -8,7 +8,7 @@ interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 export const AlertModal = ({
