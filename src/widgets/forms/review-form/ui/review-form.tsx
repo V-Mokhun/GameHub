@@ -27,19 +27,19 @@ import { cn } from "@shared/lib";
 import { Game } from "@prisma/client";
 
 interface ReviewFormProps {
-  title?: string;
   gameId: string;
   userRating?: number;
   userId: string;
   game: Game;
+  isEdit?: boolean;
 }
 
 export const ReviewForm = ({
   gameId,
   userId,
   userRating,
-  title = "New Review",
   game,
+  isEdit,
 }: ReviewFormProps) => {
   const router = useRouter();
   const form = useForm<ReviewFormSchema>({
@@ -60,7 +60,7 @@ export const ReviewForm = ({
 
   return (
     <div className="space-y-4 flex-1">
-      <Title>{title}</Title>
+      <Title>{isEdit ? "Edit Review" : "Create Review"}</Title>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

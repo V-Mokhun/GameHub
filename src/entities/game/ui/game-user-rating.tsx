@@ -12,7 +12,7 @@ export const GameUserRating = ({
   return (
     <span
       className={cn(
-        "flex items-center justify-center w-6 h-6 rounded-sm",
+        "flex items-center justify-center w-6 h-6 rounded-sm text-white",
         className,
         userRating >= 8
           ? "bg-success"

@@ -1,27 +1,21 @@
 "use client";
 
 import { GameCard } from "@entities/game";
-import {
-  FullGame,
-  NormalizedLibraryGame,
-  gamesApi,
-  userLibraryApi,
-} from "@shared/api";
-import { Title } from "@shared/ui";
+import { FullGame, NormalizedLibraryGame } from "@shared/api";
 
-interface CreateReviewSidebarProps {
+interface ReviewSidebarProps {
   userId?: string;
   username?: string;
   libraryGame?: NormalizedLibraryGame | null;
   game: FullGame | undefined;
 }
 
-export const CreateReviewSidebar = ({
+export const ReviewSidebar = ({
   userId,
   username,
   libraryGame,
   game,
-}: CreateReviewSidebarProps) => {
+}: ReviewSidebarProps) => {
   return (
     game && (
       <div className="flex-[0_1_25%] space-y-4">

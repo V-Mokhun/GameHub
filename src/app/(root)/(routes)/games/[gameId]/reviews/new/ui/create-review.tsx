@@ -2,9 +2,9 @@
 
 import { useUser } from "@clerk/nextjs";
 import { gamesApi, userLibraryApi } from "@shared/api";
-import { CreateReviewSidebar } from "./create-review-sidebar";
 import { ReviewForm } from "@widgets/forms";
 import { GameStatus } from "@prisma/client";
+import { ReviewSidebar } from "../../ui";
 
 interface CreateReviewProps {
   gameId: string;
@@ -54,7 +54,7 @@ export const CreateReview = ({ gameId, userId }: CreateReviewProps) => {
           userId={userId}
           userRating={libraryGame?.userRating ?? undefined}
         />
-        <CreateReviewSidebar
+        <ReviewSidebar
           libraryGame={libraryGame}
           userId={userId}
           username={user?.username ?? undefined}
