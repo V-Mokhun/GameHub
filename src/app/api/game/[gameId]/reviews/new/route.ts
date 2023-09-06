@@ -63,6 +63,7 @@ export async function POST(
 
     await db.gameReview.create({
       data: {
+        id: undefined,
         gameId: Number(gameId),
         body: content,
         rating,
@@ -74,6 +75,8 @@ export async function POST(
 
     return NextResponse.json("OK", { status: 200 });
   } catch (error) {
+    console.log(error);
+
     return catchError(error, "Error creating review");
   }
 }
