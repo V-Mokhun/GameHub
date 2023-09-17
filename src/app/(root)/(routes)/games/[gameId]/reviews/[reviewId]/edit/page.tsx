@@ -3,6 +3,12 @@ import { REVIEWS_ROUTE } from "@shared/consts";
 import { Container } from "@shared/ui";
 import { redirect } from "next/navigation";
 import { EditReview } from "./ui";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit Review - GameHub",
+  description: "Edit your review for a game",
+};
 
 export default async function EditReviewPage({
   params,

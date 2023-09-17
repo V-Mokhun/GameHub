@@ -39,23 +39,6 @@ GameHub is your one-stop destination for everything gaming. Whether you're an av
         <li><a href="#environment-variables">Environment Variables</a></li>
       </ul>
     </li>
-    <li>
-		<a href="#usage">Usage</a>
-		      <ul>
-        <li><a href="#sign-up-page">Sign Up Page</a></li>
-        <li><a href="#home-page">Home Page</a></li>
-        <li><a href="#adding-game-to-library">Adding Game To Library</a></li>
-        <li><a href="#browse-page">Browse Page</a></li>
-        <li><a href="#game-page">Game Page</a></li>
-        <li><a href="#settings-page">Settings Page</a></li>
-        <li><a href="#community-page">Community Page</a></li>
-        <li><a href="#profile-page">Profile Page</a></li>
-        <li><a href="#friends-page">Friends Page</a></li>
-        <li><a href="#library-page">Library Page</a></li>
-        <li><a href="#ratings-page">Ratings Page</a></li>
-        <li><a href="#messages-page">Messages Page</a></li>
-        <li><a href="#chat-page">Chat Page</a></li>
-      </ul></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -143,137 +126,6 @@ To get a local copy up and running follow these simple example steps.
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
-## Usage
-
-Project works best when you are logged in, but it's not required.
-
-### Sign Up Page
-
-On the sign up page you can sign up with your email, google, github or twitch. After signing up with an email you will be redirected to verify your email by providing a code.
-
-[![Sign Up Screenshot][sign-up]](https://gamehub-proj.vercel.app/sign-up)
-[![Verify Code Screenshot][verify-code]](https://gamehub-proj.vercel.app/sign-up)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Home Page
-
-#### /
-
-On the home page you can see an example of a game card, which you cant either click to go to a game page, or click on the plus icon to add game to your library. You can also see a list of featured and top rated games.
-
-[![Home Card Screenshot][home-card]](https://gamehub-proj.vercel.app)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Adding Game to Library
-
-By clicking on either Plus or Edit Icon on the game card you can add or edit game in your library. Available options are: status, rating, hours played, finished date and notes.
-
-[![Add Game Screenshot][add-game]](https://gamehub-proj.vercel.app)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Browse Page
-
-#### /browse
-
-On the browse page you can search for games by name, filter by genre, platform, theme, mode and rating, sort by rating and release date.
-
-[![Browse Screenshot][browse]](https://gamehub-proj.vercel.app/browse)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Game Page
-
-#### /games/[id]
-
-On the game page you can see all the information about the game, including screenshots, videos, description, rating, release date, platforms, genres, themes, modes, developers. Games from the Franchise and Similar Games to the one you are currently observing are included. You can also add game to your library by clicking on the plus icon.
-
-[![Game Page Screenshot][game]](https://gamehub-proj.vercel.app/games/45131)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Settings Page
-
-#### /settings
-
-On the settings page you can change your profile picture, username, password and delete your account.
-
-[![Settings Screenshot][settings]](https://gamehub-proj.vercel.app/settings)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Community Page
-
-#### /users
-
-On the community page you can see all the users, search them by username. You can send a friend request to a user or chat with him. You can also click on user to see their profile.
-
-[![Community Screenshot][community]](https://gamehub-proj.vercel.app/users)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Profile Page
-
-#### /users/[username]
-
-On the profile page you can see when the user joined, their rated games and games they want to play. Note: you can only see their games if they have public library.
-
-[![Profile Screenshot][profile]](https://gamehub-proj.vercel.app/users/v_mokhun)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Library Page
-
-#### /users/[username]/library
-
-On the library page you can see all the games the user has in their library. You can also filter games by status and user rating, sort by user rating, play time, date added and edited. Note: you can only see this page if user has public library.
-
-[![Library Screenshot][library]](https://gamehub-proj.vercel.app/users/v_mokhun/library)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Friends Page
-
-#### /users/[username]/friends
-
-On the friends page you can see all user's friends, search them by username. You can also click on a user to see their profile. From there you can also go to the Friend Request page to see all your friend requests.
-
-[![Friends Screenshot][friends]](https://gamehub-proj.vercel.app/users/v_mokhun/friends)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Ratings Page
-
-#### /users/[username]/ratings
-
-On the ratings page you can see an area graph of user's ratings and also pie chart on distribution of ratings.
-
-[![Ratings Screenshot][ratings]](https://gamehub-proj.vercel.app/users/v_mokhun/ratings)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Messages Page
-
-#### /messages
-
-On the messages page you can see all your conversations. You can also click on a user to see your conversation with them.
-
-[![Messages Screenshot][messages]](https://gamehub-proj.vercel.app/messages)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
-### Chat Page
-
-#### /messages/[username]
-
-On the chat page you can chat with users. You can also see if they are online or offline, what messages are unread. There is also and emoji picker and you can send images.
-
-[![Chat Screenshot][chat]](https://gamehub-proj.vercel.app/messages/v_mokhun)
-
-<p align="right">(<a href="#gamehub">back to top</a>)</p>
-
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -317,21 +169,7 @@ Project Link: [https://gamehub-proj.vercel.app](https://gamehub-proj.vercel.app)
 [license-url]: https://github.com/v-mokhun/gamehub/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/volodymyr-mokhun-35005723b/
-[sign-up]: readme-images/sign-up.png
-[verify-code]: readme-images/verify-code.png
 [home]: readme-images/home.png
-[home-card]: readme-images/home.png
-[browse]: readme-images/browse.png
-[add-game]: readme-images/add-game.png
-[game]: readme-images/game-page.png
-[settings]: readme-images/settings.png
-[community]: readme-images/community.png
-[profile]: readme-images/profile.png
-[library]: readme-images/library.png
-[friends]: readme-images/friends.png
-[ratings]: readme-images/ratings.png
-[messages]: readme-images/messages.png
-[chat]: readme-images/chat.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [PlanetScale.com]: https://img.shields.io/badge/planetscale-%23000000.svg?style=for-the-badge&logo=planetscale&logoColor=white
