@@ -3,13 +3,18 @@ import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { CreateOrEditReview, FullGameReview, SingleGameReview } from "./types";
+import {
+  CreateOrEditReview,
+  FullGameReview,
+  SearchGame,
+  SingleGameReview,
+} from "./types";
 import { useAuth } from "@clerk/nextjs";
 
 export const useReviews = (gameId: string) => {
   return useQuery(["reviews", { gameId }], async () => {
     const { data } = await axios.post<FullGameReview[]>(
-      `/game/${gameId}/reviews`
+      `/api/game/${gameId}/reviews`
     );
     return data;
   });

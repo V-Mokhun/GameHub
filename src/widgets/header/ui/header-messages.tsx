@@ -4,7 +4,6 @@ import { userApi } from "@shared/api";
 import { pusherClient } from "@shared/config";
 import { MESSAGES_ROUTE, UPDATE_CONVERSATION } from "@shared/consts";
 import { Icon, Link } from "@shared/ui";
-import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 interface HeaderMessagesProps {
