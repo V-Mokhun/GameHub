@@ -4,6 +4,7 @@ import {
   DEFAULT_PAGINATE,
   DEFAULT_SORT,
   GET_GAMES_FIELDS,
+  DEFAULT_REVIEW_SORT,
 } from ".";
 import {
   UseGameApiResponse,
@@ -19,6 +20,7 @@ import {
   GameWebsites,
   ImageTypes,
   Paginate,
+  ReviewSortFields,
   SearchGame,
   SortFields,
   SortFieldsOrder,
@@ -242,6 +244,27 @@ export const retrievePaginateFromSearchParams = (
   }
 
   return paginate;
+};
+
+export const retrieveReviewFieldsFromSearchParams = (
+  params: ReadonlyURLSearchParams
+) => {
+  const sort = { ...DEFAULT_REVIEW_SORT };
+
+  for (const key of Object.keys(sort) as Array<keyof typeof sort>) {
+    if (params.has(key)) {
+      const value = params.get(key);
+      if (key === "order") {
+        sort[key] = value as SortFieldsOrder;
+      } else if (key === "field") {
+        sort[key] = value as ReviewSortFields;
+      } else {
+        sort[key] = !!value;
+      }
+    }
+  }
+
+  return sort;
 };
 
 export const stringifyFilters = (

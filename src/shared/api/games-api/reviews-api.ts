@@ -6,16 +6,23 @@ import axios from "axios";
 import {
   CreateOrEditReview,
   FullGameReview,
+  Paginate,
+  ReviewSorts,
   SearchGame,
   SingleGameReview,
 } from "./types";
 import { useAuth } from "@clerk/nextjs";
 
-export const useReviews = (gameId: string) => {
-  return useQuery(["reviews", { gameId }], async () => {
-    const { data } = await axios.post<FullGameReview[]>(
-      `/api/game/${gameId}/reviews`
-    );
+export const useReviews = (
+  gameId: string,
+  sort: ReviewSorts,
+  paginate: Paginate
+) => {
+  return useQuery(["reviews", { gameId, ...sort, ...paginate }], async () => {
+    const { data } = await axios.post<{
+      reviews: FullGameReview[];
+      count: number;
+    }>(`/api/game/${gameId}/reviews`, { sort, paginate });
     return data;
   });
 };

@@ -6,6 +6,8 @@ import {
   GameSorts,
   GameWebsites,
   Paginate,
+  ReviewSortFields,
+  ReviewSorts,
   SortFields,
   SortFieldsOrder,
 } from "./types";
@@ -105,4 +107,10 @@ export const DEFAULT_SORT: GameSorts = {
 export const DEFAULT_PAGINATE: Paginate = {
   limit: GAMES_LIMIT,
   offset: 0,
+};
+
+export const DEFAULT_REVIEW_SORT: ReviewSorts = {
+  order: SortFieldsOrder.DESC,
+  field: ReviewSortFields.TOTAL_VOTES,
+  hideSpoilers: false,
 };

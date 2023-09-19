@@ -76,6 +76,12 @@ export type GameSorts = {
   order: SortFieldsOrder;
 };
 
+export type ReviewSorts = { 
+  order: SortFieldsOrder;
+  field: ReviewSortFields;
+  hideSpoilers: boolean;
+}
+
 export type Paginate = {
   limit: number;
   offset: number;

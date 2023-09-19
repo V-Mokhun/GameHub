@@ -27,15 +27,15 @@ export const ReviewsGame = ({ gameId }: ReviewsGameProps) => {
         </NextLink>
       )}
       <div>
-        <div className="flex gap-2 mb-3 items-center">
+        <div className="mb-3">
           <Title className="mb-0 lg:mb-0">
             <Link href={`${GAMES_ROUTE}/${game.id}`}>{game.name}</Link>
+            {game.releaseDate && (
+              <span className="ml-1 text-muted-foreground font-normal text-lg lg:text-xl">
+                ( {format(new Date(game.releaseDate), "yyyy")} )
+              </span>
+            )}
           </Title>
-          {game.releaseDate && (
-            <span className="text-muted-foreground text-lg lg:text-xl">
-              ( {format(new Date(game.releaseDate), "yyyy")} )
-            </span>
-          )}
         </div>
         <Title className="lg:mb-6 mb-4" size="large">
           User Reviews

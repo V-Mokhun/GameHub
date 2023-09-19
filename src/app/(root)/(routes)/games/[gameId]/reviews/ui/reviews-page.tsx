@@ -1,20 +1,37 @@
 "use client";
 
-import { gamesApi } from "@shared/api";
+import {
+  GAMES_LIMIT_VALUES,
+  gamesApi,
+  onPaginate,
+  retrievePaginateFromSearchParams,
+  retrieveReviewFieldsFromSearchParams,
+} from "@shared/api";
 import { ReviewsGame } from "./reviews-game";
 import { ReviewsItem } from "./reviews-item";
 import { ReviewsFilter } from "./reviews-filter";
-
-// Total votes, review rating, review date
+import { Separator } from "@shared/ui";
+import { Pagination } from "@widgets/pagination";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface ReviewsPageProps {
   gameId: string;
 }
 
 export const ReviewsPage = ({ gameId }: ReviewsPageProps) => {
-  const { data: reviews } = gamesApi.getReviews(gameId);
+  const params = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const paginate = retrievePaginateFromSearchParams(params);
+  const fields = retrieveReviewFieldsFromSearchParams(params);
 
-  if (!reviews) return null;
+  const { data, isFetching, isPreviousData } = gamesApi.getReviews(
+    gameId,
+    fields,
+    paginate
+  );
+
+  if (!data) return null;
 
   return (
     <>
@@ -24,11 +41,30 @@ export const ReviewsPage = ({ gameId }: ReviewsPageProps) => {
         game they are reviewing.
       </p>
       <ReviewsFilter />
+      <Separator />
       <ul>
-        {reviews.map((review) => (
+        {data.reviews.map((review) => (
           <ReviewsItem review={review} gameId={gameId} key={review.id} />
         ))}
       </ul>
+      <Pagination
+        isFetching={isFetching}
+        onPaginateChange={(limit, offset) =>
+          onPaginate({
+            limit,
+            offset,
+            params,
+            pathname,
+            router,
+          })
+        }
+        isPreviousData={isPreviousData}
+        hasMore={data.reviews.length === paginate.limit}
+        limit={paginate.limit}
+        limitValues={GAMES_LIMIT_VALUES}
+        offset={paginate.offset}
+        totalPages={data.count ? Math.ceil(data.count / paginate.limit) : 0}
+      />
     </>
   );
 };
