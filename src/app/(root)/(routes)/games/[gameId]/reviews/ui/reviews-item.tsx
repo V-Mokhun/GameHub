@@ -57,8 +57,8 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
           </div>
         </div>
         <p>
-          {isReadMore ? review.body.slice(0, 200) : review.body + " "}
-          {review.body.length > 200 && (
+          {isReadMore ? review.body.slice(0, 300) : review.body + " "}
+          {review.body.length > 300 && (
             <button
               type="button"
               onClick={toggleReadMore}

@@ -15,6 +15,7 @@ export { Subtitle } from "./subtitle";
 export { Switch } from "./switch";
 export { Textarea } from "./textarea";
 export { Title } from "./title";
+export { Checkbox } from "./checkbox";
 
 export * from "./command";
 export * from "./dialog";

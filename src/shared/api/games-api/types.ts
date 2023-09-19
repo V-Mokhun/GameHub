@@ -60,6 +60,12 @@ export enum SortFields {
   RELEASE_DATE = "first_release_date",
 }
 
+export enum ReviewSortFields {
+  TOTAL_VOTES = "votes",
+  RATING = "rating",
+  CREATED_AT = "createdAt",
+}
+
 export enum SortFieldsOrder {
   ASC = "asc",
   DESC = "desc",

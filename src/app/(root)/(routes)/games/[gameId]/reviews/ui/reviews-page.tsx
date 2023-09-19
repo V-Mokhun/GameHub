@@ -3,6 +3,7 @@
 import { gamesApi } from "@shared/api";
 import { ReviewsGame } from "./reviews-game";
 import { ReviewsItem } from "./reviews-item";
+import { ReviewsFilter } from "./reviews-filter";
 
 // Total votes, review rating, review date
 
@@ -22,7 +23,8 @@ export const ReviewsPage = ({ gameId }: ReviewsPageProps) => {
         GameHub does not verify whether reviewers have played or purchased the
         game they are reviewing.
       </p>
-      <ul className="mt-4 md:mt-6">
+      <ReviewsFilter />
+      <ul>
         {reviews.map((review) => (
           <ReviewsItem review={review} gameId={gameId} key={review.id} />
         ))}
