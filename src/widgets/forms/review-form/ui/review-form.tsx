@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  Skeleton,
   StarRating,
   Switch,
   Textarea,
@@ -35,6 +36,37 @@ interface ReviewFormProps {
   isEdit?: boolean;
   defaultValues?: ReviewFormSchema;
 }
+
+export const ReviewFormSkeleton = () => {
+  return (
+    <div className="space-y-4 flex-1">
+      <div className="flex flex-col gap-4">
+        <div className="space-y-2">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-[200px] md:h-[320px] w-full" />
+        </div>
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
+          <div className="space-y-0 lg:space-y-2 flex items-center gap-2 lg:gap-0 lg:items-start lg:flex-col">
+            <Skeleton className="h-6 w-56" />
+            <Skeleton className="h-6 w-11 my-auto rounded-full" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-6 w-48" />
+            <Skeleton className="h-6 w-60" />
+          </div>
+        </div>
+        <div className="flex justify-between items-center gap-4 mt-4">
+          <Skeleton className="h-10 w-32" />
+          <Skeleton className="h-10 w-32" />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const ReviewForm = ({
   gameId,
@@ -127,7 +159,7 @@ export const ReviewForm = ({
                   <FormLabel>Does this review contain spoilers?</FormLabel>
                   <FormControl>
                     <Switch
-                    className="my-auto"
+                      className="my-auto"
                       disabled={isLoading}
                       checked={field.value}
                       onCheckedChange={field.onChange}

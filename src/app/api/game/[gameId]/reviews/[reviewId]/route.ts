@@ -14,6 +14,9 @@ export async function POST(
     const body = await req.json();
     const { userId } = z.object({ userId: z.string() }).parse(body);
 
+    if (Number.isNaN(Number(reviewId)))
+      return new NextResponse("Not found", { status: 404 });
+
     if (!authUserId || authUserId !== userId)
       return new NextResponse("Unauthorized", { status: 401 });
 

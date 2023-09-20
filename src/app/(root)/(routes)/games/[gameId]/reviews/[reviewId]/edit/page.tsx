@@ -18,7 +18,8 @@ export default async function EditReviewPage({
   const { gameId, reviewId } = params;
   const { userId } = auth();
 
-  if (!userId) return redirect(REVIEWS_ROUTE(gameId));
+  if (!userId || Number.isNaN(Number(reviewId)))
+    return redirect(REVIEWS_ROUTE(gameId));
 
   return (
     <section>

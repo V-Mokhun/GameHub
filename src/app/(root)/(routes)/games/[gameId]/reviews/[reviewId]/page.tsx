@@ -2,6 +2,8 @@ import { Container } from "@shared/ui";
 import { Metadata } from "next";
 import { GameReview } from "./ui";
 import { auth } from "@clerk/nextjs";
+import { REVIEWS_ROUTE } from "@shared/consts";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Game Review - GameHub",
@@ -15,6 +17,8 @@ export default async function GameReviewPage({
 }) {
   const { gameId, reviewId } = params;
   const { userId } = auth();
+
+  if (Number.isNaN(Number(reviewId))) return redirect(REVIEWS_ROUTE(gameId));
 
   return (
     <section>

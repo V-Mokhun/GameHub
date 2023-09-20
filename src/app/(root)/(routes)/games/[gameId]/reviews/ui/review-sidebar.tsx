@@ -1,14 +1,22 @@
 "use client";
 
-import { GameCard } from "@entities/game";
+import { GameCard, GameCardSkeleton } from "@entities/game";
 import { FullGame, NormalizedLibraryGame } from "@shared/api";
 
 interface ReviewSidebarProps {
   userId?: string;
   username?: string;
   libraryGame?: NormalizedLibraryGame | null;
-  game: FullGame | undefined;
+  game: FullGame;
 }
+
+export const ReviewSidebarSkeleton = () => {
+  return (
+    <div className="w-1/2 sm:w-1/3 lg:w-auto lg:flex-[0_1_25%] space-y-4">
+      <GameCardSkeleton />
+    </div>
+  );
+};
 
 export const ReviewSidebar = ({
   userId,

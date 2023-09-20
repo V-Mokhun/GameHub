@@ -37,15 +37,15 @@ export const ReviewsPage = ({ gameId }: ReviewsPageProps) => {
       <Title className="sm:hidden mb-4" size="large">
         User Reviews
       </Title>
-      <p className="text-muted-foreground italic">
+      <p className="text-muted-foreground italic mb-4 md:mb-6">
         GameHub does not verify whether reviewers have played or purchased the
         game they are reviewing.
       </p>
-      <ReviewsFilter />
-      <Separator />
       {data ? (
         data.reviews.length > 0 ? (
           <>
+            <ReviewsFilter />
+            <Separator />
             <ul className="mb-4">
               {data.reviews.map((review) => (
                 <ReviewsItem review={review} gameId={gameId} key={review.id} />

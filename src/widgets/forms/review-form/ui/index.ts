@@ -1,1 +1,1 @@
-export { ReviewForm } from "./review-form";
+export { ReviewForm, ReviewFormSkeleton } from "./review-form";

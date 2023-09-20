@@ -2,9 +2,9 @@
 
 import { useUser } from "@clerk/nextjs";
 import { gamesApi, userLibraryApi } from "@shared/api";
-import { ReviewForm } from "@widgets/forms";
+import { ReviewForm, ReviewFormSkeleton } from "@widgets/forms";
 import { GameStatus } from "@prisma/client";
-import { ReviewSidebar } from "../../ui";
+import { ReviewSidebar, ReviewSidebarSkeleton } from "../../ui";
 import { Title } from "@shared/ui";
 import { useMediaQuery } from "@shared/lib/hooks";
 
@@ -26,7 +26,15 @@ export const CreateReview = ({ gameId, userId }: CreateReviewProps) => {
 
   const isLoading = isGameLoading || isLibraryGameLoading;
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <div className="flex gap-4">
+        <div className="space-y-4 flex-1">
+          <Title className="mb-0 lg:mb-0">Create Review</Title>
+          <ReviewFormSkeleton />
+        </div>
+      </div>
+    );
 
   return (
     game && (

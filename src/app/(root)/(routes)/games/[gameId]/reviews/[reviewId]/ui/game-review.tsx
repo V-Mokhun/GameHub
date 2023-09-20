@@ -1,9 +1,11 @@
 "use client";
 
 import { gamesApi } from "@shared/api";
-import { Separator, Subtitle } from "@shared/ui";
+import { Separator, Subtitle, useToast } from "@shared/ui";
 import { GameReviewCard } from "./game-review-card";
 import { GameReviewContent } from "./game-review-content";
+import { useRouter } from "next/navigation";
+import { REVIEWS_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
 
 interface GameReviewProps {
   gameId: string;
@@ -17,8 +19,22 @@ export const GameReview = ({
   authUserId,
 }: GameReviewProps) => {
   const { data: review, isLoading } = gamesApi.getReview(gameId, reviewId);
+  const router = useRouter();
+  const { toast } = useToast();
 
   if (isLoading) return <p>Loading...</p>;
+
+  if (!isLoading && !review) {
+    router.push(REVIEWS_ROUTE(gameId));
+    setTimeout(() => {
+      toast({
+        title: "Review not found",
+        description: "The review you are looking for does not exist",
+        variant: "destructive",
+      });
+    }, TOAST_TIMEOUT);
+    return null;
+  }
 
   return (
     review && (

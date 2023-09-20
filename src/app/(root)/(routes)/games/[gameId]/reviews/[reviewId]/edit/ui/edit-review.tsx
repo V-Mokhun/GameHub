@@ -4,8 +4,8 @@ import { gamesApi } from "@shared/api";
 import { REVIEWS_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
 import { Title, useToast } from "@shared/ui";
 import { useRouter } from "next/navigation";
-import { ReviewSidebar } from "../../../ui";
-import { ReviewForm } from "@widgets/forms";
+import { ReviewSidebar, ReviewSidebarSkeleton } from "../../../ui";
+import { ReviewForm, ReviewFormSkeleton } from "@widgets/forms";
 import { useMediaQuery } from "@shared/lib/hooks";
 
 interface EditReviewProps {
@@ -31,7 +31,15 @@ export const EditReview = ({
 
   const isLoading = isReviewLoading || isGameLoading;
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <div className="flex gap-4">
+        <div className="space-y-4 flex-1">
+          <Title className="mb-0 lg:mb-0">Edit Review</Title>
+          <ReviewFormSkeleton />
+        </div>
+      </div>
+    );
 
   if (review && review.userId !== authUserId) {
     router.push(REVIEWS_ROUTE(gameId));
