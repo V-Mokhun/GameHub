@@ -56,7 +56,7 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
           </Avatar>
         </NextLink>
         <div className="flex flex-col">
-          <Link href={PROFILE_ROUTE(review.user.username)}>
+          <Link className="text-secondary hover:text-secondary-hover" href={PROFILE_ROUTE(review.user.username)}>
             {review.user.username}
           </Link>
           <time

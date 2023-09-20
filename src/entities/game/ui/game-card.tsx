@@ -35,6 +35,7 @@ interface GameCardProps {
   view?: "grid" | "list";
   disableLibraryButton?: boolean;
   classNames?: {
+    card?: string;
     link?: string;
     name?: string;
   };
@@ -84,7 +85,12 @@ export const GameCard = ({
         />
       )}
       {view === "grid" ? (
-        <div className="group overflow-hidden text-white relative shadow-md rounded-md flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(33.3%-12px)] lg:flex-[0_1_calc(25%-12px)]">
+        <div
+          className={cn(
+            "group overflow-hidden text-white relative shadow-md rounded-md flex-[0_1_calc(50%-4px)] md:flex-[0_1_calc(33.3%-12px)] lg:flex-[0_1_calc(25%-12px)]",
+            classNames.card
+          )}
+        >
           {/* name + rating */}
           <div className="absolute z-[2] top-2 left-0 right-0 flex justify-between items-start gap-2 px-2">
             <p className={cn("text-xs", classNames.name)}>

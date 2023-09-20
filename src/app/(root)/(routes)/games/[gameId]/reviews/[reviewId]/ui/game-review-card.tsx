@@ -26,8 +26,11 @@ export const GameReviewCard = ({
   );
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex flex-col md:flex-row md:items-center gap-4">
       <GameCard
+        classNames={{
+          card: "w-1/2 sm:w-1/3 md:w-auto",
+        }}
         game={{
           category: review.game.category,
           id: review.game.id,
@@ -46,7 +49,7 @@ export const GameReviewCard = ({
         userId={userId}
         username={username ?? undefined}
       />
-      <div className="space-y-4">
+      <div className="space-y-2 md:space-y-4">
         <Title>{review.game.name}</Title>
         {review.game.releaseDate && (
           <p>
@@ -60,8 +63,11 @@ export const GameReviewCard = ({
           className={buttonVariants()}
           href={`${GAMES_ROUTE}/${review.game.id}`}
         >
-          Learn more about{" "}
-          <span className="font-bold ml-1">{review.game.name}</span>
+          Learn more{" "}
+          <span className="sm:inline hidden ml-1">
+            {" "}
+            about <span className="font-bold">{review.game.name}</span>
+          </span>
         </Link>
       </div>
     </div>
