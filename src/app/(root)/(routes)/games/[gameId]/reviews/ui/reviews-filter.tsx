@@ -45,8 +45,8 @@ export const ReviewsFilter = ({}: ReviewsFilterProps) => {
   };
 
   return (
-    <div className="flex items-center justify-between gap-2 mt-4 md:mt-6">
-      <div className="flex flex-auto items-center gap-2">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-2 mt-4 md:mt-6">
+      <div className="flex w-full sm:w-auto flex-auto items-center gap-2">
         <Select
           onValueChange={(val) => onSelectValue("field", val)}
           defaultValue={params.get("field") ?? ReviewSortFields.TOTAL_VOTES}

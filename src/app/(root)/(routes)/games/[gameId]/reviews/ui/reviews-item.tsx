@@ -1,6 +1,13 @@
 "use client";
 
-import { Avatar, AvatarImage, Link, StarIcon, Title } from "@shared/ui";
+import {
+  Avatar,
+  AvatarImage,
+  Link,
+  Skeleton,
+  StarIcon,
+  Title,
+} from "@shared/ui";
 import NextLink from "next/link";
 import { PROFILE_ROUTE, REVIEWS_ROUTE } from "@shared/consts";
 import { formatTimeToNow } from "@shared/lib";
@@ -12,6 +19,25 @@ interface ReviewsItemProps {
   review: FullGameReview;
 }
 
+export const ReviewsItemSkeleton = () => {
+  return (
+    <li className="flex gap-4 justify-between items-start border-b border-muted pb-2 mb-2">
+      <div className="flex flex-[0_1_20%] gap-2 items-center">
+        <Skeleton className="h-10 w-10 shrink-0 rounded-full" />
+        <div className="flex flex-col">
+          <Skeleton className="h-5 w-24 mb-1" />
+          <Skeleton className="h-4 w-16" />
+        </div>
+      </div>
+      <div className="flex-auto">
+        <Skeleton className="h-8 w-48 mb-3" />
+        <Skeleton className="h-6 w-60 mb-1" />
+        <Skeleton className="h-6 w-48" />
+      </div>
+    </li>
+  );
+};
+
 export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
   const [isReadMore, setIsReadMore] = useState(true);
   const toggleReadMore = () => {
@@ -19,8 +45,8 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
   };
 
   return (
-    <li className="flex gap-4 justify-between items-start border-b border-muted pb-2 mb-2">
-      <div className="flex flex-[0_1_20%] gap-2 items-center">
+    <li className="flex gap-2 sm:gap-4 flex-col sm:flex-row justify-between items-start border-b border-muted pb-2 mb-2">
+      <div className="flex sm:flex-[0_1_20%] gap-2 items-center">
         <NextLink href={PROFILE_ROUTE(review.user.username)}>
           <Avatar>
             <AvatarImage
@@ -56,7 +82,7 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
             </div>
           </div>
         </div>
-        <p>
+        <p className="text-sm md:text-base">
           {isReadMore ? review.body.slice(0, 300) : review.body + " "}
           {review.body.length > 300 && (
             <button
