@@ -77,7 +77,6 @@ export const ReviewForm = ({
 
   return (
     <div className="space-y-4 flex-1">
-      <Title>{isEdit ? "Edit Review" : "Create Review"}</Title>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -119,15 +118,16 @@ export const ReviewForm = ({
               </FormItem>
             )}
           />
-          <div className="flex justify-between items-center gap-2">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
             <FormField
               control={form.control}
               name="hasSpoiler"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem className="space-y-0 lg:space-y-2 flex items-center gap-2 lg:gap-0 lg:items-start lg:flex-col">
                   <FormLabel>Does this review contain spoilers?</FormLabel>
                   <FormControl>
                     <Switch
+                    className="my-auto"
                       disabled={isLoading}
                       checked={field.value}
                       onCheckedChange={field.onChange}

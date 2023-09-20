@@ -18,7 +18,7 @@ export const ReviewSidebar = ({
 }: ReviewSidebarProps) => {
   return (
     game && (
-      <div className="flex-[0_1_25%] space-y-4">
+      <div className="w-1/2 sm:w-1/3 lg:w-auto lg:flex-[0_1_25%] space-y-4">
         <GameCard
           game={{
             category: game.category,
@@ -40,7 +40,7 @@ export const ReviewSidebar = ({
           disableLibraryButton
         />
         {game.summary && (
-          <p>
+          <p className="hidden md:block text-sm lg:text-base">
             {game.summary?.slice(0, 200)} {game.summary?.length > 200 && "..."}
           </p>
         )}

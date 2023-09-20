@@ -21,8 +21,8 @@ interface ReviewsItemProps {
 
 export const ReviewsItemSkeleton = () => {
   return (
-    <li className="flex gap-4 justify-between items-start border-b border-muted pb-2 mb-2">
-      <div className="flex flex-[0_1_20%] gap-2 items-center">
+    <li className="flex gap-2 sm:gap-4 flex-col sm:flex-row justify-between items-start border-b border-muted pb-2 mb-2">
+      <div className="flex sm:flex-[0_1_20%] gap-2 items-center">
         <Skeleton className="h-10 w-10 shrink-0 rounded-full" />
         <div className="flex flex-col">
           <Skeleton className="h-5 w-24 mb-1" />
@@ -30,8 +30,8 @@ export const ReviewsItemSkeleton = () => {
         </div>
       </div>
       <div className="flex-auto">
-        <Skeleton className="h-8 w-48 mb-3" />
-        <Skeleton className="h-6 w-60 mb-1" />
+        <Skeleton className="h-7 md:h-8 w-48 mb-3" />
+        <Skeleton className="h-6 w-72 mb-1" />
         <Skeleton className="h-6 w-48" />
       </div>
     </li>
