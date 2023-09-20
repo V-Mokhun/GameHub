@@ -1,8 +1,8 @@
 "use client";
-import { GameCard } from "@entities/game";
+import { GameCard, GameCardSkeleton } from "@entities/game";
 import { SingleGameReview, userLibraryApi } from "@shared/api";
 import { GAMES_ROUTE } from "@shared/consts";
-import { Title, buttonVariants } from "@shared/ui";
+import { Skeleton, Title, buttonVariants } from "@shared/ui";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -12,6 +12,20 @@ interface GameReviewCardProps {
   userId?: string;
   username?: string;
 }
+
+export const GameReviewCardSkeleton = () => (
+  <div className="flex flex-col md:flex-row md:items-center gap-4">
+    <GameCardSkeleton className="flex-none w-1/2 sm:w-1/3 md:w-auto" />
+    <div className="space-y-2 md:space-y-4">
+      <Skeleton className="h-8 w-48" />
+      <div className="space-y-1">
+        <Skeleton className="h-6 w-24" />
+        <Skeleton className="h-6 w-20" />
+      </div>
+      <Skeleton className="h-10 w-32" />
+    </div>
+  </div>
+);
 
 export const GameReviewCard = ({
   review,

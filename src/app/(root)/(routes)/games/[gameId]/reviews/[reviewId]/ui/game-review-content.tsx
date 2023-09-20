@@ -8,6 +8,7 @@ import {
   AvatarImage,
   Button,
   Icon,
+  Skeleton,
   StarIcon,
   Title,
   buttonVariants,
@@ -20,6 +21,25 @@ interface GameReviewContentProps {
   review: SingleGameReview;
   authUserId: string | null;
 }
+
+export const GameReviewContentSkeleton = () => (
+  <>
+    <div className="flex items-center gap-2 mb-4">
+      <Skeleton className="w-10 h-10 shrink-0 rounded-full" />
+      <div className="flex flex-col gap-1">
+        <Skeleton className="h-7 w-28" />
+        <Skeleton className="h-6 w-24" />
+      </div>
+    </div>
+    <Skeleton className="h-8 w-52 mb-4" />
+    <div>
+      <Skeleton className="h-6 w-[90%] mb-1" />
+      <Skeleton className="h-6 w-[90%] mb-1" />
+      <Skeleton className="h-6 w-[70%] mb-1" />
+      <Skeleton className="h-6 w-1/2 mb-1" />
+    </div>
+  </>
+);
 
 export const GameReviewContent = ({
   review,
