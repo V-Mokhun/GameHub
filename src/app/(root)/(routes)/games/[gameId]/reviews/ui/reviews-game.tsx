@@ -2,7 +2,7 @@
 
 import { gamesApi } from "@shared/api";
 import { CREATE_REVIEW_ROUTE, GAMES_ROUTE } from "@shared/consts";
-import { Link, Title, buttonVariants } from "@shared/ui";
+import { Link, Skeleton, Title, buttonVariants } from "@shared/ui";
 import { format } from "date-fns";
 import Image from "next/image";
 import NextLink from "next/link";
@@ -14,7 +14,22 @@ interface ReviewsGameProps {
 export const ReviewsGame = ({ gameId }: ReviewsGameProps) => {
   const { data: game } = gamesApi.getGame(gameId);
 
-  if (!game) return null;
+  if (!game)
+    return (
+      <div className="flex gap-4 mb-4">
+        <Skeleton className="rounded-md w-28 h-40 md:w-32 md:h-44 lg:w-40 lg:h-52 xl:w-48 xl:h-60 shrink-0" />
+        <div className="flex-auto">
+          <div className="mb-3">
+            <Title className="mb-0 lg:mb-0">
+              <Skeleton className="h-9 xs:w-56 w-full mb-1" />
+              <Skeleton className="xs:hidden h-9 w-40" />
+            </Title>
+          </div>
+          <Skeleton className="hidden sm:block lg:mb-6 mb-4 h-10 w-48" />
+          <Skeleton className="h-10 w-36 rounded-md" />
+        </div>
+      </div>
+    );
 
   return (
     <div className="flex gap-4 mb-4">
@@ -26,7 +41,7 @@ export const ReviewsGame = ({ gameId }: ReviewsGameProps) => {
           <Image fill src={game.cover} alt={game.name} />
         </NextLink>
       )}
-      <div>
+      <div className="flex-auto">
         <div className="mb-3">
           <Title className="mb-0 lg:mb-0">
             <Link href={`${GAMES_ROUTE}/${game.id}`}>{game.name}</Link>
