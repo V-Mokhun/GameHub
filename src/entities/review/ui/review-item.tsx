@@ -2,7 +2,7 @@
 
 import { FullGameReview } from "@shared/api";
 import { PROFILE_ROUTE, REVIEWS_ROUTE } from "@shared/consts";
-import { formatTimeToNow } from "@shared/lib";
+import { cn, formatTimeToNow } from "@shared/lib";
 import {
   Avatar,
   AvatarImage,
@@ -47,7 +47,7 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
 
   return (
     <li className="flex gap-2 sm:gap-4 flex-col sm:flex-row justify-between items-start border-b border-muted pb-2 mb-2">
-      <div className="flex sm:flex-[0_1_20%] gap-2 items-center">
+      <div className="flex sm:flex-[0_0_20%] sm:w-[20%] sm:min-w-[140px] gap-2 items-center">
         <NextLink href={PROFILE_ROUTE(review.user.username)}>
           <Avatar>
             <AvatarImage
@@ -56,7 +56,7 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
             />
           </Avatar>
         </NextLink>
-        <div className="flex flex-col">
+        <div className="flex flex-col truncate">
           <Link
             className="text-secondary hover:text-secondary-hover"
             href={PROFILE_ROUTE(review.user.username)}
@@ -86,7 +86,12 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
             </div>
           </div>
         </div>
-        <p className="text-sm md:text-base whitespace-pre-wrap">
+        <p
+          className={cn(
+            "text-sm md:text-base",
+            isReadMore && "whitespace-pre-wrap"
+          )}
+        >
           {isReadMore ? review.body.slice(0, 300) : review.body + " "}
           {review.body.length > 300 && (
             <button

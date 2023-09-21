@@ -17,13 +17,19 @@ export const useReviews = (
   sort: ReviewSorts,
   paginate: Paginate
 ) => {
-  return useQuery(["reviews", { gameId, ...sort, ...paginate }], async () => {
-    const { data } = await axios.post<{
-      reviews: FullGameReview[];
-      count: number;
-    }>(`/api/game/${gameId}/reviews`, { sort, paginate });
-    return data;
-  });
+  return useQuery(
+    ["reviews", { gameId, ...sort, ...paginate }],
+    async () => {
+      const { data } = await axios.post<{
+        reviews: FullGameReview[];
+        count: number;
+      }>(`/api/game/${gameId}/reviews`, { sort, paginate });
+      return data;
+    },
+    {
+      keepPreviousData: true,
+    }
+  );
 };
 
 export const useReview = (gameId: string, reviewId: string) => {

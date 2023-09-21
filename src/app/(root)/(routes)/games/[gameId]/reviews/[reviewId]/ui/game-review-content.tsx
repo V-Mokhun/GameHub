@@ -15,6 +15,7 @@ import {
   buttonVariants,
 } from "@shared/ui";
 import { AlertModal } from "@shared/ui/modal";
+import { format } from "date-fns";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -77,7 +78,7 @@ export const GameReviewContent = ({
               className="text-sm text-muted-foreground"
               dateTime={new Date(review.createdAt).toISOString()}
             >
-              {formatTimeToNow(new Date(review.createdAt))}
+              {format(new Date(review.createdAt), "MMMM dd, yyyy")}
             </time>
           </div>
         </div>
@@ -112,7 +113,9 @@ export const GameReviewContent = ({
           </div>
         </div>
       </div>
-      <div className="whitespace-pre-wrap text-sm md:text-base">{review.body}</div>
+      <div className="whitespace-pre-wrap text-sm md:text-base">
+        {review.body}
+      </div>
       <ReviewVotes
         className="justify-start mt-4"
         gameId={String(review.gameId)}

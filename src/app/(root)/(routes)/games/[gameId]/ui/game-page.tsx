@@ -13,6 +13,7 @@ import { GameCollection } from "./game-collection";
 import { GameMedia } from "./game-media";
 import { GameRelated } from "./game-related";
 import { GameSidebar } from "./game-sidebar";
+import { GameReviews } from "./game-reviews";
 
 interface GamePageProps {
   gameId: string;
@@ -99,6 +100,7 @@ export const GamePage = ({ gameId }: GamePageProps) => {
               gameId={game?.id}
               title="Franchise"
             />
+            <GameReviews gameId={gameId} />
             <GamesCarousel
               title="Similar"
               userId={user?.id}
