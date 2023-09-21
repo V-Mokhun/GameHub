@@ -25,6 +25,7 @@ export async function POST(
       include: {
         game: true,
         user: true,
+        votes: true,
       },
     });
 

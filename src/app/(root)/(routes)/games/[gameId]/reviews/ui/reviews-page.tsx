@@ -8,11 +8,11 @@ import {
   retrieveReviewFieldsFromSearchParams,
 } from "@shared/api";
 import { ReviewsGame } from "./reviews-game";
-import { ReviewsItem, ReviewsItemSkeleton } from "./reviews-item";
 import { ReviewsFilter } from "./reviews-filter";
 import { Separator, Title } from "@shared/ui";
 import { Pagination } from "@widgets/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ReviewsItem, ReviewsItemSkeleton } from "@entities/review";
 
 interface ReviewsPageProps {
   gameId: string;

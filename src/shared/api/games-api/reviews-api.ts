@@ -1,4 +1,4 @@
-import { Game, GameReview } from "@prisma/client";
+import { Game, GameReview, VoteType } from "@prisma/client";
 import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -38,7 +38,7 @@ export const useReview = (gameId: string, reviewId: string) => {
         { userId }
       );
 
-      const updatedReview = {
+      const updatedReview: SingleGameReview = {
         ...data,
         game: {
           ...data.game,

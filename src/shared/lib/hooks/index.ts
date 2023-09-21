@@ -6,3 +6,4 @@ export { useDebouncedValue } from "./use-debounced-value";
 export { useOtherUser } from "./use-other-user";
 export { useMediaQuery } from "./use-mediaquery";
 export { useViewedGames } from './use-viewed-games';
+export { usePrevious } from './use-previous';

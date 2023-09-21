@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs";
-import { Game, GameStatus } from "@prisma/client";
+import { Game, GameStatus, VoteType } from "@prisma/client";
 import { CreateOrEditReview } from "@shared/api";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
@@ -61,16 +61,25 @@ export async function POST(
       });
     }
 
-    await db.gameReview.create({
-      data: {
-        id: undefined,
-        gameId: Number(gameId),
-        body: content,
-        rating,
-        title,
-        userId,
-        hasSpoiler,
-      },
+    await db.$transaction(async (tx) => {
+      const review = await tx.gameReview.create({
+        data: {
+          gameId: Number(gameId),
+          body: content,
+          rating,
+          title,
+          userId,
+          hasSpoiler,
+        },
+      });
+
+      await tx.gameReviewVote.create({
+        data: {
+          gameReviewId: review.id,
+          userId,
+          type: VoteType.UP,
+        },
+      });
     });
 
     return NextResponse.json("OK", { status: 200 });

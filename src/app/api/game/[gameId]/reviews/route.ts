@@ -61,6 +61,7 @@ export async function POST(
               imageUrl: true,
             },
           },
+          votes: true,
         },
       }),
       db.gameReview.count({

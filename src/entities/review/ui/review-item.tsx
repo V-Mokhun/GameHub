@@ -1,5 +1,8 @@
 "use client";
 
+import { FullGameReview } from "@shared/api";
+import { PROFILE_ROUTE, REVIEWS_ROUTE } from "@shared/consts";
+import { formatTimeToNow } from "@shared/lib";
 import {
   Avatar,
   AvatarImage,
@@ -9,10 +12,8 @@ import {
   Title,
 } from "@shared/ui";
 import NextLink from "next/link";
-import { PROFILE_ROUTE, REVIEWS_ROUTE } from "@shared/consts";
-import { formatTimeToNow } from "@shared/lib";
-import { FullGameReview } from "@shared/api";
 import { useState } from "react";
+import { ReviewVotes } from "./review-votes";
 
 interface ReviewsItemProps {
   gameId: string;
@@ -56,7 +57,10 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
           </Avatar>
         </NextLink>
         <div className="flex flex-col">
-          <Link className="text-secondary hover:text-secondary-hover" href={PROFILE_ROUTE(review.user.username)}>
+          <Link
+            className="text-secondary hover:text-secondary-hover"
+            href={PROFILE_ROUTE(review.user.username)}
+          >
             {review.user.username}
           </Link>
           <time
@@ -68,7 +72,7 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
         </div>
       </div>
       <div>
-        <div className="flex items-center justify-between gap-2 mb-2">
+        <div className="flex items-start justify-between gap-2 mb-2">
           <Title size="small" className="mb-0 lg:mb-0">
             <Link href={`${REVIEWS_ROUTE(gameId)}/${review.id}`}>
               {review.title}
@@ -82,7 +86,7 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
             </div>
           </div>
         </div>
-        <p className="text-sm md:text-base">
+        <p className="text-sm md:text-base whitespace-pre-wrap">
           {isReadMore ? review.body.slice(0, 300) : review.body + " "}
           {review.body.length > 300 && (
             <button
@@ -94,6 +98,11 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
             </button>
           )}
         </p>
+        <ReviewVotes
+          gameId={gameId}
+          reviewId={String(review.id)}
+          reviewVotes={review.votes}
+        />
       </div>
     </li>
   );
