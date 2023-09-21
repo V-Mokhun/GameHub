@@ -1,4 +1,5 @@
-import { Game, GameReview, VoteType } from "@prisma/client";
+import { useAuth } from "@clerk/nextjs";
+import { Game } from "@prisma/client";
 import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -8,10 +9,8 @@ import {
   FullGameReview,
   Paginate,
   ReviewSorts,
-  SearchGame,
   SingleGameReview,
 } from "./types";
-import { useAuth } from "@clerk/nextjs";
 
 export const useReviews = (
   gameId: string,

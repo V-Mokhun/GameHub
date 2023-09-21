@@ -21,7 +21,7 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
 
     const review = await db.gameReview.findUnique({
-      where: { id: Number(reviewId), gameId: Number(gameId), userId },
+      where: { id: Number(reviewId), gameId: Number(gameId) },
       include: {
         game: true,
         user: true,

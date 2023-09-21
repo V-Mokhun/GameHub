@@ -1,5 +1,6 @@
 "use client";
 
+import { ReviewVotes } from "@entities/review";
 import { SingleGameReview } from "@shared/api";
 import { PROFILE_ROUTE, REVIEWS_ROUTE } from "@shared/consts";
 import { formatTimeToNow } from "@shared/lib";
@@ -101,7 +102,7 @@ export const GameReviewContent = ({
           </div>
         )}
       </div>
-      <div className="flex items-center gap-2 justify-between">
+      <div className="flex items-start gap-2 justify-between">
         <Title>{review.title}</Title>
         <div className="flex items-center gap-1">
           <StarIcon strokeColor="transparent" className="w-5 h-5" />
@@ -111,7 +112,13 @@ export const GameReviewContent = ({
           </div>
         </div>
       </div>
-      <div className="whitespace-pre-wrap">{review.body}</div>
+      <div className="whitespace-pre-wrap text-sm md:text-base">{review.body}</div>
+      <ReviewVotes
+        className="justify-start mt-4"
+        gameId={String(review.gameId)}
+        reviewId={String(review.id)}
+        reviewVotes={review.votes}
+      />
     </>
   );
 };

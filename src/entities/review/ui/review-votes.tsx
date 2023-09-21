@@ -14,12 +14,14 @@ interface ReviewVotesProps {
   gameId: string;
   reviewId: string;
   reviewVotes: GameReviewVote[];
+  className?: string;
 }
 
 export const ReviewVotes = ({
   gameId,
   reviewId,
   reviewVotes,
+  className,
 }: ReviewVotesProps) => {
   const { userId } = useAuth();
   const { toast } = useToast();
@@ -101,7 +103,7 @@ export const ReviewVotes = ({
   );
 
   return (
-    <div className="flex items-center justify-end gap-4">
+    <div className={cn("flex items-center justify-end gap-4", className)}>
       <div className="flex items-center gap-1">
         <button
           className="disabled:opacity-50 disabled:pointer-events-none"
