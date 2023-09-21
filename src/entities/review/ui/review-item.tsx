@@ -6,9 +6,11 @@ import { cn, formatTimeToNow } from "@shared/lib";
 import {
   Avatar,
   AvatarImage,
+  Button,
   Link,
   Skeleton,
   StarIcon,
+  Subtitle,
   Title,
 } from "@shared/ui";
 import NextLink from "next/link";
@@ -41,6 +43,8 @@ export const ReviewsItemSkeleton = () => {
 
 export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
   const [isReadMore, setIsReadMore] = useState(true);
+  const [showContent, setShowContent] = useState(() => review.hasSpoiler);
+
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
   };
@@ -71,7 +75,7 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
           </time>
         </div>
       </div>
-      <div>
+      <div className="flex-auto">
         <div className="flex items-start justify-between gap-2 mb-2">
           <Title size="small" className="mb-0 lg:mb-0">
             <Link href={`${REVIEWS_ROUTE(gameId)}/${review.id}`}>
@@ -86,23 +90,40 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
             </div>
           </div>
         </div>
-        <p
-          className={cn(
-            "text-sm md:text-base",
-            isReadMore && "whitespace-pre-wrap"
-          )}
-        >
-          {isReadMore ? review.body.slice(0, 300) : review.body + " "}
-          {review.body.length > 300 && (
-            <button
-              type="button"
-              onClick={toggleReadMore}
-              className="text-muted-foreground hover:text-muted-foreground/70 transition-colors"
+        {showContent ? (
+          <p
+            className={cn(
+              "text-sm md:text-base",
+              !isReadMore && "whitespace-pre-wrap"
+            )}
+          >
+            {isReadMore ? review.body.slice(0, 300) : review.body + " "}
+            {review.body.length > 300 && (
+              <button
+                type="button"
+                onClick={toggleReadMore}
+                className="text-muted-foreground hover:text-muted-foreground/70 transition-colors"
+              >
+                {isReadMore ? "...Read More" : "Show Less"}
+              </button>
+            )}
+          </p>
+        ) : (
+          <>
+            <Subtitle
+              size="large"
+              className="text-destructive font-medium md:mb-3 mb-2"
             >
-              {isReadMore ? "...Read More" : "Show Less"}
+              Warning: Spoilers
+            </Subtitle>
+            <button
+              className="text-secondary hover:text-secondary-hover transition-colors"
+              onClick={() => setShowContent(true)}
+            >
+              Show Review
             </button>
-          )}
-        </p>
+          </>
+        )}
         <ReviewVotes
           gameId={gameId}
           reviewId={String(review.id)}

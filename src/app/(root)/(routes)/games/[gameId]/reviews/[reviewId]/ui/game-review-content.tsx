@@ -11,6 +11,7 @@ import {
   Icon,
   Skeleton,
   StarIcon,
+  Subtitle,
   Title,
   buttonVariants,
 } from "@shared/ui";
@@ -48,6 +49,7 @@ export const GameReviewContent = ({
   authUserId,
 }: GameReviewContentProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showContent, setShowContent] = useState(() => review.hasSpoiler);
 
   const deleteReview = async () => {
     setIsModalOpen(false);
@@ -113,9 +115,26 @@ export const GameReviewContent = ({
           </div>
         </div>
       </div>
-      <div className="whitespace-pre-wrap text-sm md:text-base">
-        {review.body}
-      </div>
+      {showContent ? (
+        <div className="whitespace-pre-wrap text-sm md:text-base">
+          {review.body}
+        </div>
+      ) : (
+        <>
+          <Subtitle
+            size="large"
+            className="text-destructive font-medium md:mb-3 mb-2"
+          >
+            Warning: Spoilers
+          </Subtitle>
+          <button
+            className="text-secondary hover:text-secondary-hover transition-colors"
+            onClick={() => setShowContent(true)}
+          >
+            Show Review
+          </button>
+        </>
+      )}
       <ReviewVotes
         className="justify-start mt-4"
         gameId={String(review.gameId)}

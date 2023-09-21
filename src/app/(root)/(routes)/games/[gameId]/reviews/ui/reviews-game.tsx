@@ -57,7 +57,7 @@ export const ReviewsGame = ({ gameId }: ReviewsGameProps) => {
         </Title>
         <NextLink
           href={CREATE_REVIEW_ROUTE(gameId)}
-          className={buttonVariants({ variant: "secondary" })}
+          className={buttonVariants()}
         >
           Write a Review
         </NextLink>
