@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, Link, Title } from "@shared/ui";
+import { Button, ExternalLink, Link, Title } from "@shared/ui";
 import { GameSummary } from "./game-summary";
 import { GameNotes } from "./game-notes";
 import {
@@ -12,6 +12,10 @@ import {
 } from "@shared/api";
 import Image from "next/image";
 import { GameFriends } from "./game-friends";
+import { useAuth } from "@clerk/nextjs";
+import { useCustomToasts } from "@shared/lib/hooks";
+import { useRouter } from "next/navigation";
+import { CREATE_REVIEW_ROUTE } from "@shared/consts";
 
 interface GameAboutProps {
   game?: FullGame;
@@ -28,8 +32,22 @@ export const GameAbout = ({
   libraryGame,
   gameId,
 }: GameAboutProps) => {
+  const { userId } = useAuth();
+  const { signInToast } = useCustomToasts();
+  const router = useRouter();
+
   return (
-    <div className="mb-6 mt-4">
+    <div className="mb-6 mt-4 md:mt-2">
+      <Button
+        className="mb-4"
+        onClick={() => {
+          if (!userId) signInToast();
+
+          router.push(CREATE_REVIEW_ROUTE(gameId));
+        }}
+      >
+        Write a Review
+      </Button>
       <Title>About</Title>
       {game?.parent && (
         <p className="mb-2">
