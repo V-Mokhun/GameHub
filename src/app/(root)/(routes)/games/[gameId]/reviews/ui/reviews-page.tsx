@@ -73,7 +73,11 @@ export const ReviewsPage = ({ gameId }: ReviewsPageProps) => {
             />
           </>
         ) : (
-          <Title>This game has no reviews yet.</Title>
+          <div className="my-4">
+            <ReviewsFilter />
+            <Separator />
+            <Title>No reviews found</Title>
+          </div>
         )
       ) : (
         <>

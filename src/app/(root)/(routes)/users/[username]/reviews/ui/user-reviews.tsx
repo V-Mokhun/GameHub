@@ -92,7 +92,11 @@ export const UserReviews = ({ username }: UserReviewsProps) => {
             />
           </div>
         ) : (
-          <Title>{username} has no reviews yet.</Title>
+          <div className="my-4">
+            <ReviewsFilter />
+            <Separator />
+            <Title>No reviews found</Title>
+          </div>
         )
       ) : (
         <> </>
