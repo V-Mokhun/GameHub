@@ -33,14 +33,11 @@ export const useReviews = (
 };
 
 export const useReview = (gameId: string, reviewId: string) => {
-  const { userId } = useAuth();
-
   return useQuery(
     ["reviews", { gameId, reviewId }],
     async (): Promise<SingleGameReview> => {
-      const { data } = await axios.post<FullGameReview & { game: Game }>(
-        `/api/game/${gameId}/reviews/${reviewId}`,
-        { userId }
+      const { data } = await axios.get<FullGameReview & { game: Game }>(
+        `/api/game/${gameId}/reviews/${reviewId}`
       );
 
       const updatedReview: SingleGameReview = {

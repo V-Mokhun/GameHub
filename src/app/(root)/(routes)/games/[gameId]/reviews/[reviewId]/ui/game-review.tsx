@@ -9,6 +9,7 @@ import {
 } from "./game-review-content";
 import { useRouter } from "next/navigation";
 import { REVIEWS_ROUTE, TOAST_TIMEOUT } from "@shared/consts";
+import { useUser } from "@clerk/nextjs";
 
 interface GameReviewProps {
   gameId: string;
@@ -21,6 +22,7 @@ export const GameReview = ({
   reviewId,
   authUserId,
 }: GameReviewProps) => {
+  const { user } = useUser();
   const { data: review, isLoading } = gamesApi.getReview(gameId, reviewId);
   const router = useRouter();
   const { toast } = useToast();
@@ -60,8 +62,8 @@ export const GameReview = ({
         <GameReviewCard
           gameId={gameId}
           review={review}
-          userId={review.user.id}
-          username={review.user.username}
+          userId={user?.id}
+          username={user?.username ?? undefined}
         />
         <Separator />
         <GameReviewContent review={review} authUserId={authUserId} />

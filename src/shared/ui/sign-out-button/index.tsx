@@ -24,6 +24,9 @@ export const SignOutButton = ({
         queryClient.invalidateQueries({ queryKey: ["user", { username }] });
         queryClient.invalidateQueries({ queryKey: ["library", { username }] });
         queryClient.invalidateQueries({ queryKey: ["own-profile", { id }] });
+        queryClient.invalidateQueries({
+          queryKey: ["user-reviews", { username }],
+        });
         router.refresh();
         toast({ title: "Signed out succesfully", variant: "success" });
       }}

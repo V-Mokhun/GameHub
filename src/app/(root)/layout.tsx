@@ -13,7 +13,7 @@ export default async function SiteLayout({
       <Header />
       <Sidebar />
       <ActiveStatus />
-      <main className="flex-1 pb-4 md:pb-5 pt-20 md:pl-[220px]">
+      <main className="flex-1 pb-4 md:pb-5 pt-20 md:pl-[190px]">
         {children}
       </main>
       <Footer />

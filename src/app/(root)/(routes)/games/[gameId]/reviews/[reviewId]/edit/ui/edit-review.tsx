@@ -41,6 +41,18 @@ export const EditReview = ({
       </div>
     );
 
+  if (!isLoading && !review) {
+    router.push(REVIEWS_ROUTE(gameId));
+    setTimeout(() => {
+      toast({
+        title: "Review not found",
+        description: "The review you are looking for does not exist",
+        variant: "destructive",
+      });
+    }, TOAST_TIMEOUT);
+    return null;
+  }
+
   if (review && review.userId !== authUserId) {
     router.push(REVIEWS_ROUTE(gameId));
     setTimeout(() => {

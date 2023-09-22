@@ -1,17 +1,24 @@
 "use client";
 
+import { useAuth } from "@clerk/nextjs";
 import { gamesApi } from "@shared/api";
 import { CREATE_REVIEW_ROUTE, GAMES_ROUTE } from "@shared/consts";
-import { Link, Skeleton, Title, buttonVariants } from "@shared/ui";
+import { useCustomToasts } from "@shared/lib/hooks";
+import { Button, Link, Skeleton, Title, buttonVariants } from "@shared/ui";
 import { format } from "date-fns";
 import Image from "next/image";
 import NextLink from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ReviewsGameProps {
   gameId: string;
 }
 
 export const ReviewsGame = ({ gameId }: ReviewsGameProps) => {
+  const { userId } = useAuth();
+  const router = useRouter();
+  const { signInToast } = useCustomToasts();
+
   const { data: game } = gamesApi.getGame(gameId);
 
   if (!game)
@@ -55,12 +62,15 @@ export const ReviewsGame = ({ gameId }: ReviewsGameProps) => {
         <Title className="hidden sm:block lg:mb-6 mb-4" size="large">
           User Reviews
         </Title>
-        <NextLink
-          href={CREATE_REVIEW_ROUTE(gameId)}
-          className={buttonVariants()}
+        <Button
+          onClick={() => {
+            if (!userId) signInToast();
+
+            router.push(CREATE_REVIEW_ROUTE(gameId));
+          }}
         >
           Write a Review
-        </NextLink>
+        </Button>
       </div>
     </div>
   );
