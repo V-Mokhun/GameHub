@@ -25,6 +25,8 @@ export const FRIENDS_RECEIVED_REQUESTS_ROUTE = (username: string) =>
   `${USERS_ROUTE}/${username}/friends/received`;
 export const FRIENDS_SENT_REQUESTS_ROUTE = (username: string) =>
   `${USERS_ROUTE}/${username}/friends/sent`;
+export const USER_REVIEWS_ROUTE = (username: string) =>
+  `${USERS_ROUTE}/${username}/reviews`;
 
 export const REVIEWS_ROUTE = (gameId: string) =>
   `${GAMES_ROUTE}/${gameId}/reviews`;

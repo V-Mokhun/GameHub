@@ -5,6 +5,7 @@ import {
   LIBRARY_ROUTE,
   PROFILE_ROUTE,
   RATINGS_ROUTE,
+  USER_REVIEWS_ROUTE,
 } from "@shared/consts";
 import { cn } from "@shared/lib";
 import { MenuItem, Skeleton } from "@shared/ui";
@@ -27,6 +28,11 @@ const MENU_ITEMS = (pathname: string, username: string) => [
     label: "Friends",
     href: FRIENDS_ROUTE(username),
     active: pathname.includes(FRIENDS_ROUTE(username)),
+  },
+  {
+    label: "Reviews",
+    href: USER_REVIEWS_ROUTE(username),
+    active: pathname.includes(USER_REVIEWS_ROUTE(username)),
   },
 ];
 
@@ -54,7 +60,7 @@ export const UserMenu = ({
   if (isLoading)
     return (
       <ul className={cn("flex items-center gap-4 mb-4", className)}>
-        {[...Array(4)].map((_, i) => (
+        {[...Array(3)].map((_, i) => (
           <Skeleton key={i} className="w-28 h-7" />
         ))}
       </ul>
