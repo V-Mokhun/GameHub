@@ -3,7 +3,7 @@
 import { UserReview } from "@shared/api";
 import { useState } from "react";
 import Image from "next/image";
-import { Link, StarIcon, Subtitle, Title } from "@shared/ui";
+import { Link, Skeleton, StarIcon, Subtitle, Title } from "@shared/ui";
 import { GAMES_ROUTE, REVIEWS_ROUTE } from "@shared/consts";
 import { format } from "date-fns";
 import NextLink from "next/link";
@@ -13,6 +13,20 @@ import { ReviewVotes } from "@entities/review";
 interface UserReviewsItemProps {
   review: UserReview;
 }
+
+export const UserReviewsItemSkeleton = () => (
+  <li className="flex items-start gap-2 border-b border-muted pb-2 mb-2">
+    <Skeleton className="rounded-md overflow-hidden w-28 h-40 md:w-32 md:h-44 lg:w-40 lg:h-52 xl:w-48 xl:h-60 shrink-0" />
+    <div className="flex-auto">
+      <Skeleton className="h-8 w-[70%] mb-3" />
+      <Skeleton className="h-6 w-24 mb-1" />
+      <Skeleton className="h-9 w-[90%] mb-3" />
+      <Skeleton className="h-6 w-full mb-1" />
+      <Skeleton className="h-6 w-full mb-1" />
+      <Skeleton className="h-6 w-[60%] mb-1" />
+    </div>
+  </li>
+);
 
 export const UserReviewsItem = ({ review }: UserReviewsItemProps) => {
   const [isReadMore, setIsReadMore] = useState(true);

@@ -60,7 +60,7 @@ export const ReviewsFilter = ({}: ReviewsFilterProps) => {
             </SelectItem>
             <SelectItem value={ReviewSortFields.RATING}>Rating</SelectItem>
             <SelectItem value={ReviewSortFields.CREATED_AT}>
-              Release Date
+              Review Date
             </SelectItem>
           </SelectContent>
         </Select>

@@ -13,7 +13,7 @@ import { UserMenu } from "../../ui";
 import { Separator, Skeleton, Title } from "@shared/ui";
 import { ReviewsFilter } from "@widgets/filters";
 import { Pagination } from "@widgets/pagination";
-import { UserReviewsItem } from "./user-reviews-item";
+import { UserReviewsItem, UserReviewsItemSkeleton } from "./user-reviews-item";
 
 interface UserReviewsProps {
   username: string;
@@ -99,7 +99,13 @@ export const UserReviews = ({ username }: UserReviewsProps) => {
           </div>
         )
       ) : (
-        <> </>
+        <>
+          <ul className="my-4">
+            {[...Array(5)].map((_, i) => (
+              <UserReviewsItemSkeleton key={i} />
+            ))}
+          </ul>
+        </>
       )}
     </>
   );
