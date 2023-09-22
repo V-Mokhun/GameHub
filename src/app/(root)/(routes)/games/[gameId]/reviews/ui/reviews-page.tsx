@@ -1,18 +1,18 @@
 "use client";
 
 import {
-  GAMES_LIMIT_VALUES,
+  DEFAULT_LIMIT_VALUES,
   gamesApi,
   onPaginate,
   retrievePaginateFromSearchParams,
   retrieveReviewFieldsFromSearchParams,
 } from "@shared/api";
 import { ReviewsGame } from "./reviews-game";
-import { ReviewsFilter } from "./reviews-filter";
 import { Separator, Title } from "@shared/ui";
 import { Pagination } from "@widgets/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ReviewsItem, ReviewsItemSkeleton } from "@entities/review";
+import { ReviewsFilter } from "@widgets/filters";
 
 interface ReviewsPageProps {
   gameId: string;
@@ -65,7 +65,7 @@ export const ReviewsPage = ({ gameId }: ReviewsPageProps) => {
               isPreviousData={isPreviousData}
               hasMore={data.reviews.length === paginate.limit}
               limit={paginate.limit}
-              limitValues={GAMES_LIMIT_VALUES}
+              limitValues={DEFAULT_LIMIT_VALUES}
               offset={paginate.offset}
               totalPages={
                 data.count ? Math.ceil(data.count / paginate.limit) : 0

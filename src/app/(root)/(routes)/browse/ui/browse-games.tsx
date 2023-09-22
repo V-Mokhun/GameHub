@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { GameCardSkeleton } from "@entities/game";
 import {
-  GAMES_LIMIT_VALUES,
+  DEFAULT_LIMIT_VALUES,
   gamesApi,
   onPaginate,
   retrieveFiltersFromSearchParams,
@@ -68,7 +68,7 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
           isPreviousData={isPreviousData}
           hasMore={data?.length === paginate.limit}
           limit={paginate.limit}
-          limitValues={GAMES_LIMIT_VALUES}
+          limitValues={DEFAULT_LIMIT_VALUES}
           offset={paginate.offset}
           totalPages={gamesCount ? Math.ceil(gamesCount / paginate.limit) : 0}
         />
@@ -98,7 +98,7 @@ export const BrowseGames = ({}: BrowseGamesProps) => {
         isPreviousData={isPreviousData}
         hasMore={data?.length === paginate.limit}
         limit={paginate.limit}
-        limitValues={GAMES_LIMIT_VALUES}
+        limitValues={DEFAULT_LIMIT_VALUES}
         offset={paginate.offset}
         totalPages={gamesCount ? Math.ceil(gamesCount / paginate.limit) : 0}
       />

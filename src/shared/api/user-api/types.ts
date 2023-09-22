@@ -1,5 +1,12 @@
-import { Conversation, FriendRequest, Message, User } from "@prisma/client";
-import { Game } from "../games-api";
+import {
+  Conversation,
+  FriendRequest,
+  GameReview,
+  GameReviewVote,
+  Game as LibraryGame,
+  Message,
+  User,
+} from "@prisma/client";
 import { NormalizedLibraryGame } from "../user-library-api";
 
 export type UserWithFriends = User & { friends: User[] };
@@ -31,4 +38,9 @@ export type GameFriend = {
   username: string;
   imageUrl: string;
   game: NormalizedLibraryGame;
+};
+
+export type UserReview = GameReview & {
+  votes: GameReviewVote[];
+  game: Pick<LibraryGame, "id" | "coverUrl" | "name" | "releaseDate">;
 };

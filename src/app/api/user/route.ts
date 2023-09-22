@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs";
-import { GAMES_LIMIT } from "@shared/api";
+import { DEFAULT_LIMIT } from "@shared/api";
 import { catchError } from "@shared/lib";
 import { db } from "@shared/lib/db";
 import omit from "lodash.omit";
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const { search, limit, offset } = z
       .object({
         search: z.string().optional(),
-        limit: z.number().default(GAMES_LIMIT),
+        limit: z.number().default(DEFAULT_LIMIT),
         offset: z.number().default(0),
       })
       .parse(body);

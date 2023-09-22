@@ -1,7 +1,7 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { DEFAULT_PAGINATE } from "./games-api";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
-import { GAMES_LIMIT } from "./consts";
+import { DEFAULT_LIMIT } from "./consts";
 
 export const getPaginateQuery = (
   params: ReadonlyURLSearchParams,
@@ -33,7 +33,7 @@ export const onPaginate = (data: {
 }) => {
   const { params, router, limit, offset, pathname } = data;
 
-  const paramsLimit = parseInt(params.get("limit") ?? String(GAMES_LIMIT));
+  const paramsLimit = parseInt(params.get("limit") ?? String(DEFAULT_LIMIT));
   const paramsOffset = parseInt(params.get("offset") ?? "0");
   const query = getPaginateQuery(params, limit, offset);
 

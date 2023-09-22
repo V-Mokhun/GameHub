@@ -3,7 +3,7 @@
 import { Game } from "@shared/api";
 import {
   RECENTLY_VIEWED_GAMES,
-  RECENTLY_VIEWED_GAMES_LIMIT,
+  RECENTLY_VIEWED_DEFAULT_LIMIT,
 } from "@shared/consts";
 import { useEffect } from "react";
 
@@ -21,7 +21,7 @@ export const useViewedGames = (gameId: string, game?: Game) => {
       viewedGames.splice(gameIndex, 1);
     }
 
-    if (viewedGames.length > RECENTLY_VIEWED_GAMES_LIMIT) {
+    if (viewedGames.length > RECENTLY_VIEWED_DEFAULT_LIMIT) {
       viewedGames.pop();
     }
 

@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "@clerk/nextjs";
 import {
-  GAMES_LIMIT_VALUES,
+  DEFAULT_LIMIT_VALUES,
   getPaginateQuery,
   onPaginate,
   retrievePaginateFromSearchParams,
@@ -91,7 +91,7 @@ export const UserFriends = ({ username }: UserFriendsProps) => {
           </Link>
         </div>
       )}
-      <Separator />
+      <Separator className="md:my-4 my-2" />
       {isUserLoading ? (
         <Skeleton className="w-36 h-9 mb-2 lg:mb-3" />
       ) : (
@@ -126,7 +126,7 @@ export const UserFriends = ({ username }: UserFriendsProps) => {
         isPreviousData={false}
         hasMore={filteredFriends.length === paginate.limit}
         limit={paginate.limit}
-        limitValues={GAMES_LIMIT_VALUES}
+        limitValues={DEFAULT_LIMIT_VALUES}
         offset={paginate.offset}
         totalPages={Math.ceil(friends.length / paginate.limit)}
       />

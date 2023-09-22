@@ -1,5 +1,5 @@
 import { Icon } from "@shared/ui";
-import { GAMES_LIMIT } from "../consts";
+import { DEFAULT_LIMIT } from "../consts";
 import {
   GameCategories,
   GameFilters,
@@ -105,7 +105,7 @@ export const DEFAULT_SORT: GameSorts = {
 };
 
 export const DEFAULT_PAGINATE: Paginate = {
-  limit: GAMES_LIMIT,
+  limit: DEFAULT_LIMIT,
   offset: 0,
 };
 

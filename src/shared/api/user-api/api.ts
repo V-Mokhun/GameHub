@@ -5,7 +5,7 @@ import { useToast } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { DEFAULT_PAGINATE } from "../games-api";
+import { DEFAULT_PAGINATE, ReviewSorts, SortFields } from "../games-api";
 import {
   useAcceptFriendRequest,
   useCancelFriendRequest,
@@ -20,7 +20,7 @@ import {
   useSingleConversation,
   useUnseenMessagesCount,
 } from "./messages-api";
-import { OwnProfile, UserWithFriends } from "./types";
+import { OwnProfile, UserReview, UserWithFriends } from "./types";
 
 type UseUserApiResponse = {
   user: User & {
@@ -114,18 +114,43 @@ const useUsers = (search?: string, paginate = DEFAULT_PAGINATE) => {
   );
 };
 
+export const useReviews = (
+  username: string,
+  sort: ReviewSorts,
+  paginate = DEFAULT_PAGINATE
+) => {
+  return useQuery(
+    ["user-reviews", { username, ...sort, ...paginate }],
+    async () => {
+      const { data } = await axios.post<{
+        reviews: UserReview[];
+        count: number;
+      }>(`/api/user/${username}/reviews`, { sort, paginate });
+
+      return data;
+    },
+    {
+      keepPreviousData: true,
+    }
+  );
+};
+
 export const userApi = {
   getUser: useUser,
   getOwnProfile: useOwnProfile,
   getUsers: useUsers,
+
   getGameFriends: useGameFriends,
   sendFriendRequest: useSendFriendRequest,
   cancelFriendRequest: useCancelFriendRequest,
   acceptFriendRequest: useAcceptFriendRequest,
   removeFriend: useRemoveFriend,
+
   getConversations: useConversations,
   getSingleConversation: useSingleConversation,
   getMessages: useMessages,
   getUnseenMessagesCount: useUnseenMessagesCount,
   sendMessage: useSendMessage,
+
+  getReviews: useReviews,
 };

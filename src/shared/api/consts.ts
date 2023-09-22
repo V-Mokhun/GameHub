@@ -1,3 +1,3 @@
-export const GAMES_LIMIT = 20;
+export const DEFAULT_LIMIT = 20;
 
-export const GAMES_LIMIT_VALUES = [10, 20, 30, 40, 50];
+export const DEFAULT_LIMIT_VALUES = [10, 20, 30, 40, 50];

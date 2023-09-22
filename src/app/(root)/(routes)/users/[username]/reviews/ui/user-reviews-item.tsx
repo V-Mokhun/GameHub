@@ -1,47 +1,20 @@
 "use client";
 
-import { FullGameReview } from "@shared/api";
-import { PROFILE_ROUTE, REVIEWS_ROUTE } from "@shared/consts";
-import { cn, formatTimeToNow } from "@shared/lib";
-import {
-  Avatar,
-  AvatarImage,
-  Button,
-  Link,
-  Skeleton,
-  StarIcon,
-  Subtitle,
-  Title,
-} from "@shared/ui";
-import NextLink from "next/link";
+import { UserReview } from "@shared/api";
 import { useState } from "react";
-import { ReviewVotes } from "./review-votes";
+import Image from "next/image";
+import { Link, StarIcon, Subtitle, Title } from "@shared/ui";
+import { GAMES_ROUTE, REVIEWS_ROUTE } from "@shared/consts";
+import { format } from "date-fns";
+import NextLink from "next/link";
+import { cn } from "@shared/lib";
+import { ReviewVotes } from "@entities/review";
 
-interface ReviewsItemProps {
-  gameId: string;
-  review: FullGameReview;
+interface UserReviewsItemProps {
+  review: UserReview;
 }
 
-export const ReviewsItemSkeleton = () => {
-  return (
-    <li className="flex gap-2 sm:gap-4 flex-col sm:flex-row justify-between items-start border-b border-muted pb-2 mb-2">
-      <div className="flex sm:flex-[0_1_20%] gap-2 items-center">
-        <Skeleton className="h-10 w-10 shrink-0 rounded-full" />
-        <div className="flex flex-col">
-          <Skeleton className="h-5 w-24 mb-1" />
-          <Skeleton className="h-4 w-16" />
-        </div>
-      </div>
-      <div className="flex-auto">
-        <Skeleton className="h-7 md:h-8 w-48 mb-3" />
-        <Skeleton className="h-6 w-72 mb-1" />
-        <Skeleton className="h-6 w-48" />
-      </div>
-    </li>
-  );
-};
-
-export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
+export const UserReviewsItem = ({ review }: UserReviewsItemProps) => {
   const [isReadMore, setIsReadMore] = useState(true);
   const [showContent, setShowContent] = useState(() => !review.hasSpoiler);
 
@@ -50,36 +23,33 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
   };
 
   return (
-    <li className="flex gap-2 sm:gap-4 flex-col sm:flex-row justify-between items-start border-b border-muted pb-2 mb-2">
-      <div className="flex sm:flex-[0_0_20%] sm:w-[20%] sm:min-w-[140px] gap-2 items-center">
-        <NextLink href={PROFILE_ROUTE(review.user.username)}>
-          <Avatar>
-            <AvatarImage
-              src={review.user.imageUrl}
-              alt={review.user.username}
-            />
-          </Avatar>
-        </NextLink>
-        <div className="flex flex-col truncate">
-          <Link
-            className="text-secondary hover:text-secondary-hover"
-            href={PROFILE_ROUTE(review.user.username)}
-          >
-            {review.user.username}
-          </Link>
-          <time
-            className="text-muted-foreground text-sm"
-            dateTime={new Date(review.createdAt).toISOString()}
-          >
-            {formatTimeToNow(new Date(review.createdAt))}
-          </time>
-        </div>
-      </div>
+    <li className="sm:flex items-start gap-2 border-b border-muted pb-2 mb-2">
+      <NextLink
+        href={`${GAMES_ROUTE}/${review.gameId}`}
+        className="float-left mr-2 sm:mr-0 sm:float-none relative rounded-md overflow-hidden w-28 h-40 md:w-32 md:h-44 lg:w-40 lg:h-52 xl:w-48 xl:h-60 shrink-0"
+      >
+        {review.game.coverUrl ? (
+          <Image
+            className="object-cover"
+            src={review.game.coverUrl}
+            fill
+            sizes="(min-width: 768px) 128px, 112px"
+            alt={review.game.name}
+          />
+        ) : (
+          <div className="absolute w-full h-full bg-muted"></div>
+        )}
+      </NextLink>
       <div className="flex-auto">
         <div className="flex items-start justify-between gap-2 mb-2">
           <Title size="small" className="mb-0 lg:mb-0">
-            <Link href={`${REVIEWS_ROUTE(gameId)}/${review.id}`}>
-              {review.title}
+            <Link href={`${GAMES_ROUTE}/${review.gameId}`}>
+              {review.game.name}
+              {review.game.releaseDate && (
+                <span className="inline-block ml-1 text-muted-foreground font-normal text-lg lg:text-xl">
+                  ( {format(new Date(review.game.releaseDate), "yyyy")} )
+                </span>
+              )}
             </Link>
           </Title>
           <div className="flex items-center gap-1">
@@ -90,6 +60,17 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
             </div>
           </div>
         </div>
+        <time
+          className="text-sm text-muted-foreground"
+          dateTime={new Date(review.createdAt).toISOString()}
+        >
+          {format(new Date(review.createdAt), "MMMM dd, yyyy")}
+        </time>
+        <Title className="text-xl">
+          <Link href={`${REVIEWS_ROUTE(String(review.gameId))}/${review.id}`}>
+            {review.title}
+          </Link>
+        </Title>
         {showContent ? (
           <>
             {review.hasSpoiler && (
@@ -133,7 +114,7 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
         )}
         <ReviewVotes
           className="mt-2"
-          gameId={gameId}
+          gameId={String(review.gameId)}
           reviewId={String(review.id)}
           reviewVotes={review.votes}
         />

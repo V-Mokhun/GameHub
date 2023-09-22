@@ -4,10 +4,10 @@ import { displayError } from "@shared/lib";
 import { useToast } from "@shared/ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { DEFAULT_PAGINATE } from "./consts";
 import {
   CreateOrEditReview,
   FullGameReview,
-  Paginate,
   ReviewSorts,
   SingleGameReview,
 } from "./types";
@@ -15,7 +15,7 @@ import {
 export const useReviews = (
   gameId: string,
   sort: ReviewSorts,
-  paginate: Paginate
+  paginate = DEFAULT_PAGINATE
 ) => {
   return useQuery(
     ["reviews", { gameId, ...sort, ...paginate }],

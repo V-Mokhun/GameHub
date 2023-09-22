@@ -3,7 +3,7 @@
 import { useAuth } from "@clerk/nextjs";
 import { GameCard, GameCardSkeleton } from "@entities/game";
 import {
-  GAMES_LIMIT_VALUES,
+  DEFAULT_LIMIT_VALUES,
   onPaginate,
   retrieveLibraryFiltersFromSearchParams,
   retrieveLibrarySortFromSearchParams,
@@ -88,7 +88,7 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
           isPreviousData={isPreviousData}
           hasMore={data?.library.length === paginate.limit}
           limit={paginate.limit}
-          limitValues={GAMES_LIMIT_VALUES}
+          limitValues={DEFAULT_LIMIT_VALUES}
           offset={paginate.offset}
           totalPages={data?.count ? Math.ceil(data.count / paginate.limit) : 0}
         />
@@ -163,7 +163,7 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
         isPreviousData={isPreviousData}
         hasMore={data.library.length === paginate.limit}
         limit={paginate.limit}
-        limitValues={GAMES_LIMIT_VALUES}
+        limitValues={DEFAULT_LIMIT_VALUES}
         offset={paginate.offset}
         totalPages={Math.ceil(data.count / paginate.limit)}
       />

@@ -6,10 +6,10 @@ import { z } from "zod";
 
 export async function POST(
   req: Request,
-  { params }: { params: { gameId: string } }
+  { params }: { params: { username: string } }
 ) {
   try {
-    const { gameId } = params;
+    const { username } = params;
     const body = await req.json();
     const {
       sort: { field, hideSpoilers, order },
@@ -47,18 +47,21 @@ export async function POST(
     const [gameReviews, count] = await db.$transaction([
       db.gameReview.findMany({
         where: {
-          gameId: parseInt(gameId),
           hasSpoiler: hideSpoilers ? false : undefined,
+          user: {
+            username,
+          },
         },
         orderBy: orderClause,
         take: limit,
         skip: offset,
         include: {
-          user: {
+          game: {
             select: {
               id: true,
-              username: true,
-              imageUrl: true,
+              coverUrl: true,
+              releaseDate: true,
+              name: true,
             },
           },
           votes: true,
@@ -66,14 +69,16 @@ export async function POST(
       }),
       db.gameReview.count({
         where: {
-          gameId: parseInt(gameId),
           hasSpoiler: hideSpoilers ? false : undefined,
+          user: {
+            username,
+          },
         },
       }),
     ]);
 
     return NextResponse.json({ reviews: gameReviews, count }, { status: 200 });
   } catch (error) {
-    return catchError(error, "Error getting reviews");
+    return catchError(error, `Error getting ${params.username}'s reviews`);
   }
 }

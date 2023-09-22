@@ -2,7 +2,7 @@
 
 import { useAuth } from "@clerk/nextjs";
 import {
-  GAMES_LIMIT_VALUES,
+  DEFAULT_LIMIT_VALUES,
   UserWithFriends,
   getPaginateQuery,
   onPaginate,
@@ -167,7 +167,7 @@ export const UserFriendRequests = ({
         isPreviousData={false}
         hasMore={filteredRequests.length === paginate.limit}
         limit={paginate.limit}
-        limitValues={GAMES_LIMIT_VALUES}
+        limitValues={DEFAULT_LIMIT_VALUES}
         offset={paginate.offset}
         totalPages={Math.ceil(requestFriends.length / paginate.limit)}
       />

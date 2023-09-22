@@ -1,6 +1,6 @@
 "use client";
 import {
-  GAMES_LIMIT_VALUES,
+  DEFAULT_LIMIT_VALUES,
   getPaginateQuery,
   onPaginate,
   retrievePaginateFromSearchParams,
@@ -65,7 +65,7 @@ export const UsersPage = ({}: UsersPageProps) => {
         isPreviousData={isPreviousData}
         hasMore={data?.users.length === paginate.limit}
         limit={paginate.limit}
-        limitValues={GAMES_LIMIT_VALUES}
+        limitValues={DEFAULT_LIMIT_VALUES}
         offset={paginate.offset}
         totalPages={data?.count ? Math.ceil(data.count / paginate.limit) : 0}
       />

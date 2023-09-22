@@ -1,7 +1,7 @@
 import { GameStatus, Game as LibraryGame } from "@prisma/client";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { z } from "zod";
-import { GAMES_LIMIT } from "../consts";
+import { DEFAULT_LIMIT } from "../consts";
 import { MAX_RATING, MIN_RATING, SortFieldsOrder } from "../games-api";
 import {
   DEFAULT_LIBRARY_FILTERS,
@@ -73,7 +73,7 @@ export const getFilteredLibrarySchema = z.object({
     order: z.nativeEnum(SortFieldsOrder).default(SortFieldsOrder.DESC),
   }),
   paginate: z.object({
-    limit: z.number().int().default(GAMES_LIMIT),
+    limit: z.number().int().default(DEFAULT_LIMIT),
     offset: z.number().int().default(0),
   }),
   noLimit: z.boolean().default(false),
