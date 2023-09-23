@@ -51,6 +51,7 @@
     "next": "13.4.10",
     "next-cloudinary": "^4.18.0",
     "next-themes": "^0.2.1",
+    "node-steam-openid": "^1.2.0",
     "postcss": "8.4.26",
     "pusher": "^5.1.3",
     "pusher-js": "^8.3.0",
@@ -73,6 +74,7 @@
     "@types/lodash.debounce": "^4.0.7",
     "@types/lodash.find": "^4.6.7",
     "@types/lodash.omit": "^4.5.7",
+    "@types/node-steam-openid": "^1.0.0",
     "prisma": "^5.0.0"
   }
 }
