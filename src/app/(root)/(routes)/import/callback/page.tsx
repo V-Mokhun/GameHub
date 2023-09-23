@@ -25,7 +25,7 @@ const getSteamGamesData = async (profileId: string, onError: () => void) => {
     );
 
     return data.response.games
-      .sort((a, b) => b.playtime_forever - a.playtime_forever)
+      .sort((a, b) => a.playtime_forever - b.playtime_forever)
       .slice(20);
   } catch (error) {
     onError();
