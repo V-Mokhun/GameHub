@@ -341,6 +341,21 @@ export const useGame = (id: string) => {
   );
 };
 
+export const useGamesFromSteam = (appIds: number[]) => {
+  return useQuery(["steam-games", { appIds }], async () => {
+    const url = `https://store.steampowered.com/app`;
+    const websiteUrls = appIds.map((appId) => `'${url}/${appId}'`);
+    const { data } = await axiosInstance.post<UseGamesApiResponse[]>(
+      "/games",
+      `${GET_GAMES_FIELDS}; where websites.url = (${websiteUrls.join(
+        ","
+      )}) & category = 0 & total_rating_count >= 10;`
+    );
+
+    return data;
+  });
+};
+
 export const gamesApi = {
   getGames: useGames,
   getPopularGames: usePopularGames,
