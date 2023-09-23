@@ -49,7 +49,7 @@ export const GameReviewContent = ({
   authUserId,
 }: GameReviewContentProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showContent, setShowContent] = useState(() => review.hasSpoiler);
+  const [showContent, setShowContent] = useState(() => !review.hasSpoiler);
 
   const deleteReview = async () => {
     setIsModalOpen(false);
@@ -116,9 +116,16 @@ export const GameReviewContent = ({
         </div>
       </div>
       {showContent ? (
-        <div className="whitespace-pre-wrap text-sm md:text-base">
-          {review.body}
-        </div>
+        <>
+          {review.hasSpoiler && (
+            <Subtitle className="text-destructive font-medium md:mb-3 mb-2">
+              Warning: Spoilers
+            </Subtitle>
+          )}
+          <div className="whitespace-pre-wrap text-sm md:text-base">
+            {review.body}
+          </div>
+        </>
       ) : (
         <>
           <Subtitle
