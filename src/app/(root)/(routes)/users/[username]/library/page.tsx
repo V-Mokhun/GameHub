@@ -4,6 +4,7 @@ import { UserMenu } from "../ui";
 import { LibraryChangeView, LibraryFilters, LibraryGames } from "./ui";
 import { Metadata } from "next";
 import { currentUser } from "@clerk/nextjs";
+import { LibraryDeleteButton } from "./ui";
 
 type Props = {
   params: { username: string };
@@ -44,6 +45,8 @@ export default async function LibraryPage({
           <LibraryFilters username={params.username} />
           <Separator className="ml-2 w-[calc(100%-16px)]" />
           <LibraryGames username={params.username} />
+          <Separator className="ml-2 w-[calc(100%-16px)]" />
+          <LibraryDeleteButton />
         </Container>
       </section>
     </>
