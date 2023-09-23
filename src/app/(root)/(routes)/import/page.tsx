@@ -1,8 +1,9 @@
 import { auth } from "@clerk/nextjs";
 import { steam } from "@shared/config/steam";
 import { HOME_ROUTE } from "@shared/consts";
-import { Container, Subtitle, Title } from "@shared/ui";
+import { Container, ExternalLink, Subtitle, Title } from "@shared/ui";
 import { Metadata } from "next";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -16,7 +17,6 @@ export default async function Import() {
   if (!userId) redirect(HOME_ROUTE);
 
   const url = await steam.getRedirectUrl();
-  console.log(url);
 
   return (
     <section>
@@ -26,6 +26,9 @@ export default async function Import() {
           You can import your games from Steam, but beware that not all games
           may be imported.
         </Subtitle>
+        <ExternalLink aria-label="Click to login through Steam" href={url}>
+          <Image src="/images/steam.png" alt="Steam" width={180} height={35} />
+        </ExternalLink>
       </Container>
     </section>
   );
