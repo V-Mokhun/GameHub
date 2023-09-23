@@ -81,7 +81,7 @@ export const UserReviewsItem = ({ review }: UserReviewsItemProps) => {
           {format(new Date(review.createdAt), "MMMM dd, yyyy")}
         </time>
         <Title className="text-xl">
-          <Link href={`${REVIEWS_ROUTE(String(review.gameId))}/${review.id}`}>
+          <Link className="break-all" href={`${REVIEWS_ROUTE(String(review.gameId))}/${review.id}`}>
             {review.title}
           </Link>
         </Title>
@@ -94,7 +94,7 @@ export const UserReviewsItem = ({ review }: UserReviewsItemProps) => {
             )}
             <p
               className={cn(
-                "text-sm md:text-base",
+                "text-sm md:text-base break-all",
                 !isReadMore && "whitespace-pre-wrap"
               )}
             >

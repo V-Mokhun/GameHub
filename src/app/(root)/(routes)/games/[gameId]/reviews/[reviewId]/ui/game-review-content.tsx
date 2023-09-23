@@ -106,7 +106,7 @@ export const GameReviewContent = ({
         )}
       </div>
       <div className="flex items-start gap-2 justify-between">
-        <Title>{review.title}</Title>
+        <Title className="break-all">{review.title}</Title>
         <div className="flex items-center gap-1">
           <StarIcon strokeColor="transparent" className="w-5 h-5" />
           <div className="flex items-end">
@@ -122,7 +122,7 @@ export const GameReviewContent = ({
               Warning: Spoilers
             </Subtitle>
           )}
-          <div className="whitespace-pre-wrap text-sm md:text-base">
+          <div className="whitespace-pre-wrap text-sm md:text-base break-all">
             {review.body}
           </div>
         </>

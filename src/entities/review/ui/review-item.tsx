@@ -78,7 +78,10 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
       <div className="flex-auto">
         <div className="flex items-start justify-between gap-2 mb-2">
           <Title size="small" className="mb-0 lg:mb-0">
-            <Link href={`${REVIEWS_ROUTE(gameId)}/${review.id}`}>
+            <Link
+              className="break-all"
+              href={`${REVIEWS_ROUTE(gameId)}/${review.id}`}
+            >
               {review.title}
             </Link>
           </Title>
@@ -99,7 +102,7 @@ export const ReviewsItem = ({ review, gameId }: ReviewsItemProps) => {
             )}
             <p
               className={cn(
-                "text-sm md:text-base",
+                "text-sm md:text-base break-all",
                 !isReadMore && "whitespace-pre-wrap"
               )}
             >
