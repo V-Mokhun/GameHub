@@ -40,7 +40,9 @@ export const Sidebar = () => {
   );
 
   if (isLoaded)
-    content = <SidebarMenu onClose={onClose} id={user?.id} username={user?.username} />;
+    content = (
+      <SidebarMenu onClose={onClose} id={user?.id} username={user?.username} />
+    );
 
   return (
     <>
@@ -52,7 +54,7 @@ export const Sidebar = () => {
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
-        <div className="bg-background p-4 flex-auto overflow-y-auto h-full">
+        <div className="bg-background p-4 md:p-4 md:pb-20 flex-auto overflow-y-auto h-full">
           <Logo className="block md:hidden mb-6" />
           {content}
         </div>

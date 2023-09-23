@@ -3,6 +3,7 @@ import { LibraryFilter } from "@widgets/filters";
 import { UserMenu } from "../ui";
 import { LibraryChangeView, LibraryFilters, LibraryGames } from "./ui";
 import { Metadata } from "next";
+import { currentUser } from "@clerk/nextjs";
 
 type Props = {
   params: { username: string };
@@ -22,6 +23,8 @@ export default async function LibraryPage({
 }: {
   params: { username: string };
 }) {
+  const user = await currentUser();
+
   return (
     <>
       <LibraryFilter />
@@ -31,7 +34,10 @@ export default async function LibraryPage({
           <Separator className="mt-0 ml-2 w-[calc(100%-16px)]" />
           <div className="flex items-center justify-between gap-4 mb-4 px-2">
             <Title className="mb-0 lg:mb-0" size="large">
-              {params.username}&apos;s Library
+              {user?.username === params.username
+                ? "Your"
+                : `${params.username}'s`}{" "}
+              Library
             </Title>
             <LibraryChangeView />
           </div>

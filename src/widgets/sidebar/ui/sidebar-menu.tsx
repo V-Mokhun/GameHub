@@ -5,6 +5,7 @@ import {
   BROWSE_ROUTE,
   FRIENDS_ROUTE,
   HOME_ROUTE,
+  IMPORT_ROUTE,
   LIBRARY_ROUTE,
   MESSAGES_ROUTE,
   SETTINGS_ROUTE,
@@ -47,6 +48,12 @@ const MENU_PRIVATE_ITEMS = (
     href: LIBRARY_ROUTE(username),
     iconName: "Library",
     isActive: pathname === LIBRARY_ROUTE(username),
+  },
+  {
+    text: "Import",
+    href: IMPORT_ROUTE,
+    iconName: "Download",
+    isActive: pathname.includes(IMPORT_ROUTE),
   },
 ];
 
