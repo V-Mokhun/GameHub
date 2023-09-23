@@ -12,14 +12,36 @@ export const metadata: Metadata = {
   description: "Import your games from Steam",
 };
 
+const getSteamGamesData = async (profileId: string) => {
+  const { data } = await axios.get<{
+    response: {
+      game_count: number;
+      games: { appId: number; playtime_forever: number }[];
+    };
+  }>(
+    `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${profileId}&format=json`
+  );
+
+  return data.response.games;
+};
+
 export default async function ImportCallback({
   searchParams,
 }: {
   searchParams: { "openid.claimed_id": string };
 }) {
   const { userId } = auth();
-  if (!userId) redirect(HOME_ROUTE);
-  const profileId = searchParams["openid.claimed_id"].split("/").pop();
+  if (!userId || !searchParams["openid.claimed_id"]) redirect(HOME_ROUTE);
 
-  return <section></section>;
+  const profileId = searchParams["openid.claimed_id"].split("/").pop();
+  if (!profileId) redirect(HOME_ROUTE);
+
+  const games = await getSteamGamesData(profileId);
+  console.log(games);
+
+  return (
+    <section>
+      <Container></Container>
+    </section>
+  );
 }
