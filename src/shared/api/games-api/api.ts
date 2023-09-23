@@ -116,7 +116,7 @@ export type UseGameApiResponse = {
   aggregated_rating?: number;
 };
 
-export const useGames = (
+const useGames = (
   params: {
     filters?: GameFilters;
     sort?: GameSorts;
@@ -162,7 +162,7 @@ export const useGames = (
   );
 };
 
-export const usePopularGames = () => {
+const usePopularGames = () => {
   const { toast } = useToast();
   const year = new Date().getFullYear();
   const secondsInYear = 315_360_00;
@@ -190,7 +190,7 @@ export const usePopularGames = () => {
   );
 };
 
-export const useGamesCount = (
+const useGamesCount = (
   params: {
     filters: GameFilters;
     sort: GameSorts;
@@ -224,7 +224,7 @@ export const useGamesCount = (
   );
 };
 
-export const useSearchGames = (search: string) => {
+const useSearchGames = (search: string) => {
   const { toast } = useToast();
 
   return useQuery(
@@ -250,7 +250,7 @@ export const useSearchGames = (search: string) => {
   );
 };
 
-export const useGenres = () => {
+const useGenres = () => {
   const { toast } = useToast();
 
   return useQuery(
@@ -270,7 +270,7 @@ export const useGenres = () => {
   );
 };
 
-export const useThemes = () => {
+const useThemes = () => {
   const { toast } = useToast();
 
   return useQuery(
@@ -290,7 +290,7 @@ export const useThemes = () => {
   );
 };
 
-export const useModes = () => {
+const useModes = () => {
   const { toast } = useToast();
 
   return useQuery(
@@ -310,7 +310,7 @@ export const useModes = () => {
   );
 };
 
-export const useGame = (id: string) => {
+const useGame = (id: string) => {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -348,7 +348,7 @@ type UseGamesFromSteamApiResponse = (UseGamesApiResponse & {
   websites: { id: number; url: string }[];
 })[];
 
-export const useGamesFromSteam = (
+const useGamesFromSteam = (
   appIds: number[],
   onSuccess?: (data: ImportedGame[]) => Promise<void>
 ) => {

@@ -1,5 +1,5 @@
 import { Game as LibraryGame } from "@prisma/client";
-import { HOME_ROUTE, IMPORT_ROUTE } from "@shared/consts";
+import { HOME_ROUTE } from "@shared/consts";
 import { displayError } from "@shared/lib";
 import { useCustomToasts } from "@shared/lib/hooks";
 import { useToast } from "@shared/ui";
@@ -8,13 +8,13 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { DEFAULT_PAGINATE, Paginate } from "../games-api";
 import { DEFAULT_LIBRARY_FILTERS, DEFAULT_LIBRARY_SORT } from "./consts";
-import { libraryGameSchema, normalizeLibraryGameProperties } from "./lib";
+import { normalizeLibraryGameProperties } from "./lib";
 import {
   LibraryGameFilters,
   LibraryGameSorts,
   NormalizedLibraryGame,
 } from "./types";
-import { z } from "zod";
+import { useAuth } from "@clerk/nextjs";
 
 const useLibrary = (
   username?: string,
@@ -96,7 +96,7 @@ const useLibraryGame = (gameId: string, userId?: string, username?: string) => {
   );
 };
 
-export const useImportSteamLibrary = () => {
+const useImportSteamLibrary = () => {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -229,10 +229,38 @@ const useRemoveGameFromLibrary = (username: string, onSuccess?: () => void) => {
   );
 };
 
+const useDeleteLibrary = (username: string) => {
+  const { toast } = useToast();
+  const { userId } = useAuth();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation(
+    async () => {
+      const { data } = await axios.delete("/api/user/library", {
+        data: { userId },
+      });
+
+      return data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["library", { username }]);
+        toast({
+          title: "Your library has been deleted successfully",
+          variant: "success",
+        });
+        router.push(HOME_ROUTE);
+      },
+    }
+  );
+};
+
 export const userLibraryApi = {
   getLibrary: useLibrary,
   getLibraryGame: useLibraryGame,
   removeGame: useRemoveGameFromLibrary,
   addGame: useAddGameToLibrary,
+  deleteLibrary: useDeleteLibrary,
   importSteamLibrary: useImportSteamLibrary,
 };

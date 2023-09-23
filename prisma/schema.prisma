@@ -146,10 +146,10 @@ enum VoteType {
 
 model GameReviewVote {
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   gameReviewId Int
-  gameReview   GameReview @relation(fields: [gameReviewId], references: [id])
+  gameReview   GameReview @relation(fields: [gameReviewId], references: [id], onDelete: Cascade)
 
   type VoteType
 

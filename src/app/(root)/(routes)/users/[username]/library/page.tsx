@@ -46,7 +46,9 @@ export default async function LibraryPage({
           <Separator className="ml-2 w-[calc(100%-16px)]" />
           <LibraryGames username={params.username} />
           <Separator className="ml-2 w-[calc(100%-16px)]" />
-          <LibraryDeleteButton />
+          {user?.username === params.username && (
+            <LibraryDeleteButton username={params.username} />
+          )}
         </Container>
       </section>
     </>

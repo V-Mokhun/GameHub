@@ -169,6 +169,6 @@ export const LibraryGames = ({ username }: LibraryGamesProps) => {
       />
     </div>
   ) : (
-    <Title size="small">No games found. Please, try again</Title>
+    <Title className="px-2" size="small">No games found. Please, try again</Title>
   );
 };
