@@ -24,7 +24,8 @@ export default async function Import() {
         <Title size="large">Import Games</Title>
         <Subtitle size="large">
           You can import your games from Steam, but beware that not all games
-          may be imported.
+          may be imported. This is because of the API limits, so maximum 20
+          games that you have played the most will be imported.
         </Subtitle>
         <ExternalLink aria-label="Click to login through Steam" href={url}>
           <Image src="/images/steam.png" alt="Steam" width={250} height={45} />

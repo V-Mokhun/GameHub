@@ -24,7 +24,9 @@ const getSteamGamesData = async (profileId: string, onError: () => void) => {
       `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${profileId}&format=json`
     );
 
-    return data.response.games;
+    return data.response.games
+      .sort((a, b) => b.playtime_forever - a.playtime_forever)
+      .slice(20);
   } catch (error) {
     onError();
   }
