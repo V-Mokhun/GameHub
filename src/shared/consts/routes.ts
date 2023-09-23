@@ -11,6 +11,8 @@ export const GAMES_ROUTE = "/games";
 export const SETTINGS_ROUTE = "/settings";
 export const SETTINGS_PASSWORD_ROUTE = "/settings/password";
 
+export const IMPORT_ROUTE = "/import";
+
 export const USERS_ROUTE = "/users";
 export const MESSAGES_ROUTE = `/messages`;
 

@@ -18,11 +18,13 @@ import {
   stringifyGetGamesParams,
 } from "./lib";
 import {
+  Game,
   GameFilters,
   GameGenre,
   GameMode,
   GameSorts,
   GameTheme,
+  ImportedGame,
   Paginate,
 } from "./types";
 import {
@@ -31,6 +33,7 @@ import {
   useReview,
   useReviews,
 } from "./reviews-api";
+import { STEAM_URL } from "../consts";
 
 export type UseSearchGamesApiResponse = {
   id: number;
@@ -341,19 +344,36 @@ export const useGame = (id: string) => {
   );
 };
 
-export const useGamesFromSteam = (appIds: number[]) => {
-  return useQuery(["steam-games", { appIds }], async () => {
-    const url = `https://store.steampowered.com/app`;
-    const websiteUrls = appIds.map((appId) => `'${url}/${appId}'`);
-    const { data } = await axiosInstance.post<UseGamesApiResponse[]>(
-      "/games",
-      `${GET_GAMES_FIELDS}; where websites.url = (${websiteUrls.join(
-        ","
-      )}) & category = 0 & total_rating_count >= 10;`
-    );
+type UseGamesFromSteamApiResponse = (UseGamesApiResponse & {
+  websites: { id: number; url: string }[];
+})[];
 
-    return data;
-  });
+export const useGamesFromSteam = (
+  appIds: number[],
+  onSuccess?: (data: ImportedGame[]) => Promise<void>
+) => {
+  return useQuery(
+    ["steam-games", { appIds }],
+    async () => {
+      const websiteUrls = appIds.map((appId) => `"${STEAM_URL}/${appId}"`);
+      const { data } = await axiosInstance.post<UseGamesFromSteamApiResponse>(
+        "/games",
+        `${GET_GAMES_FIELDS}, websites.url; where websites.url = (${websiteUrls.join(
+          ","
+        )}) & category = 0 & total_rating_count >= 10; limit 500;`
+      );
+
+      const normalizedData = data.map((game) => ({
+        ...normalizeGameProperties(game),
+        websites: game.websites,
+      }));
+
+      if (onSuccess) await onSuccess(normalizedData);
+
+      return "OK";
+    },
+    { refetchOnWindowFocus: false, retry: false }
+  );
 };
 
 export const gamesApi = {
@@ -365,6 +385,7 @@ export const gamesApi = {
   getThemes: useThemes,
   getModes: useModes,
   getGame: useGame,
+  getGamesFromSteam: useGamesFromSteam,
 
   getReviews: useReviews,
   getReview: useReview,

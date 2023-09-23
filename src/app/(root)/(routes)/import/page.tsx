@@ -27,7 +27,7 @@ export default async function Import() {
           may be imported.
         </Subtitle>
         <ExternalLink aria-label="Click to login through Steam" href={url}>
-          <Image src="/images/steam.png" alt="Steam" width={180} height={35} />
+          <Image src="/images/steam.png" alt="Steam" width={250} height={45} />
         </ExternalLink>
       </Container>
     </section>

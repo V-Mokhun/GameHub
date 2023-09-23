@@ -112,6 +112,8 @@ export interface Game extends SearchGame {
   genres: number[];
 }
 
+export type ImportedGame = Game & { websites: { id: number; url: string }[] };
+
 export interface FullGame extends SearchGame {
   artworks: string[];
   videos: { url: string; name: string }[];

@@ -1,5 +1,5 @@
 import { Game as LibraryGame } from "@prisma/client";
-import { HOME_ROUTE } from "@shared/consts";
+import { HOME_ROUTE, IMPORT_ROUTE } from "@shared/consts";
 import { displayError } from "@shared/lib";
 import { useCustomToasts } from "@shared/lib/hooks";
 import { useToast } from "@shared/ui";
@@ -8,12 +8,13 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { DEFAULT_PAGINATE, Paginate } from "../games-api";
 import { DEFAULT_LIBRARY_FILTERS, DEFAULT_LIBRARY_SORT } from "./consts";
-import { normalizeLibraryGameProperties } from "./lib";
+import { libraryGameSchema, normalizeLibraryGameProperties } from "./lib";
 import {
   LibraryGameFilters,
   LibraryGameSorts,
   NormalizedLibraryGame,
 } from "./types";
+import { z } from "zod";
 
 const useLibrary = (
   username?: string,
@@ -91,6 +92,32 @@ const useLibraryGame = (gameId: string, userId?: string, username?: string) => {
         displayError(toast, error);
       },
       enabled: !!userId && !!username,
+    }
+  );
+};
+
+export const useImportSteamLibrary = () => {
+  const { toast } = useToast();
+  const router = useRouter();
+
+  return useMutation(
+    ["import-steam-library"],
+    async (games: LibraryGame[]) => {
+      const { data } = await axios.post(
+        `/api/user/library/import/steam`,
+        games
+      );
+
+      return data;
+    },
+    {
+      onSuccess: () => {
+        toast({
+          title: "Your Steam library has been imported successfully",
+          variant: "success",
+        });
+        router.push(HOME_ROUTE);
+      },
     }
   );
 };
@@ -207,4 +234,5 @@ export const userLibraryApi = {
   getLibraryGame: useLibraryGame,
   removeGame: useRemoveGameFromLibrary,
   addGame: useAddGameToLibrary,
+  importSteamLibrary: useImportSteamLibrary,
 };
