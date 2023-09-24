@@ -26,6 +26,7 @@ import { AccountSettingsFormSchema, accountSettingsFormSchema } from "../model";
 import { AccountFormAvatar } from "./account-form-avatar";
 import { AccountFormSkeleton } from "./skeleton";
 import { useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 export const AccountForm = () => {
   const router = useRouter();
@@ -55,6 +56,44 @@ export const AccountForm = () => {
   }, [isLoaded, user, form]);
 
   if (!isLoaded) return <AccountFormSkeleton />;
+
+  const onImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || !e.target.files[0]) {
+      setImagePreview("");
+      return true;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const formData = new FormData();
+      formData.append("image", e.target.files[0]);
+      const { data } = await axios.post<{ isNsfw: boolean }>(
+        "/api/image/moderate",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      if (data.isNsfw) {
+        displayError(
+          toast,
+          null,
+          "Image is inappropriate, please try another one"
+        );
+        return false;
+      } else {
+        setImagePreview(URL.createObjectURL(e.target.files[0]));
+        return true;
+      }
+    } catch (error) {
+      displayError(toast, error, "Image could not be uploaded");
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onDeleteImage = async () => {
     if (!isLoaded || !user) return;
@@ -171,13 +210,10 @@ export const AccountForm = () => {
                             ref(e);
                             imageRef.current = e;
                           }}
-                          onChange={(e) => {
-                            onChange(e.target.files);
+                          onChange={async (e) => {
+                            const canProceed = await onImageChange(e);
 
-                            if (e.target.files)
-                              setImagePreview(
-                                URL.createObjectURL(e.target.files[0])
-                              );
+                            if (canProceed) onChange(e.target.files);
                           }}
                           {...field}
                         />

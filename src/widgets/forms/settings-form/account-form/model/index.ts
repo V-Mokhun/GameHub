@@ -1,12 +1,7 @@
 import { z } from "zod";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
 export const accountSettingsFormSchema = z.object({
   image: z
@@ -17,7 +12,7 @@ export const accountSettingsFormSchema = z.object({
     )
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
+      ".jpg, .jpeg, and .png files are accepted."
     )
     .nullable(),
   username: z

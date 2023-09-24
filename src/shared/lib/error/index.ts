@@ -76,5 +76,5 @@ export const displayError = (
     return toast({ title: error, variant: "destructive" });
   }
 
-  return toast({ title: genericErrorMessage });
+  return toast({ title: genericErrorMessage, variant: "destructive" });
 };

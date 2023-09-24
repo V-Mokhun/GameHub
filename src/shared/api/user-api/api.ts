@@ -5,7 +5,7 @@ import { useToast } from "@shared/ui";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { DEFAULT_PAGINATE, ReviewSorts, SortFields } from "../games-api";
+import { DEFAULT_PAGINATE, ReviewSorts } from "../games-api";
 import {
   useAcceptFriendRequest,
   useCancelFriendRequest,

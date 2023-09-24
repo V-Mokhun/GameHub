@@ -21,7 +21,6 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json("OK", { status: 200 });
   } catch (error) {
-    console.log(error);
     return catchError(error, "Could not delete library.");
   }
 }
