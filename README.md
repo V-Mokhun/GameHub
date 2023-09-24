@@ -45,8 +45,6 @@ GameHub is your one-stop destination for everything gaming. Whether you're an av
   </ol>
 </details>
 
-<!-- ABOUT THE PROJECT -->
-
 ## About The Project
 
 [![Home Screenshot][home]](https://gamehub-proj.vercel.app/)
@@ -55,7 +53,7 @@ GameHub is your one-stop destination for everything gaming. Whether you're an av
 
 📊 Track Your Progress: Stay on top of your gaming achievements with our progress tracking system. You can watch your gaming journey unfold in real-time.
 
-👥 Connect with Friends: Finding like-minded gamers is a breeze on GameHub. Connect with friends, see their library and share your gaming triumphs.
+👥 Connect with Friends: Finding like-minded gamers is a breeze on GameHub. Connect with friends, see their library and write your own game reviews.
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -81,6 +79,7 @@ GameHub is your one-stop destination for everything gaming. Whether you're an av
 - One of the challenges I faced was finding out how to fetch the IGDB Api correctly, which included using axios interceptors to keep the token updated, Next.js rewrites to avoid proxy issues and writing custom functions to create body for requests.
 - Another challenge was to handle the data from IGDB Api, which was not always consistent and required a lot of data manipulation.
 - It was also challenging to handle the cache correctly, when and how to invalidate it, how to use it with realtime chat and how to use it with IGDB Api.
+- Another challenge was to implement import from Steam, which required a lot of research and testing. I had to find a way to get the user's Steam games, then find a way to get the game's data from IGDB Api and then find a way to import it into the database.
 - Lastly, it was challenging to implement the realtime chat, which required a lot of research and testing. Especially, I tried to implement infinite scroll for messages, but it was not working correctly with the cache, so I had to abandon it.
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
@@ -90,8 +89,6 @@ GameHub is your one-stop destination for everything gaming. Whether you're an av
 In the future I plan to:
 
 - Write tests with probably playwright
-- Add an abiliity to write game reviews
-- It would be nice to be able to import your games from Steam, although I am not sure if it is possible
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -122,7 +119,9 @@ To get a local copy up and running follow these simple example steps.
 4. Register on [Twitch](https://dev.twitch.tv/) and create a new application, then grab your client id and client secret and as OAuth Redirect URLs insert your Clerk OAuth Callback.
 5. Register on [PlanetScale](https://planetscale.com/) and create a new database, then grab your database url by clicking on Connect button.
 6. Register on [Pusher](https://pusher.com/) and create a new channel, then grab your app id, key, secret and cluster.
-7. Lastly, register on [Cloudinary](https://cloudinary.com/) and grab your cloud name. Furthermore, you will need to create a new preset and make it unsigned and also put its name in .env file. You can also use your own image hosting service, just make sure to change the code accordingly.
+7. Register on [Cloudinary](https://cloudinary.com/) and grab your cloud name. Furthermore, you will need to create a new preset and make it unsigned and also put its name in .env file. You can also use your own image hosting service, just make sure to change the code accordingly.
+8. Go to [Steam](https://steamcommunity.com/dev/apikey) and grab your api key.
+9. Go to [RapidAPI](https://rapidapi.com/api4ai-api4ai-default/api/nsfw3) and register if needed, then grab your api key for image moderation.
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
@@ -169,7 +168,7 @@ Project Link: [https://gamehub-proj.vercel.app](https://gamehub-proj.vercel.app)
 [license-url]: https://github.com/v-mokhun/gamehub/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/volodymyr-mokhun-35005723b/
-[home]: readme-images/home.png
+[home]: readme-images/home.jpg
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [PlanetScale.com]: https://img.shields.io/badge/planetscale-%23000000.svg?style=for-the-badge&logo=planetscale&logoColor=white
