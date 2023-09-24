@@ -360,7 +360,7 @@ const useGamesFromSteam = (
         "/games",
         `${GET_GAMES_FIELDS}, websites.url; where websites.url = (${websiteUrls.join(
           ","
-        )}) & category = 0 & total_rating_count >= 10; limit 500;`
+        )}) & category = 0 & total_rating_count >= 10; limit 15;`
       );
 
       const normalizedData = data.map((game) => ({

@@ -15,8 +15,6 @@ export async function POST(req: Request) {
     if (!userId || userId !== games[0].userId)
       return new NextResponse("Unauthorized", { status: 401 });
 
-    console.log(games);
-
     await db.$transaction(
       games.map((game) => {
         const { createdAt, notes, finishedAt, userRating, status, ...rest } =
@@ -30,7 +28,9 @@ export async function POST(req: Request) {
             },
           },
           create: game,
-          update: rest,
+          update: {
+            playTime: rest.playTime,
+          },
         });
       })
     );
