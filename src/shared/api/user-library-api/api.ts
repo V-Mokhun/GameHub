@@ -118,6 +118,13 @@ const useImportSteamLibrary = () => {
         });
         router.push(HOME_ROUTE);
       },
+      onError: () => {
+        toast({
+          title: "Could not import your Steam library",
+          variant: "destructive",
+        });
+        router.push(HOME_ROUTE);
+      },
     }
   );
 };

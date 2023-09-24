@@ -17,9 +17,6 @@ export async function POST(req: Request) {
 
     await db.$transaction(
       games.map((game) => {
-        const { createdAt, notes, finishedAt, userRating, status, ...rest } =
-          game;
-
         return db.game.upsert({
           where: {
             userId_id: {
@@ -29,7 +26,7 @@ export async function POST(req: Request) {
           },
           create: game,
           update: {
-            playTime: rest.playTime,
+            playTime: game.playTime,
           },
         });
       })
