@@ -11,7 +11,35 @@ test.describe("Sidebar Navigation", async () => {
     await page.waitForURL("/");
 
     await page.locator("li a", { has: page.getByText("Browse") }).click();
-    await page.waitForURL("/browse");
-    await expect(page.getByText("Browse Games")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Browse Games" })
+    ).toBeVisible();
+
+    await page.locator("li a", { has: page.getByText("Library") }).click();
+    await expect(
+      page.getByRole("heading", { name: "Your Library" })
+    ).toBeVisible();
+
+    await page.locator("li a", { has: page.getByText("Import") }).click();
+    await expect(
+      page.getByRole("heading", { name: "Import Games" })
+    ).toBeVisible();
+
+    await page.locator("li a", { has: page.getByText("Community") }).click();
+    await expect(
+      page.getByRole("heading", { name: "Our Community" })
+    ).toBeVisible();
+
+    await page
+      .locator("li a", { has: page.getByText("Friends", { exact: true }) })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Your Friends" })
+    ).toBeVisible();
+
+    await page.locator("li a", { has: page.getByText("Messages") }).click();
+    await expect(
+      page.getByRole("heading", { name: "Your messages" })
+    ).toBeVisible();
   });
 });

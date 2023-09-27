@@ -33,7 +33,7 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger data-testid="avatar-button-dropdown">
         <Avatar>
           <AvatarImage src={user.profileImageUrl} />
           <AvatarFallback />
@@ -81,7 +81,7 @@ export const HeaderAvatar = ({}: HeaderAvatarProps) => {
           <SignOutButton id={user.id} username={user.username!}>
             <div className="flex items-center w-full">
               <Icon className="mr-2" name="LogOut" />
-              <span>Sign out</span>
+              <span>Sign Out</span>
             </div>
           </SignOutButton>
         </DropdownMenuItem>
