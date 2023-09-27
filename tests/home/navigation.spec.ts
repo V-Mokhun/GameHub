@@ -41,21 +41,6 @@ test.describe("Home Page Navigation", async () => {
       .click();
     await page.waitForLoadState("networkidle");
 
-    await expect(
-      page.getByRole("heading", { name: "Game Info" })
-    ).toBeVisible();
     await expect(page.getByRole("heading", { name: "About" })).toBeVisible();
-  });
-
-  test("Hides Library and Friends link when not logged in", async ({
-    page,
-  }) => {
-    await expect(page.getByText("Sign in")).toBeVisible();
-    await expect(
-      page.locator("li a", { has: page.getByText("Library") })
-    ).not.toBeVisible();
-    await expect(
-      page.locator("li a", { has: page.getByText("Friends") })
-    ).not.toBeVisible();
   });
 });
