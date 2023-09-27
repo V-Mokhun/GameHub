@@ -122,6 +122,7 @@ To get a local copy up and running follow these simple example steps.
 7. Register on [Cloudinary](https://cloudinary.com/) and grab your cloud name. Furthermore, you will need to create a new preset and make it unsigned and also put its name in .env file. You can also use your own image hosting service, just make sure to change the code accordingly.
 8. Go to [Steam](https://steamcommunity.com/dev/apikey) and grab your api key.
 9. Go to [RapidAPI](https://rapidapi.com/api4ai-api4ai-default/api/nsfw3) and register if needed, then grab your api key for image moderation.
+10. For tests to work properly, create test user and fill in the username and password in .env file
 
 <p align="right">(<a href="#gamehub">back to top</a>)</p>
 
