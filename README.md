@@ -168,7 +168,7 @@ Project Link: [https://gamehub-proj.vercel.app](https://gamehub-proj.vercel.app)
 [license-shield]: https://img.shields.io/github/license/v-mokhun/gamehub.svg?style=for-the-badge
 [license-url]: https://github.com/v-mokhun/gamehub/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/volodymyr-mokhun-35005723b/
+[linkedin-url]: https://www.linkedin.com/in/volodymyr-mokhun/
 [home]: readme-images/home.jpg
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
