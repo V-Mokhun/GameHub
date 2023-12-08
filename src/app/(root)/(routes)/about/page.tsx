@@ -44,7 +44,7 @@ export default async function AboutPage() {
           />
         </ExternalLink>
         <Title>Founder</Title>
-        <ExternalLink href="https://www.linkedin.com/in/volodymyr-mokhun-35005723b/">
+        <ExternalLink href="https://www.linkedin.com/in/v-mokhun/">
           <div className="relative w-60 h-64">
             <Image
               src="/images/founder.jpg"

@@ -52,7 +52,7 @@ export default async function ContactPage() {
             </ExternalLink>
           </li>
           <li>
-            <ExternalLink href="https://www.linkedin.com/in/volodymyr-mokhun-35005723b/">
+            <ExternalLink href="https://www.linkedin.com/in/v-mokhun/">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 48 48"
